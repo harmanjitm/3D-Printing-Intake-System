@@ -14,8 +14,14 @@
         <title>ARIS 3D Printing Service - Login</title>
     </head>
     <body>
-        <div class="">
-            <p>Kill me thx</p>
+        <div class="container">
+            <form method="post" action="login">
+                <div class="form-group">
+                    <label for="Email">Email Address</label>
+                    if on mobile display dont display label, if on desktop display label but dont display placehodler
+                    <input type="email" name="email" placeholder="Email Address" class="form-control">
+                </div>
+            </form>
         </div>
     </body>
 </html>
