@@ -5,13 +5,17 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib tagdir="/WEB-INF/tags/" prefix="ARIS3D" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <ARIS3D:Imports/>
+        <title>ARIS 3D Printing Service - Login</title>
     </head>
     <body>
-        <h1>ULTIMATE BAYBLADE BATTLE ARENA HQ</h1>
+        <div class="">
+            <p>Kill me thx</p>
+        </div>
     </body>
 </html>
