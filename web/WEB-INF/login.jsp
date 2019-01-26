@@ -14,12 +14,12 @@
         <link href="res/css/login.css" rel="stylesheet" type="text/css"/>
         <title>ARIS 3D Printing Service - Login</title>
     </head>
-    <body style="background-color:#DAD2D8;">
+    <body>
         <div class="bar"></div>
         <div class="container">
             <div class="container">
                 <div class="mx-auto col-5 col-sm-5 col-md-4 col-lg-3 col-xl-3">
-                    <img class="img-fluid" src="res/img/loginLogo.png" alt="ARIS 3D Printing Service - Logo"/>
+                    <a href="home"><img class="img-fluid" src="res/img/loginLogo.png" alt="ARIS 3D Printing Service - Logo"/></a>
                 </div>
             </div>
             <br/>
@@ -28,10 +28,16 @@
                     <form method="post" action="login">
                         <div class="form-group">
                             <!--<label for="Email">Email Address</label>-->
-                            <input id="email" type="email" name="email" placeholder="Email Address" class="form-control">
-                            <input id="password" type="password" name="password" placeholder="Password" class="form-control">
+                            <input required="true" id="email" type="email" name="email" placeholder="Email Address" class="form-control">
+                            <input required="true" id="password" type="password" name="password" placeholder="Password" class="form-control">
+                            <input id="submit" type="submit" name="submit" value="Login">
                         </div>
                     </form>
+                    <div class="row">
+                        <div class="text-muted mx-auto">
+                            <p>Don't have an account? Sign up <a href="register">here</a>.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
