@@ -15,9 +15,9 @@
                     <li class="nav-item">
                         <div class="accountDropdown">
                             <img id="accountImg" class="btn dropdown-toggle" data-toggle="accountDropdown" width="50px" height="auto" src="res/img/icon/account.png" alt="Account Menu"/>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="login">Login</a>
-                                <a class="dropdown-item" href="register">Register</a>
+                            <div class="">
+                                <a class="dropdown-item" href="account">Account</a>
+                                <a class="dropdown-item" href="login?logout=true">Logout</a>
                             </div>
                         </div>
                     </li>
