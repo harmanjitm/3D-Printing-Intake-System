@@ -5,13 +5,16 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib tagdir="/WEB-INF/tags/" prefix="ARIS3D" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <ARIS3D:Imports/>
+        <title>3D Printing Intake System - Account Management</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <ARIS3D:Header isAdmin="false"></ARIS3D:Header>
+        
     </body>
 </html>

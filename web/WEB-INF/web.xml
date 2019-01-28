@@ -56,6 +56,10 @@
         <servlet-name>ReportController</servlet-name>
         <servlet-class>views.ReportController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AccountManagementController</servlet-name>
+        <servlet-class>views.AccountManagementController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -107,6 +111,10 @@
     <servlet-mapping>
         <servlet-name>ReportController</servlet-name>
         <url-pattern>/report</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccountManagementController</servlet-name>
+        <url-pattern>/accountmanagement</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
