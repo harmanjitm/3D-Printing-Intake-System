@@ -32,6 +32,10 @@ body{
     background-color: #8B2635;
 }
 
+#main-nav{
+    box-shadow: 10px 10px 10px black;
+}
+
 #main-nav h1{
     color: #DAD2D8;
 }
@@ -77,4 +81,9 @@ body{
 
 #accountDropdown-content a:hover{
     background-color: #E8E8E8;
+}
+
+.btn-space{
+    margin-left: 5px;
+    margin-right: 5px;
 }

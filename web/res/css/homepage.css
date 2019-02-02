@@ -13,8 +13,20 @@ body{
     background-color: #DAD2D8;
 }
 
-#homepageBannerImage{
+#homepageBannerImage1{
     background-color: #8B2635;
+    height: 300px;
+    width: 100%;
+}
+
+#homepageBannerImage2{
+    background-color: #193655;
+    height: 300px;
+    width: 100%;
+}
+
+#homepageBannerImage3{
+    background-color: #1B222B;
     height: 300px;
     width: 100%;
 }
