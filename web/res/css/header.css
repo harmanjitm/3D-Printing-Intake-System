@@ -40,6 +40,41 @@ body{
     filter: brightness(0) invert(1);
 }
 
-#accountImg:hover{
-    cursor: pointer;
+
+#accountDropdown-content{
+/*    top: 66px;*/
+    right: -10px;
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 90px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+#accountDropdown{
+    height: 100%;
+    display: flex;
+    position: relative;
+    display: inline-block;
+}
+
+#accountDropdown:hover #accountDropdown-content{
+    display: block;
+}
+
+#accountDropdown-content a:hover #accountDropdown-content{
+   display:block;
+}
+
+#accountDropdown-content a{
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: right;
+}
+
+#accountDropdown-content a:hover{
+    background-color: #E8E8E8;
 }

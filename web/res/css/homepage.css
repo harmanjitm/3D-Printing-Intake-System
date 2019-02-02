@@ -8,38 +8,19 @@ and open the template in the editor.
     Author     : harma
 */
 
-#main-nav{
-/*    position: fixed;
-    width: 100%;
-    height: 100px;
-    vertical-align: 10px;;
-    border-bottom: 1px solid black;*/
-    background-color: #1B222B;
-}
-
-/*html,body{
-    margin: 0;
-}*/
 
 body{
     background-color: #DAD2D8;
 }
 
-.bar{
-    color: #8B2635;
-    height: 5px;
-    width: 100%;
+#homepageBannerImage{
     background-color: #8B2635;
+    height: 300px;
+    width: 100%;
 }
 
-#main-nav h1{
-    color: #DAD2D8;
-}
-
-#accountImg{
-    filter: brightness(0) invert(1);
-}
-
-#accountImg:hover{
-    cursor: pointer;
+.mainImageText{
+    text-align: center;
+    vertical-align: middle;
+    color: white;
 }

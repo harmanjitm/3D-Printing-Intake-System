@@ -16,23 +16,13 @@
         <title>3D Printing Intake System - Home</title>
     </head>
     <body>
-        <header>
-            <div class="bar"></div>
-            <nav id="main-nav" class="navbar">
-                <a class="navbar-brand" href="home"><h1>ARIS3D</h1></a>
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <div class="accountDropdown">
-                            <img id="accountImg" class="btn dropdown-toggle" data-toggle="accountDropdown" width="50px" height="auto" src="res/img/icon/account.png" alt="Account Menu"/>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="login">Login</a>
-                                <a class="dropdown-item" href="register">Register</a>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </nav>
-        </header>
-        <button class="btn btn-primary">YAH YEET</button>
+        <ARIS3D:Header isAdmin="false"></ARIS3D:Header>
+        <div class="col-12" id="homepageBannerImage">
+            <div class="container">
+                <div>
+                    <h1 class="mainImageText">ARIS 3D Printing Service</h1>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
