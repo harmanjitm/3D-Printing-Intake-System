@@ -21,25 +21,7 @@ import services.AccountService;
 public class LoginController extends HttpServlet 
 {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
-    {
-        /**
-         * I don't see why you would check if the parameter is register
-         * for when the person is trying to load the page with
-         * a doGet?? Im confoosion
-         */
-//        if(request.getParameter("register") !=null)
-//        {
-//            getServletContext().getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
-//            return;
-//        }
-//        
-//        if(request.getParameter("logout") !=null)
-//        {
-//            request.setAttribute("logM", "You have been logged out.");
-//            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
-//            return;
-//        }
-        
+    {        
         getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
     }
 

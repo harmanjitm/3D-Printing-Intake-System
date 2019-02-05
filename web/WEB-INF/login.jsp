@@ -35,7 +35,7 @@
                     </form>
                     <div class="row">
                         <div class="text-muted mx-auto">
-                            <p>Don't have an account? Sign up <a href="register">here</a>.</p>
+                            <p>Don't have an account? Sign up <a href="registration">here</a>.</p>
                         </div>
                     </div>
                 </div>

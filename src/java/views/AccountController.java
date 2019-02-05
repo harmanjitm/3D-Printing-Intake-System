@@ -58,26 +58,7 @@ public class AccountController extends HttpServlet
         {
             getServletContext().getRequestDispatcher("/WEB-INF/techHome.jsp").forward(request, response);
             return;
-        }
-        
-        String actionMgmt = request.getParameter("actionMgmt");
-        switch(actionMgmt) 
-        {
-            case "materialMgmt":
-                getServletContext().getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
-                break;
-            case "printerMgmt":
-                getServletContext().getRequestDispatcher("/WEB-INF/printerMgmt.jsp").forward(request, response);
-                break;
-            case "queueMgmt":
-                getServletContext().getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
-                break;
-            case "reportMgmt":
-                getServletContext().getRequestDispatcher("/WEB-INF/reportMgmt.jsp").forward(request, response);
-                break;
-            default:
-                break;
-        }        
+        }  
         
         getServletContext().getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
     }
