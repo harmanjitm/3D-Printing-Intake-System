@@ -10,7 +10,9 @@ import persistence.AccountBroker;
  */
 public class AccountService {
 
-	/** The account broker to persist changes to the database. */
+	/** 
+         * The account broker to persist changes to the database. 
+         */
 	@SuppressWarnings("unused")
 	private AccountBroker ab;
 	
@@ -18,8 +20,7 @@ public class AccountService {
 	 * Instantiates a new account service object.
 	 */
 	public AccountService() {
-		
-            
+           ab = new AccountBroker();
 	}
 	
 	/**
@@ -27,9 +28,16 @@ public class AccountService {
 	 *
 	 * @return the account if created or null if the creation fails
 	 */
-	public Account createAccount() {
-		return null;
-		
+	public Account createAccount(String email, String password, String firstName, String lastName,String accountType) {
+            
+            Account a = new Account();
+            a.setEmail(email);
+            a.setPassword(password);
+            a.setFirstname(firstName);
+            a.setLastname(lastName);
+            a.setAccountType(accountType);
+            
+            return ab.execute(a);
 	}
 	
 	/**
@@ -39,8 +47,14 @@ public class AccountService {
 	 * @return the account if it is successfully deleted or null if deletion fails
 	 */
 	public Account deleteAccount(int accountId) {
-		return null;
-		
+            Account deletedUser = ab.search(accountId);
+            
+            // Do not allow deletion of tech users?
+//            if(deletedUser.getAccountId.equals("admin")) {
+//                return 0;
+//            }
+            
+            return ab.remove(deletedUser);	
 	}
 	
 	/**
@@ -52,18 +66,24 @@ public class AccountService {
 	 * @return the associated account object if the entered email/password combination is found, otherwise returns null
 	 */
 	public Account checkCredentials(String email, String password) {
-		return null;
-		
+            // call filter class??
+            return null;
 	}
 	
+        
+        public Account get(int accountId) {
+            
+            return ab.search(accountId);
+        }
+        
 	/**
 	 * Gets the all accounts ordered by account id lowest to highest in an arrayList.
 	 *
 	 * @return the all accounts in an arrayList
 	 */
-	public ArrayList<Account> getAllAccounts() {
-		return null;
-		
+	public ArrayList<Object> getAllAccounts() {
+            // TODO adjust to take in an account object when broker is set up
+            return ab.getAll();	
 	}
 	
 	/**
@@ -72,9 +92,16 @@ public class AccountService {
 	 * @param toUpdate the updated account object
 	 * @return the account that is being replaced or null if the update fails
 	 */
-	public Account updateAccount(Account toUpdate) {
-		return null;
-		
+	public Account updateAccount(int accountId, String email, String password, String firstName, String lastName, int accountID, String accountType) {
+            
+            Account a = get(accountId);
+            a.setEmail(email);
+            a.setPassword(password);
+            a.setFirstname(firstName);
+            a.setLastname(lastName);
+            a.setAccountType(accountType);
+            
+            return ab.execute(a);
 	}
 	
 	/**
@@ -84,8 +111,8 @@ public class AccountService {
 	 * @return the account status or null if the account cannot be found
 	 */
 	public String getAccountStatus(int accountId) {
-		return null;
-		
+            
+            return null;   
 	}
 	
 	/**
