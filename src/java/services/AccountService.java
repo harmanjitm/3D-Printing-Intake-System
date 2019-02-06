@@ -66,17 +66,18 @@ public class AccountService {
 	 * @return the associated account object if the entered email/password combination is found, otherwise returns null
 	 */
 	public Account checkCredentials(String email, String password) {
-//            try {
-//                
-//                Account user = ab.search(accountId);
-//
-//                // check if password matches with the database
-//                if(user.getPassword().equals(password)) {
-//                    return user;
-//                }
-//            } catch (Exception e) {
-//                
-//            }
+            try {
+                
+                int accountId = 0;
+                Account user = get(accountId);
+
+                // check if password matches with the database
+                if(user.getPassword().equals(password)) {
+                    return user;
+                }
+            } catch (Exception e) {
+                
+            }
         
             return null;
 	}
@@ -116,14 +117,16 @@ public class AccountService {
 	}
 	
 	/**
-	 * Gets the account status using the account id.
+	 * Gets the account type using the account id.
 	 *
 	 * @param accountId the account id of the account to retrieve the status for 
 	 * @return the account status or null if the account cannot be found
 	 */
-	public String getAccountStatus(int accountId) {
+	public String getAccountType(int accountId) {
             
-            return null;   
+            Account a = get(accountId);
+            
+            return a.getAccountType();   
 	}
 	
 	/**
