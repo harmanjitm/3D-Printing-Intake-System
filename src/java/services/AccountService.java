@@ -66,7 +66,18 @@ public class AccountService {
 	 * @return the associated account object if the entered email/password combination is found, otherwise returns null
 	 */
 	public Account checkCredentials(String email, String password) {
-            // call filter class??
+//            try {
+//                
+//                Account user = ab.search(accountId);
+//
+//                // check if password matches with the database
+//                if(user.getPassword().equals(password)) {
+//                    return user;
+//                }
+//            } catch (Exception e) {
+//                
+//            }
+        
             return null;
 	}
 	
