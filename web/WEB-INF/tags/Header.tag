@@ -19,7 +19,7 @@
 <!--                            <a href="login" class="nav-link btn btn-outline-light">Login</a>-->
                         </li>
                         <li class="nav-item">
-                            <a href="register"><button type="button" class="btn btn-light btn-space" href="register">Register</button></a>
+                            <a href="registration"><button type="button" class="btn btn-light btn-space" href="register">Register</button></a>
 <!--                            <a href="register" class="nav-link btn btn-outline-light">Register</a>-->
                         </li>
                     </c:if>
