@@ -9,12 +9,29 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <ARIS3D:Imports/>
-        <title>3D Printing Intake System - Account Management</title>
     </head>
     <body>
-        <ARIS3D:Header isAdmin="false"></ARIS3D:Header>
+        <div id="app">
+            <v-app>
+                <v-content>
+                    <v-toolbar color="#1B222B">
+                        <v-toolbar-side-icon class="white--text"></v-toolbar-side-icon>
+                        <v-toolbar-title class="white--text">Account Management</v-toolbar-title>
+                        <v-toolbar-content>
+                            <v-icon><i class="material-icons">account_circle</i></v-icon>
+                        </v-toolbar-content>
+                    </v-toolbar>
+                    <v-container></v-container>
+                </v-content>
+                <v-footer color="#1B222B">
+                    
+                </v-footer>
+            </v-app>
+        </div>
         
+        <script>
+            new Vue({ el: '#app' });
+        </script>
     </body>
 </html>
