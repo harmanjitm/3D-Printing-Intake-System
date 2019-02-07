@@ -8,7 +8,8 @@ package views;
 
 import domain.Account;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,14 +54,11 @@ public class AccountController extends HttpServlet
             Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        
-        if(request.getParameter("logout") !=null)
+        if(request.getParameter("techHome") !=null)
         {
-            //session.invalidate();
-            request.setAttribute("logM", "You have been logged out.");
-            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            getServletContext().getRequestDispatcher("/WEB-INF/techHome.jsp").forward(request, response);
             return;
-        }
+        }  
         
         getServletContext().getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
     }
@@ -139,6 +137,6 @@ public class AccountController extends HttpServlet
         catch (Exception ex) 
         {
             Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
     }
 }

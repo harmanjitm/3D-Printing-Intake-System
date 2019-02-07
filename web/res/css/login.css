@@ -1,0 +1,55 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 25-Jan-2019, 9:45:06 PM
+    Author     : harma
+*/
+
+h1{
+    color: #1B222B;
+}
+
+#email, #password{
+    padding: 30px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+}
+
+input[type="email"]:valid, input[type="password"]:valid{
+    border-color: green;
+}
+
+input[type="email"]:invalid, input[type="password"]:invalid{
+    border-color: #8B2635;
+}
+
+.bar{
+    color: #8B2635;
+    height: 5px;
+    background-color: #8B2635;
+}
+
+#submit{
+    background-color: #1E4167;
+    padding: 15px;
+    margin-bottom: 10px;
+    vertical-align: middle;
+    font-size: 20px;
+    font-weight: 400;
+    width: 80%;
+    margin-left: 10%;
+    border-radius: 20px;
+    color: white;
+}
+
+#submit:hover{
+    background-color: #193655;
+    cursor: pointer;
+}
+
+body{
+    background-color: #DAD2D8;
+}

@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+<!--    <filter>
+        <filter-name>AuthenticationFilter</filter-name>
+        <filter-class>filters.AuthenticationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <servlet-name>AccountController</servlet-name>
+    </filter-mapping>-->
     <servlet>
         <servlet-name>LoginController</servlet-name>
         <servlet-class>views.LoginController</servlet-class>
@@ -9,8 +17,56 @@
         <servlet-class>views.AccountController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>RegisterController</servlet-name>
-        <servlet-class>views.RegisterController</servlet-class>
+        <servlet-name>ArchiveController</servlet-name>
+        <servlet-class>views.ArchiveController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BackupController</servlet-name>
+        <servlet-class>views.BackupController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MaterialManagementController</servlet-name>
+        <servlet-class>views.MaterialManagementController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NoteManagementController</servlet-name>
+        <servlet-class>views.NoteManagementController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NotificationController</servlet-name>
+        <servlet-class>views.NotificationController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderController</servlet-name>
+        <servlet-class>views.OrderController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderManagementController</servlet-name>
+        <servlet-class>views.OrderManagementController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>HomepageController</servlet-name>
+        <servlet-class>views.HomepageController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PrinterManagementController</servlet-name>
+        <servlet-class>views.PrinterManagementController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>QueueManagementController</servlet-name>
+        <servlet-class>views.QueueManagementController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReportController</servlet-name>
+        <servlet-class>views.ReportController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccountManagementController</servlet-name>
+        <servlet-class>views.AccountManagementController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RegistrationController</servlet-name>
+        <servlet-class>views.RegistrationController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
@@ -18,15 +74,62 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AccountController</servlet-name>
-        <url-pattern>/accountMgmt</url-pattern>
+        <url-pattern>/account</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>RegisterController</servlet-name>
-        <url-pattern>/register</url-pattern>
+        <servlet-name>HomepageController</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ArchiveController</servlet-name>
+        <url-pattern>/archive</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackupController</servlet-name>
+        <url-pattern>/backup</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MaterialManagementController</servlet-name>
+        <url-pattern>/materialmgmt</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NoteManagementController</servlet-name>
+        <url-pattern>/notemanagement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NotificationController</servlet-name>
+        <url-pattern>/notification</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderController</servlet-name>
+        <url-pattern>/order</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderManagementController</servlet-name>
+        <url-pattern>/ordermgmt</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QueueManagementController</servlet-name>
+        <url-pattern>/queuemgmt</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReportController</servlet-name>
+        <url-pattern>/report</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccountManagementController</servlet-name>
+        <url-pattern>/accountmanagement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegistrationController</servlet-name>
+        <url-pattern>/registration</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    <welcome-file-list>
+        <welcome-file>home</welcome-file>
+    </welcome-file-list>
 </web-app>

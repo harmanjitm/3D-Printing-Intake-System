@@ -1,7 +1,7 @@
 <%-- 
-    Document   : register
-    Created on : Jan 18, 2019, 10:17:53 AM
-    Author     : 758243
+    Document   : registration
+    Created on : Feb 4, 2019, 6:51:46 PM
+    Author     : 687159
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>ARIS 3D Printing Service - Registration</title>
     </head>
     <body>
         <h1>Hello World!</h1>

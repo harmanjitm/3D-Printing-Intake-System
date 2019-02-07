@@ -1,0 +1,43 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 25-Jan-2019, 11:35:10 PM
+    Author     : harma
+*/
+
+
+body{
+    background-color: #DAD2D8;
+}
+
+#homepageBannerImage1{
+    background-color: #8B2635;
+    height: 300px;
+    width: 100%;
+}
+
+#homepageBannerImage2{
+    background-color: #193655;
+    height: 300px;
+    width: 100%;
+}
+
+#homepageBannerImage3{
+    background-color: #1B222B;
+    height: 300px;
+    width: 100%;
+}
+
+.mainImageText{
+    text-align: center;
+    vertical-align: middle;
+    color: white;
+}
+
+.center{
+    text-align: center;
+}
+
