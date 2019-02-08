@@ -1,71 +1,111 @@
 package persistence;
 
+import domain.Account;
 import java.sql.ResultSet;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
-public class AccountBroker implements Broker {
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+public class AccountBroker{
 
-	/**
-	 * Instantiates a new account broker.
-	 */
-	private AccountBroker() {
-		
-	}
-	
-	/**
-	 * Gets the broker.
-	 *
-	 * @return the broker
-	 */
-	public AccountBroker getBroker() {
-		return null;
-		
-	}
-	
-	/* (non-Javadoc)
-	 * @see persistence.Broker#closeBroker()
-	 */
-	public void closeBroker() {
-		
-	}
-
-	/* (non-Javadoc)
-	 * @see persistence.Broker#search(int)
-	 */
-	@Override
-	public Object search(int id) {
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see persistence.Broker#persist(java.lang.Object)
-	 */
-	@Override
-	public boolean persist(Object object) {
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see persistence.Broker#remove(java.lang.Object)
-	 */
-	@Override
-	public boolean remove(Object object) {
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see persistence.Broker#execute(java.lang.String)
-	 */
-	@Override
-	public ResultSet execute(String statement) {
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see persistence.Broker#getAll()
-	 */
-	@Override
-	public ArrayList<Object> getAll() {
-		return null;
-	}
+        /**
+         * Adds a new account to the database
+         * @param Account object passed in from the AccountService class
+         * @return 
+         */
+	public int insert(Account account){
+            ConnectionPool pool = ConnectionPool.getInstance();
+            Connection conn = pool.getConnection();
+            
+            try{
+                String preparedSQL = "INSERT INTO ACCOUNT(account_id,email,password,f_name,l_name,account_type) VALUES(?,?,?,?,?)";
+                PreparedStatement ps = conn.prepareStatement(preparedSQL);
+                
+                ps.setString(1, account.getAccountType());
+                ps.setString(2, account.getPassword());
+                ps.setString(3, account.getFirstname());
+                ps.setString(4, account.getLastname());
+                ps.setString(5, account.getLastname());   
+                
+                int rows = ps.executeUpdate();
+                return rows;
+            } catch (SQLException ex) {
+                System.out.println("An error has occured while adding new user!");
+//                Logger.getLogger(AccountBroker.class.getName()).log(Level.SEVERE, null, ex);
+            }finally{
+                pool.releaseConnection(conn);
+            }
+            return 0;
+        }
+        
+        /**
+         * 
+         * @param account
+         * @return 
+         */
+        public int update(Account account){
+            ConnectionPool pool = ConnectionPool.getInstance();
+            Connection conn = pool.getConnection();
+            
+            try {
+                String preparedSQL = "UPDATE account SET account_id = ?, email = ?, password = ?, f_name = ?, l_name = ?, account_type = ?";
+                PreparedStatement ps = conn.prepareStatement(preparedSQL);
+                
+                ps.setString(1, account.getAccountType());
+                ps.setString(2, account.getPassword());
+                ps.setString(3, account.getFirstname());
+                ps.setString(4, account.getLastname());
+                ps.setString(5, account.getLastname());   
+                
+                int rows = ps.executeUpdate();
+                return rows;
+            } catch (SQLException ex) {
+                System.out.println("Unable to update account information");
+            } finally {
+                pool.releaseConnection(conn);
+            }
+            return 0;
+        }
+        
+        /**
+         * 
+         * @param account
+         * @return 
+         */
+        public int delete(Account account){
+            ConnectionPool pool = ConnectionPool.getInstance();
+            Connection conn = pool.getConnection();
+            try{
+                String preparedSQL = "DELETE FROM account WHERE accountId = ?";
+                PreparedStatement ps = conn.prepareStatement(preparedSQL);
+                
+                ps.setString(1, preparedSQL);
+                
+                int rows = ps.executeUpdate();
+                return rows;
+            } catch (SQLException ex){
+                System.out.println("Unable to delete account");
+            }
+            return 0;
+        }
+        
+        /**
+         * 
+         * @param id
+         * @return 
+         */
+        public Account getUser(int id){
+            
+        }
+        
+        /**
+         * 
+         * @return 
+         */
+        public List<User> getAll(){
+            
+        }
 }
