@@ -8,18 +8,18 @@ and open the template in the editor.
     Author     : harma
 */
 
-#main-nav{
-/*    position: fixed;
+/*#main-nav{
+    position: fixed;
     width: 100%;
     height: 100px;
     vertical-align: 10px;;
-    border-bottom: 1px solid black;*/
+    border-bottom: 1px solid black;
     background-color: #1B222B;
 }
 
-/*html,body{
+html,body{
     margin: 0;
-}*/
+}
 
 body{
     background-color: #DAD2D8;
@@ -46,7 +46,7 @@ body{
 
 
 #accountDropdown-content{
-/*    top: 66px;*/
+    top: 66px;
     right: -10px;
     display: none;
     position: absolute;
@@ -86,4 +86,9 @@ body{
 .btn-space{
     margin-left: 5px;
     margin-right: 5px;
+}*/
+
+a, a:hover{
+    color: inherit;
+    text-decoration: inherit;
 }

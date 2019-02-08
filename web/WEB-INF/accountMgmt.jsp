@@ -9,12 +9,21 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <ARIS3D:Imports/>
-        <title>3D Printing Intake System - Account Management</title>
     </head>
     <body>
-        <ARIS3D:Header isAdmin="false"></ARIS3D:Header>
-        
+        <ARIS3D:Header isAdmin="true" pageName="Account Management"></ARIS3D:Header>
+        <div id="app">
+            <v-app>
+                <v-content>
+                    <v-card style="height: 5px; background-color: #8B2635;" elevation-25></v-card>
+                    <v-container>
+                        
+                    </v-container>
+                </v-content>
+            </v-app>
+        </div>
+        <script src="res/js/v-accountmanagement.js" type="text/javascript"></script>
+        <link href="res/css/header.css" rel="stylesheet" type="text/css"/>
     </body>
 </html>

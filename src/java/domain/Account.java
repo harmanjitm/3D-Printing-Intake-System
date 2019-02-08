@@ -5,7 +5,7 @@ package domain;
  */
 public class Account {
 
-	private int accountId;
+	private int accountID;
 	/**
 	 * must be unique to this user
 	 */
@@ -25,8 +25,8 @@ public class Account {
 	public Account() {
 		
 	}
-
-	/**
+        
+        	/**
 	 * Non-default constructor for the Account Object
 	 * @param accountId the account id
 	 * @param email the user's email
@@ -35,7 +35,7 @@ public class Account {
 	 * @param lastname the user's last name
 	 * @param accountType the user account type
 	 */
-	public Account(int accountId, String email, String password, String firstname, String lastname, String accountType) {
+	public Account(String email, String password, String firstname, String lastname, String accountType) {
 		this.accountId = accountId;
 		this.email = email;
 		this.password = password;
@@ -44,20 +44,38 @@ public class Account {
 		this.accountType = accountType;
 	}
 
+//	/**
+//	 * Non-default constructor for the Account Object
+//	 * @param accountId the account id
+//	 * @param email the user's email
+//	 * @param password the user's password
+//	 * @param firstname the user's first name
+//	 * @param lastname the user's last name
+//	 * @param accountType the user account type
+//	 */
+//	public Account(int accountId, String email, String password, String firstname, String lastname, String accountType) {
+//		this.accountId = accountId;
+//		this.email = email;
+//		this.password = password;
+//		this.firstname = firstname;
+//		this.lastname = lastname;
+//		this.accountType = accountType;
+//	}
+
 	/**
 	 * Returns the accountId
 	 * @return the accountId
 	 */
 	public int getAccountId() {
-		return accountId;
+		return accountID;
 	}
 
 	/**
 	 * Sets the accountId
 	 * @param accountId the account id
 	 */
-	public void setAccountId(int accountId) {
-		this.accountId = accountId;
+	public void setAccountId(int accountID) {
+		this.accountID = accountID;
 	}
 
 	/**
