@@ -9,8 +9,6 @@ package views;
 import domain.Account;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -27,15 +25,17 @@ public class AccountController extends HttpServlet
 {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
+        int accountID;
         AccountService as = new AccountService();
         
         String action = request.getParameter("action");
         if (action != null && action.equals("edit")) 
         {
             String accountSelected = request.getParameter("accountSelected");
+            accountID = Integer.parseInt(accountSelected);
             try 
             {
-                Account acc = as.get(accountSelected);
+                Account acc = as.get(accountID);
                 request.setAttribute("accountSelected", acc);
             } 
             catch (Exception ex) 
@@ -44,7 +44,7 @@ public class AccountController extends HttpServlet
             }
         }
         
-        List<Account> accounts = null;        
+        ArrayList<Object> accounts = null;        
         try 
         {
             accounts = as.getAllAccounts(); 
@@ -84,9 +84,7 @@ public class AccountController extends HttpServlet
                     if(!(email == null || email.equals("")) && !(password == null || password.equals("")) 
                         && !(firstName == null || firstName.equals("")) && !(lastName == null || lastName.equals("")))
                     {                   
-                        String accID = request.getParameter("accountID");
-                        accountID = Integer.parseInt(accID);
-                        as.createAccount(email, password, firstName, lastName, accountID, accountType);
+                        as.createAccount(email, password, firstName, lastName, accountType);
                         request.setAttribute("addM", "New User added.");
                         getServletContext().getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);   
                     }
@@ -116,7 +114,7 @@ public class AccountController extends HttpServlet
                 case "delete":
                     String accID = request.getParameter("accountID");
                     accountID = Integer.parseInt(accID);
-                    Account acc = as.getAccountStatus(accountID);
+                    Account acc = as.deleteAccount(accountID);
                     if (acc.getAccountType().equals("admin"))
                     {
                         request.setAttribute("errorDeleteM", "Can't delete this user.");

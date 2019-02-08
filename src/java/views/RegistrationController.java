@@ -31,7 +31,6 @@ public class RegistrationController extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
-        int accountID = 0;
         String action = request.getParameter("action");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
@@ -49,9 +48,7 @@ public class RegistrationController extends HttpServlet
                     if(!(email == null || email.equals("")) && !(password == null || password.equals("")) 
                         && !(firstName == null || firstName.equals("")) && !(lastName == null || lastName.equals("")))
                     {                   
-                        String accID = request.getParameter("accountID");
-                        accountID = Integer.parseInt(accID);
-                        as.createAccount();
+                        as.createAccount(email, password, firstName, lastName, accountType);
                         request.setAttribute("addM", "New User added.");
                         getServletContext().getRequestDispatcher("/WEB-INF/registration.jsp").forward(request, response);   
                     }
