@@ -5,7 +5,7 @@ package domain;
  */
 public class Account {
 
-	private int accountId;
+	private int accountID;
 	/**
 	 * must be unique to this user
 	 */
@@ -35,8 +35,8 @@ public class Account {
 	 * @param lastname the user's last name
 	 * @param accountType the user account type
 	 */
-	public Account(int accountId, String email, String password, String firstname, String lastname, String accountType) {
-		this.accountId = accountId;
+	public Account(int accountID, String email, String password, String firstname, String lastname, String accountType) {
+		this.accountID = accountID;
 		this.email = email;
 		this.password = password;
 		this.firstname = firstname;
@@ -49,15 +49,15 @@ public class Account {
 	 * @return the accountId
 	 */
 	public int getAccountId() {
-		return accountId;
+		return accountID;
 	}
 
 	/**
 	 * Sets the accountId
 	 * @param accountId the account id
 	 */
-	public void setAccountId(int accountId) {
-		this.accountId = accountId;
+	public void setAccountId(int accountID) {
+		this.accountID = accountID;
 	}
 
 	/**

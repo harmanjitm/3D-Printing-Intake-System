@@ -46,8 +46,8 @@ public class AccountService {
 	 * @param accountId the account id of the account that is to be deleted
 	 * @return the account if it is successfully deleted or null if deletion fails
 	 */
-	public Account deleteAccount(int accountId) {
-            Account deletedUser = ab.search(accountId);
+	public Account deleteAccount(int accountID) {
+            Account deletedUser = ab.search(accountID);
             
             // Do not allow deletion of tech users?
 //            if(deletedUser.getAccountId.equals("admin")) {
@@ -83,9 +83,9 @@ public class AccountService {
 	}
 	
         
-        public Account get(int accountId) {
+        public Account get(int accountID) {
             
-            return ab.search(accountId);
+            return ab.search(accountID);
         }
         
 	/**
@@ -104,9 +104,9 @@ public class AccountService {
 	 * @param toUpdate the updated account object
 	 * @return the account that is being replaced or null if the update fails
 	 */
-	public Account updateAccount(int accountId, String email, String password, String firstName, String lastName, int accountID, String accountType) {
+	public Account updateAccount(String email, String password, String firstName, String lastName, int accountID, String accountType) {
             
-            Account a = get(accountId);
+            Account a = get(accountID);
             a.setEmail(email);
             a.setPassword(password);
             a.setFirstname(firstName);
@@ -122,9 +122,9 @@ public class AccountService {
 	 * @param accountId the account id of the account to retrieve the status for 
 	 * @return the account status or null if the account cannot be found
 	 */
-	public String getAccountType(int accountId) {
+	public String getAccountType(int accountID) {
             
-            Account a = get(accountId);
+            Account a = get(accountID);
             
             return a.getAccountType();   
 	}

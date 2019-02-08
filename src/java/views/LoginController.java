@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import services.AccountService;
 
 /**
@@ -31,19 +32,23 @@ public class LoginController extends HttpServlet
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         
+        HttpSession session = request.getSession();
+        
         AccountService as = new AccountService();
-        Account acc = as.checkCredentials(email, password);  
+        Account account = as.checkCredentials(email, password);  
         if(!(email == null || email.equals("")) && !(password == null || password.equals("")))
         {
                 
-            if(acc != null)
+            if(account != null)
             {
-                if((acc.getAccountType().equals("admin")))
+                if((account.getAccountType().equals("admin")))
                 {
+                    session.setAttribute("email", email);
                     response.sendRedirect("techHome");
                 }
-                else if(acc.getAccountType().equals("user"))
+                else if(account.getAccountType().equals("user"))
                 {
+                    session.setAttribute("email", email);
                     response.sendRedirect("userHome");
                 }
                 else
