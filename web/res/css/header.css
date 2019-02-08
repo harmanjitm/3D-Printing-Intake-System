@@ -87,3 +87,8 @@ body{
     margin-left: 5px;
     margin-right: 5px;
 }
+
+a, a:hover{
+    color: inherit;
+    text-decoration: inherit;
+}
