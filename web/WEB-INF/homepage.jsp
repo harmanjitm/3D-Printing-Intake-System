@@ -16,7 +16,7 @@
         <title>3D Printing Intake System - Home</title>
     </head>
     <body>
-        <ARIS3D:Header isAdmin="false"></ARIS3D:Header>
+        <ARIS3D:Header isAdmin="false" pageName="ARIS3D"></ARIS3D:Header>
         <div id="homepageImages" class="carousel slide" data-ride="carousel">
             <ul class="carousel-indicators">
                 <li data-target="#homepageImages" data-slide-to="0" class="active"></li>
