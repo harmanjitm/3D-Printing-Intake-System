@@ -93,7 +93,7 @@ public class AccountService {
 	 *
 	 * @return the all accounts in an arrayList
 	 */
-	public ArrayList<Object> getAllAccounts() {
+	public ArrayList<Account> getAllAccounts() {
             // TODO adjust to take in an account object when broker is set up
             return ab.getAll();	
 	}

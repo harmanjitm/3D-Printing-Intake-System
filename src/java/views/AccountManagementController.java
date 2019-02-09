@@ -46,7 +46,7 @@ public class AccountManagementController extends HttpServlet
             }
         }
         
-        ArrayList<Object> accounts = null;        
+        ArrayList<Account> accounts = null;        
         try 
         {
             accounts = as.getAllAccounts(); 
