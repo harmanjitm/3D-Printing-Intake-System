@@ -47,7 +47,7 @@ public class AccountManagementController extends HttpServlet
         }
         
         ArrayList<Account> accounts = null;        
-        try 
+        try  
         {
             accounts = as.getAllAccounts(); 
         } 
