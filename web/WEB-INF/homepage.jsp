@@ -9,14 +9,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <ARIS3D:Imports/>
-        <link href="https://fonts.googleapis.com/css?family=Fredoka+One|Orbitron" rel="stylesheet">
         <link href="res/css/homepage.css" rel="stylesheet" type="text/css"/>
         <title>3D Printing Intake System - Home</title>
     </head>
     <body>
-        <ARIS3D:Header isAdmin="false" pageName="ARIS3D"></ARIS3D:Header>
+        <div id="app">
+            <v-app>
+                <ARIS3D:Header isAdmin="false" pageName="ARIS3D"></ARIS3D:Header>
+            </v-app>
+        </div>
+        
         <div id="homepageImages" class="carousel slide" data-ride="carousel">
             <ul class="carousel-indicators">
                 <li data-target="#homepageImages" data-slide-to="0" class="active"></li>
@@ -65,5 +68,7 @@
                 </div>
             </div>
         </div>
+        <script src="res/js/vue.js" type="text/javascript"></script>
+        <link href="res/css/header.css" rel="stylesheet" type="text/css"/>
     </body>
 </html>
