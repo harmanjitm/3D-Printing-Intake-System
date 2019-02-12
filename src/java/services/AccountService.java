@@ -43,7 +43,7 @@ public class AccountService {
 	/**
 	 * Deletes an account using the account id.
 	 *
-	 * @param accountId the account id of the account that is to be deleted
+	 * @param accountID the account id of the account that is to be deleted
 	 * @return the account if it is successfully deleted or null if deletion fails
 	 */
 	public Account deleteAccount(int accountID) {

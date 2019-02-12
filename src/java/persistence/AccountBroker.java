@@ -102,6 +102,7 @@ public class AccountBroker {
             Connection conn = pool.getConnection();
             ResultSet rs = null;
             PreparedStatement ps = null;
+            Account account = null;
             
             String preparedSQL = "SELECT * FROM account WHERE accountId = ?";
             
@@ -109,15 +110,12 @@ public class AccountBroker {
                 ps = conn.prepareStatement(preparedSQL);
                 rs = ps.executeQuery();
                 
-                Account account = null;
-                
                 while(rs.next()) {
-                    account = new Account(Integer.parseInt(rs.getString("accountId")),
-                                                           rs.getString("email"),
-                                                           rs.getString("password"),
-                                                           rs.getString("f_name"),
-                                                           rs.getString("l_name"),
-                                                           rs.getString("account_type"));
+                    account = new Account(rs.getString("email"),
+                                            rs.getString("password"),
+                                            rs.getString("f_name"),
+                                            rs.getString("l_name"),
+                                            rs.getString("account_type"));
                 }
                 pool.releaseConnection(conn);
                 return account;                
@@ -132,6 +130,7 @@ public class AccountBroker {
                 }
                 pool.releaseConnection(conn);
             }
+            return account;
         }
         
         /**
@@ -143,21 +142,21 @@ public class AccountBroker {
             Connection conn = pool.getConnection();
             ResultSet rs = null;
             PreparedStatement ps = null;
+            List<Account> accounts = new ArrayList<>();
             
             String preparedSQL = "SELECT * FROM account";
                         
             try {
                 ps = conn.prepareStatement(preparedSQL);
                 rs = ps.executeQuery();
-                List<Account> accounts = new ArrayList<>();
                 
                 while (rs.next()) {
-                    accounts.add(new Account(Integer.parseInt(rs.getString("accountId")),
-                                                              rs.getString("email"),
-                                                              rs.getString("password"),
-                                                              rs.getString("f_name"),
-                                                              rs.getString("l_name"),
-                                                              rs.getString("account_type")));
+                    Account account = new Account(rs.getString("email"),
+                                            rs.getString("password"),
+                                            rs.getString("f_name"),
+                                            rs.getString("l_name"),
+                                            rs.getString("account_type"));
+                    accounts.add(account);
                 }
                 return accounts;
             } catch (SQLException ex) {
@@ -171,5 +170,6 @@ public class AccountBroker {
                 }
             }
             pool.releaseConnection(conn);
+            return accounts;
         }
 }

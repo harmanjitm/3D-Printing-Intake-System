@@ -28,7 +28,6 @@ public class Account {
         
         	/**
 	 * Non-default constructor for the Account Object
-	 * @param accountId the account id
 	 * @param email the user's email
 	 * @param password the user's password
 	 * @param firstname the user's first name
@@ -36,7 +35,7 @@ public class Account {
 	 * @param accountType the user account type
 	 */
 	public Account(String email, String password, String firstname, String lastname, String accountType) {
-		this.accountId = accountId;
+		this.accountID = accountID;
 		this.email = email;
 		this.password = password;
 		this.firstname = firstname;
@@ -66,15 +65,15 @@ public class Account {
 	 * Returns the accountId
 	 * @return the accountId
 	 */
-	public int getAccountId() {
+	public int getAccountID() {
 		return accountID;
 	}
 
 	/**
 	 * Sets the accountId
-	 * @param accountId the account id
+	 * @param accountID the account id
 	 */
-	public void setAccountId(int accountID) {
+	public void setAccountID(int accountID) {
 		this.accountID = accountID;
 	}
 
