@@ -28,7 +28,7 @@ public class AccountService {
 	 *
 	 * @return the account if created or null if the creation fails
 	 */
-	public Account createAccount(String email, String password, String firstName, String lastName,String accountType) {
+	public int createAccount(String email, String password, String firstName, String lastName,String accountType) {
             
             Account a = new Account();
             a.setEmail(email);
@@ -37,7 +37,7 @@ public class AccountService {
             a.setLastname(lastName);
             a.setAccountType(accountType);
             
-            return ab.execute(a);
+            return ab.insert(a);
 	}
 	
 	/**
@@ -46,15 +46,15 @@ public class AccountService {
 	 * @param accountID the account id of the account that is to be deleted
 	 * @return the account if it is successfully deleted or null if deletion fails
 	 */
-	public Account deleteAccount(int accountID) {
-            Account deletedUser = ab.search(accountID);
+	public int deleteAccount(int accountID) {
+            Account deletedUser = ab.getUser(accountID);
             
             // Do not allow deletion of tech users?
 //            if(deletedUser.getAccountId.equals("admin")) {
 //                return 0;
 //            }
             
-            return ab.remove(deletedUser);	
+            return ab.delete(deletedUser);	
 	}
 	
 	/**
@@ -69,7 +69,7 @@ public class AccountService {
             try {
                 
                 int accountId = 0;
-                Account user = get(accountId);
+                Account user = getUser(accountId);
 
                 // check if password matches with the database
                 if(user.getPassword().equals(password)) {
@@ -83,9 +83,9 @@ public class AccountService {
 	}
 	
         
-        public Account get(int accountID) {
+        public Account getUser(int accountID) {
             
-            return ab.search(accountID);
+            return ab.getUser(accountID);
         }
         
 	/**
@@ -94,8 +94,8 @@ public class AccountService {
 	 * @return the all accounts in an arrayList
 	 */
 	public ArrayList<Account> getAllAccounts() {
-            // TODO adjust to take in an account object when broker is set up
-            return ab.getAll();	
+            
+            return (ArrayList<Account>) ab.getAll();	
 	}
 	
 	/**
@@ -104,16 +104,16 @@ public class AccountService {
 	 * @param toUpdate the updated account object
 	 * @return the account that is being replaced or null if the update fails
 	 */
-	public Account updateAccount(String email, String password, String firstName, String lastName, int accountID, String accountType) {
+	public int updateAccount(String email, String password, String firstName, String lastName, int accountID, String accountType) {
             
-            Account a = get(accountID);
+            Account a = getUser(accountID);
             a.setEmail(email);
             a.setPassword(password);
             a.setFirstname(firstName);
             a.setLastname(lastName);
             a.setAccountType(accountType);
             
-            return ab.execute(a);
+            return ab.update(a);
 	}
 	
 	/**
@@ -124,7 +124,7 @@ public class AccountService {
 	 */
 	public String getAccountType(int accountID) {
             
-            Account a = get(accountID);
+            Account a = getUser(accountID);
             
             return a.getAccountType();   
 	}

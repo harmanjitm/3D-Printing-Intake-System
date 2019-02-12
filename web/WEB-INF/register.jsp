@@ -17,7 +17,7 @@
 
         <style>
             body{
-                background-color: #DAD2D8;
+                background-color: #EEEAED;
                 font-family: roboto;
             }
         </style>
