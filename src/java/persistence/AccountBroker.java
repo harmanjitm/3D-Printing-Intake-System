@@ -1,6 +1,7 @@
 package persistence;
 
 import domain.Account;
+import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,16 +23,32 @@ public class AccountBroker {
             Connection conn = pool.getConnection();
             
             try{
-                String preparedSQL = "INSERT INTO ACCOUNT(account_id,email,password,f_name,l_name,account_type) VALUES(?,?,?,?,?)";
-                PreparedStatement ps = conn.prepareStatement(preparedSQL);
+                CallableStatement cStmt = conn.prepareCall("{call createAccount(?, ?, ?, ?, ?)}");
+                cStmt.setString(1, account.getEmail());
+                cStmt.setString(2, account.getPassword());
+                cStmt.setString(3, account.getFirstname());
+                cStmt.setString(4, account.getLastname());
+                cStmt.setString(5, account.getAccountType());
                 
-                ps.setString(1, account.getAccountType());
-                ps.setString(2, account.getPassword());
-                ps.setString(3, account.getFirstname());
-                ps.setString(4, account.getLastname());
-                ps.setString(5, account.getLastname());   
-                
-                int rows = ps.executeUpdate();
+                boolean hadResults = cStmt.execute();
+                while(hadResults)
+                {
+                    ResultSet rs = cStmt.getResultSet();
+                    System.out.println(rs.getString(1));
+                    hadResults = cStmt.getMoreResults();
+                }
+                int rows = 1;
+//                
+//                String preparedSQL = "INSERT INTO ACCOUNT(account_id,email,password,f_name,l_name,account_type) VALUES(?,?,?,?,?)";
+//                PreparedStatement ps = conn.prepareStatement(preparedSQL);
+//                
+//                ps.setString(5, account.getAccountType());
+//                ps.setString(2, account.getPassword());
+//                ps.setString(3, account.getFirstname());
+//                ps.setString(4, account.getLastname());
+//                ps.setString(1, account.getEmail());   
+//                
+//                int rows = ps.executeUpdate();
                 return rows;
             } catch (SQLException ex) {
                 System.out.println("An error has occured while adding new user!");

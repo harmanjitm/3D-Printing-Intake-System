@@ -74,7 +74,9 @@ public class AccountManagementController extends HttpServlet
             if(as.createAccount("harmanjit.mohaar@edu.sait.ca", "password", "Harman", "Mohaar", "user") == 1)
             {
                 request.setAttribute("message", "Successfully added trash to the DB");
+                request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
             }
+            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         }
 //        int accountID = 0;
 //        String action = request.getParameter("action");
