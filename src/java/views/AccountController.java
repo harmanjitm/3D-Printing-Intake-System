@@ -35,7 +35,7 @@ public class AccountController extends HttpServlet
             accountID = Integer.parseInt(accountSelected);
             try 
             {
-                Account acc = as.get(accountID);
+                Account acc = as.getUser(accountID);
                 request.setAttribute("accountSelected", acc);
             } 
             catch (Exception ex) 
@@ -44,7 +44,7 @@ public class AccountController extends HttpServlet
             }
         }
         
-        ArrayList<Object> accounts = null;        
+        ArrayList<Account> accounts = null;        
         try 
         {
             accounts = as.getAllAccounts(); 
@@ -109,13 +109,12 @@ public class AccountController extends HttpServlet
                         request.setAttribute("errorM", "Please enter all of the required fields.");
                         getServletContext().getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     }
-                     
                     break;
                 case "delete":
                     String accID = request.getParameter("accountID");
                     accountID = Integer.parseInt(accID);
-                    Account acc = as.deleteAccount(accountID);
-                    if (acc.getAccountType().equals("admin"))
+                    int acc = as.deleteAccount(accountID);
+                    if (acc == 0)
                     {
                         request.setAttribute("errorDeleteM", "Can't delete this user.");
                         getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
@@ -125,9 +124,8 @@ public class AccountController extends HttpServlet
                         as.deleteAccount(accountID);
                         request.setAttribute("deleteM", "User has been deleted.");
                         getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response); 
-                        break;
-                        
                     }
+                    break;
                 default:
                     break;
             }

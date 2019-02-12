@@ -14,7 +14,7 @@ public class AccountBroker {
 
         /**
          * Adds a new account to the database
-         * @param Account object passed in from the AccountService class
+         * @param account object passed in from the AccountService class
          * @return 
          */
 	public int insert(Account account){
@@ -35,7 +35,7 @@ public class AccountBroker {
                 return rows;
             } catch (SQLException ex) {
                 System.out.println("An error has occured while adding new user!");
-                //Logger.getLogger(AccountBroker.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AccountBroker.class.getName()).log(Level.SEVERE, null, ex);
             }finally{
                 pool.releaseConnection(conn);
             }

@@ -70,5 +70,9 @@
         </div>
         <script src="res/js/vue.js" type="text/javascript"></script>
         <link href="res/css/header.css" rel="stylesheet" type="text/css"/>
+        <form method="post" action="accountmanagement">
+            <input name="testCreateAccount" type="hidden">
+            <input type="submit" value="Create Account">
+        </form>
     </body>
 </html>

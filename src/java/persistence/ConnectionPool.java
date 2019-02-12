@@ -16,7 +16,8 @@ public class ConnectionPool
     {
         try
         {
-            InitialContext ic = new InitialContext();            
+            InitialContext ic = new InitialContext();
+            dataSource = (DataSource) ic.lookup("java:/comp/env/jdbc/aris");
         } catch (NamingException ex)
         {
             System.out.println(ex);
@@ -36,8 +37,6 @@ public class ConnectionPool
     {
         try 
         {
-            Class.forName("oracle.jdbc.driver.OracleDriver");
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:ARIS", USER, PASSWORD);
             return dataSource.getConnection();
         } catch (SQLException ex) 
         {
@@ -53,7 +52,7 @@ public class ConnectionPool
             conn.close();
         }catch(SQLException e)
         {
-            System.out.println();
+            System.out.println(e);
         }
     }
 }
