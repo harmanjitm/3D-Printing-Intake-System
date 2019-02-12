@@ -35,7 +35,7 @@ public class AccountManagementController extends HttpServlet
         {
             String accountSelected = request.getParameter("accountSelected");
             accountID = Integer.parseInt(accountSelected);
-            try 
+            try
             {
                 Account account = as.get(accountID);
                 request.setAttribute("accountSelected", account);
@@ -46,7 +46,7 @@ public class AccountManagementController extends HttpServlet
             }
         }
         
-        ArrayList<Object> accounts = null;        
+        ArrayList<Account> accounts = null;        
         try 
         {
             accounts = as.getAllAccounts(); 
