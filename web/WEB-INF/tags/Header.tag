@@ -55,7 +55,7 @@
                                 </v-list>
                             </v-menu>
                         </c:if>
-                        <c:if test="${acount == null}">
+                        <c:if test="${account == null}">
                             <v-btn href="register" flat small color="#ffffff">
                                 Register
                             </v-btn>
