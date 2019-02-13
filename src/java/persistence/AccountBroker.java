@@ -12,18 +12,18 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 public class AccountBroker {
-
+        private Connection connection = null;
         /**
          * Adds a new account to the database
          * @param account object passed in from the AccountService class
          * @return 
          */
 	public int insert(Account account){
-            ConnectionPool pool = ConnectionPool.getInstance();
-            Connection conn = pool.getConnection();
+            ConnectionPool cp = ConnectionPool.getInstance();
+            connection = cp.getConnection();
             
             try{
-                CallableStatement cStmt = conn.prepareCall("{call createAccount(?, ?, ?, ?, ?)}");
+                CallableStatement cStmt = connection.prepareCall("{call createAccount(?, ?, ?, ?, ?)}");
                 cStmt.setString(1, account.getEmail());
                 cStmt.setString(2, account.getPassword());
                 cStmt.setString(3, account.getFirstname());
@@ -54,7 +54,11 @@ public class AccountBroker {
                 System.out.println("An error has occured while adding new user!");
                 Logger.getLogger(AccountBroker.class.getName()).log(Level.SEVERE, null, ex);
             }finally{
-                pool.releaseConnection(conn);
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(AccountBroker.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             return 0;
         }
@@ -65,11 +69,11 @@ public class AccountBroker {
          * @return 
          */
         public int update(Account account){
-            ConnectionPool pool = ConnectionPool.getInstance();
-            Connection conn = pool.getConnection();            
+            ConnectionPool cp = ConnectionPool.getInstance();
+            connection = cp.getConnection();           
             try {
                 String preparedSQL = "UPDATE account SET account_id = ?, email = ?, password = ?, f_name = ?, l_name = ?, account_type = ?";
-                PreparedStatement ps = conn.prepareStatement(preparedSQL);
+                PreparedStatement ps = connection.prepareStatement(preparedSQL);
                 
                 ps.setString(1, account.getAccountType());
                 ps.setString(2, account.getPassword());
@@ -82,7 +86,11 @@ public class AccountBroker {
             } catch (SQLException ex) {
                 System.out.println("Unable to update account information");
             } finally {
-                pool.releaseConnection(conn);
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(AccountBroker.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             return 0;
         }
@@ -93,11 +101,11 @@ public class AccountBroker {
          * @return 
          */
         public int delete(Account account){
-            ConnectionPool pool = ConnectionPool.getInstance();
-            Connection conn = pool.getConnection();
+            ConnectionPool cp = ConnectionPool.getInstance();
+            connection = cp.getConnection();
             try{
                 String preparedSQL = "DELETE FROM account WHERE accountId = ?";
-                PreparedStatement ps = conn.prepareStatement(preparedSQL); 
+                PreparedStatement ps = connection.prepareStatement(preparedSQL); 
                 
                 ps.setString(1, preparedSQL);  
                 
@@ -115,8 +123,8 @@ public class AccountBroker {
          * @return 
          */
         public Account getUser(int id){
-            ConnectionPool pool = ConnectionPool.getInstance();
-            Connection conn = pool.getConnection();
+            ConnectionPool cp = ConnectionPool.getInstance();
+            connection = cp.getConnection();
             ResultSet rs = null;
             PreparedStatement ps = null;
             Account account = null;
@@ -124,7 +132,7 @@ public class AccountBroker {
             String preparedSQL = "SELECT * FROM account WHERE accountId = ?";
             
             try {
-                ps = conn.prepareStatement(preparedSQL);
+                ps = connection.prepareStatement(preparedSQL);
                 rs = ps.executeQuery();
                 
                 while(rs.next()) {
@@ -134,7 +142,7 @@ public class AccountBroker {
                                             rs.getString("l_name"),
                                             rs.getString("account_type"));
                 }
-                pool.releaseConnection(conn);
+                connection.close();
                 return account;                
             } catch (SQLException ex) {
                 Logger.getLogger(AccountBroker.class.getName()).log(Level.SEVERE, null, ex);
@@ -142,10 +150,10 @@ public class AccountBroker {
                 try {
                     rs.close();
                     ps.close();
+                    connection.close();
                 } catch (SQLException ex) {
                     
                 }
-                pool.releaseConnection(conn);
             }
             return account;
         }
@@ -155,8 +163,8 @@ public class AccountBroker {
          * @return 
          */
         public List<Account> getAll(){
-            ConnectionPool pool = ConnectionPool.getInstance();
-            Connection conn = pool.getConnection();
+            ConnectionPool cp = ConnectionPool.getInstance();
+            connection = cp.getConnection();
             ResultSet rs = null;
             PreparedStatement ps = null;
             List<Account> accounts = new ArrayList<>();
@@ -164,7 +172,7 @@ public class AccountBroker {
             String preparedSQL = "SELECT * FROM account";
                         
             try {
-                ps = conn.prepareStatement(preparedSQL);
+                ps = connection.prepareStatement(preparedSQL);
                 rs = ps.executeQuery();
                 
                 while (rs.next()) {
@@ -177,16 +185,22 @@ public class AccountBroker {
                 }
                 return accounts;
             } catch (SQLException ex) {
-                
+                ex.printStackTrace();
             } finally {
                 try {
-                    rs.close();
-                    ps.close();
+                    if(rs != null)
+                    {
+                        rs.close();
+                    }
+                    if(ps != null)
+                    {
+                        ps.close();
+                    }
+                    connection.close();
                 }
                 catch (SQLException ex) {                    
                 }
             }
-            pool.releaseConnection(conn);
             return accounts;
         }
 }

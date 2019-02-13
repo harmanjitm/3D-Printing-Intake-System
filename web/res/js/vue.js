@@ -27,11 +27,6 @@ new Vue(
             {text: 'Last Name', value: 'lastname'},
             {text: 'Status', value: 'status'},
             {text: 'Actions', value: 'actions'}
-        ],
-        accounts:
-        [
-            {email: 'harmanjit.mohaar@edu.sait.ca', firstname: 'Harmanjit', lastname: 'Mohaar', status: 'User'},
-            {email: 'benjamin.wozak@edu.sait.ca', firstname: 'Ben', lastname: 'Wozak', status: 'User'}
         ]
     }
 });
