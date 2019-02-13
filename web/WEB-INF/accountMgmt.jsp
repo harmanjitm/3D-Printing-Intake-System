@@ -4,6 +4,7 @@
     Author     : 756852
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib tagdir="/WEB-INF/tags/" prefix="ARIS3D" %>
 <!DOCTYPE html>
@@ -47,7 +48,7 @@
                                     </v-card-text>
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
-                                        <v-btn flat color="primary" @click="">Cancel</v-btn>
+                                        <v-btn flat color="primary" @click="close">Cancel</v-btn>
                                         <v-btn flat color="primary" @click="">Save</v-btn>
                                     </v-card-actions>
                                 </v-card>
@@ -69,11 +70,54 @@
                 </v-content>
             </v-app>
         </div>
-        <script src="res/js/vue.js" type="text/javascript"></script>
+        
         <link href="res/css/header.css" rel="stylesheet" type="text/css"/>
         <form method="post" action="accountmanagement">
             <input name="testCreateAccount" type="hidden">
             <input type="submit" value="Create Account">
         </form>
+        <script>
+            new Vue(
+            { 
+                el: '#app',
+                methods:
+                {
+                    close()
+                    {
+                        this.dialog = false
+                    }
+                },
+                data: 
+                {
+                    dialog: false,
+                    account: '',
+                    logout: '',
+                    drawer: false,
+                    adminItems: 
+                    [ 
+                        {title: 'Dashboard', icon: 'dashboard', link: 'dashboard'},
+                        {title: 'Order Queue', icon: 'queue', link: 'queue'},
+                        {title: 'Account Management', icon: 'people', link: 'accountmanagement'},
+                        {title: 'Material Management', icon: 'texture', link: 'materialmanagement'},
+                        {title: 'Printer Management', icon: 'print', link: 'printermanagement'},
+                        {title: 'Reports', icon: 'poll', link: 'reportmanagement'}
+                    ],
+                    accountmanagementheaders:
+                    [
+                        {text: 'Email Address', value: 'email'},
+                        {text: 'First Name', value: 'firstname'},
+                        {text: 'Last Name', value: 'lastname'},
+                        {text: 'Status', value: 'status'},
+                        {text: 'Actions', value: 'actions'}
+                    ],
+                    accounts:
+                    [
+                    <c:forEach items="${accounts}" var="account">
+                        {email: '${account.email}', firstname: '${account.firstname}', lastname: '${account.lastname}', status: '${account.accountType}'},
+                    </c:forEach>
+                    ]
+                }
+            });
+        </script>
     </body>
 </html>
