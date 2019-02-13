@@ -36,19 +36,17 @@
                         </v-toolbar>
                         <v-card class="elevation-10">
                             <v-container>
-                                <v-form ref="form" v-model="valid" lazy-validation>
+                                <v-form ref="form" v-model="valid" id="create-account" method="post" action="accountmanagement" lazy-validation>
                                     <v-text-field
-                                        v-model="fname"
+                                        name="firstname"
                                         :counter="10"
                                         :rules="nameRules"
                                         label="First Name"
                                         required
                                         ></v-text-field>
 
-
-
                                     <v-text-field
-                                        v-model="lname"
+                                        name="lastname"
                                         :counter="10"
                                         :rules="nameRules"
                                         label="Last Name"
@@ -56,14 +54,14 @@
                                         ></v-text-field>
 
                                     <v-text-field
-                                        v-model="email"
+                                        name="email"
                                         :rules="emailRules"
                                         label="E-mail"
                                         required
                                         ></v-text-field>
 
                                     <v-text-field
-                                        v-model="password"
+                                        name="password"
                                         :append-icon="show1 ? 'visibility_off' : 'visibility'"
                                         :rules="[rules.required, rules.min]"
                                         :type="show1 ? 'text' : 'password'"
@@ -73,7 +71,7 @@
                                         ></v-text-field>
 
                                     <v-text-field
-                                        v-model="confirmPass"
+                                        name="confirmPass"
                                         :append-icon="show1 ? 'visibility_off' : 'visibility'"
                                         :rules="[rules.required, rules.min]"
                                         :type="show1 ? 'text' : 'password'"
@@ -88,10 +86,12 @@
                                         label="Agree to terms of service"
                                         required
                                         ></v-checkbox>
+                                    
 
                                     <v-layout row justify-space-between>
                                         <v-flex xs6>
-                                            <v-btn :disabled="!valid" color="#8B2635" dark @click="validate">Register</v-btn>
+                                            <input type="hidden" name="action" value="add">
+                                            <v-btn :disabled="!valid" color="#8B2635" dark @click="submit">Register</v-btn>
                                         </v-flex>
                                     </v-layout>
                                 </v-form>
@@ -141,7 +141,11 @@
                     },
                     resetValidation() {
                         this.$refs.form.resetValidation()
-                    }
+                    },
+                    submit()
+                    {
+                        document.getElementById('create-account').submit();
+                    }                    
                 }
             });
 
