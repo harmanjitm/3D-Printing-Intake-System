@@ -30,38 +30,40 @@ public class AccountManagementController extends HttpServlet
         int accountID;
         AccountService as = new AccountService();
         
-        String action = request.getParameter("action");
-        if (action != null && action.equals("edit")) 
-        {
-            String accountSelected = request.getParameter("accountSelected");
-            accountID = Integer.parseInt(accountSelected);
-            try
-            {
-                Account account = as.getUser(accountID);
-                request.setAttribute("accountSelected", account);
-            } 
-            catch (Exception ex) 
-            {
-                Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+//        String action = request.getParameter("action");
+//        if (action != null && action.equals("edit")) 
+//        {
+//            String accountSelected = request.getParameter("accountSelected");
+//            accountID = Integer.parseInt(accountSelected);
+//            try
+//            {
+//                Account account = as.getUser(accountID);
+//                request.setAttribute("accountSelected", account);
+//            } 
+//            catch (Exception ex) 
+//            {
+//                Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
         
-        ArrayList<Account> accounts = null;        
-        try  
-        {
-            accounts = as.getAllAccounts();
-        } 
-        catch (Exception ex) 
-        {
-            Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ArrayList<Account> accounts = as.getAllAccounts();
         
-        if(request.getParameter("techHome") !=null)
-        {
-            getServletContext().getRequestDispatcher("/WEB-INF/techHome.jsp").forward(request, response);
-            return;
-        }
-        request.setAttribute("accounts", accounts);
+//        ArrayList<Account> accounts = null;
+//        try  
+//        {
+//            
+//        } 
+//        catch (Exception ex) 
+//        {
+//            Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        
+//        if(request.getParameter("techHome") !=null)
+//        {
+//            getServletContext().getRequestDispatcher("/WEB-INF/techHome.jsp").forward(request, response);
+//            return;
+//        }
+        request.setAttribute("accounts", as.getAllAccounts());
         request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
     }
     
@@ -84,12 +86,12 @@ public class AccountManagementController extends HttpServlet
         String action = request.getParameter("action");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        String firstName = request.getParameter("fname");
-        String lastName = request.getParameter("lname");
-        String accountType = request.getParameter("accountType");
+        String firstName = request.getParameter("firstname");
+        String lastName = request.getParameter("lastname");
+        //String accountType = request.getParameter("accountType");
 
         AccountService as = new AccountService();
-        
+        request.setAttribute("accounts", as.getAllAccounts());
         if(action!=null)
         {
             try 
@@ -100,7 +102,7 @@ public class AccountManagementController extends HttpServlet
                         if(!(email == null || email.equals("")) && !(password == null || password.equals("")) 
                             && !(firstName == null || firstName.equals("")) && !(lastName == null || lastName.equals("")))
                         {                   
-                            as.createAccount(email, password, firstName, lastName, accountType);
+                            as.createAccount(email, password, firstName, lastName, "user");
                             request.setAttribute("addM", "New User added.");
                             getServletContext().getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);   
                         }
@@ -116,7 +118,7 @@ public class AccountManagementController extends HttpServlet
                         {                   
                             String accID = request.getParameter("accountID");
                             accountID = Integer.parseInt(accID);
-                            as.updateAccount(email, password, firstName, lastName, accountID, accountType);
+                            as.updateAccount(email, password, firstName, lastName, accountID, "user");
                             request.setAttribute("editM", "User has been updated.");
                             getServletContext().getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                         }

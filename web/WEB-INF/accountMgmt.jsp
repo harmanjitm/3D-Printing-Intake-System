@@ -28,29 +28,32 @@
                                     <v-card-title>
                                         <span class="headline">New Account</span>
                                     </v-card-title>
-                                    <v-card-text>
-                                        <v-container grid-list-md>
-                                            <v-layout wrap>
-                                                <v-flex xs12 sm6 md4>
-                                                    <v-text-field label="First Name"></v-text-field>
-                                                </v-flex>
-                                                <v-flex xs12 sm6 md4>
-                                                    <v-text-field label="Last Name"></v-text-field>
-                                                </v-flex>
-                                                <v-flex xs12 sm6 md4>
-                                                    <v-text-field label="Email Address"></v-text-field>
-                                                </v-flex>
-                                                <v-flex xs12 sm6 md4>
-                                                    <v-text-field label="Password"></v-text-field>
-                                                </v-flex>
-                                            </v-layout>
-                                        </v-container>
-                                    </v-card-text>
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn flat color="primary" @click="close">Cancel</v-btn>
-                                        <v-btn flat color="primary" @click="">Save</v-btn>
-                                    </v-card-actions>
+                                    <form id="create-account" method="post" action="accountmanagement">
+                                        <v-card-text>
+                                            <v-container grid-list-md>
+                                                <v-layout wrap>
+                                                    <v-flex xs12 sm6 md4>
+                                                        <v-text-field name="firstname" label="First Name"></v-text-field>
+                                                    </v-flex>
+                                                    <v-flex xs12 sm6 md4>
+                                                        <v-text-field name="lastname" label="Last Name"></v-text-field>
+                                                    </v-flex>
+                                                    <v-flex xs12 sm6 md4>
+                                                        <v-text-field name="email" label="Email Address"></v-text-field>
+                                                    </v-flex>
+                                                    <v-flex xs12 sm6 md4>
+                                                        <v-text-field name="password" label="Password"></v-text-field>
+                                                    </v-flex>
+                                                    <input type="hidden" name="action" value="add">
+                                                </v-layout>
+                                            </v-container>
+                                        </v-card-text>
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn flat color="primary" @click="close">Cancel</v-btn>
+                                            <v-btn flat color="primary" @click="submit">Save</v-btn>
+                                        </v-card-actions>
+                                    </form>
                                 </v-card>
                             </v-dialog>
                         </v-toolbar>
@@ -85,6 +88,10 @@
                     close()
                     {
                         this.dialog = false
+                    },
+                    submit()
+                    {
+                        document.getElementById('create-account').submit();
                     }
                 },
                 data: 
