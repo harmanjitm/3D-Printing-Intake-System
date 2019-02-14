@@ -56,12 +56,16 @@
                             </v-menu>
                         </c:if>
                         <c:if test="${account == null}">
-                            <v-btn href="register" flat small color="#ffffff">
-                                Register
-                            </v-btn>
-                            <v-btn href="login" small flat color="#ffffff">
-                                Login
-                            </v-btn>
+                            <c:if test="${pageName != 'Register'}">
+                                <v-btn href="register" flat small color="#ffffff">
+                                    Register
+                                </v-btn>
+                            </c:if>
+                            <c:if test="${pageName != 'Login'}">
+                                <v-btn href="login" small flat color="#ffffff">
+                                    Login
+                                </v-btn>
+                            </c:if>
                         </c:if>
                     </v-toolbar-items>
                 </v-toolbar>

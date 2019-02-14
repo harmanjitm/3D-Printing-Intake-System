@@ -9,6 +9,7 @@ new Vue(
         drawer: false,
         adminItems: 
         [ 
+            {title: 'Homepage', icon: 'home', link: 'home'},
             {title: 'Dashboard', icon: 'dashboard', link: 'dashboard'},
             {title: 'Order Queue', icon: 'queue', link: 'queue'},
             {title: 'Account Management', icon: 'people', link: 'accountmanagement'},
@@ -18,6 +19,7 @@ new Vue(
         ],
         userItems: 
         [ 
+            {title: 'Homepage', icon: 'home', link: 'home'},
             {title: 'Dashboard', icon: 'dashboard', link: 'userdashboard'}
         ],
         accountmanagementheaders:

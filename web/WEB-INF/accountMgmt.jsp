@@ -76,18 +76,18 @@
                                         <v-card-text>
                                             <v-container grid-list-md>
                                                 <v-layout wrap>
-                                                    
+                                                    <input type="hidden" name="action" value="edit">
                                                     <v-flex xs12 sm6 md4>
-                                                        <v-text-field name="firstname" label="First Name"> {{ this.firstname }}</v-text-field>
+                                                        <v-text-field name="firstname" v-model="props.item.firstname" label="First Name"></v-text-field>
                                                     </v-flex>
                                                     <v-flex xs12 sm6 md4>
-                                                        <v-text-field name="lastname" label="Last Name">{{ this.lastname }}</v-text-field>
+                                                        <v-text-field name="lastname" v-model="props.item.lastname" label="Last Name"></v-text-field>
                                                     </v-flex>
                                                     <v-flex xs12 sm6 md4>
-                                                        <v-text-field name="email" label="Email Address">{{  this.email }}</v-text-field>
+                                                        <v-text-field name="email" v-model="props.item.email" label="Email Address"></v-text-field>
                                                     </v-flex>
                                                     <v-flex xs12 sm6 md4>
-                                                        <v-text-field name="password" label="Password">{{ this.status }}</v-text-field>
+                                                        <v-text-field v-model="props.item.status" name="accountType" label="Account Type"></v-text-field>
                                                     </v-flex>
                                                     <input type="hidden" name="action" value="edit">
                                                 </v-layout>
@@ -96,7 +96,7 @@
                                         <v-card-actions>
                                             <v-spacer></v-spacer>
                                             <v-btn flat color="primary" @click="close">Cancel</v-btn>
-                                            <v-btn flat color="primary" @click="submit">Save</v-btn>
+                                            <v-btn flat color="primary" @click="edit">Save</v-btn>
                                         </v-card-actions>
                                     </form>
                                 </v-card>

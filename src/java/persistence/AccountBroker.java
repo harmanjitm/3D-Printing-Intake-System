@@ -72,14 +72,15 @@ public class AccountBroker {
             ConnectionPool cp = ConnectionPool.getInstance();
             connection = cp.getConnection();           
             try {
-                String preparedSQL = "UPDATE account SET account_id = ?, email = ?, password = ?, f_name = ?, l_name = ?, account_type = ?";
+                String preparedSQL = "UPDATE account SET email = ?, password = ?, f_name = ?, l_name = ?, account_type = ? WHERE account_id = ?";
                 PreparedStatement ps = connection.prepareStatement(preparedSQL);
                 
-                ps.setString(1, account.getAccountType());
+                ps.setString(1, account.getEmail());
                 ps.setString(2, account.getPassword());
                 ps.setString(3, account.getFirstname());
                 ps.setString(4, account.getLastname());
-                ps.setString(5, account.getLastname());   
+                ps.setString(5, account.getAccountType());
+                ps.setString(6, String.valueOf(account.getAccountID()));
                 
                 int rows = ps.executeUpdate();
                 return rows;
@@ -104,7 +105,7 @@ public class AccountBroker {
             ConnectionPool cp = ConnectionPool.getInstance();
             connection = cp.getConnection();
             try{
-                String preparedSQL = "DELETE FROM account WHERE accountId = ?";
+                String preparedSQL = "DELETE FROM account WHERE account_id = ?";
                 PreparedStatement ps = connection.prepareStatement(preparedSQL); 
                 
                 ps.setString(1, preparedSQL);  
@@ -129,10 +130,12 @@ public class AccountBroker {
             PreparedStatement ps = null;
             Account account = null;
             
-            String preparedSQL = "SELECT * FROM account WHERE accountId = ?";
+            
             
             try {
+                String preparedSQL = "SELECT * FROM account WHERE account_id = ?";
                 ps = connection.prepareStatement(preparedSQL);
+                ps.setString(1, String.valueOf(id));
                 rs = ps.executeQuery();
                 
                 while(rs.next()) {
@@ -181,6 +184,7 @@ public class AccountBroker {
                                             rs.getString("f_name"),
                                             rs.getString("l_name"),
                                             rs.getString("account_type"));
+                    account.setAccountID(rs.getInt("account_id"));
                     accounts.add(account);
                 }
                 return accounts;

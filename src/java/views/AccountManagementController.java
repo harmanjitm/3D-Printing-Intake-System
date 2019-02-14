@@ -27,26 +27,28 @@ public class AccountManagementController extends HttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        int accountID;
         AccountService as = new AccountService();
-        
-//        String action = request.getParameter("action");
-//        if (action != null && action.equals("edit")) 
-//        {
-//            String accountSelected = request.getParameter("accountSelected");
-//            accountID = Integer.parseInt(accountSelected);
-//            try
-//            {
-//                Account account = as.getUser(accountID);
-//                request.setAttribute("accountSelected", account);
-//            } 
-//            catch (Exception ex) 
-//            {
-//                Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-        
         ArrayList<Account> accounts = as.getAllAccounts();
+        
+        String action = request.getParameter("action");
+        if (action != null && action.equals("edit")) 
+        {
+            String email = request.getParameter("accountSelected");
+            try
+            {
+                for(Account account: accounts)
+                {
+                    if(account.getEmail().equals(email))
+                    {
+                        request.setAttribute("account", account);
+                    }
+                }
+            } 
+            catch (Exception ex) 
+            {
+                Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         
 //        ArrayList<Account> accounts = null;
 //        try  
@@ -63,7 +65,7 @@ public class AccountManagementController extends HttpServlet
 //            getServletContext().getRequestDispatcher("/WEB-INF/techHome.jsp").forward(request, response);
 //            return;
 //        }
-        request.setAttribute("accounts", as.getAllAccounts());
+        request.setAttribute("accounts", accounts);
         request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
     }
     
@@ -88,7 +90,7 @@ public class AccountManagementController extends HttpServlet
         String password = request.getParameter("password");
         String firstName = request.getParameter("firstname");
         String lastName = request.getParameter("lastname");
-        //String accountType = request.getParameter("accountType");
+        String accountType = request.getParameter("accountType");
 
         AccountService as = new AccountService();
         request.setAttribute("accounts", as.getAllAccounts());
@@ -113,14 +115,23 @@ public class AccountManagementController extends HttpServlet
                         }
                         break;
                     case "edit":
-                        if(!(email == null || email.equals("")) && !(password == null || password.equals("")) 
-                            && !(firstName == null || firstName.equals("")) && !(lastName == null || lastName.equals("")))
-                        {                   
-                            String accID = request.getParameter("accountID");
-                            accountID = Integer.parseInt(accID);
-                            as.updateAccount(email, password, firstName, lastName, accountID, "user");
+                        if(!(email == null || email.equals("")) && !(firstName == null || firstName.equals("")) && !(lastName == null || lastName.equals("")))
+                        {
+                            for(Account editAccount: as.getAllAccounts())
+                            {
+                                System.out.println(editAccount.getAccountID());
+                                if(editAccount.getEmail().equals(email))
+                                {
+                                    System.out.println(editAccount.getAccountID());
+                                    System.out.println("Finding User");
+                                    as.updateAccount(email, editAccount.getPassword(), firstName, lastName, editAccount.getAccountID(), accountType);
+                                    System.out.println("Found User");
+                                }
+                            }
+                            System.out.println("Done updating");
                             request.setAttribute("editM", "User has been updated.");
                             request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                            return;
                         }
                         else
                         {

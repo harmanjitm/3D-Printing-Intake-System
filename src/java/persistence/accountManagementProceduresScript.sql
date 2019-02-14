@@ -229,7 +229,7 @@ delimiter #
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllAccounts`()
 proc_main:BEGIN
-	SELECT email, f_name, l_name, account_type
+	SELECT account_id, email, f_name, l_name, account_type
 		FROM ACCOUNT;
 END proc_main #
 delimiter ;
