@@ -22,7 +22,8 @@
                         <v-toolbar class="elevation-1" dark>
                             <v-toolbar-title>Manage Accounts</v-toolbar-title>
                             <v-spacer></v-spacer>
-                            <v-dialog v-model="dialog" max-width="750px">
+                            <!-- dialog window for adding a new account -->
+                            <v-dialog v-model="dialog" max-width="750px" >
                                 <v-btn slot="activator" color="#8B2635" dark class="mb-2">New Account</v-btn>
                                 <v-card>
                                     <v-card-title>
@@ -64,8 +65,43 @@
                                 <td>{{ props.item.lastname }}</td>
                                 <td>{{ props.item.status }}</td>
                                 <td class="justify-center">
-                                    <v-icon small class="mr-2">edit</v-icon>
-                                    <v-icon small>delete</v-icon>
+                                    <!-- dialog window for editing an existing account -->
+                            <v-dialog v-model="dialog" max-width="750px" v-show="edit">
+                                <v-btn slot="activator" small class="mr-2" @click="edit-account">edit</v-btn>
+                                <v-card>
+                                    <v-card-title>
+                                        <span class="headline">Edit Account</span>
+                                    </v-card-title>
+                                    <form id="edit-account" method="post" action="accountmanagement">
+                                        <v-card-text>
+                                            <v-container grid-list-md>
+                                                <v-layout wrap>
+                                                    <v-flex xs12 sm6 md4>
+                                                        <v-text-field name="firstname" label="First Name"> {{ account.email }}</v-text-field>
+                                                    </v-flex>
+                                                    <v-flex xs12 sm6 md4>
+                                                        <v-text-field name="lastname" label="Last Name">{{ account.firstname }}</v-text-field>
+                                                    </v-flex>
+                                                    <v-flex xs12 sm6 md4>
+                                                        <v-text-field name="email" label="Email Address">{{ account.lastname }}</v-text-field>
+                                                    </v-flex>
+                                                    <v-flex xs12 sm6 md4>
+                                                        <v-text-field name="password" label="Password">{{ account.accountType }}</v-text-field>
+                                                    </v-flex>
+                                                    <input type="hidden" name="action" value="edit">
+                                                </v-layout>
+                                            </v-container>
+                                        </v-card-text>
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn flat color="primary" @click="close">Cancel</v-btn>
+                                            <v-btn flat color="primary" @click="submit">Save</v-btn>
+                                        </v-card-actions>
+                                    </form>
+                                </v-card>
+                            </v-dialog>
+                                    
+                                    <v-icon small @click="remove">delete</v-icon>
                                 </td>
                             </template>
                         </v-data-table>
@@ -75,10 +111,6 @@
         </div>
         
         <link href="res/css/header.css" rel="stylesheet" type="text/css"/>
-        <form method="post" action="accountmanagement">
-            <input name="testCreateAccount" type="hidden">
-            <input type="submit" value="Create Account">
-        </form>
         <script>
             new Vue(
             { 
@@ -92,7 +124,16 @@
                     submit()
                     {
                         document.getElementById('create-account').submit();
+                    },
+                    edit() 
+                    {
+                        document.getElementById('edit-account').submit();
+                    },
+                    remove()
+                    {
+                        alert('yoo')
                     }
+                    
                 },
                 data: 
                 {

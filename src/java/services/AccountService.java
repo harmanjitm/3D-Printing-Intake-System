@@ -128,14 +128,8 @@ public class AccountService {
             
             return a.getAccountType();   
 	}
-	
-	/**
-	 * Gets the next id.
-	 *
-	 * @return the next id
-	 */
-	public int getNextId() {
-		return 0;
-		
-	}
+
+    public Account get(int accountID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
