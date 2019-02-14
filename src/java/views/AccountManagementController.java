@@ -73,17 +73,17 @@ public class AccountManagementController extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        if(request.getParameter("testCreateAccount") != null)
-        {
-            AccountService as = new AccountService();
-            if(as.createAccount("harmanjit.mohaar@edu.sait.ca", "password", "Harman", "Mohaar", "user") == 1)
-            {
-                request.setAttribute("message", "Successfully added trash to the DB");
-                request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
-                return;
-            }
-            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
-        }
+//        if(request.getParameter("testCreateAccount") != null)
+//        {
+//            AccountService as = new AccountService();
+//            if(as.createAccount("harmanjit.mohaar@edu.sait.ca", "password", "Harman", "Mohaar", "user") == 1)
+//            {
+//                request.setAttribute("message", "Successfully added trash to the DB");
+//                request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+//                return;
+//            }
+//            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+//        }
         int accountID = 0;
         String action = request.getParameter("action");
         String email = request.getParameter("email");
@@ -104,8 +104,18 @@ public class AccountManagementController extends HttpServlet
                         if(!(email == null || email.equals("")) && !(password == null || password.equals("")) 
                             && !(firstName == null || firstName.equals("")) && !(lastName == null || lastName.equals("")))
                         {                   
+                            ArrayList<Account> accounts = as.getAllAccounts();
+                            for(Account acc:accounts)
+                            {
+                                if(acc.getEmail().equals(email))
+                                {
+                                    response.sendRedirect("accountmanagement");
+                                    return;
+                                }
+                            }
                             as.createAccount(email, password, firstName, lastName, "user");
                             request.setAttribute("addM", "New User added.");
+                            request.setAttribute("accounts", accounts);
                             request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);  
                         }
                         else

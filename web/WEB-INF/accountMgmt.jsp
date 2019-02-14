@@ -24,7 +24,7 @@
                             <v-spacer></v-spacer>
                     <!-- dialog window for adding a new account -->
                             <v-dialog v-model="dialog" max-width="750px" >
-                                <v-btn slot="activator" color="#8B2635" dark class="mb-2">New Account</v-btn>
+                                <v-btn slot="activator" color="#FF6EC7" dark class="mb-2">New Account</v-btn>
                                 <v-card>
                                     <v-card-title>
                                         <span class="headline">New Account</span>
