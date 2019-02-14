@@ -22,7 +22,7 @@
                         <v-toolbar class="elevation-1" dark>
                             <v-toolbar-title>Manage Accounts</v-toolbar-title>
                             <v-spacer></v-spacer>
-                            <!-- dialog window for adding a new account -->
+                    <!-- dialog window for adding a new account -->
                             <v-dialog v-model="dialog" max-width="750px" >
                                 <v-btn slot="activator" color="#8B2635" dark class="mb-2">New Account</v-btn>
                                 <v-card>
@@ -65,8 +65,8 @@
                                 <td>{{ props.item.lastname }}</td>
                                 <td>{{ props.item.status }}</td>
                                 <td class="justify-center">
-                                    <!-- dialog window for editing an existing account -->
-                            <v-dialog v-model="dialog" max-width="750px" v-show="edit">
+                    <!-- dialog window for editing an existing account -->
+                            <v-dialog v-model="dialog" max-width="750px" v-show="editUser">
                                 <v-btn slot="activator" small class="mr-2" @click="edit-account">edit</v-btn>
                                 <v-card>
                                     <v-card-title>
@@ -76,17 +76,18 @@
                                         <v-card-text>
                                             <v-container grid-list-md>
                                                 <v-layout wrap>
+                                                    
                                                     <v-flex xs12 sm6 md4>
-                                                        <v-text-field name="firstname" label="First Name"> {{ account.email }}</v-text-field>
+                                                        <v-text-field name="firstname" label="First Name"> {{ this.firstname }}</v-text-field>
                                                     </v-flex>
                                                     <v-flex xs12 sm6 md4>
-                                                        <v-text-field name="lastname" label="Last Name">{{ account.firstname }}</v-text-field>
+                                                        <v-text-field name="lastname" label="Last Name">{{ this.lastname }}</v-text-field>
                                                     </v-flex>
                                                     <v-flex xs12 sm6 md4>
-                                                        <v-text-field name="email" label="Email Address">{{ account.lastname }}</v-text-field>
+                                                        <v-text-field name="email" label="Email Address">{{  this.email }}</v-text-field>
                                                     </v-flex>
                                                     <v-flex xs12 sm6 md4>
-                                                        <v-text-field name="password" label="Password">{{ account.accountType }}</v-text-field>
+                                                        <v-text-field name="password" label="Password">{{ this.status }}</v-text-field>
                                                     </v-flex>
                                                     <input type="hidden" name="action" value="edit">
                                                 </v-layout>
@@ -112,8 +113,7 @@
         
         <link href="res/css/header.css" rel="stylesheet" type="text/css"/>
         <script>
-            new Vue(
-            { 
+            new Vue ({ 
                 el: '#app',
                 methods:
                 {
@@ -125,7 +125,13 @@
                     {
                         document.getElementById('create-account').submit();
                     },
-                    edit() 
+                    editUser() {
+                      email = this.email,
+                      firstname = this.firstname,
+                      lastname = this.lastname,
+                      status = this.status
+                    },
+                    edit()
                     {
                         document.getElementById('edit-account').submit();
                     },
