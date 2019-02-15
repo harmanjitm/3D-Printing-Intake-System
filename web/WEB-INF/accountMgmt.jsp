@@ -17,14 +17,20 @@
         <div id="app">
             <v-app>
                 <ARIS3D:Header isAdmin="true" pageName="Account Management"></ARIS3D:Header>
-                <v-content>
-                    <v-container>
+                    <v-content>
+                        <v-container>
+                            <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
+                            ${successMessage}
+                        </v-alert>
+                        <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
+                            ${successMessage}
+                        </v-alert>
                         <v-toolbar class="elevation-1" dark>
                             <v-toolbar-title>Manage Accounts</v-toolbar-title>
                             <v-spacer></v-spacer>
-                    <!-- dialog window for adding a new account -->
+                            <!-- dialog window for adding a new account -->
                             <v-dialog v-model="dialog" max-width="750px" >
-                                <v-btn slot="activator" color="#FF6EC7" dark class="mb-2">New Account</v-btn>
+                                <v-btn slot="activator" color="#8B2635" dark class="mb-2">New Account</v-btn>
                                 <v-card>
                                     <v-card-title>
                                         <span class="headline">New Account</span>
@@ -65,44 +71,43 @@
                                 <td>{{ props.item.lastname }}</td>
                                 <td>{{ props.item.status }}</td>
                                 <td class="justify-center">
-                    <!-- dialog window for editing an existing account -->
-                            <v-dialog v-model="dialog" max-width="750px" v-show="editUser">
-                                <v-btn slot="activator" small class="mr-2" @click="edit-account">edit</v-btn>
-                                <v-card>
-                                    <v-card-title>
-                                        <span class="headline">Edit Account</span>
-                                    </v-card-title>
-                                    <form id="edit-account" method="post" action="accountmanagement">
-                                        <v-card-text>
-                                            <v-container grid-list-md>
-                                                <v-layout wrap>
-                                                    <input type="hidden" name="action" value="edit">
-                                                    <v-flex xs12 sm6 md4>
-                                                        <v-text-field name="firstname" v-model="props.item.firstname" label="First Name"></v-text-field>
-                                                    </v-flex>
-                                                    <v-flex xs12 sm6 md4>
-                                                        <v-text-field name="lastname" v-model="props.item.lastname" label="Last Name"></v-text-field>
-                                                    </v-flex>
-                                                    <v-flex xs12 sm6 md4>
-                                                        <v-text-field name="email" v-model="props.item.email" label="Email Address"></v-text-field>
-                                                    </v-flex>
-                                                    <v-flex xs12 sm6 md4>
-                                                        <v-text-field v-model="props.item.status" name="accountType" label="Account Type"></v-text-field>
-                                                    </v-flex>
-                                                    <input type="hidden" name="action" value="edit">
-                                                </v-layout>
-                                            </v-container>
-                                        </v-card-text>
-                                        <v-card-actions>
-                                            <v-spacer></v-spacer>
-                                            <v-btn flat color="primary" @click="close">Cancel</v-btn>
-                                            <v-btn flat color="primary" @click="edit">Save</v-btn>
-                                        </v-card-actions>
-                                    </form>
-                                </v-card>
-                            </v-dialog>
-                                    
-                                    <v-icon small @click="remove">delete</v-icon>
+                                    <!-- dialog window for editing an existing account -->
+                                <v-dialog v-model="dialog" max-width="750px" v-show="editUser">
+                                    <v-btn slot="activator" small class="mr-2" @click="edit-account">edit</v-btn>
+                                    <v-card>
+                                        <v-card-title>
+                                            <span class="headline">Edit Account</span>
+                                        </v-card-title>
+                                        <form id="edit-account" method="post" action="accountmanagement">
+                                            <v-card-text>
+                                                <v-container grid-list-md>
+                                                    <v-layout wrap>
+                                                        <input type="hidden" name="action" value="edit">
+                                                        <v-flex xs12 sm6 md4>
+                                                            <v-text-field name="firstname" v-model="props.item.firstname" label="First Name"></v-text-field>
+                                                        </v-flex>
+                                                        <v-flex xs12 sm6 md4>
+                                                            <v-text-field name="lastname" v-model="props.item.lastname" label="Last Name"></v-text-field>
+                                                        </v-flex>
+                                                        <v-flex xs12 sm6 md4>
+                                                            <v-text-field name="email" v-model="props.item.email" label="Email Address"></v-text-field>
+                                                        </v-flex>
+                                                        <v-flex xs12 sm6 md4>
+                                                            <v-text-field v-model="props.item.status" name="accountType" label="Account Type"></v-text-field>
+                                                        </v-flex>
+                                                        <input type="hidden" name="action" value="edit">
+                                                    </v-layout>
+                                                </v-container>
+                                            </v-card-text>
+                                            <v-card-actions>
+                                                <v-spacer></v-spacer>
+                                                <v-btn flat color="primary" @click="close">Cancel</v-btn>
+                                                <v-btn flat color="primary" @click="edit">Save</v-btn>
+                                            </v-card-actions>
+                                        </form>
+                                    </v-card>
+                                </v-dialog>
+                                <v-icon small @click="remove">delete</v-icon>
                                 </td>
                             </template>
                         </v-data-table>
@@ -110,7 +115,6 @@
                 </v-content>
             </v-app>
         </div>
-        
         <link href="res/css/header.css" rel="stylesheet" type="text/css"/>
         <script>
             new Vue ({ 
