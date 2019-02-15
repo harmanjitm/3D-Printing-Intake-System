@@ -114,13 +114,13 @@ public class AccountManagementController extends HttpServlet
                                 }
                             }
                             as.createAccount(email, password, firstName, lastName, "user");
-                            request.setAttribute("addM", "New User added.");
+                            request.setAttribute("successMessage", "New User added.");
                             request.setAttribute("accounts", accounts);
                             request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);  
                         }
                         else
                         {
-                            request.setAttribute("errorM", "Please enter the required fields.");
+                            request.setAttribute("errorMessage", "Please enter the required fields.");
                             request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                         }
                         break;
@@ -139,13 +139,13 @@ public class AccountManagementController extends HttpServlet
                                 }
                             }
                             System.out.println("Done updating");
-                            request.setAttribute("editM", "User has been updated.");
+                            request.setAttribute("successMessage", "User has been updated.");
                             request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                             return;
                         }
                         else
                         {
-                            request.setAttribute("errorM", "Please enter all of the required fields.");
+                            request.setAttribute("errorMessage", "Please enter all of the required fields.");
                             request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                         }
 
@@ -156,13 +156,13 @@ public class AccountManagementController extends HttpServlet
                         int acc = as.deleteAccount(accountID);
                         if (acc == 0)
                         {
-                            request.setAttribute("errorDeleteM", "Can't delete this user.");
+                            request.setAttribute("errorMessage", "Can't delete this user.");
                             request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                         }
                         else
                         {
                             as.deleteAccount(accountID);
-                            request.setAttribute("deleteM", "User has been deleted.");
+                            request.setAttribute("successMessage", "User has been deleted.");
                             request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response); 
                             break;
 

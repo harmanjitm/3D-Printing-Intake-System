@@ -6,7 +6,6 @@
 
 package views;
 
-import domain.Account;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -49,12 +48,12 @@ public class RegistrationController extends HttpServlet
                         && !(firstName == null || firstName.equals("")) && !(lastName == null || lastName.equals("")))
                     {                   
                         as.createAccount(email, password, firstName, lastName, accountType);
-                        request.setAttribute("addM", "New User added.");
+                        request.setAttribute("sucessMessage", "New User added.");
                         getServletContext().getRequestDispatcher("/WEB-INF/registration.jsp").forward(request, response);   
                     }
                     else
                     {
-                        request.setAttribute("errorM", "Please enter the required fields.");
+                        request.setAttribute("errorMessage", "Please enter the required fields.");
                         getServletContext().getRequestDispatcher("/WEB-INF/registration.jsp").forward(request, response);
                     }
                     break;

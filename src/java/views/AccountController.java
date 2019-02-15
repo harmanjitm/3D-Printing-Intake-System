@@ -44,22 +44,16 @@ public class AccountController extends HttpServlet
             }
         }
         
-        ArrayList<Account> accounts = null;        
+        ArrayList<Account> accounts;        
         try 
         {
             accounts = as.getAllAccounts(); 
+            request.setAttribute("accounts", accounts);
         } 
         catch (Exception ex) 
         {
             Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        if(request.getParameter("techHome") !=null)
-        {
-            getServletContext().getRequestDispatcher("/WEB-INF/techHome.jsp").forward(request, response);
-            return;
-        }  
-        
+        }        
         getServletContext().getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
     }
 
@@ -85,12 +79,12 @@ public class AccountController extends HttpServlet
                         && !(firstName == null || firstName.equals("")) && !(lastName == null || lastName.equals("")))
                     {                   
                         as.createAccount(email, password, firstName, lastName, accountType);
-                        request.setAttribute("addM", "New User added.");
+                        request.setAttribute("sucessMessage", "New User added.");
                         getServletContext().getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);   
                     }
                     else
                     {
-                        request.setAttribute("errorM", "Please enter the required fields.");
+                        request.setAttribute("errorMessage", "Please enter the required fields.");
                         getServletContext().getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     }
                     break;
@@ -101,12 +95,12 @@ public class AccountController extends HttpServlet
                         String accID = request.getParameter("accountID");
                         accountID = Integer.parseInt(accID);
                         as.updateAccount(email, password, firstName, lastName, accountID, accountType);
-                        request.setAttribute("editM", "User has been updated.");
+                        request.setAttribute("successMessage", "User has been updated.");
                         getServletContext().getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     }
                     else
                     {
-                        request.setAttribute("errorM", "Please enter all of the required fields.");
+                        request.setAttribute("errorMessage", "Please enter all of the required fields.");
                         getServletContext().getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     }
                     break;
@@ -116,13 +110,13 @@ public class AccountController extends HttpServlet
                     int acc = as.deleteAccount(accountID);
                     if (acc == 0)
                     {
-                        request.setAttribute("errorDeleteM", "Can't delete this user.");
+                        request.setAttribute("errorMessage", "Can't delete this user.");
                         getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
                     }
                     else
                     {
                         as.deleteAccount(accountID);
-                        request.setAttribute("deleteM", "User has been deleted.");
+                        request.setAttribute("successMessage", "User has been deleted.");
                         getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response); 
                     }
                     break;

@@ -53,19 +53,19 @@ public class LoginController extends HttpServlet
                 }
                 else
                 {
-                    request.setAttribute("inactiveM", "Your account has been deactivated, please register a new account.");
+                    request.setAttribute("errorMessage", "Your account is currently inactive. If you want to reactive click here.");
                     getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);       
                 }   
             }
             else
             {
-                request.setAttribute("errorM", "User does not exist.");
+                request.setAttribute("errorMessage", "User does not exist.");
                 getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
             }
         }
         else
         {
-            request.setAttribute("errorM", "Please enter your username or password.");
+            request.setAttribute("errorMessage", "Please enter your username or password.");
             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         }
     }

@@ -73,12 +73,12 @@ public class MaterialManagementController extends HttpServlet
                         Material mat =  ms.createMaterial();
                         materials.add(mat);
                         request.setAttribute("materials", materials);
-                        request.setAttribute("addM", "New Material added.");
+                        request.setAttribute("successMessage", "New Material added.");
                         getServletContext().getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);   
                     }
                     else
                     {
-                        request.setAttribute("errorM", "Please enter the required fields.");
+                        request.setAttribute("errorMessage", "Please enter the required fields.");
                         getServletContext().getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
                     }
                     break;
@@ -98,13 +98,13 @@ public class MaterialManagementController extends HttpServlet
                             }
                         }
                         System.out.println("Done updating");
-                        request.setAttribute("editM", "Material has been updated.");
+                        request.setAttribute("sucessMessage", "Material has been updated.");
                         request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
                         return;
                     }
                     else
                     {
-                        request.setAttribute("errorM", "Please enter all of the required fields.");
+                        request.setAttribute("errorMessage", "Please enter all of the required fields.");
                         request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
                     }
 
@@ -112,16 +112,15 @@ public class MaterialManagementController extends HttpServlet
                     case "delete":
                         String matID = request.getParameter("materialID");
                         materialID = Integer.parseInt(matID);
-                        int material = ms.deleteMaterial(materialID);
-                        if (material == 0)
+                        if (materialID == 0)
                         {
-                            request.setAttribute("errorDeleteM", "Can't delete this material.");
+                            request.setAttribute("errorMessage", "Can't delete this material.");
                             request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
                         }
                         else
                         {
                             ms.deleteMaterial(materialID);
-                            request.setAttribute("deleteM", "Material has been deleted.");
+                            request.setAttribute("sucessMessage", "Material has been deleted.");
                             request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response); 
                             break;
 
