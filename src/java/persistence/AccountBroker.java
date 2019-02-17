@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.sql.SQLException;
 import java.util.List;
+import services.AccountService;
 
 public class AccountBroker {
 
@@ -22,14 +23,16 @@ public class AccountBroker {
      * @throws SQLException if an error occurs while executing the statement
      */
     public int insert(Account account) throws SQLException {
-        
         connection = cp.getConnection();
-        if(connection == null)
-        {
-            throw new SQLException("Connection Error.");
+        if (connection == null) {
+            throw new SQLException("Error Creating Account: Connection error.");
         }
+        if (account == null) {
+            throw new SQLException("Error Creating Account: Missing account information.");
+        }
+
         CallableStatement cStmt = connection.prepareCall("{call createAccount(?, ?, ?, ?, ?)}");
-        
+
         cStmt.setString(1, account.getEmail());
         cStmt.setString(2, account.getPassword());
         cStmt.setString(3, account.getFirstname());
@@ -37,9 +40,9 @@ public class AccountBroker {
         cStmt.setString(5, account.getAccountType());
 
         boolean hadResults = cStmt.execute();
-        connection.commit();
         connection.close();
-        return hadResults ? 1 : 0;
+        System.out.println("HAD RESULTS: " + hadResults);
+        return hadResults ? 0 : 1;
     }
 
     /**
@@ -50,8 +53,14 @@ public class AccountBroker {
      */
     public int update(Account account) throws SQLException {
         connection = cp.getConnection();
+        if (connection == null) {
+            throw new SQLException("Error Updating Account: Connection error.");
+        }
+        if (account == null) {
+            throw new SQLException("Error Updating Account: Missing account information.");
+        }
+
         CallableStatement cStmt = connection.prepareCall("{call updateAccount(?, ?, ?, ?, ?, ?)}");
-        int rows = 1;
 
         cStmt.setInt(1, account.getAccountID());
         cStmt.setString(2, account.getEmail());
@@ -59,11 +68,10 @@ public class AccountBroker {
         cStmt.setString(4, account.getFirstname());
         cStmt.setString(5, account.getLastname());
         cStmt.setString(6, account.getAccountType());
-        
-        cStmt.executeUpdate();
-        connection.commit();
+
+        int hadResults = cStmt.executeUpdate();
         connection.close();
-        return rows;
+        return hadResults;
     }
 
     /**
@@ -72,15 +80,22 @@ public class AccountBroker {
      * @return 0 if the statement failed, 1 if statement was successful
      * @throws SQLException if an error occurs while executing the statement
      */
-    public int delete(Account account) throws SQLException {
+    public int delete(int account_ID) throws SQLException {
         connection = cp.getConnection();
-        String preparedSQL = "DELETE FROM account WHERE account_id = ?";
-        PreparedStatement ps = connection.prepareStatement(preparedSQL);
+        if (connection == null) {
+            throw new SQLException("Error Deleting Account: Connection error.");
+        }
+        if (account_ID == 0) {
+            throw new SQLException("Error Deleting Account: Invalid account ID.");
+        }
 
-        ps.setString(1, preparedSQL);
+        CallableStatement cStmt = connection.prepareCall("{call deleteAccount(?)}");
 
-        int rows = ps.executeUpdate();
-        return rows;
+        cStmt.setInt(1, account_ID);
+
+        boolean hadResults = cStmt.execute();
+        connection.close();
+        return hadResults ? 1 : 0;
     }
 
     /**
@@ -89,24 +104,29 @@ public class AccountBroker {
      * @return 0 if the statement failed, 1 if statement was successful
      * @throws SQLException if an error occurs while executing the statement
      */
-    public Account getUser(int id) throws SQLException {
+    public Account getAccountByID(int account_ID) throws SQLException {
         connection = cp.getConnection();
-        ResultSet rs = null;
-        PreparedStatement ps = null;
-        Account account = null;
-        String preparedSQL = "SELECT * FROM account WHERE account_id = ?";
-        ps = connection.prepareStatement(preparedSQL);
-        ps.setString(1, String.valueOf(id));
-        rs = ps.executeQuery();
-
-        while (rs.next()) {
-            account = new Account(rs.getString("email"),
-                    rs.getString("password"),
-                    rs.getString("f_name"),
-                    rs.getString("l_name"),
-                    rs.getString("account_type"));
+        if (connection == null) {
+            throw new SQLException("Error Getting Account: Connection error.");
         }
-        connection.commit();
+        if (account_ID == 0) {
+            throw new SQLException("Error Getting Account: Invalid account ID.");
+        }
+
+        CallableStatement cStmt = connection.prepareCall("{call getAccountById(?)}");
+
+        cStmt.setInt(1, account_ID);
+
+        ResultSet rs = cStmt.executeQuery();
+        if (rs == null) {
+            throw new SQLException("Error Getting Account: Account not found");
+        }
+
+        Account account = null;
+        while (rs.next()) {
+            account = new Account(account_ID, rs.getString("email"), rs.getString("f_name"), rs.getString("l_name"), rs.getString("account_type"));
+        }
+
         connection.close();
         return account;
     }
@@ -116,27 +136,78 @@ public class AccountBroker {
      * @return 0 if the statement failed, 1 if statement was successful
      * @throws SQLException if an error occurs while executing the statement
      */
-    public List<Account> getAll() throws SQLException {
+    public List<Account> getAllAccounts() throws SQLException {
         connection = cp.getConnection();
-        ResultSet rs = null;
-        PreparedStatement ps = null;
-        List<Account> accounts = new ArrayList<>();
+        if (connection == null) {
+            throw new SQLException("Error Getting Accounts: Connection error.");
+        }
 
-        String preparedSQL = "SELECT * FROM account";
-            ps = connection.prepareStatement(preparedSQL);
-            rs = ps.executeQuery();
+        CallableStatement cStmt = connection.prepareCall("{call getAllAccounts()}");
 
-            while (rs.next()) {
-                Account account = new Account(rs.getString("email"),
-                        rs.getString("password"),
-                        rs.getString("f_name"),
-                        rs.getString("l_name"),
-                        rs.getString("account_type"));
-                account.setAccountID(rs.getInt("account_id"));
-                accounts.add(account);
-            }
-            connection.commit();
-            connection.close();
-            return accounts;
+        ResultSet rs = cStmt.executeQuery();
+        if (rs == null) {
+            throw new SQLException("Error Getting Accounts: No accounts found.");
+        }
+        List<Account> accounts = new ArrayList<Account>();
+        while (rs.next()) {
+            Account account = new Account(rs.getInt("account_id"), rs.getString("email"), rs.getString("f_name"), rs.getString("l_name"), rs.getString("account_type"));
+            accounts.add(account);
+        }
+
+        connection.close();
+        return accounts;
+    }
+    
+    public Account getAccountByEmail(String email) throws SQLException
+    {
+        connection = cp.getConnection();
+        if (connection == null) {
+            throw new SQLException("Error Getting Account: Connection error.");
+        }
+        if (email == null || email == "") {
+            throw new SQLException("Error Getting Account: Invalid account email.");
+        }
+
+        CallableStatement cStmt = connection.prepareCall("{call getAccountByEmail(?)}");
+
+        cStmt.setString(1, email);
+
+        ResultSet rs = cStmt.executeQuery();
+        if (rs == null) {
+            throw new SQLException("Error Getting Account: Account not found");
+        }
+
+        Account account = null;
+        int account_ID = 0;
+        while (rs.next()) {
+            account_ID = rs.getInt("account_id");
+        }
+        if(account_ID == 0)
+        {
+            return null;
+        }
+        account = getAccountByID(account_ID);
+        connection.close();
+        return account;
+    }
+    
+    public boolean validateAccount(String email, String password) throws SQLException
+    {
+        connection = cp.getConnection();
+        if (connection == null) {
+            throw new SQLException("Error Validating Account: Connection error.");
+        }
+        if (email == null || password == null) {
+            throw new SQLException("Error Validating Account: Email or Password are empty.");
+        }
+
+        CallableStatement cStmt = connection.prepareCall("{call validateAccount(?, ?)}");
+
+        cStmt.setString(1, email);
+        cStmt.setString(2, password);
+
+        boolean hadResults = cStmt.execute();
+        connection.close();
+        return hadResults ? true : false;
     }
 }

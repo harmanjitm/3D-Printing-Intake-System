@@ -11,7 +11,7 @@ use ARIS;
 DROP PROCEDURE IF EXISTS createAccount;
 delimiter #
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `createAccount`($email VARCHAR(100), $password VARCHAR(50), $f_name VARCHAR(50), $l_name VARCHAR(50), $account_type VARCHAR(50))
+CREATE  PROCEDURE `createAccount`($email VARCHAR(100), $password VARCHAR(50), $f_name VARCHAR(50), $l_name VARCHAR(50), $account_type VARCHAR(50))
 proc_main:BEGIN
 	INSERT INTO ACCOUNT(email, password, f_name, l_name, account_type) 
 		VALUES($email, $password, $f_name, $l_name, $account_type);
@@ -33,9 +33,9 @@ delimiter ;
 DROP PROCEDURE IF EXISTS updateAccount;
 delimiter #
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `updateAccount`($account_id INTEGER, $email VARCHAR(100), $password VARCHAR(50), $f_name VARCHAR(50), $l_name VARCHAR(50), $account_type VARCHAR(50))
+CREATE  PROCEDURE `updateAccount`($account_id INTEGER, $email VARCHAR(100), $password VARCHAR(50), $f_name VARCHAR(50), $l_name VARCHAR(50), $account_type VARCHAR(50))
 proc_main:BEGIN
-	SELECT email, password, f_name, l_name, account_type
+	SELECT email, f_name, l_name, account_type
 		FROM ACCOUNT
         WHERE account_id = $account_id;
         
@@ -63,7 +63,7 @@ delimiter ;
 DROP PROCEDURE IF EXISTS deleteAccount;
 delimiter #
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteAccount`($account_id INTEGER)
+CREATE  PROCEDURE `deleteAccount`($account_id INTEGER)
 proc_main:BEGIN	
 	CALL deleteOrdersByAccount($account_id);
 	CALL deleteNotesByAccount($account_id);
@@ -90,7 +90,7 @@ delimiter ;
 DROP PROCEDURE IF EXISTS deleteOrdersByAccount;
 delimiter #
 
-CREATE DEFINER=`root`@`localhost`  PROCEDURE `deleteOrdersByAccount`($account_id INTEGER)
+CREATE   PROCEDURE `deleteOrdersByAccount`($account_id INTEGER)
 proc_main:BEGIN	
 	CALL deleteOrderQueueByAccount($account_id);
 	CALL deleteFilesByAccount($account_id);
@@ -116,7 +116,7 @@ delimiter ;
 DROP PROCEDURE IF EXISTS deleteFilesByAccount;
 delimiter #
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteFilesByAccount`($account_id INTEGER)
+CREATE  PROCEDURE `deleteFilesByAccount`($account_id INTEGER)
 proc_main:BEGIN	
 	SELECT * 
 		FROM FILE
@@ -139,7 +139,7 @@ delimiter ;
 DROP PROCEDURE IF EXISTS deleteFilesByAccount;
 delimiter #
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteFilesByAccount`($account_id INTEGER)
+CREATE  PROCEDURE `deleteFilesByAccount`($account_id INTEGER)
 proc_main:BEGIN	
 	SELECT * 
 		FROM FILE
@@ -162,7 +162,7 @@ delimiter ;
 DROP PROCEDURE IF EXISTS deleteNotesByAccount;
 delimiter #
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteNotesByAccount`($account_id INTEGER)
+CREATE  PROCEDURE `deleteNotesByAccount`($account_id INTEGER)
 proc_main:BEGIN	
 	SELECT * 
 		FROM NOTE
@@ -185,7 +185,7 @@ delimiter ;
 DROP PROCEDURE IF EXISTS deleteNotificationsByAccount;
 delimiter #
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteNotificationsByAccount`($account_id INTEGER)
+CREATE  PROCEDURE `deleteNotificationsByAccount`($account_id INTEGER)
 proc_main:BEGIN	
 	SELECT * 
 		FROM NOTIFICATION
@@ -199,18 +199,20 @@ delimiter ;
 /* ***************************************************************
 ** Author:  Emily Pegg	                                       	**
 ** Creation Date:  January, 2019                               	**
-** Procedure Name: Get Account       	                    	**
+** Procedure Name: Get Account By Id      	                    	**
 ** Description:  Gets all values for a given id. If id is not   **
 **				 found return null.								**
 ** Input:  Account Id											**
 ** Output: Email, Firstname, Lastname and Account type			**
 ******************************************************************/
 DROP PROCEDURE IF EXISTS getAccount;
+DROP PROCEDURE IF EXISTS getAccountById;
+DROP PROCEDURE IF EXISTS getByAccountId;
 delimiter #
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getAccount`($account_id INTEGER)
+CREATE  PROCEDURE `getAccountById`($account_id INTEGER)
 proc_main:BEGIN
-	SELECT email, password, f_name, l_name, account_type 
+	SELECT email, f_name, l_name, account_type 
 		FROM ACCOUNT
         WHERE account_id = $account_id;
 END proc_main #
@@ -219,15 +221,34 @@ delimiter ;
 /* ***************************************************************
 ** Author:  Emily Pegg	                                       	**
 ** Creation Date:  January, 2019                               	**
+** Procedure Name: Get Account By Email	                    	**
+** Description:  Gets Account Id by Email						**
+** Input:  Email												**
+** Output: Account Id											**
+******************************************************************/
+DROP PROCEDURE IF EXISTS getAccountByEmail;
+delimiter #
+
+CREATE  PROCEDURE `getAccountByEmail`($email VARCHAR(100))
+proc_main:BEGIN
+	SELECT account_id
+		FROM ACCOUNT
+        WHERE email = $email;
+END proc_main #
+delimiter ;
+
+/* ***************************************************************
+** Author:  Emily Pegg	                                       	**
+** Creation Date:  January, 2019                               	**
 ** Procedure Name: Get All Accounts      	                  	**
 ** Description:  Gets all accounts from the accounts table  	**
-** Output: Email, Firstname, Lastname and Account Type for all  **
-**		   accounts												**
+** Output: Account Id, Email, Firstname, Lastname and 			**
+**		   Account Type for all accounts												**
 ******************************************************************/
 DROP PROCEDURE IF EXISTS getAllAccounts;
 delimiter #
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllAccounts`()
+CREATE  PROCEDURE `getAllAccounts`()
 proc_main:BEGIN
 	SELECT account_id, email, f_name, l_name, account_type
 		FROM ACCOUNT;
@@ -247,7 +268,7 @@ delimiter ;
 DROP PROCEDURE IF EXISTS validateAccount;
 delimiter #
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `validateAccount`($email VARCHAR(100), $password VARCHAR(50))
+CREATE  PROCEDURE `validateAccount`($email VARCHAR(100), $password VARCHAR(50))
 proc_main:BEGIN
 	SELECT account_type
 		FROM ACCOUNT

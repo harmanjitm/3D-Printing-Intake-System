@@ -63,6 +63,23 @@ public class Account {
     }
 
     /**
+    * Non-default constructor for the Account Object
+    * @param accountID the account id
+    * @param email the user's email
+    * @param firstname the user's first name
+    * @param lastname the user's last name
+    * @param accountType the user account type
+    */
+    public Account(int accountID, String email, String firstname, String lastname, String accountType)
+    {
+        this.accountID = accountID;
+        this.email = email;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.accountType = accountType;
+    }
+
+    /**
      * Returns the accountId
      * @return the accountId
      */

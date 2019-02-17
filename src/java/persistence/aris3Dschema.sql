@@ -1,8 +1,8 @@
 /* ***************************************************************
 ** Author:  Emily Pegg	                                       	**
-** Creation Date:  February 2019                               	**
+** Creation Date:  February 13, 2019                               	**
 ** Script Name: Create ARIS Database     						**
-** Version: 4							                      	**
+** Version: 5							                      	**
 ** Description:  Creates the ARIS 3D Database tables   			**
 ******************************************************************/
 
@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `aris`.`ACCOUNT` ;
 
 CREATE TABLE IF NOT EXISTS `aris`.`ACCOUNT` (
   `account_id` INT NOT NULL AUTO_INCREMENT,
-  `email` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(100) NOT NULL UNIQUE,
   `password` VARCHAR(50) NOT NULL,
   `f_name` VARCHAR(50) NOT NULL,
   `l_name` VARCHAR(50) NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `aris`.`REPORT` (
   `date_completed` DATE NULL,
   `report_status` VARCHAR(30) NOT NULL,
   `report_path` VARCHAR(500) NOT NULL,
-  `account_id` INT NOT NULL REFERENCES ACCOUNT(account_id),
+  `account_id` INT NOT NULL, FOREIGN KEY (account_id) REFERENCES ACCOUNT(account_id) ON DELETE CASCADE,
   PRIMARY KEY (`report_id`));
 ALTER TABLE REPORT AUTO_INCREMENT=100;
 
@@ -55,10 +55,10 @@ DROP TABLE IF EXISTS `aris`.`NOTIFICATION` ;
 
 CREATE TABLE IF NOT EXISTS `aris`.`NOTIFICATION` (
   `notification_id` INT NOT NULL AUTO_INCREMENT,
-  `order_id` INT NULL REFERENCES PRINT_ORDER(order_id),
+  `order_id` INT NULL, FOREIGN KEY (order_id) REFERENCES PRINT_ORDER(order_id) ON DELETE CASCADE,
   `notification_type` VARCHAR(20) NOT NULL,
-  `account_id` INT NOT NULL REFERENCES ACCOUNT(account_id),
-  PRIMARY KEY (`notification_id`, `account_id`));
+  `account_id` INT NOT NULL, FOREIGN KEY (account_id) REFERENCES ACCOUNT(account_id) ON DELETE CASCADE,
+  PRIMARY KEY (`notification_id`));
 ALTER TABLE NOTIFICATION AUTO_INCREMENT=200000;
 
 -- -----------------------------------------------------
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `aris`.`PRINTER` (
 DROP TABLE IF EXISTS `aris`.`FILE` ;
 
 CREATE TABLE IF NOT EXISTS `aris`.`FILE` (
-  `account_id` INT NOT NULL REFERENCES ACCOUNT(account_id),
+  `account_id` INT NOT NULL, FOREIGN KEY (account_id) REFERENCES ACCOUNT(account_id) ON DELETE CASCADE,
   `file_name` VARCHAR(30) NOT NULL,
   `file_path` VARCHAR(500) NOT NULL,
   `file_size` INT NULL,
@@ -102,10 +102,10 @@ CREATE TABLE IF NOT EXISTS `aris`.`PRINT_ORDER` (
   `order_date` DATE NOT NULL,
   `print_date` DATE NULL,
   `order_status` VARCHAR(20) NOT NULL,
-  `printer_id` INT NOT NULL REFERENCES PRINTER(printer_id),
-  `material_id` INT NOT NULL REFERENCES MATERIAL(material_id),
-  `account_id` INT NOT NULL REFERENCES ACCOUNT(account_id),
-  `file_name` VARCHAR(30) NOT NULL REFERENCES FILE(file_name),
+  `printer_id` INT NOT NULL, FOREIGN KEY (printer_id) REFERENCES PRINTER(printer_id)  ON DELETE CASCADE,
+  `material_id` INT NOT NULL, FOREIGN KEY (material_id) REFERENCES MATERIAL(material_id) ON DELETE CASCADE,
+  `account_id` INT NOT NULL, FOREIGN KEY (account_id) REFERENCES ACCOUNT(account_id) ON DELETE CASCADE,
+  `file_name` VARCHAR(30) NOT NULL, FOREIGN KEY (file_name) REFERENCES FILE(file_name) ON DELETE CASCADE,
   PRIMARY KEY (`order_id`));
 ALTER TABLE PRINT_ORDER AUTO_INCREMENT=300000;
 
@@ -116,8 +116,8 @@ DROP TABLE IF EXISTS `aris`.`ORDER_QUEUE` ;
 
 CREATE TABLE IF NOT EXISTS `aris`.`ORDER_QUEUE` (
   `position` INT NOT NULL,
-  `order_id` INT NOT NULL UNIQUE REFERENCES PRINT_ORDER(order_id),
-  `account_id` INT NOT NULL REFERENCES ACCOUNT(account_id),
+  `order_id` INT NOT NULL UNIQUE, FOREIGN KEY (order_id) REFERENCES PRINT_ORDER(order_id) ON DELETE CASCADE,
+  `account_id` INT NOT NULL, FOREIGN KEY (account_id) REFERENCES ACCOUNT(account_id) ON DELETE CASCADE,
   PRIMARY KEY (`position`));
 
 
@@ -139,8 +139,8 @@ ALTER TABLE MATERIAL AUTO_INCREMENT=50;
 DROP TABLE IF EXISTS `aris`.`PRINTER_MATERIAL` ;
 
 CREATE TABLE IF NOT EXISTS `aris`.`PRINTER_MATERIAL` (
-  `printer_id` INT NOT NULL REFERENCES PRINTER(printer_id),
-  `material_id` INT NOT NULL REFERENCES MATERIAL(material_id));
+  `printer_id` INT NOT NULL, FOREIGN KEY (printer_id) REFERENCES PRINTER(printer_id) ON DELETE CASCADE,
+  `material_id` INT NOT NULL, FOREIGN KEY (material_id) REFERENCES MATERIAL(material_id) ON DELETE CASCADE);
 
 
 -- -----------------------------------------------------

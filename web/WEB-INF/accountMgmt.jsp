@@ -23,7 +23,7 @@
                             ${successMessage}
                         </v-alert>
                         <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
-                            ${successMessage}
+                            ${errorMessage}
                         </v-alert>
                         <v-toolbar class="elevation-1" dark>
                             <v-toolbar-title>Manage Accounts</v-toolbar-title>
@@ -39,16 +39,16 @@
                                         <v-card-text>
                                             <v-container grid-list-md>
                                                 <v-layout wrap>
-                                                    <v-flex xs12 sm6 md4>
+                                                    <v-flex xs12 sm6 md6>
                                                         <v-text-field name="firstname" label="First Name"></v-text-field>
                                                     </v-flex>
-                                                    <v-flex xs12 sm6 md4>
+                                                    <v-flex xs12 sm6 md6>
                                                         <v-text-field name="lastname" label="Last Name"></v-text-field>
                                                     </v-flex>
-                                                    <v-flex xs12 sm6 md4>
+                                                    <v-flex xs12 sm6 md6>
                                                         <v-text-field name="email" label="Email Address"></v-text-field>
                                                     </v-flex>
-                                                    <v-flex xs12 sm6 md4>
+                                                    <v-flex xs12 sm6 md6>
                                                         <v-text-field name="password" label="Password"></v-text-field>
                                                     </v-flex>
                                                     <input type="hidden" name="action" value="add">
@@ -64,7 +64,7 @@
                                 </v-card>
                             </v-dialog>
                         </v-toolbar>
-                        <v-data-table class="elevation-3" :headers="accountmanagementheaders" :items="accounts">
+                        <v-data-table  class="elevation-3" :headers="accountmanagementheaders" :items="accounts">
                             <template slot="items" slot-scope="props">
                                 <td>{{ props.item.email }}</td>
                                 <td>{{ props.item.firstname }}</td>
@@ -72,8 +72,8 @@
                                 <td>{{ props.item.status }}</td>
                                 <td class="justify-center">
                                     <!-- dialog window for editing an existing account -->
-                                <v-dialog v-model="dialog" max-width="750px" v-show="editUser">
-                                    <v-btn slot="activator" small class="mr-2" @click="edit-account">edit</v-btn>
+                                <v-dialog v-model="editDialog" max-width="750px" v-show="editUser">
+                                    <v-icon small slot="activator" @click="editAccount(props.item)">edit</v-icon>
                                     <v-card>
                                         <v-card-title>
                                             <span class="headline">Edit Account</span>
@@ -83,17 +83,18 @@
                                                 <v-container grid-list-md>
                                                     <v-layout wrap>
                                                         <input type="hidden" name="action" value="edit">
-                                                        <v-flex xs12 sm6 md4>
-                                                            <v-text-field name="firstname" v-model="props.item.firstname" label="First Name"></v-text-field>
+                                                        <v-flex xs12 sm6 md6>
+                                                            <v-text-field name="firstname" v-model="editItem.firstname" label="First Name"></v-text-field>
                                                         </v-flex>
-                                                        <v-flex xs12 sm6 md4>
-                                                            <v-text-field name="lastname" v-model="props.item.lastname" label="Last Name"></v-text-field>
+                                                        <v-flex xs12 sm6 md6>
+                                                            <v-text-field name="lastname" v-model="editItem.lastname" label="Last Name"></v-text-field>
                                                         </v-flex>
-                                                        <v-flex xs12 sm6 md4>
-                                                            <v-text-field name="email" v-model="props.item.email" label="Email Address"></v-text-field>
+                                                        <v-spacer></v-spacer>
+                                                        <v-flex xs12 sm6 md6>
+                                                            <v-text-field name="email" v-model="editItem.email" label="Email Address"></v-text-field>
                                                         </v-flex>
-                                                        <v-flex xs12 sm6 md4>
-                                                            <v-text-field v-model="props.item.status" name="accountType" label="Account Type"></v-text-field>
+                                                        <v-flex xs12 sm6 md6>
+                                                            <v-select v-model="editItem.status" :items="accountStatusDropdown" item-text="type" item-value="value" label="Account Type" name="accountType"></v-select>
                                                         </v-flex>
                                                         <input type="hidden" name="action" value="edit">
                                                     </v-layout>
@@ -123,7 +124,8 @@
                 {
                     close()
                     {
-                        this.dialog = false
+                        this.dialog = false,
+                        this.editDialog = false
                     },
                     submit()
                     {
@@ -142,15 +144,34 @@
                     remove()
                     {
                         alert('yoo')
+                    },
+                    editAccount(item)
+                    {
+                        this.editIndex = this.accounts.indexOf(item)
+                        this.editItem = Object.assign({}, item)
+                        this.editDialog = false
                     }
-                    
                 },
                 data: 
                 {
+                    editIndex: -1,
                     dialog: false,
+                    editDialog: false,
                     account: '',
                     logout: '',
                     drawer: false,
+                    accountStatusDropdown:
+                    [
+                        {type: 'User', value: 'user', name: 'accountType'},
+                        {type: 'Technician', value: 'admin', name: 'accountType'}
+                    ],
+                    editItem: 
+                    {
+                        email: '',
+                        firstname: '',
+                        lastname: '',
+                        status: ''
+                    },
                     adminItems: 
                     [ 
                         {title: 'Dashboard', icon: 'dashboard', link: 'dashboard'},
@@ -166,7 +187,7 @@
                         {text: 'First Name', value: 'firstname'},
                         {text: 'Last Name', value: 'lastname'},
                         {text: 'Status', value: 'status'},
-                        {text: 'Actions', value: 'actions'}
+                        {text: 'Actions', value: 'actions', sortable: false}
                     ],
                     accounts:
                     [
