@@ -11,7 +11,7 @@
 <html>
     <head>
         <ARIS3D:Imports/>
-        <title>ARIS3D: Printer Management</title>
+        <title>ARIS3D - Printer Management</title>
     </head>
     <body>
         <div id="app">
@@ -38,10 +38,11 @@
         </div>
 
         <link href="res/css/header.css" rel="stylesheet" type="text/css"/>
+        <script src="res/js/vue.js" type="text/javascript"></script>
         <script>
-            new Vue({
-                el: '#app'
-            })
+//            new Vue({
+//                el: '#app'
+//            })
         </script>
 
     </body>

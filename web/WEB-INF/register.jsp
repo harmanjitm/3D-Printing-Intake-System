@@ -24,12 +24,11 @@
 
     </head>
     <body>
-        <br>
-        <br>
         <div id="app">
             <v-app>
+                <ARIS3D:Header isAdmin="false" pageName="Register"></ARIS3D:Header>
                 <v-content>
-                    <ARIS3D:Header isAdmin="false" pageName="Register"></ARIS3D:Header>
+                    <br><br>
                     <v-flex xs12 sm4 offset-sm4>
                         <v-toolbar color="#1B222B" dark>
                             <v-toolbar-title>Register New Account</v-toolbar-title>

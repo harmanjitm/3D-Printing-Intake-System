@@ -11,7 +11,7 @@
 <html>
     <head>
         <ARIS3D:Imports/>
-        <title>ARIS 3D Printing Service - Account Management</title>
+        <title>ARIS3D - Account Management</title>
     </head>
     <body>
         <div id="app">
