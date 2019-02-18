@@ -120,41 +120,6 @@
         <script>
             new Vue ({ 
                 el: '#app',
-                methods:
-                {
-                    close()
-                    {
-                        this.dialog = false,
-                        this.editDialog = false
-                    },
-                    submit()
-                    {
-                        document.getElementById('create-account').submit();
-                    },
-                    editUser() 
-                    {
-                        accountID = this.accountID,
-                        email = this.email,
-                        firstname = this.firstname,
-                        lastname = this.lastname,
-                        status = this.status
-                    },
-                    edit()
-                    {
-                        document.getElementById('accountType').value=this.editItem.status;
-                        document.getElementById('edit-account').submit();
-                    },
-                    remove()
-                    {
-                        alert('yoo')
-                    },
-                    editAccount(item)
-                    {
-                        this.editIndex = this.accounts.indexOf(item)
-                        this.editItem = Object.assign({}, item)
-                        this.editDialog = false
-                    }
-                },
                 data: 
                 {
                     editIndex: -1,
@@ -199,6 +164,41 @@
                         {accountID: '${account.accountID}', email: '${account.email}', firstname: '${account.firstname}', lastname: '${account.lastname}', status: '${account.accountType}'},
                     </c:forEach>
                     ]
+                },
+                methods:
+                {
+                    close()
+                    {
+                        this.dialog = false,
+                        this.editDialog = false
+                    },
+                    submit()
+                    {
+                        document.getElementById('create-account').submit();
+                    },
+                    editUser() 
+                    {
+                        accountID = this.accountID,
+                        email = this.email,
+                        firstname = this.firstname,
+                        lastname = this.lastname,
+                        status = this.status
+                    },
+                    edit()
+                    {
+                        document.getElementById('accountType').value=this.editItem.status;
+                        document.getElementById('edit-account').submit();
+                    },
+                    remove()
+                    {
+                        alert('yoo')
+                    },
+                    editAccount(item)
+                    {
+                        this.editIndex = this.accounts.indexOf(item)
+                        this.editItem = Object.assign({}, item)
+                        this.editDialog = false
+                    }
                 }
             });
         </script>
