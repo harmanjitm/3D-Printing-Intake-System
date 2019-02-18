@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/3DPrintingIntakeSystem">
-<Resource name="jdbc/aris" auth="Container" driverClassName="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/aris" username="root" password="password" maxActive="100" maxIdle="30" maxWait="10000" logAbandoned="true" removeAbandoned="true" removeAbandonedTimeout="60" type="javax.sql.DataSource" />
+<Resource name="jdbc/aris" auth="Container" driverClassName="com.mysql.jdbc.Driver" url="jdbc:mysql://35.236.69.93/aris?cloudSqlInstance=d-printing-intake-system:us-west2:aris3d" username="root" password="adminAri$3d" maxActive="100" maxIdle="30" maxWait="10000" logAbandoned="true" removeAbandoned="true" removeAbandonedTimeout="60" type="javax.sql.DataSource" />
 </Context>

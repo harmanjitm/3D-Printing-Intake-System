@@ -17,9 +17,9 @@
         <div id="app">
             <v-app>
                 <ARIS3D:Header isAdmin="true" pageName="Account Management"></ARIS3D:Header>
-                    <v-content>
-                        <v-container>
-                            <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
+                <v-content>
+                    <v-container>
+                        <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
                             ${successMessage}
                         </v-alert>
                         <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">

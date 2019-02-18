@@ -187,39 +187,6 @@ public class AccountManagementController extends HttpServlet {
                 break;
 
         }
-//
-//        try {
-//            request.setAttribute("accounts", as.getAllAccounts());
-//        } catch (SQLException ex) {
-//            Logger.getLogger(AccountManagementController.class.getName()).log(Level.SEVERE, null, ex);
-//            request.setAttribute("errorMessage", ex.getMessage());
-//            request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
-//        }
-//        if (action != null) {
-//            try {
-//                switch (action) {
-//                    case "edit":
-//                        if (!(email == null || email.equals("")) && !(firstName == null || firstName.equals("")) && !(lastName == null || lastName.equals("")) && !(accountType == null || accountType.equals(""))) {
-//
-//                            for (Account editAccount : as.getAllAccounts()) {
-//                                System.out.println(editAccount.getAccountID());
-//                                if (editAccount.getEmail().equals(email)) {
-//                                    System.out.println(editAccount.getAccountID());
-//                                    System.out.println("Finding User");
-//                                    as.updateAccount(email, editAccount.getPassword(), firstName, lastName, editAccount.getAccountID(), accountType);
-//                                    System.out.println("Found User");
-//                                }
-//                            }
-//                            System.out.println("Done updating");
-//                            request.setAttribute("successMessage", "User has been updated.");
-//                            request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
-//                            return;
-//                        } else {
-//                            request.setAttribute("errorMessage", "Please enter all of the required fields.");
-//                            request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
-//                        }
-//
-//                        break;
 //                    case "delete":
 //                        String accID = request.getParameter("accountID");
 //                        accountID = Integer.parseInt(accID);
@@ -234,12 +201,5 @@ public class AccountManagementController extends HttpServlet {
 //                            break;
 //
 //                        }
-//                    default:
-//                        break;
-//                }
-//            } catch (Exception ex) {
-//                Logger.getLogger(AccountManagementController.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
     }
 }
