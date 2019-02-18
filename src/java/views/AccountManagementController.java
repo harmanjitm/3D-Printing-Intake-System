@@ -88,6 +88,7 @@ public class AccountManagementController extends HttpServlet {
                 
         switch (action) {
             case "add":
+                accountType = "user";
                 if (email == null || email.equals("") || password == null || password.equals("") || firstName == null || firstName.equals("") || lastName == null || lastName.equals("") || accountType == null || accountType.equals("")) {
                     request.setAttribute("errorMessage", "Error Adding Account: Make sure all fields are <b>NOT</b> empty.");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
