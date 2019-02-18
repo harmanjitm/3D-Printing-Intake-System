@@ -83,6 +83,7 @@
                                                 <v-container grid-list-md>
                                                     <v-layout wrap>
                                                         <input type="hidden" name="action" value="edit">
+                                                        <input type="hidden" name="accountID" v-model="editItem.accountID">
                                                         <v-flex xs12 sm6 md6>
                                                             <v-text-field name="firstname" v-model="editItem.firstname" label="First Name"></v-text-field>
                                                         </v-flex>
@@ -94,9 +95,8 @@
                                                             <v-text-field name="email" v-model="editItem.email" label="Email Address"></v-text-field>
                                                         </v-flex>
                                                         <v-flex xs12 sm6 md6>
-                                                            <v-select v-model="editItem.status" :items="accountStatusDropdown" item-text="type" item-value="value" label="Account Type" name="accountType"></v-select>
+                                                            <v-select v-model="editItem.status" @change="" :items="accountStatusDropdown" item-text="type" item-value="value" label="Account Type" name="accountType"></v-select>
                                                         </v-flex>
-                                                        <input type="hidden" name="action" value="edit">
                                                     </v-layout>
                                                 </v-container>
                                             </v-card-text>
@@ -131,11 +131,17 @@
                     {
                         document.getElementById('create-account').submit();
                     },
-                    editUser() {
-                      email = this.email,
-                      firstname = this.firstname,
-                      lastname = this.lastname,
-                      status = this.status
+                    editUser() 
+                    {
+                        accountID = this.accountID,
+                        email = this.email,
+                        firstname = this.firstname,
+                        lastname = this.lastname,
+                        status = this.status
+                    },
+                    changeAccountStatus(status)
+                    {
+                        this.editItem.status = status
                     },
                     edit()
                     {
@@ -167,6 +173,7 @@
                     ],
                     editItem: 
                     {
+                        accountID: '',
                         email: '',
                         firstname: '',
                         lastname: '',
@@ -192,7 +199,7 @@
                     accounts:
                     [
                     <c:forEach items="${accounts}" var="account">
-                        {email: '${account.email}', firstname: '${account.firstname}', lastname: '${account.lastname}', status: '${account.accountType}'},
+                        {accountID: '${account.accountID}', email: '${account.email}', firstname: '${account.firstname}', lastname: '${account.lastname}', status: '${account.accountType}'},
                     </c:forEach>
                     ]
                 }

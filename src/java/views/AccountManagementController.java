@@ -80,14 +80,14 @@ public class AccountManagementController extends HttpServlet {
             return;
         }
 
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String firstName = request.getParameter("firstname");
+        String lastName = request.getParameter("lastname");
+        String accountType = "user";
+                
         switch (action) {
             case "add":
-                String email = request.getParameter("email");
-                String password = request.getParameter("password");
-                String firstName = request.getParameter("firstname");
-                String lastName = request.getParameter("lastname");
-                String accountType = "user";
-
                 if (email == null || email.equals("") || password == null || password.equals("") || firstName == null || firstName.equals("") || lastName == null || lastName.equals("") || accountType == null || accountType.equals("")) {
                     request.setAttribute("errorMessage", "Error Adding Account: Make sure all fields are <b>NOT</b> empty.");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
@@ -134,20 +134,67 @@ public class AccountManagementController extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                 break;
             case "edit":
+                if (email == null || email.equals("") || firstName == null || firstName.equals("") || lastName == null || lastName.equals("") || accountType == null || accountType.equals("")) {
+                    request.setAttribute("errorMessage", "Error Editing Account: Make sure all fields are <b>NOT</b> empty.");
+                    request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                    return;
+                }
+                
+                if (!(accountType.equals("admin") || accountType.equals("user"))) {
+                    request.setAttribute("errorMessage", "Error Editing Account: Invalid account type.");
+                    request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                    return;
+                }
+                System.out.println(firstName + " " + lastName + " " + email + " " + request.getParameter("accountID") + " " + accountType);
+                
+                if(request.getParameter("accountID") == null || request.getParameter("accountID").equals(""))
+                {
+                    request.setAttribute("errorMessage", "Error Editing Account: An unexpected error occurred, please try again.");
+                    request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                    return;
+                }
+                
+                Account toEdit = null;
+                try {
+                    toEdit = as.getAccountByID(Integer.valueOf(request.getParameter("accountID")));
+                } catch (SQLException ex) {
+                    Logger.getLogger(AccountManagementController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                if(toEdit == null)
+                {
+                    request.setAttribute("errorMessage", "Error Editing Account: An unexpected error occurred, please try again.");
+                    request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                    return;
+                }
+                
+                try {
+                    as.updateAccount(email, toEdit.getPassword(), firstName, lastName, toEdit.getAccountID(), accountType);
+                    request.setAttribute("accounts", as.getAllAccounts());
+                } catch (SQLException ex) {
+                    Logger.getLogger(AccountManagementController.class.getName()).log(Level.SEVERE, null, ex);
+                    request.setAttribute("errorMessage", ex.getMessage());
+                    request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                    return;
+                }
+                
+                request.setAttribute("successMessage", "Account #" + toEdit.getAccountID() + " has been successfully edited.");
+                request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                break;
             case "delete":
             default:
                 request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                 break;
 
         }
-
-        try {
-            request.setAttribute("accounts", as.getAllAccounts());
-        } catch (SQLException ex) {
-            Logger.getLogger(AccountManagementController.class.getName()).log(Level.SEVERE, null, ex);
-            request.setAttribute("errorMessage", ex.getMessage());
-            request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
-        }
+//
+//        try {
+//            request.setAttribute("accounts", as.getAllAccounts());
+//        } catch (SQLException ex) {
+//            Logger.getLogger(AccountManagementController.class.getName()).log(Level.SEVERE, null, ex);
+//            request.setAttribute("errorMessage", ex.getMessage());
+//            request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+//        }
 //        if (action != null) {
 //            try {
 //                switch (action) {

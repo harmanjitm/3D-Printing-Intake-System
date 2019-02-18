@@ -60,14 +60,13 @@ public class AccountBroker {
             throw new SQLException("Error Updating Account: Missing account information.");
         }
 
-        CallableStatement cStmt = connection.prepareCall("{call updateAccount(?, ?, ?, ?, ?, ?)}");
+        CallableStatement cStmt = connection.prepareCall("{call updateAccount(?, ?, ?, ?, ?)}");
 
         cStmt.setInt(1, account.getAccountID());
         cStmt.setString(2, account.getEmail());
-        cStmt.setString(3, account.getPassword());
-        cStmt.setString(4, account.getFirstname());
-        cStmt.setString(5, account.getLastname());
-        cStmt.setString(6, account.getAccountType());
+        cStmt.setString(3, account.getFirstname());
+        cStmt.setString(4, account.getLastname());
+        cStmt.setString(5, account.getAccountType());
 
         int hadResults = cStmt.executeUpdate();
         connection.close();
