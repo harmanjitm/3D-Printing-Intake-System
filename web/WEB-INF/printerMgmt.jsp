@@ -17,25 +17,21 @@
         <div id="app">
             <v-app>
                 <ARIS3D:Header isAdmin="true" pageName="Printer Management"></ARIS3D:Header>
-                <br>
-                <br>
-                <br>
-                <v-container>
-                    <v-layout>
-                        <v-flex xs12 sm8 offset-sm2>
-                            <v-card>
+                    <br><br><br>
+                    <v-container grid-list-md text-xs-center>
+                        <v-layout row wrap>
+                            <v-flex v-for="i in 3" :key="`4${i}`" xs4>
+                            <v-card class="elevation-3">
+                                <v-img src="res/img/UM3X_Full_2048x.jpg"
+                                    aspect-ratio="1.5"
+                                  ></v-img>
+                                <v-card-title primary-title><h3 class="headline mb-0">Printer Name</h3></v-card-title>
+                                <v-card-text class="px-0">Info about printer</v-card-text>
                                 <div>
-                                    <v-tabs v-model="active" color="#1B222B" dark slider-color="#8B2635">
-                                        <v-tab v-for="n in 3" :key="n" ripple> Printer {{ n }} </v-tab>
-                                        <v-tab-item v-for="n in 3" :key="n">
-                                            <v-card flat>
-                                                <v-card-text>{{ text }}</v-card-text>
-                                            </v-card>
-                                        </v-tab-item>
-                                    </v-tabs>
+                                    <v-spacer></v-spacer><v-btn color="#8B2635">Edit</v-btn>
                                 </div>
+                                
                             </v-card>
-                        </v-flex>
                     </v-layout>
                 </v-container>
             </v-app>
@@ -44,19 +40,7 @@
         <link href="res/css/header.css" rel="stylesheet" type="text/css"/>
         <script>
             new Vue({
-                el: '#app',
-                data() {
-                    return {
-                        active: null,
-                        text: 'This section will be replaced with printer table data'
-                    }
-                },
-                methods: {
-                    next() {
-                        const active = parseInt(this.active)
-                        this.active = (active < 2 ? active + 1 : 0)
-                    }
-                }
+                el: '#app'
             })
         </script>
 
