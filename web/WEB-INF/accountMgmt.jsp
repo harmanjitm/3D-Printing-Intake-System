@@ -95,7 +95,7 @@
                                                             <v-text-field name="email" v-model="editItem.email" label="Email Address"></v-text-field>
                                                         </v-flex>
                                                         <v-flex xs12 sm6 md6>
-                                                            <v-select v-model="editItem.status" @change="" :items="accountStatusDropdown" item-text="type" item-value="value" label="Account Type" name="accountType"></v-select>
+                                                            <v-select v-model="editItem.status" :items="accountStatusDropdown" item-text="type" item-value="value" label="Account Type" id="accountType" name="accountType"></v-select>
                                                         </v-flex>
                                                     </v-layout>
                                                 </v-container>
@@ -139,12 +139,9 @@
                         lastname = this.lastname,
                         status = this.status
                     },
-                    changeAccountStatus(status)
-                    {
-                        this.editItem.status = status
-                    },
                     edit()
                     {
+                        document.getElementById('accountType').value=this.editItem.status;
                         document.getElementById('edit-account').submit();
                     },
                     remove()

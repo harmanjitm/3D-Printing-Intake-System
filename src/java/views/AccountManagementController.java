@@ -84,7 +84,7 @@ public class AccountManagementController extends HttpServlet {
         String password = request.getParameter("password");
         String firstName = request.getParameter("firstname");
         String lastName = request.getParameter("lastname");
-        String accountType = "user";
+        String accountType = request.getParameter("accountType");
                 
         switch (action) {
             case "add":
