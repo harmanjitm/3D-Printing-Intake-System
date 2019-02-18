@@ -33,7 +33,7 @@ delimiter ;
 DROP PROCEDURE IF EXISTS updateAccount;
 delimiter #
 
-CREATE  PROCEDURE `updateAccount`($account_id INTEGER, $email VARCHAR(100), $password VARCHAR(50), $f_name VARCHAR(50), $l_name VARCHAR(50), $account_type VARCHAR(50))
+CREATE  PROCEDURE `updateAccount`($account_id INTEGER, $email VARCHAR(100), $f_name VARCHAR(50), $l_name VARCHAR(50), $account_type VARCHAR(50))
 proc_main:BEGIN
 	SELECT email, f_name, l_name, account_type
 		FROM ACCOUNT
@@ -41,7 +41,6 @@ proc_main:BEGIN
         
 	UPDATE ACCOUNT
 		SET email = $email, 
-			password = $password,
             f_name = $f_name, 
             l_name = $l_name, 
             account_type = $account_type
