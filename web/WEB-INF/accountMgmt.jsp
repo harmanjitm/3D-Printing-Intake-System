@@ -19,6 +19,7 @@
                 <ARIS3D:Header isAdmin="true" pageName="Account Management"></ARIS3D:Header>
                 <v-content>
                     <v-container>
+                        <v-card color="#8B2635" height="5px"></v-card>
                         <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
                             ${successMessage}
                         </v-alert>
@@ -143,6 +144,7 @@
                     },
                     adminItems: 
                     [ 
+                        {title: 'Home', icon: 'home', link: 'techhome'},
                         {title: 'Dashboard', icon: 'dashboard', link: 'dashboard'},
                         {title: 'Order Queue', icon: 'queue', link: 'queue'},
                         {title: 'Account Management', icon: 'people', link: 'accountmanagement'},

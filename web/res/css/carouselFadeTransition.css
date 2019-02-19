@@ -1,0 +1,35 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 19-Feb-2019, 12:21:01 PM
+    Author     : harma
+*/
+
+.carousel-slide-fade-enter-active {
+    transition: all 1s ease;
+    opacity: 1;
+}
+.carousel-slide-fade-leave-active {
+    transition: all .02s ease-out;
+    /*opacity: 0.5;*/
+}
+.carousel-slide-fade-enter, .slide-fade-leave-to{
+    transform: translateX(10px);
+    opacity: 0;
+}
+
+.carouselOverlay{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.overlayContainer{
+    position: relative;
+    text-align: center;
+    color: white;
+}

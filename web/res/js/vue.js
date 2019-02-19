@@ -7,6 +7,7 @@ new Vue(
         account: '',
         logout: '',
         drawer: false,
+        carouselDelimiter: true,
         adminItems: 
         [ 
             {title: 'Homepage', icon: 'home', link: 'home'},
@@ -19,7 +20,7 @@ new Vue(
         ],
         userItems: 
         [ 
-            {title: 'Homepage', icon: 'home', link: 'home'},
+            {title: 'Home', icon: 'home', link: 'userhome'},
             {title: 'Dashboard', icon: 'dashboard', link: 'userdashboard'}
         ],
         accountmanagementheaders:
@@ -29,6 +30,12 @@ new Vue(
             {text: 'Last Name', value: 'lastname'},
             {text: 'Status', value: 'status'},
             {text: 'Actions', value: 'actions'}
+        ],
+        carousel:
+        [
+            {src: 'res/img/carousel/carouselImage1.jpg', filter: 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)'},
+            {src: 'res/img/carousel/carouselImage2.jpg', filter: 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)'},
+            {src: 'res/img/carousel/carouselImage3.jpg', filter: 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)'}
         ]
     }
 });
