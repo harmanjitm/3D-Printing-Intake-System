@@ -29,12 +29,11 @@
                             <v-btn outline color="pink">Login</v-btn>
                         </a>
                     </v-toolbar>
-<!--3D Printing Intake System
-Working on homepage currently.
-Trying to get the text to appear over the carousel.-->
                     <div class="overlayContainer">
                         <span class="carouselOverlay">
-                            <h1 class="display-1">ARIS 3D Printing Lab</h1>
+                            <h1 class="display-2 font-weight-thin">ARIS 3D Printing Service</h1>
+                            <h1 class="body-1 font-weight-thin">Sign up now to get started!</h1>
+                            <a href="register"><v-btn color="#8B2635" dark round>Register</v-btn></a>
                         </span>
                         <v-card elevation="10">
                             <v-carousel height="400" hide-delimiters>
@@ -43,11 +42,58 @@ Trying to get the text to appear over the carousel.-->
                         </v-card>
                     </div>
                     <v-container>
-                        <h1 class="display-1 text-xs-center font-weight-medium">Our Printing Service</h1>
+                        <h1 class="text-outline display-1 text-xs-center font-weight-thin">Our Printing Service</h1>
                         <br>
                         <v-divider></v-divider>
                         <p class="body-1 text-xs-center" text-center>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse bibendum, eros vel congue tincidunt, enim metus ultricies nibh, in cursus ligula est consequat erat. Curabitur facilisis lectus quis felis fringilla, porta vehicula dolor mattis. Mauris quis dolor quis risus pellentesque ultrices. Donec aliquet dolor et risus viverra rutrum. Vestibulum placerat accumsan mi, in lacinia ex ornare congue. Vivamus tincidunt fermentum ex et aliquam. Pellentesque sit amet rhoncus dui, sed finibus massa. Morbi vestibulum, tellus in gravida dictum, lorem arcu consectetur magna, id pellentesque urna sapien ut augue. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu mollis enim, id blandit nisi. Quisque efficitur hendrerit nisi ut maximus. Mauris a libero sapien.</p>
                         <p class="body-1 text-xs-center" text-center>Donec et lectus sit amet lacus malesuada vehicula nec suscipit diam. Nulla commodo lorem ipsum, blandit scelerisque eros dignissim et. Etiam in urna eu nisi venenatis tristique vitae at ante. In hac habitasse platea dictumst. Cras vel commodo erat. Donec eu tortor vitae diam rhoncus finibus. Aenean in dignissim leo. Vestibulum convallis viverra nunc et porttitor. Suspendisse sed tempus ligula, ut bibendum urna. Nulla venenatis lacus odio, rhoncus luctus lorem ultricies ac. Sed aliquet justo sed feugiat hendrerit. Donec id tempor mi. Vestibulum et imperdiet lacus. Sed turpis augue, imperdiet in malesuada ac, tincidunt at diam. Donec ut vulputate lorem. Sed varius ligula vel maximus viverra.</p>
+                        <v-divider></v-divider>
+                    </v-container>
+                    <v-container grid-list-md text-xs-center>
+                        <v-layout row wrap>
+                            <v-flex xs12 sm12 md6 lg4 xl4>
+                                <v-card color="#8B2635" height="5px"></v-card>
+                                <v-card elevation="10" min-width="300px">
+                                    <v-img aspect-ratio="2.75" src="res/img/carousel/carouselImage1.jpg">
+                                        <v-container fill-height fluid></v-container>
+                                    </v-img>
+                                    <v-card-title primary-title>
+                                            <h3 class="headline mb-0">Printers</h3>
+                                            <v-spacer></v-spacer>
+                                            <v-btn color="#8B2635" dark flat outline round>Browse</v-btn>
+                                    </v-card-title>
+                                    <v-card-text>Our printing service offers a variety of printers. Browse through our selection to find the one best for you!</v-card-text>
+                                </v-card>
+                            </v-flex>
+                            <v-flex xs12 sm12 md6 lg4 xl4>
+                                <v-card color="#8B2635" height="5px"></v-card>
+                                <v-card elevation="10" min-width="300px">
+                                    <v-img aspect-ratio="2.75" src="res/img/MaterialsLogo.jpg">
+                                        <v-container fill-height fluid></v-container>
+                                    </v-img>
+                                    <v-card-title primary-title>
+                                            <h3 class="headline mb-0">Materials</h3>
+                                            <v-spacer></v-spacer>
+                                            <v-btn color="#8B2635" dark flat outline round>Browse</v-btn>
+                                    </v-card-title>
+                                    <v-card-text>We offer many different materials to use for your prints. Browse through our selection of different materials to get the best suitable one for you.</v-card-text>
+                                </v-card>
+                            </v-flex>
+                            <v-flex xs12 sm12 md6 lg4 xl4>
+                                <v-card color="#8B2635" height="5px"></v-card>
+                                <v-card elevation="10" min-width="300px">
+                                    <v-img aspect-ratio="2.75" src="res/img/ContactUsSait.jpg">
+                                        <v-container fill-height fluid></v-container>
+                                    </v-img>
+                                    <v-card-title primary-title>
+                                            <h3 class="headline mb-0">Contact</h3>
+                                            <v-spacer></v-spacer>
+                                            <v-btn color="#8B2635" dark flat outline round>Contact Us</v-btn>
+                                    </v-card-title>
+                                    <v-card-text>For any questions or concerns, please contact us through our contact page.</v-card-text>
+                                </v-card>
+                            </v-flex>
+                        </v-layout>
                     </v-container>
                 </v-content>
                 <v-footer dark height="auto">
