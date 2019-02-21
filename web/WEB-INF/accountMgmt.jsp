@@ -19,13 +19,13 @@
                 <ARIS3D:Header isAdmin="true" pageName="Account Management"></ARIS3D:Header>
                 <v-content>
                     <v-container>
-                        <v-card color="#8B2635" height="5px"></v-card>
                         <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
                             ${successMessage}
                         </v-alert>
                         <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
                             ${errorMessage}
                         </v-alert>
+                        <v-card color="#8B2635" height="5px"></v-card>
                         <v-toolbar class="elevation-1" dark>
                             <v-toolbar-title>Manage Accounts</v-toolbar-title>
                             <v-spacer></v-spacer>

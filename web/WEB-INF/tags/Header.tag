@@ -7,7 +7,6 @@
 <%@tag description="The header." pageEncoding="UTF-8"%>
 <%@attribute description="Specify if the user is a Tech or User. Will display specific page depening on which it is" required="true" name="isAdmin"%>
 <%@attribute description="The page name to display on the header." name="pageName" required="true" %>
-                <v-card color="#8B2635" height="5px"></v-card>
                 <v-navigation-drawer dark v-model="drawer" stateless clipped app fixed>
                     <v-list dense>
                         <c:if test="${isAdmin == true}">

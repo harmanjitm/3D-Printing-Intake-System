@@ -6,7 +6,10 @@ new Vue(
         dialog: false,
         account: '',
         logout: '',
+        password: '',
+        email: '',
         drawer: false,
+        valid: false,
         carouselDelimiter: true,
         adminItems: 
         [ 
@@ -36,6 +39,12 @@ new Vue(
             {src: 'res/img/carousel/carouselImage1.jpg', filter: 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)'},
             {src: 'res/img/carousel/carouselImage2.jpg', filter: 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)'},
             {src: 'res/img/carousel/carouselImage3.jpg', filter: 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)'}
+        ],
+        emailRules: 
+        [
+            v => !!v || 'E-mail is required',
+            v => /.+@.+/.test(v) || 'E-mail must be valid'
         ]
+                
     }
 });
