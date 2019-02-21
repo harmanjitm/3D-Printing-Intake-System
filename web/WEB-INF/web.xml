@@ -91,7 +91,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>MaterialManagementController</servlet-name>
-        <url-pattern>/materialmgmt</url-pattern>
+        <url-pattern>/materialmanagement</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>NoteManagementController</servlet-name>

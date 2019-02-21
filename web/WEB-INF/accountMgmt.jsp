@@ -163,7 +163,11 @@
                     accounts:
                     [
                     <c:forEach items="${accounts}" var="account">
-                        {accountID: '${account.accountID}', email: '${account.email}', firstname: '${account.firstname}', lastname: '${account.lastname}', status: '${account.accountType}'},
+                        {accountID: '${account.accountID}', 
+                         email: '${account.email}', 
+                         firstname: '${account.firstname}', 
+                         lastname: '${account.lastname}', 
+                         status: '${account.accountType}'},
                     </c:forEach>
                     ]
                 },

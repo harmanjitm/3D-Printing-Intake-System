@@ -14,24 +14,24 @@
         <link href="res/css/header.css" rel="stylesheet" type="text/css"/>
         <!-- Definitely still a work in progess. Just trying some things out. Please don't hate -->
         <title>ARIS3D - Printer Management</title>
-        
+
         <style>
-            
+
         </style>
     </head>
     <body>
         <div id="app">
             <v-app>
                 <ARIS3D:Header isAdmin="true" pageName="Printer Management"></ARIS3D:Header>
-                    <br><br><br>
+                <br><br>
                     <v-container grid-list-md >
                         <v-layout row wrap>
                             <v-flex v-for="i in 3" :key="`4${i}`" xs4>
-                            <v-card class="elevation-3" color="#565a61" dark v-if="i === 1"> 
-                                <v-img src="res/img/UM3X_Full_2048x.jpg" aspect-ratio="1.5"></v-img>
+                            <v-card class="elevation-3" v-if="i === 1" @click="clickTest"> 
+                                <v-img src="res/img/UM3X_Full_2048x.jpg" aspect-ratio="1.5" contain></v-img>
                                 <v-card-title primary-title><h3 class="headline mb-0">Ultimaker 3 Extended</h3></v-card-title>
                                 <v-card-text>
-                                        <table class="printer-card-table">
+                                    <table class="printer-card-table">
                                         <tr>
                                             <td class="text-xs-left">Build Volume(x,y,z): </td>
                                             <td class="text-xs-right">406x355x406mm</td>
@@ -53,8 +53,8 @@
                             </v-card>
 
                             <!-- Info for card 2 -->
-                            <v-card class="elevation-3" color="#565a61" dark v-if="i === 2">
-                                <v-img src="res/img/form-2-printer.jpg" aspect-ratio="1.5"></v-img>
+                            <v-card class="elevation-3" v-if="i === 2" @click="clickTest">
+                                <v-img src="res/img/form-2-printer.jpg" aspect-ratio="1.5" contain></v-img>
                                 <v-card-title primary-title><h3 class="headline mb-0">Form 2+</h3></v-card-title>
                                 <v-card-text>
                                     <table class="printer-card-table">
@@ -77,12 +77,12 @@
                                     </table>
                                 </v-card-text>
 
-                            <!-- <v-spacer></v-spacer><v-btn color="#8B2635">Edit</v-btn>-->
+                                <!-- <v-spacer></v-spacer><v-btn color="#8B2635">Edit</v-btn>-->
                             </v-card>
 
                             <!-- Info for card 3 -->
-                            <v-card class="elevation-3" color="#565a61" dark v-if="i === 3">
-                                <v-img v-if="i === 3" src="res/img/Fortus 400mc.jpg" aspect-ratio="1.5"></v-img>
+                            <v-card class="elevation-3" v-if="i === 3" @click="clickTest">
+                                <v-img src="res/img/Fortus 400mc.jpg" aspect-ratio="1.5" contain></v-img>
                                 <v-card-title primary-title><h3 class="headline mb-0">Fortus 400mc</h3></v-card-title>
                                 <v-card-text>
                                     <table class="printer-card-table">
@@ -113,8 +113,16 @@
         <script src="res/js/vue.js" type="text/javascript"></script>
         <script>
 //            new Vue({
-//                el: '#app'
-//            })
+//                el: '#app',
+//                data: {
+//                        image: 'res/img/UM3X_Full_2048x.jpg'
+//                },
+//                methods: {
+//                    clickTest(){
+//                        alert('hello')
+//                    }
+//                }
+//            });
         </script>
 
     </body>
