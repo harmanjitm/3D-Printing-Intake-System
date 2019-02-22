@@ -15,9 +15,6 @@
         <!-- Definitely still a work in progess. Just trying some things out. Please don't hate -->
         <title>ARIS3D - Printer Management</title>
 
-        <style>
-
-        </style>
     </head>
     <body>
         <div id="app">
@@ -25,9 +22,22 @@
                 <ARIS3D:Header isAdmin="true" pageName="Printer Management"></ARIS3D:Header>
                 <br><br>
                     <v-container grid-list-md >
+                        <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
+                            ${successMessage}
+                        </v-alert>
+                        <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
+                            ${errorMessage}
+                        </v-alert>
                         <v-layout row wrap>
-                            <v-flex v-for="i in 3" :key="`4${i}`" xs4>
-                            <v-card class="elevation-3" v-if="i === 1" @click="clickTest"> 
+                            <v-flex @_click="selectItem(item)" v-for="i in 3" :key="`4${i}`" xs4>
+                                <v-dialog v-model="dialog" max-width="750px" v-if="selectedItem">
+                                    <v-card>
+                                        <v-card-title>
+                                            <span class="headline">Edit Printer Details</span>
+                                        </v-card-title>
+                                    </v-card>
+                                </v-dialog>
+                            <v-card class="elevation-3" v-if="i === 1" class="clickable" @click.native="selectItem(item)"> 
                                 <v-img src="res/img/UM3X_Full_2048x.jpg" aspect-ratio="1.5" contain></v-img>
                                 <v-card-title primary-title><h3 class="headline mb-0">Ultimaker 3 Extended</h3></v-card-title>
                                 <v-card-text>
@@ -53,7 +63,7 @@
                             </v-card>
 
                             <!-- Info for card 2 -->
-                            <v-card class="elevation-3" v-if="i === 2" @click="clickTest">
+                            <v-card class="elevation-3" v-if="i === 2">
                                 <v-img src="res/img/form-2-printer.jpg" aspect-ratio="1.5" contain></v-img>
                                 <v-card-title primary-title><h3 class="headline mb-0">Form 2+</h3></v-card-title>
                                 <v-card-text>
@@ -81,7 +91,7 @@
                             </v-card>
 
                             <!-- Info for card 3 -->
-                            <v-card class="elevation-3" v-if="i === 3" @click="clickTest">
+                            <v-card class="elevation-3" v-if="i === 3">
                                 <v-img src="res/img/Fortus 400mc.jpg" aspect-ratio="1.5" contain></v-img>
                                 <v-card-title primary-title><h3 class="headline mb-0">Fortus 400mc</h3></v-card-title>
                                 <v-card-text>
@@ -109,20 +119,26 @@
                 </v-container>
             </v-app>
         </div>
+                            
+        <style scoped>
+            .clickable {
+                cursor: pointer;
+            }
+        </style>
 
         <script src="res/js/vue.js" type="text/javascript"></script>
         <script>
-//            new Vue({
-//                el: '#app',
-//                data: {
-//                        image: 'res/img/UM3X_Full_2048x.jpg'
-//                },
-//                methods: {
-//                    clickTest(){
-//                        alert('hello')
-//                    }
-//                }
-//            });
+            new Vue({
+                el: '#app',
+                data: {
+                    
+                }
+                methods: {
+                    selectItem(item) {
+                        this.selectedItem = item;
+                    },
+                }
+            });
         </script>
 
     </body>
