@@ -46,5 +46,12 @@ new Vue(
             v => /.+@.+/.test(v) || 'E-mail must be valid'
         ]
                 
+    },
+    methods:
+    {
+        login()
+        {
+            document.getElementById('login').submit();
+        }
     }
 });

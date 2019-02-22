@@ -107,9 +107,14 @@
             new Vue({
                 el: '#app',
                 data: () => ({
+                        drawer: false,
                         valid: true,
                         fname: '',
                         lname: '',
+                        userItems: [ 
+                            {title: 'Home', icon: 'home', link: 'userhome'},
+                            {title: 'Dashboard', icon: 'dashboard', link: 'userdashboard'}
+                        ],
                         nameRules: [
                             v => !!v || 'Name is required',
                             v => (v && v.length <= 30) || 'Name must be less than 30 characters'

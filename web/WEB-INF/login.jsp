@@ -3,7 +3,7 @@
     Created on : Jan 18, 2019, 10:16:53 AM
     Author     : 758243
 --%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib tagdir="/WEB-INF/tags/" prefix="ARIS3D" %>
 <!DOCTYPE html>
@@ -27,17 +27,23 @@
                         <br>
                         <v-layout align-center justify-center>
                             <v-flex xs12 sm10 md6 lg4 xl3>
+                                <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
+                                    ${successMessage}
+                                </v-alert>
+                                <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
+                                    ${errorMessage}
+                                </v-alert>
                                 <v-card color="#8B2635" height="5px"></v-card>
                                 <v-card xs12 class="elevation-12">
                                     <v-toolbar dark color="#1B222B">
                                         <v-toolbar-title>ARIS3D Login</v-toolbar-title>
                                     </v-toolbar>
                                     <v-card-text>
-                                        <v-form>
-                                            <v-text-field label="Email" name="email" v-model="email" :rules="emailRules"></v-text-field>
+                                        <v-form id="login" action="login" method="post">
+                                            <v-text-field label="Email" <c:if test='${email != null}'>value="${email}"</c:if><c:if test='${email == null}'>v-model="email"</c:if> name="email" :rules="emailRules"></v-text-field>
                                             <v-text-field label="Password" name="password"></v-text-field>
                                             <div class="text-xs-center">
-                                                <v-btn color="#8B2635" large dark>Login</v-btn><br>
+                                                <v-btn color="#8B2635" large dark @click="login">Login</v-btn><br>
                                                 <span class="caption">Don't have an account? Sign up <a href="register">here</a></span>
                                             </div>
                                         </v-form>

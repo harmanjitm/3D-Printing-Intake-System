@@ -8,6 +8,9 @@ package views;
 
 import domain.Account;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,44 +32,89 @@ public class LoginController extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
+        AccountService as = new AccountService();
+        HttpSession session = request.getSession();
+        
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         
-        HttpSession session = request.getSession();
+        if(email == null || email.equals(""))
+        {
+            request.setAttribute("errorMessage", "Please make sure <b>Email</b> is not empty.");
+            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            return;
+        }
         
-        AccountService as = new AccountService();
-        Account account = as.checkCredentials(email, password);  
-        if(!(email == null || email.equals("")) && !(password == null || password.equals("")))
+        if(password == null || password.equals(""))
         {
-                
-            if(account != null)
-            {
-                if((account.getAccountType().equals("admin")))
-                {
-                    session.setAttribute("email", email);
-                    response.sendRedirect("techHome");
-                }
-                else if(account.getAccountType().equals("user"))
-                {
-                    session.setAttribute("email", email);
-                    response.sendRedirect("userHome");
-                }
-                else
-                {
-                    request.setAttribute("errorMessage", "Your account is currently inactive. If you want to reactive click here.");
-                    getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);       
-                }   
-            }
-            else
-            {
-                request.setAttribute("errorMessage", "User does not exist.");
-                getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
-            }
+            request.setAttribute("email", email);
+            request.setAttribute("errorMessage", "Please make sure <b>Password</b> is not empty.");
+            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            return;
         }
-        else
+        
+        Account account = null;
+        try {
+            account = as.checkCredentials(email, password);
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        if(account == null)
         {
-            request.setAttribute("errorMessage", "Please enter your username or password.");
-            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            request.setAttribute("email", email);
+            request.setAttribute("errorMessage", "Invalid Credentials.");
+            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            return;
         }
+        
+        account.setPassword("");
+        session.setAttribute("account", account);
+        
+        switch(account.getAccountType())
+        {
+            case "user":
+                response.sendRedirect("userHome");
+                return;
+            case "admin":
+                response.sendRedirect("dashboard");
+                return;
+            default:
+                request.setAttribute("errorMessage", "Login Error: Your account is currently inactive. Please contact us <a href='contact'>here</a>");
+                request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+                return;
+        }
+//        if(!(email == null || email.equals("")) && !(password == null || password.equals("")))
+//        {
+//                
+//            if(account != null)
+//            {
+//                if((account.getAccountType().equals("admin")))
+//                {
+//                    session.setAttribute("email", email);
+//                    response.sendRedirect("techHome");
+//                }
+//                else if(account.getAccountType().equals("user"))
+//                {
+//                    session.setAttribute("email", email);
+//                    response.sendRedirect("userHome");
+//                }
+//                else
+//                {
+//                    request.setAttribute("errorMessage", "Your account is currently inactive. If you want to reactive click here.");
+//                    getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);       
+//                }   
+//            }
+//            else
+//            {
+//                request.setAttribute("errorMessage", "User does not exist.");
+//                getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+//            }
+//        }
+//        else
+//        {
+//            request.setAttribute("errorMessage", "Please enter your username or password.");
+//            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+//        }
     }
 }

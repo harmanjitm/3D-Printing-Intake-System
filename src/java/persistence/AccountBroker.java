@@ -205,8 +205,27 @@ public class AccountBroker {
         cStmt.setString(1, email);
         cStmt.setString(2, password);
 
-        boolean hadResults = cStmt.execute();
+        ResultSet rs = cStmt.executeQuery();
+        if(rs == null)
+        {
+            return false;
+        }
+        
+        String accountType = null;
+        while(rs.next())
+        {
+            accountType = rs.getString("account_type");
+        }
+        
         connection.close();
-        return hadResults ? true : false;
+        
+        if(accountType != null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
