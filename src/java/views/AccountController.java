@@ -35,7 +35,7 @@ public class AccountController extends HttpServlet
             accountID = Integer.parseInt(accountSelected);
             try 
             {
-                Account acc = as.getUser(accountID);
+                Account acc = as.getAccountByID(accountID);
                 request.setAttribute("accountSelected", acc);
             } 
             catch (Exception ex) 
