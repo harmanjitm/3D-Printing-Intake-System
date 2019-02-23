@@ -32,6 +32,20 @@ public class Printer {
 		
 	}
 
+        /**
+	 * Instantiates a new printer.
+	 *
+	 * @param size the size
+         * @param name the name
+	 * @param status the status
+	 */
+	public Printer(String size, String name, String status) {
+		super();
+		this.size = size;
+		this.status = status;
+		this.name = name;
+	}
+        
 	/**
 	 * Instantiates a new printer.
 	 *

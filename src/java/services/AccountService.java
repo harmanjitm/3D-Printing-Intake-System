@@ -25,8 +25,8 @@ public class AccountService {
     }
 
     /**
-     * Creates a new account object calls the method to persist it to the
-     * database.
+     * Creates a new account object and calls the method to persist 
+     * it within the database.
      *
      * @return the account if created or null if the creation fails
      */
