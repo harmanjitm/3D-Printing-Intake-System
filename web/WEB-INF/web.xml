@@ -68,7 +68,14 @@
         <servlet-name>PrinterManagementController</servlet-name>
         <servlet-class>views.PrinterManagementController</servlet-class>
     </servlet>
-    
+    <servlet>
+        <servlet-name>TechHomeController</servlet-name>
+        <servlet-class>views.TechHomeController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserHomeController</servlet-name>
+        <servlet-class>views.UserHomeController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -128,6 +135,14 @@
     <servlet-mapping>
         <servlet-name>PrinterManagementController</servlet-name>
         <url-pattern>/printermanagement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TechHomeController</servlet-name>
+        <url-pattern>/dashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserHomeController</servlet-name>
+        <url-pattern>/userhome</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

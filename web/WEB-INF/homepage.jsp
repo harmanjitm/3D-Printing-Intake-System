@@ -4,6 +4,7 @@
     Author     : 756852
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib tagdir="/WEB-INF/tags/" prefix="ARIS3D" %>
 <!DOCTYPE html>
@@ -22,12 +23,24 @@
                     <v-toolbar dark color="#1B222B">
                         <v-toolbar-title>ARIS3D</v-toolbar-title>
                         <v-spacer></v-spacer>
-                        <a href="register">
-                            <v-btn outline color="pink">Register</v-btn>
-                        </a>
-                        <a href="login">
-                            <v-btn outline color="pink">Login</v-btn>
-                        </a>
+                        <c:if test="${account == null}">
+                            <a href="register">
+                                <v-btn outline color="pink">Register</v-btn>
+                            </a>
+                            <a href="login">
+                                <v-btn outline color="pink">Login</v-btn>
+                            </a>
+                        </c:if>
+                        <c:if test="${account.accountType == 'admin'}">
+                            <a href="dashboard">
+                                <v-btn outline color="pink">Dashboard</v-btn>
+                            </a>
+                        </c:if>
+                        <c:if test="${account.accountType == 'user'}">
+                            <a href="userhome">
+                                <v-btn outline color="pink">Dashboard</v-btn>
+                            </a>
+                        </c:if>
                     </v-toolbar>
                     <div class="overlayContainer">
                         <span class="carouselOverlay">

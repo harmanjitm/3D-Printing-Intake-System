@@ -15,7 +15,6 @@
     <body>
         <div id="app">
             <v-app>
-                <v-card color="#8B2635" height="5px"></v-card>
                 <ARIS3D:Header isAdmin="false" pageName="Login"></ARIS3D:Header>
                 <v-content>
                     <v-container fluid>

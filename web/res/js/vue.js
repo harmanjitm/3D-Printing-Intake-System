@@ -23,8 +23,8 @@ new Vue(
         ],
         userItems: 
         [ 
-            {title: 'Home', icon: 'home', link: 'userhome'},
-            {title: 'Dashboard', icon: 'dashboard', link: 'userdashboard'}
+            {title: 'Home', icon: 'home', link: 'home'},
+            {title: 'Dashboard', icon: 'dashboard', link: 'userhome'}
         ],
         accountmanagementheaders:
         [

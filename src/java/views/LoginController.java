@@ -74,7 +74,7 @@ public class LoginController extends HttpServlet
         switch(account.getAccountType())
         {
             case "user":
-                response.sendRedirect("userHome");
+                response.sendRedirect("userhome");
                 return;
             case "admin":
                 response.sendRedirect("dashboard");
