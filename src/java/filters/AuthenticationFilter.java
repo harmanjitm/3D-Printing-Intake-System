@@ -64,7 +64,7 @@ public class AuthenticationFilter implements Filter {
             HttpSession session = r.getSession();
             //My dude we are NOT storing passwords anywhere except the database
             //Email is enough for checking if cookies are stored on the browser
-            if (session.getAttribute("email") != null) {
+            if (session.getAttribute("account") != null) {
                 //if user is authenticated, continue on to the servlet
                 chain.doFilter(request, response);
             } else {

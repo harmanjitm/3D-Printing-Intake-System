@@ -25,8 +25,30 @@ import services.AccountService;
 public class LoginController extends HttpServlet 
 {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
-    {        
-        getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+    {
+        HttpSession session = request.getSession();
+        Account account = (Account) session.getAttribute("account");
+        if(account != null)
+        {
+            if(request.getParameter("logout") != null)
+            {
+                session.invalidate();
+                request.setAttribute("successMessage", "You have successfully been logged out.");
+                request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+                return;
+            }
+            
+            switch(account.getAccountType())
+            {
+                case "user":
+                    response.sendRedirect("userhome");
+                    return;
+                case "admin":
+                    response.sendRedirect("dashboard");
+                    return;
+            }
+        }
+        request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
     }
 
     @Override
