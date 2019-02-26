@@ -10,6 +10,7 @@ import domain.Account;
 import domain.Printer;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,11 +29,18 @@ public class PrinterManagementController extends HttpServlet
 {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
-        int printerID;
         PrinterService ps = new PrinterService();
+  
+        try
+        {
+            ArrayList<Printer> printers = ps.getAllPrinters();
+            request.setAttribute("printers", printers);
+        } 
+        catch (SQLException ex)
+        {
+            Logger.getLogger(PrinterManagementController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-        ArrayList<Printer> printers = ps.getAllPrinters();
-        request.setAttribute("printers", ps.getAllPrinters());
         request.getRequestDispatcher("/WEB-INF/printerMgmt.jsp").forward(request, response);
     }
 
@@ -44,14 +52,12 @@ public class PrinterManagementController extends HttpServlet
         String printerSize = request.getParameter("printerSize");
         String printerStatus = request.getParameter("printerStatus");
         String printerName  = request.getParameter("printerName");
-        
-        PrinterService ps = new PrinterService();
-        request.setAttribute("accounts", ps.getAllPrinters());
-        
+    
         if(action!=null)
         {
             try 
             {
+                PrinterService ps = new PrinterService();
                 switch(action)
                 {
                     case "add":
@@ -59,6 +65,8 @@ public class PrinterManagementController extends HttpServlet
                             && !(printerName == null || printerName.equals("")))
                         {                   
                             ps.createPrinter(printerSize, printerStatus, printerName);
+                            ArrayList<Printer> printers =  (ArrayList<Printer>) request.getAttribute("printers");
+                            request.setAttribute("printers", printers);
                             request.setAttribute("addM", "New Printer added.");
                             request.getRequestDispatcher("/WEB-INF/printerMgmt.jsp").forward(request, response);  
                         }
@@ -74,7 +82,8 @@ public class PrinterManagementController extends HttpServlet
                         {                   
                             String prntID = request.getParameter("printerID");
                             printerID = Integer.parseInt(prntID);
-                            ps.printerUpdate();
+                            Printer printer = ps.getPrinterById(printerID);
+                            ps.updatePrinter(printer);
                             request.setAttribute("editM", "Printer has been updated.");
                             request.getRequestDispatcher("/WEB-INF/printerMgmt.jsp").forward(request, response);
                         }
@@ -83,7 +92,6 @@ public class PrinterManagementController extends HttpServlet
                             request.setAttribute("errorM", "Please enter all of the required fields.");
                             request.getRequestDispatcher("/WEB-INF/printerMgmt.jsp").forward(request, response);
                         }
-
                         break;
                     case "delete":
                         String prntID = request.getParameter("printerID");

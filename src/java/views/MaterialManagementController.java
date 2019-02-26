@@ -35,13 +35,9 @@ public class MaterialManagementController extends HttpServlet
             int materialID = Integer.parseInt(matID);
             try
             {
-                for(Material material: materials)
-                {
-                    if(material.getMaterialId().equals(materialID))
-                    {
-                        request.setAttribute("material", material);
-                    }
-                }
+                Material material = ms.getMaterial(materialID);
+                materials.add(material);
+                request.setAttribute("materials", materials);
             } 
             catch (Exception ex) 
             {
@@ -93,7 +89,7 @@ public class MaterialManagementController extends HttpServlet
                             {
                                 System.out.println(editMaterial.getMaterialId());
                                 System.out.println("Finding Material");
-                                ms.updateMaterial(materialName, materialDesc, editMaterial.getMaterialId());
+                                ms.updateMaterial(editMaterial);
                                 System.out.println("Found Material");
                             }
                         }
