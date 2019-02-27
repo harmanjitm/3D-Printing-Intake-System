@@ -85,7 +85,7 @@ public class AccountManagementController extends HttpServlet {
         String firstName = request.getParameter("firstname");
         String lastName = request.getParameter("lastname");
         String accountType = request.getParameter("accountType");
-                
+
         switch (action) {
             case "add":
                 accountType = "user";
@@ -100,10 +100,9 @@ public class AccountManagementController extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
-                
+
                 try {
-                    if(as.getAccountByEmail(email) != null)
-                    {
+                    if (as.getAccountByEmail(email) != null) {
                         throw new Exception("Error Adding Account: An account already exists with the email: " + email);
                     }
                 } catch (Exception ex) {
@@ -112,16 +111,14 @@ public class AccountManagementController extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
-                
+
                 Account account = null;
                 try {
                     int created = as.createAccount(email, password, firstName, lastName, accountType);
                     request.setAttribute("accounts", as.getAllAccounts());
                     if (created == 1) {
                         account = as.getAccountByEmail(email);
-                    }
-                    else
-                    {
+                    } else {
                         throw new Exception("Error Creating Account: An unexpected error occurred and account has not been created.");
                     }
                 } catch (Exception ex) {
@@ -130,7 +127,7 @@ public class AccountManagementController extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
-                
+
                 request.setAttribute("successMessage", "Account #" + account.getAccountID() + " has been successfully created!");
                 request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                 break;
@@ -140,35 +137,52 @@ public class AccountManagementController extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
-                
+
                 if (!(accountType.equals("admin") || accountType.equals("user"))) {
                     request.setAttribute("errorMessage", "Error Editing Account: Invalid account type.");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
                 System.out.println(firstName + " " + lastName + " " + email + " " + request.getParameter("accountID") + " " + accountType);
-                
-                if(request.getParameter("accountID") == null || request.getParameter("accountID").equals(""))
-                {
+
+                if (request.getParameter("accountID") == null || request.getParameter("accountID").equals("")) {
                     request.setAttribute("errorMessage", "Error Editing Account: An unexpected error occurred, please try again.");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
-                
+
                 Account toEdit = null;
                 try {
                     toEdit = as.getAccountByID(Integer.valueOf(request.getParameter("accountID")));
                 } catch (SQLException ex) {
                     Logger.getLogger(AccountManagementController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-                if(toEdit == null)
-                {
+
+                if (toEdit == null) {
                     request.setAttribute("errorMessage", "Error Editing Account: An unexpected error occurred, please try again.");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
-                
+
+                if (accountType.equals("user")) {
+                    int admins = 0;
+                    try {
+                        ArrayList<Account> accounts = as.getAllAccounts();
+                        for (Account acc : accounts) {
+                            if (acc.getAccountType().equals("admin")) {
+                                admins++;
+                            }
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(AccountManagementController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    if (admins - 1 == 0) {
+                        request.setAttribute("errorMessage", "Error Editing Account: There must be at least one <b>Admin</b> active.");
+                        request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                        return;
+                    }
+                }
+
                 try {
                     as.updateAccount(email, toEdit.getPassword(), firstName, lastName, toEdit.getAccountID(), accountType);
                     request.setAttribute("accounts", as.getAllAccounts());
@@ -178,7 +192,7 @@ public class AccountManagementController extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
-                
+
                 request.setAttribute("successMessage", "Account #" + toEdit.getAccountID() + " has been successfully edited.");
                 request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                 break;
@@ -186,21 +200,22 @@ public class AccountManagementController extends HttpServlet {
             default:
                 request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                 break;
-
         }
-//                    case "delete":
-//                        String accID = request.getParameter("accountID");
-//                        accountID = Integer.parseInt(accID);
-//                        int acc = as.deleteAccount(accountID);
-//                        if (acc == 0) {
-//                            request.setAttribute("errorMessage", "Can't delete this user.");
-//                            request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
-//                        } else {
-//                            as.deleteAccount(accountID);
-//                            request.setAttribute("successMessage", "User has been deleted.");
-//                            request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
-//                            break;
-//
-//                        }
+
+        Account acc = (Account) request.getSession().getAttribute("account");
+        try {
+            if (as.getAccountByID(acc.getAccountID()) != null) {
+                request.getSession().setAttribute("account", acc);
+                if (!acc.getAccountType().equals("admin")) {
+                    response.sendRedirect("login");
+                }
+            } else {
+                request.getSession().invalidate();
+                response.sendRedirect("login");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountManagementController.class.getName()).log(Level.SEVERE, null, ex);
+            response.sendRedirect("login");
+        }
     }
 }

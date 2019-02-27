@@ -9,7 +9,7 @@
 <%@attribute description="The page name to display on the header." name="pageName" required="true" %>
                 <v-navigation-drawer dark v-model="drawer" stateless clipped app fixed>
                     <v-list dense>
-                        <c:if test="${isAdmin == true}">
+                        <c:if test="${account.accountType == 'admin'}">
                             <v-list-tile :href="item.link" :key="item.title" v-for="item in adminItems">
                                 <v-list-tile-action>
                                     <v-icon>{{ item.icon }}</v-icon>
@@ -19,7 +19,7 @@
                                 </v-list-tile-content>
                             </v-list-tile>
                         </c:if>
-                        <c:if test="${isAdmin != true}">
+                        <c:if test="${account.accountType == 'user'}">
                             <v-list-tile :href="item.link" :key="item.title" v-for="item in userItems">
                                 <v-list-tile-action>
                                     <v-icon>{{ item.icon }}</v-icon>
