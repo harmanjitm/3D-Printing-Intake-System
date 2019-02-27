@@ -29,7 +29,7 @@
                             ${errorMessage}
                         </v-alert>
                         <v-layout row wrap>
-                            <v-flex @_click="selectItem(item)" v-for="i in 3" :key="`4${i}`" xs4>
+                            <v-flex @_click="selectItem(item)" v-for="printer in printers" :key="`4${printer}`" xs4>
                                 <v-dialog v-model="dialog" max-width="750px" v-if="selectedItem">
                                     <v-card>
                                         <v-card-title>
@@ -37,33 +37,34 @@
                                         </v-card-title>
                                     </v-card>
                                 </v-dialog>
-                            <v-card class="elevation-3" v-if="i === 1" class="clickable" @click.native="selectItem(item)"> 
-                                <v-img src="res/img/UM3X_Full_2048x.jpg" aspect-ratio="1.5" contain></v-img>
-                                <v-card-title primary-title><h3 class="headline mb-0">Ultimaker 3 Extended</h3></v-card-title>
-                                <v-card-text>
-                                    <table class="printer-card-table">
-                                        <tr>
-                                            <td class="text-xs-left">Build Volume(x,y,z): </td>
-                                            <td class="text-xs-right">406x355x406mm</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-xs-left">Run Cost: </td>
-                                            <td class="text-xs-right">$2.50/h</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-xs-left">Status: </td>
-                                            <td class="text-xs-right">Online</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-xs-left">Available Material: </td>
-                                            <td class="text-xs-right">ABS-M30 | SR30</td>
-                                        </tr>
-                                    </table>
-                                </v-card-text>
-                            </v-card>
+                                <v-card class="elevation-3" class="clickable" @click.native="selectItem(printer)"> 
+                                    <v-img src="res/img/UM3X_Full_2048x.jpg" aspect-ratio="1.5" contain></v-img>
+                                    <v-card-title primary-title><h3 class="headline mb-0">Ultimaker 3 Extended</h3></v-card-title>
+                                    <v-card-text>
+                                        <table class="printer-card-table">
+                                            <tr>
+                                                <td class="text-xs-left">Build Volume(x,y,z): </td>
+                                                <td class="text-xs-right">406x355x406mm</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-xs-left">Run Cost: </td>
+                                                <td class="text-xs-right">$2.50/h</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-xs-left">Status: </td>
+                                                <td class="text-xs-right">Online</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-xs-left">Available Material: </td>
+                                                <td class="text-xs-right">ABS-M30 | SR30</td>
+                                            </tr>
+                                        </table>
+                                    </v-card-text>
+                                </v-card>
+                            </v-flex>
 
                             <!-- Info for card 2 -->
-                            <v-card class="elevation-3" v-if="i === 2">
+<!--                            <v-card class="elevation-3">
                                 <v-img src="res/img/form-2-printer.jpg" aspect-ratio="1.5" contain></v-img>
                                 <v-card-title primary-title><h3 class="headline mb-0">Form 2+</h3></v-card-title>
                                 <v-card-text>
@@ -87,10 +88,10 @@
                                     </table>
                                 </v-card-text>
 
-                                <!-- <v-spacer></v-spacer><v-btn color="#8B2635">Edit</v-btn>-->
+                                 <v-spacer></v-spacer><v-btn color="#8B2635">Edit</v-btn>
                             </v-card>
 
-                            <!-- Info for card 3 -->
+                             Info for card 3 
                             <v-card class="elevation-3" v-if="i === 3">
                                 <v-img src="res/img/Fortus 400mc.jpg" aspect-ratio="1.5" contain></v-img>
                                 <v-card-title primary-title><h3 class="headline mb-0">Fortus 400mc</h3></v-card-title>
@@ -114,7 +115,7 @@
                                         </tr>
                                     </table>
                                 </v-card-text>
-                            </v-card>
+                            </v-card>-->
                     </v-layout>
                 </v-container>
             </v-app>
@@ -126,13 +127,32 @@
             }
         </style>
 
-        <script src="res/js/vue.js" type="text/javascript"></script>
+        <!--<script src="res/js/vue.js" type="text/javascript"></script>-->
         <script>
             new Vue({
                 el: '#app',
                 data: {
-                    
-                }
+                    drawer: 'false',//Add a sleected item thingy somewhere here
+                    adminItems: 
+                    [ 
+                        {title: 'Home', icon: 'home', link: 'home'},
+                        {title: 'Dashboard', icon: 'dashboard', link: 'dashboard'},
+                        {title: 'Order Queue', icon: 'queue', link: 'queue'},
+                        {title: 'Account Management', icon: 'people', link: 'accountmanagement'},
+                        {title: 'Material Management', icon: 'texture', link: 'materialmanagement'},
+                        {title: 'Printer Management', icon: 'print', link: 'printermanagement'},
+                        {title: 'Reports', icon: 'poll', link: 'reportmanagement'}
+                    ],
+                    printers: 
+                    [
+                        <c:forEach items="${printers}" var="printer">
+                            {printerId: '${printer.printerId}',
+                             size: '${printer.size}',
+                             status: '${printer.status}',
+                             name: '${printer.name}'},
+                        </c:forEach>
+                    ]
+                },
                 methods: {
                     selectItem(item) {
                         this.selectedItem = item;
