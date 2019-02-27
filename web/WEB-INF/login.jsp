@@ -16,17 +16,17 @@
         <div id="app">
             <v-app>
                 <ARIS3D:Header isAdmin="false" pageName="Login"></ARIS3D:Header>
-                <v-content>
-                    <v-container fluid>
-                        <v-layout align-center justify-center>
-                            <v-flex xs3 sm3 md2 lg1 xl1>
-                                <a href="home"><v-img src="res/img/SAITARISLogo.png"></v-img></a>
-                            </v-flex>
-                        </v-layout>
-                        <br>
-                        <v-layout align-center justify-center>
-                            <v-flex xs12 sm10 md6 lg4 xl3>
-                                <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
+                    <v-content>
+                        <v-container fluid>
+                            <v-layout align-center justify-center>
+                                <v-flex xs3 sm3 md2 lg1 xl1>
+                                    <a href="home"><v-img src="res/img/SAITARISLogo.png"></v-img></a>
+                                </v-flex>
+                            </v-layout>
+                            <br>
+                            <v-layout align-center justify-center>
+                                <v-flex xs12 sm10 md6 lg4 xl3>
+                                    <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
                                     ${successMessage}
                                 </v-alert>
                                 <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
@@ -39,11 +39,12 @@
                                     </v-toolbar>
                                     <v-card-text>
                                         <v-form id="login" action="login" method="post">
-                                            <v-text-field label="Email" <c:if test='${email != null}'>value="${email}"</c:if><c:if test='${email == null}'>v-model="email"</c:if> name="email" :rules="emailRules"></v-text-field>
-                                            <v-text-field label="Password" name="password"></v-text-field>
+
+                                            <v-text-field prepend-icon="person" name="email" label="Email" <c:if test='${email != null}'>value="${email}"</c:if><c:if test='${email == null}'>v-model="email"</c:if>></v-text-field>
+                                            <v-text-field prepend-icon="lock" name="password" label="Password" type="password"></v-text-field>
                                             <div class="text-xs-center">
-                                                <v-btn color="#8B2635" large dark @click="login">Login</v-btn><br>
-                                                <span class="caption">Don't have an account? Sign up <a href="register">here</a></span>
+                                            <v-btn color="#8B2635" large dark @click="login">Login</v-btn><br>
+                                            <span class="caption">Don't have an account? Sign up <a href="register" id="registerLink">here</a></span>
                                             </div>
                                         </v-form>
                                     </v-card-text>
@@ -67,6 +68,7 @@
         </div>
         <script src="res/js/vue.js" type="text/javascript"></script>
         <link href="res/css/header.css" rel="stylesheet" type="text/css"/>
+        
     </body>
 </html>
 

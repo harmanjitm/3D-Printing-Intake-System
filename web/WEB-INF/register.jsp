@@ -38,7 +38,7 @@
                                 <v-form ref="form" v-model="valid" id="create-account" method="post" action="accountmanagement" lazy-validation>
                                     <v-text-field
                                         name="firstname"
-                                        :counter="10"
+                                        :counter="20"
                                         :rules="nameRules"
                                         label="First Name"
                                         required
@@ -46,7 +46,7 @@
 
                                     <v-text-field
                                         name="lastname"
-                                        :counter="10"
+                                        :counter="20"
                                         :rules="nameRules"
                                         label="Last Name"
                                         required
@@ -55,12 +55,14 @@
                                     <v-text-field
                                         name="email"
                                         :rules="emailRules"
-                                        label="E-mail"
+                                        label="Email"
                                         required
                                         ></v-text-field>
 
                                     <v-text-field
-                                        name="password"
+                                        v-model="password"
+                                        v-bind="password.primary"
+                                        v-validate="password.primary"
                                         :append-icon="show1 ? 'visibility_off' : 'visibility'"
                                         :rules="[rules.required, rules.min]"
                                         :type="show1 ? 'text' : 'password'"
@@ -70,9 +72,11 @@
                                         ></v-text-field>
 
                                     <v-text-field
-                                        name="confirmPass"
+                                        v-model="confirmPass"
+                                        v-bind="password.confirm"
+                                        v-validate="password.confirm"
                                         :append-icon="show1 ? 'visibility_off' : 'visibility'"
-                                        :rules="[rules.required, rules.min]"
+                                        :rules="[rules.required, rules.min, rules.passMatch]"
                                         :type="show1 ? 'text' : 'password'"
                                         label="Confirm Password"
                                         hint="At least 8 characters"
@@ -116,20 +120,19 @@
                             {title: 'Dashboard', icon: 'dashboard', link: 'userdashboard'}
                         ],
                         nameRules: [
-                            v => !!v || 'Name is required',
+                            v => !!v || 'required',
                             v => (v && v.length <= 30) || 'Name must be less than 30 characters'
                         ],
                         email: '',
                         emailRules: [
-                            v => !!v || 'E-mail is required',
-                            v => /.+@.+/.test(v) || 'E-mail must be valid'
+                            v => !!v || 'Email is required',
+                            v => /.+@.+/.test(v) || 'This E-mail is invalid'
                         ],
                         password: '',
                         confirmPass: '',
                         rules: {
                             required: value => !!value || 'Required.',
-                            min: v => v.length >= 8 || 'Min 8 characters',
-                            emailMatch: () => ('The email and password you entered don\'t match')
+                            passMatch: () => ('Passwords do not match')
                         },
                         checkbox: false
                     }),

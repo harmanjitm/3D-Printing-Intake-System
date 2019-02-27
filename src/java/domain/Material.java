@@ -21,7 +21,7 @@ public class Material {
         private String color;
         
         /** value of material per unit. */
-        private Double cost;
+        private double cost;
         
         /** returns true if material is in stock, false if not */
         private boolean available;
