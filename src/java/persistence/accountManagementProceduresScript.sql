@@ -1,4 +1,4 @@
-use ARIS;
+use aris;
 
 /* ***************************************************************
 ** Author:  Emily Pegg	                                       	**
@@ -33,18 +33,61 @@ delimiter ;
 DROP PROCEDURE IF EXISTS updateAccount;
 delimiter #
 
-CREATE  PROCEDURE `updateAccount`($account_id INTEGER, $email VARCHAR(100), $f_name VARCHAR(50), $l_name VARCHAR(50), $account_type VARCHAR(50))
+CREATE PROCEDURE updateAccount($account_id INTEGER, $email VARCHAR(100), $f_name VARCHAR(50), $l_name VARCHAR(50), $account_type VARCHAR(50))
 proc_main:BEGIN
-	SELECT email, f_name, l_name, account_type
-		FROM ACCOUNT
+    SELECT email, f_name, l_name, account_type
+        FROM ACCOUNT
         WHERE account_id = $account_id;
         
-	UPDATE ACCOUNT
-		SET email = $email, 
+    UPDATE ACCOUNT
+        SET email = $email, 
             f_name = $f_name, 
             l_name = $l_name, 
             account_type = $account_type
         WHERE account_id = $account_id;
+END proc_main #
+delimiter ;
+
+/* ***************************************************************
+** Author:  Emily Pegg	                                       	**
+** Creation Date:  February, 2019     							**
+** Procedure Name: Update Account Type                      	**
+** Description:  Updates the status of an existing user by      **
+**               finding the provided id and changing the status**
+** Input:  Account Id, Account Type 							**
+** Output: Old value for Account Type				            **
+******************************************************************/
+DROP PROCEDURE IF EXISTS updateAccountType;
+delimiter #
+
+CREATE  PROCEDURE `updateAccountType`($account_id INTEGER, $account_type VARCHAR(50))
+proc_main:BEGIN
+	SELECT account_type
+		FROM ACCOUNT
+        WHERE account_id = $account_id;
+        
+	UPDATE ACCOUNT
+		SET account_type = $account_type
+		WHERE account_id = $account_id;
+END proc_main #
+delimiter ;
+
+/* ***************************************************************
+** Author:  Emily Pegg	                                       	**
+** Creation Date:  February, 2019     							**
+** Procedure Name: Update Account Password                    	**
+** Description:  Updates the password of an existing user by    **
+**               the provided id and changing the password		**
+** Input:  Account Id, Password 					            **
+******************************************************************/
+DROP PROCEDURE IF EXISTS updateAccountPassword;
+delimiter #
+
+CREATE  PROCEDURE `updateAccountPassword`($account_id INTEGER, $password VARCHAR(50))
+proc_main:BEGIN        
+	UPDATE ACCOUNT
+		SET password = $password
+		WHERE account_id = $account_id;
 END proc_main #
 delimiter ;
 
@@ -112,16 +155,16 @@ delimiter ;
 ** Input:  Account Id											**
 ** Output:  All Order Queue information							**
 ******************************************************************/
-DROP PROCEDURE IF EXISTS deleteFilesByAccount;
+DROP PROCEDURE IF EXISTS deleteOrderQueueByAccount;
 delimiter #
 
-CREATE  PROCEDURE `deleteFilesByAccount`($account_id INTEGER)
+CREATE  PROCEDURE `deleteOrderQueueByAccount`($account_id INTEGER)
 proc_main:BEGIN	
 	SELECT * 
-		FROM FILE
+		FROM ORDER_QUEUE
         WHERE account_id = $account_id;
 		
-	DELETE FROM FILE 
+	DELETE FROM ORDER_QUEUE 
 		WHERE account_id = $account_id;
 END proc_main #
 delimiter ;

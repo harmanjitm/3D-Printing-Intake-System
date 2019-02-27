@@ -164,7 +164,7 @@ public class AccountManagementController extends HttpServlet {
                     return;
                 }
 
-                if (accountType.equals("user")) {
+                if (accountType.equals("user") && toEdit.getAccountType().equals("admin")) {
                     int admins = 0;
                     try {
                         ArrayList<Account> accounts = as.getAllAccounts();

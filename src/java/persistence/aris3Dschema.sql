@@ -128,10 +128,20 @@ DROP TABLE IF EXISTS `aris`.`MATERIAL` ;
 
 CREATE TABLE IF NOT EXISTS `aris`.`MATERIAL` (
   `material_name` VARCHAR(30) NULL,
+  `material_cost` DECIMAL(13,4) NOT NULL,
   `material_description` VARCHAR(500) NULL,
   `material_id` INT NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`material_id`));
 ALTER TABLE MATERIAL AUTO_INCREMENT=50;
+
+-- -----------------------------------------------------
+-- Table `aris`.`MATERIAL_COLOUR`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `aris`.`MATERIAL_COLOUR` ;
+
+CREATE TABLE IF NOT EXISTS `aris`.`MATERIAL_COLOUR` (
+  `colour` VARCHAR(50) NOT NULL,
+  `material_id` INT NOT NULL, FOREIGN KEY (material_id) REFERENCES MATERIAL(material_id));
 
 -- -----------------------------------------------------
 -- Table `aris`.`PRINTER_MATERIAL`
