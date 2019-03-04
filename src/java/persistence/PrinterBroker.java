@@ -73,7 +73,7 @@ public class PrinterBroker  {
 
     /**
      * Deletes the selected printer from the database
-     * @param account object passed in from the AccountService class
+     * @param printerID object passed in from the AccountService class
      * @return 0 if the statement failed, 1 if statement was successful
      * @throws SQLException if an error occurs while executing the statement
      */
@@ -99,8 +99,8 @@ public class PrinterBroker  {
     }
 
     /**
-     * Returns desired printer when given the printer's ID number
-     * @param id the id of the printer to get
+     * Returns desired printer when given the printers ID number
+     * @param printerID the id of the printer to get
      * @return 0 if the statement failed, 1 if statement was successful
      * @throws SQLException if an error occurs while executing the statement
      */
@@ -126,7 +126,7 @@ public class PrinterBroker  {
         ArrayList<Material> material = null;
         ArrayList<Note> note = null;
         while (rs.next()) {
-            printer = new Printer(printerID, material, rs.getString("printer_size"), rs.getString("printer_size"), note, rs.getString("printer_name"));
+            printer = new Printer(rs.getInt("printer_id"), material, rs.getString("printer_description"), rs.getString("printer_size"), rs.getString("printer_status"), note, rs.getString("printer_name"));
         }
 
         connection.close();
@@ -144,20 +144,22 @@ public class PrinterBroker  {
             throw new SQLException("Error Getting Printers: Connection error.");
         }
 
+        System.out.println("Making Statement");
         CallableStatement cStmt = connection.prepareCall("{call getAllPrinters()}");
-
+        System.out.println("Executing Statement");
         ResultSet rs = cStmt.executeQuery();
         if (rs == null) {
             throw new SQLException("Error Getting Printers: No printers found.");
         }
-        List<Printer> printers = new ArrayList<Printer>();
+        System.out.println("Executed Query");
+        List<Printer> printers = new ArrayList<>();
         while (rs.next()) {
             ArrayList<Material> material = null;
             ArrayList<Note> note = null;
-            Printer printer = new Printer(rs.getInt("printer_id"), material, rs.getString("printer_size"), rs.getString("printer_size"), note, rs.getString("printer_name"));
+            Printer printer = new Printer(rs.getInt("printer_id"), material, rs.getString("printer_description"), rs.getString("printer_size"), rs.getString("printer_status"), note, rs.getString("printer_name"));
             printers.add(printer);
         }
-
+        System.out.println("Returning results back up");
         connection.close();
         return printers;
     }

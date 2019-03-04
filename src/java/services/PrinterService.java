@@ -97,7 +97,8 @@ public class PrinterService {
 	 * @return all printers
 	 */
 	public ArrayList<Printer> getAllPrinters() throws SQLException {
-		return (ArrayList<Printer>) pb.getAllPrinters();
+            System.out.println("Getting all printers in service");
+            return (ArrayList<Printer>) pb.getAllPrinters();
 		
 	}
 	

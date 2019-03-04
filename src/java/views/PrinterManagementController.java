@@ -29,16 +29,20 @@ public class PrinterManagementController extends HttpServlet
 {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
+        System.out.println("Trying to make new service");
         PrinterService ps = new PrinterService();
   
         try
         {
+            System.out.println("Requesting Printers");
             ArrayList<Printer> printers = ps.getAllPrinters();
             request.setAttribute("printers", printers);
+            System.out.println("Got all printers");
         } 
         catch (SQLException ex)
         {
             Logger.getLogger(PrinterManagementController.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("errorMessage", ex.getMessage());
         }
         
         request.getRequestDispatcher("/WEB-INF/printerMgmt.jsp").forward(request, response);
