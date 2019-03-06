@@ -10,9 +10,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-<!--        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">-->
+        <!--        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">-->
         <ARIS3D:Imports/>
-<!--        <link href="res/css/login.css" rel="stylesheet" type="text/css"/>-->
+        <!--        <link href="res/css/login.css" rel="stylesheet" type="text/css"/>-->
         <title>ARIS 3D Printing Service - Registration</title>
 
         <style>
@@ -29,7 +29,7 @@
                 <ARIS3D:Header isAdmin="false" pageName="Register"></ARIS3D:Header>
                 <v-content>
                     <br><br>
-                    <v-flex xs12 sm4 offset-sm4>
+                    <v-flex xs12 sm8 offset-sm2>
                         <v-toolbar color="#1B222B" dark>
                             <v-toolbar-title>Register New Account</v-toolbar-title>
                         </v-toolbar>
@@ -38,7 +38,7 @@
                                 <v-form ref="form" v-model="valid" id="create-account" method="post" action="accountmanagement" lazy-validation>
                                     <v-text-field
                                         name="firstname"
-                                        :counter="20"
+                                        :counter="10"
                                         :rules="nameRules"
                                         label="First Name"
                                         required
@@ -46,7 +46,7 @@
 
                                     <v-text-field
                                         name="lastname"
-                                        :counter="20"
+                                        :counter="10"
                                         :rules="nameRules"
                                         label="Last Name"
                                         required
@@ -61,25 +61,23 @@
 
                                     <v-text-field
                                         v-model="password"
-                                        v-bind="password.primary"
-                                        v-validate="password.primary"
-                                        :append-icon="show1 ? 'visibility_off' : 'visibility'"
-                                        :rules="[rules.required, rules.min]"
-                                        :type="show1 ? 'text' : 'password'"
                                         label="Password"
                                         hint="At least 8 characters"
+                                        :append-icon="show3 ? 'visibility_off' : 'visibility'"
+                                        :rules="[rules.min]"
+                                        :type="show3 ? 'text' : 'password'"
+                                        @click:append="show3 = !show3"
                                         required
                                         ></v-text-field>
 
                                     <v-text-field
                                         v-model="confirmPass"
-                                        v-bind="password.confirm"
-                                        v-validate="password.confirm"
-                                        :append-icon="show1 ? 'visibility_off' : 'visibility'"
-                                        :rules="[rules.required, rules.min, rules.passMatch]"
-                                        :type="show1 ? 'text' : 'password'"
+                                        :append-icon="show4 ? 'visibility_off' : 'visibility'"
+                                        :error-messages='passMatch()'
+                                        :type="show4 ? 'text' : 'password'"
                                         label="Confirm Password"
                                         hint="At least 8 characters"
+                                        @click:append="show4 = !show4"
                                         required
                                         ></v-text-field>
 
@@ -89,7 +87,7 @@
                                         label="Agree to terms of service"
                                         required
                                         ></v-checkbox>
-                                    
+
 
                                     <v-layout row justify-space-between>
                                         <v-flex xs6>
@@ -107,6 +105,7 @@
 
 
         <script>
+//            Vue.use(window['vue-validator'])
 
             new Vue({
                 el: '#app',
@@ -115,33 +114,48 @@
                         valid: true,
                         fname: '',
                         lname: '',
-                        userItems: [ 
+                        userItems: [
                             {title: 'Home', icon: 'home', link: 'userhome'},
                             {title: 'Dashboard', icon: 'dashboard', link: 'userdashboard'}
                         ],
                         nameRules: [
-                            v => !!v || 'required',
+                            v => !!v || 'Name is required',
                             v => (v && v.length <= 30) || 'Name must be less than 30 characters'
                         ],
                         email: '',
                         emailRules: [
                             v => !!v || 'Email is required',
-                            v => /.+@.+/.test(v) || 'This E-mail is invalid'
+                            v => /.+@.+/.test(v) || 'Email must be valid'
                         ],
                         password: '',
-                        confirmPass: '',
+                        confirmPass: '',  
                         rules: {
                             required: value => !!value || 'Required.',
-                            passMatch: () => ('Passwords do not match')
+                            min: v => v.length >= 8 || 'Min 8 characters', 
                         },
                         checkbox: false
                     }),
+                computed: {
+                    matchPassword: function () {
+                        return this.password === this.confirmPass
+                    }
+                },
+                validator: {
+                    validates: {
+                        match: function (v, result) {
+                            return result
+                        }
+                    }
+                },
 
                 methods: {
                     validate() {
                         if (this.$refs.form.validate()) {
                             this.snackbar = true
                         }
+                    },
+                    passMatch() {
+                       return (this.password === this.confirmPass) ? '' : 'The passwords you entered do not match' 
                     },
                     reset() {
                         this.$refs.form.reset()
@@ -152,7 +166,7 @@
                     submit()
                     {
                         document.getElementById('create-account').submit();
-                    }                    
+                    }
                 }
             });
 
