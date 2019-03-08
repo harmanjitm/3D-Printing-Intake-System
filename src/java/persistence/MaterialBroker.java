@@ -233,8 +233,8 @@ public class MaterialBroker{
     }
     
     /**
-     * Returns all materials
-     * @return 
+     * Returns a list of all materials
+     * @return Returns an arraylist of all the materials in the database
      */
     public List<Material> getAllMaterials() throws SQLException
     {
@@ -250,21 +250,13 @@ public class MaterialBroker{
             throw new SQLException("Error getting materials: no materials found.");
         }
         
-        List<Material> material = new ArrayList<Material>();
+        List<Material> materials = new ArrayList<Material>();
         while (rs.next()) {
-            Material account = new Material(rs.getInt("material_id"), rs.getString("email"), rs.getString("f_name"), rs.getString("l_name"), rs.getString("account_type"));
-            accounts.add(account);
+            Material material = new Material(rs.getInt("material_id"), rs.getString("material_name"), rs.getString("material_description"));
+            materials.add(material);
         }
         
-//        List<Material> material = new ArrayList<Material>();
-//        while (rs.next()) {
-//            ArrayList<Material> material = null;
-//            ArrayList<Note> note = null;
-//            Printer printer = new Printer(rs.getInt("printer_id"), material, rs.getString("printer_size"), rs.getString("printer_size"), note, rs.getString("printer_name"));
-//            printers.add(printer);
-//        }
-
         connection.close();
-        return printers;
+        return materials;
     }
 }
