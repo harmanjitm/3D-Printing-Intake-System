@@ -104,29 +104,31 @@ public class PrinterBroker  {
      * @return 0 if the statement failed, 1 if statement was successful
      * @throws SQLException if an error occurs while executing the statement
      */
-    public Printer getPrinterByID(int printerID) throws SQLException {
+    public Printer getPrinterByID(int printerId) throws SQLException {
         connection = cp.getConnection();
         if (connection == null) {
-            throw new SQLException("Error Getting Account: Connection error.");
+            throw new SQLException("Error getting account: connection error.");
         }
-        if (printerID == 0) {
-            throw new SQLException("Error Getting Account: Invalid account ID.");
+        if (printerId == 0) {
+            throw new SQLException("Error getting account: invalid account ID.");
         }
 
-        CallableStatement cStmt = connection.prepareCall("{call getPrinter(?)}");
+        CallableStatement cStmt = connection.prepareCall("{call getPrintert(?)}");
 
-        cStmt.setInt(1, printerID);
+        cStmt.setInt(1, printerId);
 
         ResultSet rs = cStmt.executeQuery();
         if (rs == null) {
-            throw new SQLException("Error Getting Printer: Printer not found");
+            throw new SQLException("Error getting printert: printer not found");
         }
-
+        
+        ArrayList<Note> notes = null;
+        ArrayList<Material> materials = null;
         Printer printer = null;
-        ArrayList<Material> material = null;
-        ArrayList<Note> note = null;
         while (rs.next()) {
-            printer = new Printer(printerID, material, rs.getString("printer_size"), rs.getString("printer_size"), note, rs.getString("printer_name"));
+            printer = new Printer(printerId, materials, rs.getString("printer_description"), 
+                                  rs.getString("printer_size"), rs.getString("printer_status"),
+                                  notes, rs.getString("printer_name"));
         }
 
         connection.close();
@@ -152,9 +154,11 @@ public class PrinterBroker  {
         }
         List<Printer> printers = new ArrayList<Printer>();
         while (rs.next()) {
-            ArrayList<Material> material = null;
-            ArrayList<Note> note = null;
-            Printer printer = new Printer(rs.getInt("printer_id"), material, rs.getString("printer_size"), rs.getString("printer_size"), note, rs.getString("printer_name"));
+            ArrayList<Material> materials = null;
+            ArrayList<Note> notes = null;
+            Printer printer = new Printer(Integer.parseInt(rs.getString("printer_id")), materials, 
+                                          rs.getString("printer_description"), rs.getString("printer_size"), 
+                                          rs.getString("printer_status"), notes, rs.getString("printer_name"));
             printers.add(printer);
         }
 
