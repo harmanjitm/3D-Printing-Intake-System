@@ -31,6 +31,7 @@
                         <v-toolbar class="elevation-1" dark>
                             <v-toolbar-title>Manage Materials</v-toolbar-title>
                             <v-spacer></v-spacer>
+                            <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
                             <!-- dialog window for adding a new material -->
                             <v-dialog v-model="dialog" max-width="750px" >
                                 <v-btn slot="activator" color="#8B2635" dark class="mb-2">New Material</v-btn>
@@ -70,7 +71,7 @@
                                 </v-card>
                             </v-dialog>
                         </v-toolbar>
-                        <v-data-table  class="elevation-3" :headers="materialheaders" :items="materials">
+                        <v-data-table  class="elevation-3" :headers="materialheaders" :items="materials" :search="search">
                             <template slot="items" slot-scope="props">
                                 <td>{{ props.item.materialName }}</td>
                                 <td>{{ props.item.printerName }}</td>
@@ -138,12 +139,27 @@
                 el: '#app',
                 data: 
                 {
+                    search: '',
                     editIndex: -1,
                     dialog: false,
                     editDialog: false,
                     account: '',
                     logout: '',
                     drawer: false,
+                    materials:
+                    [
+                        {materialName: 'ABS-M30', printerName: 'Fortus 400mc', materialDesc: 'Basic ABS Plastic', materialColor: 'Black', materialVal: '$6/in^3', materialStat: 'In Stock'},
+                        {materialName: 'ABS-M30', printerName: 'Fortus 400mc', materialDesc: 'Basic ABS Plastic', materialColor: 'Blue', materialVal: '$6/in^3', materialStat: 'In Stock'},
+                        {materialName: 'ABS-M30', printerName: 'Fortus 400mc', materialDesc: 'Basic ABS Plastic', materialColor: 'White', materialVal: '$6/in^3', materialStat: 'Out of Stock'},
+                        {materialName: 'SLA-Clear', printerName: 'Form 2+', materialDesc: 'Rigid resin. Brittle if bent or cyclically loaded', materialColor: 'Transparent', materialVal: '$29/mL', materialStat: 'In Stock'},
+                        {materialName: 'SLA-Flex', printerName: 'Form 2+', materialDesc: 'Flexible like gasket type material', materialColor: 'Black', materialVal: '$39/mL', materialStat: 'In Stock'},
+                        {materialName: 'SLA-Tough', printerName: 'Form 2+', materialDesc: 'Stronger than SLA-Clear', materialColor: 'Tans-Blue', materialVal: '$35/mL', materialStat: 'In Stock'},
+                        {materialName: 'ABS', printerName: 'Ultimaker 3 Ex', materialDesc: 'Basic ABS plasic. Rigid but stronger than PLA', materialColor: 'Yellow', materialVal: '5.4', materialStat: 'Out of Stock'},
+                        {materialName: 'PLA', printerName: 'Ultimaker 3 Ex', materialDesc: 'Basic PLA plastic. Rigid but inexpensive', materialColor: 'Yellow', materialVal: '5.4', materialStat: 'Out of Stock'},
+                        {materialName: 'Nylon', printerName: 'Ultimaker 3 Ex', materialDesc: 'Tougher and more flexible than ABS or PLA', materialColor: 'Yellow', materialVal: '5.4', materialStat: 'Out of Stock'},
+                        {materialName: 'TPU95A', printerName: 'Ultimaker 3 Ex', materialDesc: 'Very Flexible/Tough; Thin parts are stretchy', materialColor: 'Yellow', materialVal: '5.4', materialStat: 'Out of Stock'},
+                        {materialName: 'Polycarbonate', printerName: 'Ultimaker 3 Ex', materialDesc: 'Rigid but temperature resistant(up to 110C)', materialColor: 'Yellow', materialVal: '5.4', materialStat: 'Out of Stock'}
+                    ],
                     materialStatusDropdown:
                     [
                         {type: 'instock', value: 'instock', name: 'materialStat'},
@@ -176,20 +192,6 @@
                         {text: 'Value', value: 'materialVal'},
                         {text: 'Status', value: 'materialStat'},
                         {text: 'Actions', value: 'actions', sortable: false}
-                    ],
-                    materials:
-                    [
-                        {materialName: 'ABS-M30', printerName: 'Fortus 400mc', materialDesc: 'Basic ABS Plastic', materialColor: 'Black', materialVal: '$6/in^3', materialStat: 'In Stock'},
-                        {materialName: 'ABS-M30', printerName: 'Fortus 400mc', materialDesc: 'Basic ABS Plastic', materialColor: 'Blue', materialVal: '$6/in^3', materialStat: 'In Stock'},
-                        {materialName: 'ABS-M30', printerName: 'Fortus 400mc', materialDesc: 'Basic ABS Plastic', materialColor: 'White', materialVal: '$6/in^3', materialStat: 'Out of Stock'},
-                        {materialName: 'SLA-Clear', printerName: 'Form 2+', materialDesc: 'Rigid resin. Brittle if bent or cyclically loaded', materialColor: 'Transparent', materialVal: '$29/mL', materialStat: 'In Stock'},
-                        {materialName: 'SLA-Flex', printerName: 'Form 2+', materialDesc: 'Flexible like gasket type material', materialColor: 'Black', materialVal: '$39/mL', materialStat: 'In Stock'},
-                        {materialName: 'SLA-Tough', printerName: 'Form 2+', materialDesc: 'Stronger than SLA-Clear', materialColor: 'Tans-Blue', materialVal: '$35/mL', materialStat: 'In Stock'},
-                        {materialName: 'ABS', printerName: 'Ultimaker 3 Ex', materialDesc: 'Basic ABS plasic. Rigid but stronger than PLA', materialColor: 'Yellow', materialVal: '5.4', materialStat: 'Out of Stock'},
-                        {materialName: 'PLA', printerName: 'Ultimaker 3 Ex', materialDesc: 'Basic PLA plastic. Rigid but inexpensive', materialColor: 'Yellow', materialVal: '5.4', materialStat: 'Out of Stock'},
-                        {materialName: 'Nylon', printerName: 'Ultimaker 3 Ex', materialDesc: 'Tougher and more flexible than ABS or PLA', materialColor: 'Yellow', materialVal: '5.4', materialStat: 'Out of Stock'},
-                        {materialName: 'TPU95A', printerName: 'Ultimaker 3 Ex', materialDesc: 'Very Flexible/Tough; Thin parts are stretchy', materialColor: 'Yellow', materialVal: '5.4', materialStat: 'Out of Stock'},
-                        {materialName: 'Polycarbonate', printerName: 'Ultimaker 3 Ex', materialDesc: 'Rigid but temperature resistant(up to 110C)', materialColor: 'Yellow', materialVal: '5.4', materialStat: 'Out of Stock'}
                     ]
                 },
                 methods:

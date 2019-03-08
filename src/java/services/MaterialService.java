@@ -18,6 +18,7 @@ public class MaterialService {
 	 * Instantiates a new material service.
 	 */
 	public MaterialService() {
+            mb = new MaterialBroker();
 	}
 
 	/**
