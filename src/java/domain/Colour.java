@@ -9,7 +9,7 @@ package domain;
  *
  * @author Ben Wozak
  */
-public class Color {
+public class Colour {
     
     private String color;
     private String status;
@@ -17,7 +17,7 @@ public class Color {
     /**
      * Initiates a new Color.
      */
-    public Color() {
+    public Colour() {
     }
 
     /**
@@ -25,7 +25,7 @@ public class Color {
      * @param color the color
      * @param status the color
      */
-    public Color(String color, String status) {
+    public Colour(String color, String status) {
         this.color = color;
         this.status = status;
     }
