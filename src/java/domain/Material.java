@@ -42,16 +42,51 @@ public class Material {
 	 * @param name the name
 	 * @param description the description
 	 */
-	public Material(int materialId, String name, String description) {
+	public Material(String name, String description) {
 		super();
-		this.materialId = materialId;
 		this.name = name;
 		this.description = description;
-//                this.printerName = printerName;
-//                this.colour = colour;
-//                this.cost = cost;
-//                this.status = status;
+                this.printerName = printerName;
+                this.colour = colour;
+                this.cost = cost;
+                this.status = status;
 	}
+        
+        /**
+	 * Non-default constructor.
+	 * Instantiates a new material.
+	 *
+	 * @param materialId the material id
+	 * @param name the name
+	 * @param description the description
+	 */
+	public Material(int materialId, Colour color) {
+		super();
+                this.materialId = materialId;
+                this.colour = colour;
+	}
+        
+       /**
+	 * Non-default constructor.
+	 * Instantiates a new material.
+	 *
+	 * @param materialId the material id
+	 * @param name the name
+	 * @param description the description
+	 */
+	public Material(String name, String description, String printerName, Colour color, double cost, String status) {
+		super();
+		this.name = name;
+		this.description = description;
+                this.printerName = printerName;
+                this.colour = colour;
+                this.cost = cost;
+                this.status = status;
+	}
+
+    public Material(int materialId, String colour) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 	/**
 	 * Gets the material id.

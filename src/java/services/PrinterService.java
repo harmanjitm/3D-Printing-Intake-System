@@ -63,8 +63,8 @@ public class PrinterService {
 	 * @param printerId the printer id to be deleted
 	 * @return the printer object that was deleted or null if the object cannot be deleted
 	 */
-	public int deletePrinter(int printerId) throws SQLException {
-		return pb.delete(printerId);
+	public int deletePrinter(Printer printer) throws SQLException {
+		return pb.delete(printer);
 		
 	}
 	

@@ -3,6 +3,7 @@ package services;
 import java.util.ArrayList;
 
 import domain.Material;
+import java.sql.SQLException;
 import persistence.MaterialBroker;
 
 /**
@@ -20,15 +21,75 @@ public class MaterialService {
 	public MaterialService() {
             mb = new MaterialBroker();
 	}
-
+	
 	/**
+	 * Creates a new material.
+	 *
+	 * @return the new material
+	 */
+	public int createMaterial(String name, String description) throws SQLException{
+            Material material = new Material(name, description);
+            return mb.insertMaterial(material);	
+	}
+        
+        /**
+         * 
+         */
+        public int addMaterialColour(int materialId, String colour) throws SQLException {
+            return mb.insertMaterialColour(materialId, colour);
+        }
+        
+        /**
+	 * Update replaces exiting material with an updated instance.
+	 *
+	 * @param toUpdate the material to update
+	 * @return the material that was replaced or null if there is no existing object to modify
+	 */
+	public int updateMaterial(Material toUpdate) throws SQLException{
+            Material material = new Material();
+            return mb.updateMaterial(material);
+		
+	}
+	
+	/**
+	 * Delete material.
+	 *
+	 * @param materialId the material id of the material to be deleted
+	 * @return the removed material or null if delete fails
+	 */
+	public int deleteMaterial(Material material) throws SQLException{
+		return mb.deleteMaterial(material);
+		
+	}
+        
+        /**
+	 * Delete material by material id.
+	 *
+	 * @param materialId the material id of the material to be deleted
+	 * @return the removed material or null if delete fails
+	 */
+	public int deleteMaterialColor(Material material) throws SQLException{
+		return mb.deleteMaterial(material);	
+	}
+        
+        /**
+	 * Gets a material object by the material id.
+	 *
+	 * @param materialId the material id to be retrieved
+	 * @return the material or null if that id does not exist
+	 */
+	public Material getMaterial(int materialId) throws SQLException{
+		return mb.getMaterialByID(materialId);
+		
+	}
+        
+        /**
 	 * Gets the all materials and returns them in an array list.
 	 *
 	 * @return the all materials in an arrayList
 	 */
-	public ArrayList<Material> getAllMaterials(){
-		return null;
-		
+	public ArrayList<Material> getAllMaterials() throws SQLException{
+		return (ArrayList<Material>) mb.getAllMaterials();	
 	}
 	
 	/**
@@ -38,51 +99,7 @@ public class MaterialService {
 	 * @return the all materials in an ArrayList
 	 */
 	public ArrayList<Material> getAllMaterials(int printerId){
-		return null;
-		
-	}
-	
-	/**
-	 * Gets a material object by the material id.
-	 *
-	 * @param materialId the material id to be retrieved
-	 * @return the material or null if that id does not exist
-	 */
-	public Material getMaterial(int materialId){
-		return null;
-		
-	}
-	
-	/**
-	 * Creates a new material.
-	 *
-	 * @return the new material
-	 */
-	public Material createMaterial(){
-		return null;
-		
-	}
-	
-	/**
-	 * Delete material by material id.
-	 *
-	 * @param materialId the material id of the material to be deleted
-	 * @return the removed material or null if delete fails
-	 */
-	public Material deleteMaterial(int materialId){
-		return null;
-		
-	}
-	
-	/**
-	 * Update replaces exiting material with an updated instance.
-	 *
-	 * @param toUpdate the material to update
-	 * @return the material that was replaced or null if there is no existing object to modify
-	 */
-	public Material updateMaterial(Material toUpdate){
-		return null;
-		
+		return null;	
 	}
 	
 	/**
