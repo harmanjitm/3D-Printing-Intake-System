@@ -18,13 +18,13 @@ public class Material {
 	private String description;
         
         /** The color. */
-        private String color;
+        private Colour colour;
         
         /** value of material per unit. */
         private double cost;
         
         /** returns true if material is in stock, false if not */
-        private boolean available;
+        private String status;
         
 	/**
 	 * Default constructor.
@@ -47,10 +47,10 @@ public class Material {
 		this.materialId = materialId;
 		this.name = name;
 		this.description = description;
-                this.printerName = printerName;
-                this.color = color;
-                this.cost = cost;
-                this.available = available;
+//                this.printerName = printerName;
+//                this.colour = colour;
+//                this.cost = cost;
+//                this.status = status;
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class Material {
 	 * @return the color
 	 */
         public String getColor() {
-                return color;
+                return colour.getColor();
         }
         
         /**
@@ -140,7 +140,7 @@ public class Material {
 	 * @param color the new color
 	 */
         public void setColor(String color) {
-                this.color = color;
+                this.colour = colour;
         }
         
         /**
@@ -166,8 +166,8 @@ public class Material {
 	 *
 	 * @return the availability
 	 */
-        public boolean isAvailable() {
-                return available;
+        public String isAvailable() {
+                return status;
         }
         
         /**
@@ -175,7 +175,7 @@ public class Material {
 	 *
 	 * @param available the new available status
 	 */
-        public void setAvailable(boolean available) {
-            this.available = available;
+        public void setAvailable(String status) {
+            this.status = status;
         }
 }
