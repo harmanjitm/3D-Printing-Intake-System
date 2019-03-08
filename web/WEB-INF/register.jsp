@@ -111,6 +111,8 @@
                 el: '#app',
                 data: () => ({
                         drawer: false,
+                        show3: false,
+                        show4: false,
                         valid: true,
                         fname: '',
                         lname: '',
