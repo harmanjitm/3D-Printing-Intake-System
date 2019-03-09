@@ -20,8 +20,8 @@
         <div id="app">
             <v-app>
                 <ARIS3D:Header isAdmin="true" pageName="Printer Management"></ARIS3D:Header>
-                <br><br>
-                    <v-container grid-list-md >
+                <v-content>
+                    <v-container grid-list-md>
                         <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
                             ${successMessage}
                         </v-alert>
@@ -29,7 +29,7 @@
                             ${errorMessage}
                         </v-alert>
                         <v-layout row wrap>
-                            <v-flex @_click="selectItem(item)" v-for="printer in printers" :key="`4${printer}`" xs4>
+                            <v-flex @click="selectItem(item)" v-for="printer in printers" xs12 sm6 md6 lg4 xl4>
                                 <v-dialog v-model="dialog" max-width="750px" v-if="selectedItem">
                                     <v-card>
                                         <v-card-title>
@@ -37,14 +37,15 @@
                                         </v-card-title>
                                     </v-card>
                                 </v-dialog>
-                                <v-card class="elevation-3" class="clickable" @click.native="selectItem(printer)"> 
-                                    <v-img src="res/img/UM3X_Full_2048x.jpg" aspect-ratio="1.5" contain></v-img>
-                                    <v-card-title primary-title><h3 class="headline mb-0">Ultimaker 3 Extended</h3></v-card-title>
+                                <v-card color="#8B2635" height="5px"></v-card>
+                                <v-card min-height="500px" class="elevation-5" class="clickable" @click.native="selectItem(printer)"> 
+                                    <v-img :src="printer.img" aspect-ratio="1.5" contain></v-img>
+                                    <v-card-title primary-title><h3 class="headline mb-0">{{printer.name}}</h3></v-card-title>
                                     <v-card-text>
-                                        <table class="printer-card-table">
+                                        <table class="printer-card-table" width="100%">
                                             <tr>
-                                                <td class="text-xs-left">Build Volume(x,y,z): </td>
-                                                <td class="text-xs-right">406x355x406mm</td>
+                                                <td width="50%" class="text-xs-left">Build Volume(LxWxH): </td>
+                                                <td class="text-xs-right">{{printer.size}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="text-xs-left">Run Cost: </td>
@@ -52,88 +53,33 @@
                                             </tr>
                                             <tr>
                                                 <td class="text-xs-left">Status: </td>
-                                                <td class="text-xs-right">Online</td>
+                                                <td class="text-xs-right">{{printer.status}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="text-xs-left">Available Material: </td>
-                                                <td class="text-xs-right">ABS-M30 | SR30</td>
+                                                <td class="text-xs-right">{{printer.materials}}</td>
                                             </tr>
                                         </table>
                                     </v-card-text>
                                 </v-card>
                             </v-flex>
-
-                            <!-- Info for card 2 -->
-<!--                            <v-card class="elevation-3">
-                                <v-img src="res/img/form-2-printer.jpg" aspect-ratio="1.5" contain></v-img>
-                                <v-card-title primary-title><h3 class="headline mb-0">Form 2+</h3></v-card-title>
-                                <v-card-text>
-                                    <table class="printer-card-table">
-                                        <tr>
-                                            <td class="text-xs-left">Build Volume(x,y,z): </td>
-                                            <td class="text-xs-right">406x355x406mm</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-xs-left">Run Cost: </td>
-                                            <td class="text-xs-right">$2.50/h</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-xs-left">Status: </td>
-                                            <td class="text-xs-right">Online</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-xs-left">Available Material: </td>
-                                            <td class="text-xs-right">ABS-M30 | SR30</td>
-                                        </tr>
-                                    </table>
-                                </v-card-text>
-
-                                 <v-spacer></v-spacer><v-btn color="#8B2635">Edit</v-btn>
-                            </v-card>
-
-                             Info for card 3 
-                            <v-card class="elevation-3" v-if="i === 3">
-                                <v-img src="res/img/Fortus 400mc.jpg" aspect-ratio="1.5" contain></v-img>
-                                <v-card-title primary-title><h3 class="headline mb-0">Fortus 400mc</h3></v-card-title>
-                                <v-card-text>
-                                    <table class="printer-card-table">
-                                        <tr>
-                                            <td class="text-xs-left">Build Volume(x,y,z): </td>
-                                            <td class="text-xs-right">406x355x406mm</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-xs-left">Run Cost: </td>
-                                            <td class="text-xs-right">$2.50/h</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-xs-left">Status: </td>
-                                            <td class="text-xs-right">Online</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-xs-left">Available Material: </td>
-                                            <td class="text-xs-right">ABS-M30 | SR30</td>
-                                        </tr>
-                                    </table>
-                                </v-card-text>
-                            </v-card>-->
-                    </v-layout>
-                </v-container>
+                        </v-layout>
+                    </v-container>
+                </v-content>
             </v-app>
         </div>
-                            
         <style scoped>
             .clickable {
                 cursor: pointer;
             }
         </style>
-
-        <!--<script src="res/js/vue.js" type="text/javascript"></script>-->
         <script>
             new Vue({
                 el: '#app',
                 data: {
                     drawer: 'false',//Add a sleected item thingy somewhere here
-                    adminItems: 
+                    dialog: false,
+                    adminItems:
                     [ 
                         {title: 'Home', icon: 'home', link: 'home'},
                         {title: 'Dashboard', icon: 'dashboard', link: 'dashboard'},
@@ -143,23 +89,32 @@
                         {title: 'Printer Management', icon: 'print', link: 'printermanagement'},
                         {title: 'Reports', icon: 'poll', link: 'reportmanagement'}
                     ],
-                    printers: 
+                    printers:
                     [
                         <c:forEach items="${printers}" var="printer">
                             {printerId: '${printer.printerId}',
                              size: '${printer.size}',
                              status: '${printer.status}',
-                             name: '${printer.name}'},
+                             name: '${printer.name}',
+                             materials: '${printer.materials}',
+                             img: 'res/img/printers/${printer.printerId}.jpg'},
                         </c:forEach>
-                    ]
+                    ],
+                    selectedItem:
+                    {
+                        printerId: '',
+                        size: '',
+                        status: '',
+                        name: '',
+                        materials: '',
+                    },
                 },
                 methods: {
                     selectItem(item) {
-                        this.selectedItem = item;
+                        this.selectedItem = Object.assign({}, item);
                     },
                 }
             });
         </script>
-
     </body>
 </html>

@@ -86,8 +86,8 @@ public class PrinterService {
 	 * @param printerId the printer id to get materials for
 	 * @return the printer materials as an arrayList
 	 */
-	public ArrayList<Material> getPrinterMaterials(int printerId) {
-		return null;
+	public ArrayList<Material> getPrinterMaterials(int printerId) throws SQLException {
+		return pb.getPrinterMaterials(printerId);
 		
 	}
 	

@@ -43,7 +43,7 @@
                                             <v-text-field prepend-icon="person" name="email" label="Email" <c:if test='${email != null}'>value="${email}"</c:if><c:if test='${email == null}'>v-model="email"</c:if>></v-text-field>
                                             <v-text-field prepend-icon="lock" name="password" label="Password" type="password"></v-text-field>
                                             <div class="text-xs-center">
-                                            <v-btn color="#8B2635" large dark @click="login">Login</v-btn><br>
+                                            <v-btn type="submit" color="#8B2635" large dark @click="login">Login</v-btn><br>
                                             <span class="caption">Don't have an account? Sign up <a href="register" id="registerLink">here</a></span>
                                             </div>
                                         </v-form>

@@ -153,16 +153,48 @@ public class PrinterBroker  {
             throw new SQLException("Error Getting Printers: No printers found.");
         }
         List<Printer> printers = new ArrayList<Printer>();
+        ArrayList<Material> materials = new ArrayList<Material>();
         while (rs.next()) {
-            ArrayList<Material> materials = null;
             ArrayList<Note> notes = null;
             Printer printer = new Printer(Integer.parseInt(rs.getString("printer_id")), materials, 
                                           rs.getString("printer_description"), rs.getString("printer_size"), 
                                           rs.getString("printer_status"), notes, rs.getString("printer_name"));
+            printer.setMaterials(getPrinterMaterials(printer.getPrinterId()));
             printers.add(printer);
         }
 
         connection.close();
         return printers;
+    }
+
+    /**
+     * Method used to fetch all materials associated to a specific printer from the DB
+     * 
+     * @param printerId The ID of the printer to get materials for
+     * @return An ArrayList with all Materials used for this printer
+     */
+    public ArrayList<Material> getPrinterMaterials(int printerId) throws SQLException {
+        connection = cp.getConnection();
+        if (connection == null) {
+            throw new SQLException("Error Getting Materials: Connection error.");
+        }
+
+        CallableStatement cStmt = connection.prepareCall("{call getMaterialsByPrinter(?)}");
+        
+        cStmt.setInt(1, printerId);
+
+        ResultSet rs = cStmt.executeQuery();
+        if (rs == null) {
+            throw new SQLException("Error Getting Printers: No printers found.");
+        }
+        ArrayList<Material> materials = new ArrayList<Material>();
+        while (rs.next()) {
+            Material material = new Material(Integer.parseInt(rs.getString("material_id")),rs.getString("material_name"), rs.getString("material_description"));
+            
+            materials.add(material);
+        }
+
+        connection.close();
+        return materials;
     }
 }
