@@ -1,34 +1,37 @@
 package persistence;
 
+import domain.Colour;
 import domain.Material;
 import domain.Note;
 import domain.Printer;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MaterialBroker{
-    
+public class MaterialBroker {
+
     private Connection connection = null;
     private final ConnectionPool cp = ConnectionPool.getInstance();
-    
+
     /**
      * Adds a new material to the database
-     * @param material The Material object being passed in from the Material service
+     *
+     * @param material The Material object being passed in from the Material
+     * service
      * @return Returns 0 if the statement failed, 1 if statement was successful
      * @throws SQLException if an error occurs while executing the statement
      */
-    public int insertMaterial(Material material) throws SQLException
-    {
+    public int insertMaterial(Material material) throws SQLException {
         connection = cp.getConnection();
         if (connection == null) {
-            throw new SQLException("Error Adding Printer: Connection error.");
+            throw new SQLException("Error Adding Material: Connection error.");
         }
         if (material == null) {
-            throw new SQLException("Error Adding Printer: Missing printer information.");
+            throw new SQLException("Error Adding Material: Missing material information.");
         }
 
         CallableStatement cStmt = connection.prepareCall("{call createMaterial(?, ?, ?)}");
@@ -39,19 +42,18 @@ public class MaterialBroker{
 
         boolean hadResults = cStmt.execute();
         connection.close();
-        System.out.println("HAD RESULTS: " + hadResults);
         return hadResults ? 0 : 1;
     }
-    
+
     /**
      * Inserts a new colour for a material into the database
+     *
      * @param materialId The ID for the material you wish to add a colour for
      * @param colour The name of the colour you are adding to a material
      * @return Returns 0 if the statement failed, 1 if statement was successful
      * @throws SQLException if an error occurs while executing the statement
      */
-    public int insertMaterialColour(int materialId, String colour) throws SQLException
-    {
+    public int insertMaterialColour(int materialId, String colour) throws SQLException {
         connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Adding Material Colour: Connection error.");
@@ -70,18 +72,18 @@ public class MaterialBroker{
 
         boolean hadResults = cStmt.execute();
         connection.close();
-        System.out.println("HAD RESULTS: " + hadResults);
         return hadResults ? 0 : 1;
     }
-    
+
     /**
      * Updates the properties of a material in the database
-     * @param material The material object being passed in from the Material Service layer
+     *
+     * @param material The material object being passed in from the Material
+     * Service layer
      * @return Returns 0 if the statement failed, 1 if statement was successful
      * @throws SQLException if an error occurs while executing the statement
      */
-    public int updateMaterial(Material material) throws SQLException
-    {
+    public int updateMaterial(Material material) throws SQLException {
         connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Updating Material: Connection error.");
@@ -100,17 +102,18 @@ public class MaterialBroker{
         connection.close();
         return hadResults;
     }
-    
+
     /**
      * This method will update a specific colour for a material in the database
-     * @param materialId The ID of the specific material you want to change the colour properties for
+     *
+     * @param materialId The ID of the specific material you want to change the
+     * colour properties for
      * @param colour The colour you wish to change the properties of
      * @param status The status you wish to change for the material
      * @return Returns 0 if the statement failed, 1 if statement was successful
-     * @throws SQLException 
+     * @throws SQLException
      */
-    public int updateMaterialColour(Material material, String colour, String status) throws SQLException
-    {
+    public int updateMaterialColour(Material material, String colour, String status) throws SQLException {
         connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Updating Material: Connection error.");
@@ -135,15 +138,16 @@ public class MaterialBroker{
         connection.close();
         return hadResults;
     }
-    
+
     /**
      * Deletes a material from the database
-     * @param material The material object being passed in from the service layer that you wish to delete
+     *
+     * @param material The material object being passed in from the service
+     * layer that you wish to delete
      * @return Returns 0 if the statement failed, 1 if statement was successful
-     * @throws SQLException 
+     * @throws SQLException
      */
-    public int deleteMaterial(Material material) throws SQLException
-    {
+    public int deleteMaterial(Material material) throws SQLException {
         connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Deleting Material: Connection error.");
@@ -162,30 +166,30 @@ public class MaterialBroker{
         connection.close();
         return hadResults;
     }
-    
+
     /**
-     * Deleted a material's colour from the database    
+     * Deleted a materials colour from the database
+     *
      * @param material Material object being passed in from the service layer
      * @param colour The colour you wish to delete from a specific material
-     * @param status Status should be "Delete" 
+     * @param status Status should be "Delete"
      * @return Returns 0 if the statement failed, 1 if statement was successful
-     * @throws SQLException 
+     * @throws SQLException
      */
-    public int deleteMaterialColour(Material material, String colour, String status) throws SQLException
-    {
+    public int deleteMaterialColour(Material material, String colour, String status) throws SQLException {
         connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Updating Material: Connection error.");
         }
         if (material.getMaterialId() == 0) {
-            throw new SQLException("Error updating material colour: material Id cannot be null");
+            throw new SQLException("Error Updating Material: Material Id cannot be null");
         }
         if (colour == null) {
-            throw new SQLException("Error updating material colour: colour cannot be null.");
+            throw new SQLException("Error Updating Material: Colour cannot be null.");
         }
         if (status == null) {
-            throw new SQLException("Error updating material colour: status cannot be null.");
-        }        
+            throw new SQLException("Error Updating Material: Status cannot be null.");
+        }
 
         CallableStatement cStmt = connection.prepareCall("{call updateMaterialColour(?, ?, ?)}");
 
@@ -197,15 +201,15 @@ public class MaterialBroker{
         connection.close();
         return hadResults;
     }
-    
+
     /**
      * Returns desired material object when supplied with it'd ID
+     *
      * @param materialId The ID for the material you wish to retrieve
      * @return Returns 0 if the statement failed, 1 if statement was successful
-     * @throws SQLException 
+     * @throws SQLException
      */
-    public Material getMaterialByID(int materialId) throws SQLException
-    {
+    public Material getMaterialByID(int materialId) throws SQLException {
         connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Getting Account: Connection error.");
@@ -225,37 +229,74 @@ public class MaterialBroker{
 
         Material material = null;
         while (rs.next()) {
-            material = new Material(materialId, rs.getString("material_name"),rs.getString("material_description"));
+            material = new Material(materialId, rs.getString("material_name"), rs.getString("material_description"));
         }
 
         connection.close();
         return material;
     }
-    
+
     /**
      * Returns a list of all materials
-     * @return Returns an arraylist of all the materials in the database
+     *
+     * @return Returns an ArrayList of all the materials in the database
      */
-    public List<Material> getAllMaterials() throws SQLException
-    {
+    public List<Material> getAllMaterials() throws SQLException {
         connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error getting materials: connection error.");
         }
 
-        CallableStatement cStmt = connection.prepareCall("{call getAllMaterials()}");
+        PrinterBroker pb = new PrinterBroker();
+        List<Printer> printers = pb.getAllPrinters();
+        ArrayList<Material> materials = new ArrayList<Material>();
 
-        ResultSet rs = cStmt.executeQuery();
-        if (rs == null) {
-            throw new SQLException("Error getting materials: no materials found.");
+        for (Printer p : printers) {
+            CallableStatement cStmt = connection.prepareCall("{call getMaterialsByPrinter(?)}");
+            cStmt.setInt(1, p.getPrinterId());
+            ResultSet rs = cStmt.executeQuery();
+            if (rs == null) {
+                throw new SQLException("Error Getting Materials: No materials found.");
+            }
+            while (rs.next()) {
+                boolean instock = false;
+                Material material = new Material(rs.getInt("material_id"), rs.getString("material_name"), rs.getString("material_description"));
+                material.setPrinterName(p.getName());
+
+                CallableStatement colourStatement = connection.prepareCall("{call getMaterialColours(?)}");
+                colourStatement.setInt(1, rs.getInt("material_id"));
+                ResultSet colourResults = colourStatement.executeQuery();
+                ArrayList<Colour> colours = new ArrayList<>();
+                while (colourResults.next()) {
+                    Colour colour = new Colour(colourResults.getString("colour"), colourResults.getString("colour_status"));
+                    colours.add(colour);
+                    if (colour.getStatus().equals("in-stock")) {
+                        instock = true;
+                    }
+                }
+
+                if (instock) {
+                    material.setAvailable("In Stock");
+                }
+
+                PreparedStatement materialCost = connection.prepareStatement("SELECT material_cost FROM material WHERE material_id=?");
+                materialCost.setInt(1, rs.getInt("material_id"));
+                ResultSet costResults = materialCost.executeQuery();
+
+                while (costResults.next()) {
+                    System.out.println(costResults.getDouble("material_cost"));
+                    material.setCost(costResults.getDouble("material_cost"));
+                }
+
+                material.setColor(colours);
+                materials.add(material);
+            }
         }
         
-        List<Material> materials = new ArrayList<Material>();
-        while (rs.next()) {
-            Material material = new Material(rs.getInt("material_id"), rs.getString("material_name"), rs.getString("material_description"));
-            materials.add(material);
+        for(Material m:materials){
+            System.out.println(m.getMaterialId() + " " + m.getName() + " " + m.getStatus() + " " + m.getCost());
         }
-        
+
         connection.close();
         return materials;
     }

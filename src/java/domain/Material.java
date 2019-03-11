@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.ArrayList;
+
 /**
  * The Class Material.
  */
@@ -28,7 +30,7 @@ public class Material {
     /**
      * The color.
      */
-    private Colour colour;
+    private ArrayList<Colour> colours;
 
     /**
      * value of material per unit.
@@ -59,7 +61,7 @@ public class Material {
         this.name = name;
         this.description = description;
         this.printerName = printerName;
-        this.colour = colour;
+        this.colours = colours;
         this.cost = cost;
         this.status = status;
     }
@@ -71,10 +73,10 @@ public class Material {
      * @param name the name
      * @param description the description
      */
-    public Material(int materialId, Colour color) {
+    public Material(int materialId, ArrayList<Colour> colors) {
         super();
         this.materialId = materialId;
-        this.colour = colour;
+        this.colours = colours;
     }
 
     /**
@@ -84,18 +86,27 @@ public class Material {
      * @param name the name
      * @param description the description
      */
-    public Material(int materialId, String name, String description, String printerName, Colour color, double cost, String status) {
+    public Material(String name, String description, String printerName, ArrayList<Colour> colours, double cost, String status) {
         super();
         this.name = name;
         this.description = description;
         this.printerName = printerName;
-        this.colour = colour;
+        this.colours = colours;
         this.cost = cost;
         this.status = status;
     }
 
-    public Material(int materialId, String colour) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    /**
+     * Non-default constructor. Instantiates a new material.
+     *
+     * @param materialId the material id
+     * @param name the name
+     * @param description the description
+     */
+    public Material(String name, String description) {
+        super();
+        this.name = name;
+        this.description = description;
     }
 
     /**
@@ -175,8 +186,8 @@ public class Material {
      *
      * @return the color
      */
-    public String getColor() {
-        return colour.getColor();
+    public ArrayList<Colour> getColours() {
+        return colours;
     }
 
     /**
@@ -184,8 +195,8 @@ public class Material {
      *
      * @param color the new color
      */
-    public void setColor(String color) {
-        this.colour = colour;
+    public void setColor(ArrayList<Colour> colors) {
+        this.colours = colours;
     }
 
     /**
@@ -211,7 +222,7 @@ public class Material {
      *
      * @return the availability
      */
-    public String isAvailable() {
+    public String getStatus() {
         return status;
     }
 

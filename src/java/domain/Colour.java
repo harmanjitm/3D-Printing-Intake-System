@@ -62,4 +62,10 @@ public class Colour {
         this.status = status;
     }
     
+    @Override
+    public String toString()
+    {
+        return color;
+    }
+    
 }

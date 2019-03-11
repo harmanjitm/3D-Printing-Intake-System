@@ -1,5 +1,6 @@
 package services;
 
+import domain.Colour;
 import java.util.ArrayList;
 
 import domain.Material;
@@ -27,7 +28,7 @@ public class MaterialService {
 	 *
 	 * @return the new material
 	 */
-	public int createMaterial(String name, String description) throws SQLException{
+	public int createMaterial(String name, String description, String printerName, Colour color, double cost, String status) throws SQLException{
             Material material = new Material(name, description);
             return mb.insertMaterial(material);	
 	}
