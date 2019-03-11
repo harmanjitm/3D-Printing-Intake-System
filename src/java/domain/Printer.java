@@ -15,6 +15,8 @@ public class Printer {
         
         /** The printer description. */
         private String printerDescription;
+        
+        private double runCost;
 	
 	/** The size. */
 	private String size;
@@ -55,20 +57,23 @@ public class Printer {
 	 *
 	 * @param printerId the printer id
 	 * @param materials the materials
+         * @param printerDescription
 	 * @param size the size
+         * @param runCost
 	 * @param status the status
 	 * @param notes the notes
 	 * @param name the name
 	 */
-	public Printer(int printerId, ArrayList<Material> materials, String printerDescription, String size, String status, ArrayList<Note> notes,
+	public Printer(int printerId, ArrayList<Material> materials, String printerDescription, double runCost, String size, String status, ArrayList<Note> notes,
 			String name) {
 		super();
 		this.printerId = printerId;
 		this.materials = materials;
                 this.printerDescription = printerDescription;
+                this.runCost = runCost;
 		this.size = size;
 		this.status = status;
-		this.notes = notes;
+		this.notes = notes; 
 		this.name = name;
 	}
 
@@ -107,6 +112,16 @@ public class Printer {
 	public void setMaterials(ArrayList<Material> materials) {
 		this.materials = materials;
 	}
+
+    public double getRunCost() {
+        return runCost;
+    }
+
+    public void setRunCost(double runCost) {
+        this.runCost = runCost;
+    }
+        
+        
         
         public String getPrinterDescription() {
             return printerDescription;

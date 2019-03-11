@@ -40,26 +40,26 @@
                         <h2>Drag and Drop your file here</h2>
                         <div id="stl_cont" ></div>
                         <br>
-                        <v-flex xs12 sm12 md12>
+                        <v-flex xs12 sm8 md12>
                         <v-select
                             v-model="select"
-                            :items="items"
+                            :items="printers"
                             :rules="[v => !!v || 'Item is required']"
-                            label="Printer"
+                            label="Select A Printer"
                             required
                             ></v-select>
                         <br>
                         <v-select
                             v-model="select"
-                            :items="items"
+                            :items="materials"
                             :rules="[v => !!v || 'Item is required']"
-                            label="Material"
+                            label="Select A Material"
                             required
                             ></v-select>
                         <br>
                         <v-select
                             v-model="select"
-                            :items="items"
+                            :items="payment"
                             :rules="[v => !!v || 'Item is required']"
                             label="Method of payment"
                             required
@@ -88,7 +88,31 @@
             new Vue({
                 el: '#app',
                  data: {
-                    switch1: true
+                    switch1: true,
+                    printers:
+                    [
+                        {text:'Technician Preference', value: 'tech'},
+                        <c:forEach items="${printers}" var="printer">
+                            {text: '${printer.name}', value: '${printer.name}'},
+                        </c:forEach>
+//                        {text:'Technician Preference', value: 'tech'},
+//                        {text:'Form 2', value: 'form2'},
+//                        {text:'Ultimaker 3E', value:'ultimaker'},
+//                        {text:'Fortus 400mc', value: 'fortus'}
+                    ],
+                    materials:
+                    [
+                        {text:'Technician Preference', value: 'tech'},
+                        <c:forEach items="${printers}" var="printer">
+                            {text: '${printer.materials}', value: '${printer.materials}'},
+                        </c:forEach>
+                    ],
+                    payment : 
+                    [
+                        {text: 'Payments are currently unavailable', value:'noPayment'}
+                    ]
+
+
                       
 //                    drawer: 'false',
 //                    dialog: false,
