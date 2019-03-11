@@ -34,36 +34,48 @@
         <div id="app">
             <v-app>
                 <ARIS3D:Header isAdmin="false" pageName="New Order"></ARIS3D:Header>
-                <br><br><br><br>
+                    <br><br><br><br>
 
-                <v-container class="orderCon">
-                    <h2>Drag and Drop your file here</h2>
-                    <div id="stl_cont" ></div>
-                    <br>
-                    <v-select
-                        v-model="select"
-                        :items="items"
-                        :rules="[v => !!v || 'Item is required']"
-                        label="Printer"
-                        required
-                        ></v-select>
-                    <br>
-                    <v-select
-                        v-model="select"
-                        :items="items"
-                        :rules="[v => !!v || 'Item is required']"
-                        label="Material"
-                        required
-                        ></v-select>
-                    <br>
-                    <v-select
-                        v-model="select"
-                        :items="items"
-                        :rules="[v => !!v || 'Item is required']"
-                        label="Method of payment"
-                        required
-                        ></v-select>
-                    <br>
+                    <v-container class="orderCon">
+                        <h2>Drag and Drop your file here</h2>
+                        <div id="stl_cont" ></div>
+                        <br>
+                        <v-flex xs12 sm12 md12>
+                        <v-select
+                            v-model="select"
+                            :items="items"
+                            :rules="[v => !!v || 'Item is required']"
+                            label="Printer"
+                            required
+                            ></v-select>
+                        <br>
+                        <v-select
+                            v-model="select"
+                            :items="items"
+                            :rules="[v => !!v || 'Item is required']"
+                            label="Material"
+                            required
+                            ></v-select>
+                        <br>
+                        <v-select
+                            v-model="select"
+                            :items="items"
+                            :rules="[v => !!v || 'Item is required']"
+                            label="Method of payment"
+                            required
+                            ></v-select>
+                        <br>
+                            <v-text-field
+                                label="Comments"
+                                placeholder="Your comments here"
+                                outline
+                                ></v-text-field>
+                        </v-flex>
+                        <v-switch
+                            v-model="switch1"
+                            :label="`Preferences: ${switch1.toString()}`"
+                        ></v-switch>
+                        <br>
                     <v-btn>Submit</v-btn>
                 </v-container>
 
@@ -75,7 +87,9 @@
         <script>
             new Vue({
                 el: '#app',
-//                 data: {
+                 data: {
+                    switch1: true
+                      
 //                    drawer: 'false',
 //                    dialog: false,
 //                    userItems:
@@ -88,14 +102,14 @@
 //                        {title: 'Printer Management', icon: 'print', link: 'printermanagement'},
 //                        {title: 'Reports', icon: 'poll', link: 'reportmanagement'}
 //                    ]
-//                }
+                }
             })
             var stl_viewer = new StlViewer
                     (
                             document.getElementById("stl_cont"),
                             {
                                 auto_rotate: true,
-                                bgcolor: "#20FAAC",
+//                                bgcolor: "#20FAAC",
                                 allow_drag_and_drop: true,
                                 models:
                                         [
@@ -103,7 +117,6 @@
                                         ]
                             }
                     );
-
         </script>
     </body>
 </html>
