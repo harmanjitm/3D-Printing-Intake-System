@@ -69,10 +69,21 @@ call aris.createPrinterMaterial(3, 60);
 call aris.createNotificationDefaultMessage('issue','There was an issue when processing your print. Please check your account for more information.');
 call aris.createNotificationDefaultMessage('ready','Your print has been printed sucessfully! Please pick it up from the lab!');
 call aris.createNotificationDefaultMessage('printing','Your print is currently being printed.');
-call aris.createNotificationDefaultMessage('queued','Your print has been approved and added to the queue of prints.')
+call aris.createNotificationDefaultMessage('queued','Your print has been approved and added to the queue of prints.');
 
-
-
+/*FILES*/
+call aris.createFile(100000, 'EmilyPegg.stl', 'test/', 90, 'STL');
+call aris.createFile(100001, 'BenWozak.stl', 'test/', 100, 'STL');
+call aris.createFile(100002, 'GregTurnbull.stl', 'test/', 80, 'STL');
+call aris.createFile(100003, 'HarmanMohaar.stl', 'test/', 60, 'STL');
+call aris.createFile(100004, 'HaseebSheikTsuyi.stl', 'test/', 70, 'STL');
 
 /*ORDERS*/
+call aris.createPrintOrder(123.00, 1, 50, 100000, 400000);
+call aris.createPrintOrder(123.00, 2, 57, 100000, 400001);
+call aris.createPrintOrder(123.00, 3, 58, 100000, 400002);
+call aris.createPrintOrder(123.00, 1, 51, 100000, 400003);
+call aris.createPrintOrder(123.00, 2, 55, 100000, 400004);
+
+
 

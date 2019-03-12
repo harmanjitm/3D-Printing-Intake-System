@@ -53,40 +53,59 @@ delimiter ;
 
 /* ***************************************************************
 ** Author:  Emily Pegg	                                       	**
-** Creation Date:  February, 2019                              	**
-** Procedure Name: Get Printer       	                    	**
-** Description:  Gets all values for a given id. If id is not   **
+** Creation Date:  March, 2019                              	**
+** Procedure Name: Get Orders By Printer                    	**
+** Description:  Gets all orders for a printer id. If id is not **
 **				 found return null.								**
 ** Input:  Printer Id											**
-** Output: Printer Size, Printer Status, Printer Name,			**
-**		   Printer Description									**
+** Output: Order Id, Cost, Order Date, Print Date, Order Status	**
+**		   Material Id, Account Id, Order File Id				**
 ******************************************************************/
-DROP PROCEDURE IF EXISTS getPrinter;
+DROP PROCEDURE IF EXISTS getOrdersByPrinter;
 delimiter #
 
-CREATE  PROCEDURE `getPrinter`($printer_id INTEGER)
+CREATE  PROCEDURE `getOrdersByPrinter`($printer_id INTEGER)
 proc_main:BEGIN
-	SELECT printer_size, printer_status, printer_name, printer_description
-		FROM PRINTER
+	SELECT order_id, cost, order_date, print_date, order_status, material_id, account_id, order_file_id
+		FROM PRINT_ORDER
         WHERE printer_id = $printer_id;
 END proc_main #
 delimiter ;
 
 /* ***************************************************************
 ** Author:  Emily Pegg	                                       	**
-** Creation Date:  February, 2019                               **
-** Procedure Name: Get All Printers      	                  	**
-** Description:  Gets all printers from the printers table  	**
-** Output:Printer Id, Printer Size, Printer Status, Printer Name**
-**		  Printer Description									**
+** Creation Date:  March, 2019                              	**
+** Procedure Name: Get Orders By Status		                   	**
+** Description:  Gets all orders with status.					**
+** Input:  order status											**
+** Output: Order Id, Cost, Order Date, Print Date, Order Status	**
+**		   Material Id, Account Id, Order File Id				**
 ******************************************************************/
-DROP PROCEDURE IF EXISTS getAllPrinters;
+DROP PROCEDURE IF EXISTS getOrdersByStatus;
 delimiter #
 
-CREATE  PROCEDURE `getAllPrinters`()
+CREATE  PROCEDURE `getOrdersByStatus`($order_status VARCHAR(20))
 proc_main:BEGIN
-	SELECT printer_id, printer_size, printer_status, printer_name, printer_description
-		FROM PRINTER;
+	SELECT order_id, cost, order_date, print_date, printer_id, material_id, account_id, order_file_id
+		FROM PRINT_ORDER
+        WHERE order_status = $order_status;
 END proc_main #
 delimiter ;
 
+/* ***************************************************************
+** Author:  Emily Pegg	                                       	**
+** Creation Date:  March, 2019                              	**
+** Procedure Name: Get Orders				                   	**
+** Description:  Gets all orders.								**
+** Output: Order Id, Cost, Order Date, Print Date, Order Status	**
+**		   Material Id, Account Id, Order File Id				**
+******************************************************************/
+DROP PROCEDURE IF EXISTS getAllOrders;
+delimiter #
+
+CREATE  PROCEDURE `getAllOrders`()
+proc_main:BEGIN
+	SELECT order_id, cost, order_date, print_date, printer_id, material_id, account_id, order_file_id
+		FROM PRINT_ORDER;
+END proc_main #
+delimiter ;
