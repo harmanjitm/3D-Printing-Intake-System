@@ -71,60 +71,72 @@
                                 </v-card>
                             </v-dialog>
                         </v-toolbar>
-                        <v-data-table  class="elevation-3" :headers="materialheaders" :items="materials" :search="search">
+                        <v-data-table hide-actions expand item-key="materialName" class="elevation-3" :headers="materialheaders" :items="materials" :search="search">
                             <template slot="items" slot-scope="props">
-                                <td>{{ props.item.materialName }}</td>
-                                <td>{{ props.item.printerName }}</td>
-                                <td>{{ props.item.materialDesc }}</td>
-                                <td>{{ props.item.materialColor }}</td>
-                                <td>{{ props.item.materialVal }}</td>
-                                <td>{{ props.item.materialStat }}</td>
-                                <td class="justify-center">
-                                <!-- dialog window for editing an existing material -->
-                                <v-dialog v-model="editDialog" max-width="750px" v-show="editMaterial">
-                                    <v-icon small slot="activator" @click="editMaterial(props.item)">edit</v-icon>
-                                    <v-card>
-                                        <v-card-title>
-                                            <span class="headline">Edit Material</span>
-                                        </v-card-title>
-                                        <form id="edit-material" method="post" action="materialmanagement">
-                                            <v-card-text>
-                                                <v-container grid-list-md>
-                                                    <v-layout wrap>
-                                                        <input type="hidden" name="action" value="edit">
-                                                        <input type="hidden" name="materialID" v-model="editItem.accountID">
-                                                        <v-flex xs12 sm6 md6>
-                                                            <v-text-field name="materialName" v-model="editItem.materialName" label="Material"></v-text-field>
-                                                        </v-flex>
-                                                        <v-flex xs12 sm6 md6>
-                                                            <v-text-field name="printerName" v-model="editItem.printerName" label="Printer"></v-text-field>
-                                                        </v-flex>
-                                                        <v-flex xs12 sm6 md6>
-                                                            <v-text-field name="materialDesc" v-model="editItem.materialDesc" label="Description"></v-text-field>
-                                                        </v-flex>
-                                                        <v-spacer></v-spacer>
-                                                        <v-flex xs12 sm6 md6>
-                                                        <v-text-field name="materialColor" v-model="editItem.materialColor" :items="materialColorDropdown" label="Colors"></v-text-field>
-                                                        </v-flex>
-                                                        <v-flex xs12 sm6 md6>
-                                                            <v-text-field name="materialVal" v-model="editItem.materialVal" label="Value"></v-text-field>
-                                                        </v-flex>
-                                                        <v-flex xs12 sm6 md6>
-                                                            <v-select v-model="editItem.materialStat" :items="materialStatusDropdown" item-text="type" item-value="value" label="Material Status" id="materialStat" name="materialStat"></v-select>
-                                                        </v-flex>
-                                                    </v-layout>
-                                                </v-container>
-                                            </v-card-text>
-                                            <v-card-actions>
-                                                <v-spacer></v-spacer>
-                                                <v-btn flat color="primary" @click="close">Cancel</v-btn>
-                                                <v-btn flat color="primary" @click="edit">Save</v-btn>
-                                            </v-card-actions>
-                                        </form>
-                                    </v-card>
-                                </v-dialog>
-                                <v-icon small @click="remove">delete</v-icon>
-                                </td>
+                                <tr @click="props.expanded = !props.expanded">
+                                    <td>{{ props.item.materialName }}</td>
+                                    <td>{{ props.item.printerName }}</td>
+                                    <td>{{ props.item.materialDesc }}</td>
+                                    <td>{{ props.item.materialVal }}</td>
+                                    <td class="justify-center">
+                                    <!-- dialog window for editing an existing material -->
+                                    <v-dialog v-model="editDialog" max-width="750px" v-show="editMaterial">
+                                        <v-icon small slot="activator" @click="editMaterial(props.item)">edit</v-icon>
+                                        <v-card>
+                                            <v-card-title>
+                                                <span class="headline">Edit Material</span>
+                                            </v-card-title>
+                                            <form id="edit-material" method="post" action="materialmanagement">
+                                                <v-card-text>
+                                                    <v-container grid-list-md>
+                                                        <v-layout wrap>
+                                                            <input type="hidden" name="action" value="edit">
+                                                            <input type="hidden" name="materialID" v-model="editItem.accountID">
+                                                            <v-flex xs12 sm6 md6>
+                                                                <v-text-field name="materialName" v-model="editItem.materialName" label="Material"></v-text-field>
+                                                            </v-flex>
+                                                            <v-flex xs12 sm6 md6>
+                                                                <v-text-field name="printerName" v-model="editItem.printerName" label="Printer"></v-text-field>
+                                                            </v-flex>
+                                                            <v-flex xs12 sm6 md6>
+                                                                <v-text-field name="materialDesc" v-model="editItem.materialDesc" label="Description"></v-text-field>
+                                                            </v-flex>
+                                                            <v-spacer></v-spacer>
+                                                            <v-flex xs12 sm6 md6>
+                                                            <v-text-field name="materialColor" v-model="editItem.materialColor" :items="materialColorDropdown" label="Colors"></v-text-field>
+                                                            </v-flex>
+                                                            <v-flex xs12 sm6 md6>
+                                                                <v-text-field name="materialVal" v-model="editItem.materialVal" label="Value"></v-text-field>
+                                                            </v-flex>
+                                                            <v-flex xs12 sm6 md6>
+                                                                <v-select v-model="editItem.materialStat" :items="materialStatusDropdown" item-text="type" item-value="value" label="Material Status" id="materialStat" name="materialStat"></v-select>
+                                                            </v-flex>
+                                                        </v-layout>
+                                                    </v-container>
+                                                </v-card-text>
+                                                <v-card-actions>
+                                                    <v-spacer></v-spacer>
+                                                    <v-btn flat color="primary" @click="close">Cancel</v-btn>
+                                                    <v-btn flat color="primary" @click="edit">Save</v-btn>
+                                                </v-card-actions>
+                                            </form>
+                                        </v-card>
+                                    </v-dialog>
+                                    <v-icon small @click="remove">delete</v-icon>
+                                    </td>
+                                </tr>
+                            </template>
+                            <template slot="expand" scope="props">
+                                <v-card>
+                                    <v-card-text>
+                                        <v-data-table :headers="colourHeaders" :items="colours" item-key="colour" hide-actions class="elevation-3">
+                                            <template slot="items" scope="props">
+                                                <td>{{ props.item.colour }}</td>
+                                                <td>{{ props.item.status }}</td>
+                                            </template>
+                                        </v-data-table>
+                                    </v-card-text>
+                                </v-card>
                             </template>
                         </v-data-table>
                     </v-container>
@@ -157,6 +169,25 @@
                              materialStat: '${material.status}'},
                         </c:forEach>
                     ],
+                    colourHeaders:
+                    [
+                        {text: 'Colour', value: 'colour'},
+                        {text: 'Status', value: 'status'}
+                    ],
+                    colours:
+                    [
+                        <c:forEach items="${materials}" var="material">
+                            <c:forEach items="${material.colours}" var="colour">
+                                {materialName: '${material.name}',
+                                 colour: '${colour.color}',
+                                 status: '${colour.status}'},
+                            </c:forEach>
+                        </c:forEach>
+                    ],
+                    materialColorDropdown:
+                    [
+                        
+                    ],
                     materialStatusDropdown:
                     [
                         {type: 'instock', value: 'instock', name: 'materialStat'},
@@ -185,9 +216,7 @@
                         {text: 'Material', value: 'materialName'},
                         {text: 'Printer', value: 'printerName'},
                         {text: 'Description', value: 'materialDesc'},
-                        {text: 'Color', value: 'materialColor'},
                         {text: 'Value', value: 'materialVal'},
-                        {text: 'Status', value: 'materialStat'},
                         {text: 'Actions', value: 'actions', sortable: false}
                     ]
                 },

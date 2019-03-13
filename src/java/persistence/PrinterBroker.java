@@ -127,7 +127,7 @@ public class PrinterBroker  {
         Printer printer = null;
         while (rs.next()) {
             printer = new Printer(printerId, materials, rs.getString("printer_description"), 
-                                  rs.getString("printer_size"), rs.getString("printer_status"),
+                                  rs.getDouble("run_cost"), rs.getString("printer_size"), rs.getString("printer_status"),
                                   notes, rs.getString("printer_name"));
         }
 
@@ -157,7 +157,7 @@ public class PrinterBroker  {
         while (rs.next()) {
             ArrayList<Note> notes = null;
             Printer printer = new Printer(Integer.parseInt(rs.getString("printer_id")), materials, 
-                                          rs.getString("printer_description"), rs.getString("printer_size"), 
+                                          rs.getString("printer_description"),rs.getDouble("run_cost"), rs.getString("printer_size"), 
                                           rs.getString("printer_status"), notes, rs.getString("printer_name"));
             printer.setMaterials(getPrinterMaterials(printer.getPrinterId()));
             printers.add(printer);

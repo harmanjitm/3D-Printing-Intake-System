@@ -288,7 +288,7 @@ public class MaterialBroker {
                     material.setCost(costResults.getDouble("material_cost"));
                 }
 
-                material.setColor(colours);
+                
                 materials.add(material);
             }
         }

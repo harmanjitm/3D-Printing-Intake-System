@@ -76,7 +76,7 @@ public class Material {
     public Material(int materialId, ArrayList<Colour> colors) {
         super();
         this.materialId = materialId;
-        this.colours = colours;
+        this.colours = colors;
     }
 
     /**
@@ -196,7 +196,7 @@ public class Material {
      * @param color the new color
      */
     public void setColor(ArrayList<Colour> colors) {
-        this.colours = colours;
+        this.colours = colors;
     }
 
     /**

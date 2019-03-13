@@ -34,6 +34,7 @@ public class MaterialManagementController extends HttpServlet {
             Logger.getLogger(MaterialManagementController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMessage", ex.getMessage());
             request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
+            return;
         }
 
         String action = request.getParameter("action");
