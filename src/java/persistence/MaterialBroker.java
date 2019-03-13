@@ -14,8 +14,8 @@ import java.util.List;
 
 public class MaterialBroker {
 
-    private Connection connection = null;
-    private final ConnectionPool cp = ConnectionPool.getInstance();
+//    private Connection connection = null;
+//    private final ConnectionPool cp = ConnectionPool.getInstance();
 
     /**
      * Adds a new material to the database
@@ -26,7 +26,8 @@ public class MaterialBroker {
      * @throws SQLException if an error occurs while executing the statement
      */
     public int insertMaterial(Material material) throws SQLException {
-        connection = cp.getConnection();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Adding Material: Connection error.");
         }
@@ -54,7 +55,8 @@ public class MaterialBroker {
      * @throws SQLException if an error occurs while executing the statement
      */
     public int insertMaterialColour(int materialId, String colour) throws SQLException {
-        connection = cp.getConnection();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Adding Material Colour: Connection error.");
         }
@@ -84,7 +86,8 @@ public class MaterialBroker {
      * @throws SQLException if an error occurs while executing the statement
      */
     public int updateMaterial(Material material) throws SQLException {
-        connection = cp.getConnection();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Updating Material: Connection error.");
         }
@@ -114,7 +117,8 @@ public class MaterialBroker {
      * @throws SQLException
      */
     public int updateMaterialColour(Material material, String colour, String status) throws SQLException {
-        connection = cp.getConnection();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Updating Material: Connection error.");
         }
@@ -148,7 +152,8 @@ public class MaterialBroker {
      * @throws SQLException
      */
     public int deleteMaterial(Material material) throws SQLException {
-        connection = cp.getConnection();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Deleting Material: Connection error.");
         }
@@ -177,7 +182,8 @@ public class MaterialBroker {
      * @throws SQLException
      */
     public int deleteMaterialColour(Material material, String colour, String status) throws SQLException {
-        connection = cp.getConnection();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Updating Material: Connection error.");
         }
@@ -210,7 +216,8 @@ public class MaterialBroker {
      * @throws SQLException
      */
     public Material getMaterialByID(int materialId) throws SQLException {
-        connection = cp.getConnection();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Getting Account: Connection error.");
         }
@@ -242,7 +249,8 @@ public class MaterialBroker {
      * @return Returns an ArrayList of all the materials in the database
      */
     public List<Material> getAllMaterials() throws SQLException {
-        connection = cp.getConnection();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error getting materials: connection error.");
         }

@@ -12,8 +12,8 @@ import services.AccountService;
 
 public class AccountBroker {
 
-    private Connection connection = null;
-    private final ConnectionPool cp = ConnectionPool.getInstance();
+//    private Connection connection = null;
+//    private final ConnectionPool cp = ConnectionPool.getInstance();
 
     /**
      * Adds a new account to the database
@@ -23,7 +23,8 @@ public class AccountBroker {
      * @throws SQLException if an error occurs while executing the statement
      */
     public int insert(Account account) throws SQLException {
-        connection = cp.getConnection();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Creating Account: Connection error.");
         }
@@ -52,7 +53,8 @@ public class AccountBroker {
      * @throws SQLException if an error occurs while executing the statement
      */
     public int update(Account account) throws SQLException {
-        connection = cp.getConnection();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Updating Account: Connection error.");
         }
@@ -80,7 +82,8 @@ public class AccountBroker {
      * @throws SQLException if an error occurs while executing the statement
      */
     public int delete(int account_ID) throws SQLException {
-        connection = cp.getConnection();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Deleting Account: Connection error.");
         }
@@ -104,7 +107,8 @@ public class AccountBroker {
      * @throws SQLException if an error occurs while executing the statement
      */
     public Account getAccountByID(int account_ID) throws SQLException {
-        connection = cp.getConnection();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Getting Account: Connection error.");
         }
@@ -136,7 +140,8 @@ public class AccountBroker {
      * @throws SQLException if an error occurs while executing the statement
      */
     public List<Account> getAllAccounts() throws SQLException {
-        connection = cp.getConnection();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Getting Accounts: Connection error.");
         }
@@ -159,7 +164,8 @@ public class AccountBroker {
     
     public Account getAccountByEmail(String email) throws SQLException
     {
-        connection = cp.getConnection();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Getting Account: Connection error.");
         }
@@ -192,7 +198,8 @@ public class AccountBroker {
     
     public boolean validateAccount(String email, String password) throws SQLException
     {
-        connection = cp.getConnection();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Validating Account: Connection error.");
         }

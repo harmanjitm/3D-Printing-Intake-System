@@ -14,8 +14,8 @@ import java.util.List;
 
 public class PrinterBroker  {    
 	
-    private Connection connection = null;
-    private final ConnectionPool cp = ConnectionPool.getInstance();
+//    private Connection connection = null;
+//    private final ConnectionPool cp = ConnectionPool.getInstance();
 
     /**
      * Adds a new printer to the database
@@ -24,7 +24,8 @@ public class PrinterBroker  {
      * @throws SQLException if an error occurs while executing the statement
      */
     public int insert(Printer printer) throws SQLException {
-        connection = cp.getConnection();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Adding Printer: Connection error.");
         }
@@ -51,7 +52,8 @@ public class PrinterBroker  {
      * @throws SQLException if an error occurs while executing the statement
      */
     public int update(Printer printer) throws SQLException {
-        connection = cp.getConnection();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Updating Printer: Connection error.");
         }
@@ -78,7 +80,8 @@ public class PrinterBroker  {
      * @throws SQLException if an error occurs while executing the statement
      */
     public int delete(Printer printer) throws SQLException {
-        connection = cp.getConnection();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Deleting Printer: Connection error.");
         }
@@ -105,7 +108,8 @@ public class PrinterBroker  {
      * @throws SQLException if an error occurs while executing the statement
      */
     public Printer getPrinterByID(int printerId) throws SQLException {
-        connection = cp.getConnection();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error getting account: connection error.");
         }
@@ -141,7 +145,8 @@ public class PrinterBroker  {
      * @throws SQLException if an error occurs while executing the statement
      */
     public List<Printer> getAllPrinters() throws SQLException {
-        connection = cp.getConnection();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Getting Printers: Connection error.");
         }
@@ -174,7 +179,8 @@ public class PrinterBroker  {
      * @return An ArrayList with all Materials used for this printer
      */
     public ArrayList<Material> getPrinterMaterials(int printerId) throws SQLException {
-        connection = cp.getConnection();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Getting Materials: Connection error.");
         }
