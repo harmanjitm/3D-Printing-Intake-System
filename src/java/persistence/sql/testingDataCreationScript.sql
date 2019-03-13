@@ -85,5 +85,12 @@ call aris.createPrintOrder(123.00, 3, 58, 100000, 400002);
 call aris.createPrintOrder(123.00, 1, 51, 100000, 400003);
 call aris.createPrintOrder(123.00, 2, 55, 100000, 400004);
 
+/*ORDER QUEUE*/
+call aris.createQueue(300000);
+call aris.createQueue(300001);
+call aris.createQueue(300002);
+call aris.createQueue(300003);
+call aris.createQueue(300004);
+
 
 

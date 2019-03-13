@@ -15,4 +15,5 @@
 7. RUN notificationManagementProceduresScript.sql
 8. RUN fileManagementProceduresScript.sql
 9. RUN printOrderManagementProceduresScript.sql
-10. RUN testingDataCreationScript.sql
+10. RUN queueManagementProceduresScript.sql
+11. RUN testingDataCreationScript.sql

@@ -127,10 +127,9 @@ ALTER TABLE PRINT_ORDER AUTO_INCREMENT=300000;
 DROP TABLE IF EXISTS `aris`.`ORDER_QUEUE` ;
 
 CREATE TABLE IF NOT EXISTS `aris`.`ORDER_QUEUE` (
-  `position` INT NOT NULL,
-  `order_id` INT NOT NULL UNIQUE, FOREIGN KEY (order_id) REFERENCES PRINT_ORDER(order_id) ON DELETE CASCADE,
-  `account_id` INT NOT NULL, FOREIGN KEY (account_id) REFERENCES ACCOUNT(account_id) ON DELETE CASCADE,
-  PRIMARY KEY (`position`));
+  `queue_position` INT NOT NULL,
+  `order_id` INT NOT NULL UNIQUE, FOREIGN KEY (order_id) REFERENCES PRINT_ORDER(order_id) ON DELETE CASCADE, 
+  PRIMARY KEY (`order_id`));
 
 
 -- -----------------------------------------------------
