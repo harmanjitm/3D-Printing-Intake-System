@@ -100,20 +100,11 @@ public class PrinterManagementController extends HttpServlet
                     case "delete":
                         String prntID = request.getParameter("printerID");
                         printerID = Integer.parseInt(prntID);
-                        int prnt = ps.deletePrinter(printerID);
-                        if (prnt == 0)
-                        {
-                            request.setAttribute("errorDeleteM", "Can't delete this user.");
-                            request.getRequestDispatcher("/WEB-INF/printerMgmt.jsp").forward(request, response);
-                        }
-                        else
-                        {
-                            ps.deletePrinter(printerID);
-                            request.setAttribute("deleteM", "Printer has been deleted.");
-                            request.getRequestDispatcher("/WEB-INF/printerMgmt.jsp").forward(request, response); 
-                            break;
-
-                        }
+                        Printer printer = ps.getPrinterById(printerID);
+                        ps.deletePrinter(printer);
+                        request.setAttribute("deleteM", "Printer has been deleted.");
+                        request.getRequestDispatcher("/WEB-INF/printerMgmt.jsp").forward(request, response); 
+                        break;
                     default:
                         break;
                 }

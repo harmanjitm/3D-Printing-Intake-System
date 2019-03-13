@@ -60,7 +60,7 @@ public class MaterialManagementController extends HttpServlet {
         String materialName = request.getParameter("materialName");
         String materialDesc = request.getParameter("materialDesc");
         String printerName = request.getParameter("printerName");
-        String materialStatus = request.getParameter("materialStat");
+        String status = request.getParameter("status");
         double materialCost = Double.parseDouble(request.getParameter("materialCost"));
 
         Colour materialColour = null;
@@ -74,9 +74,9 @@ public class MaterialManagementController extends HttpServlet {
                     if (!(materialName == null || materialName.equals("")) && !(materialDesc == null || materialDesc.equals(""))
                             && !(printerName == null || printerName.equals("")) && !(materialColour == null || materialColour.equals(""))
                             && (materialCost != 0)) {
-                        material = ms.createMaterial(materialName, materialDesc, printerName, materialColour, materialCost, materialStatus);
+                        ms.createMaterial(materialName, materialDesc, printerName, materialColour, materialCost, status);
                         ArrayList<Material> materials = (ArrayList<Material>) request.getAttribute("materials");
-                        materials.add(material);
+                        materials = ms.getAllMaterials();
                         request.setAttribute("materials", materials);
                         request.setAttribute("successMessage", "New Material added.");
                         getServletContext().getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
@@ -88,10 +88,12 @@ public class MaterialManagementController extends HttpServlet {
                 case "edit":
                     if (!(materialName == null || materialName.equals("")) && !(materialDesc == null || materialDesc.equals(""))
                             && !(printerName == null || printerName.equals("")) && !(materialColour == null || materialColour.equals(""))
-                            && (materialCost != 0) && !(materialStatus = false)) {
-                        for (Material editMaterial : ms.getAllMaterials()) {
+                            && (materialCost != 0) && !(status == null || status.equals(""))) {
+                        for (Material editMaterial : ms.getAllMaterials()) 
+                        {
                             System.out.println(editMaterial.getMaterialId());
-                            if (editMaterial.getName().equals(materialName)) {
+                            if (editMaterial.getName().equals(materialName)) 
+                            {
                                 System.out.println(editMaterial.getMaterialId());
                                 System.out.println("Finding Material");
                                 ms.updateMaterial(editMaterial);
@@ -110,15 +112,17 @@ public class MaterialManagementController extends HttpServlet {
                 case "delete":
                     String matID = request.getParameter("materialID");
                     materialID = Integer.parseInt(matID);
-                    if (materialStatus = false) {
+                    if (status == ("false")) {
                         request.setAttribute("errorMessage", "Material is out of Stock and cannot be deleted.");
                         request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
                     } else {
                         if (materialID == 0) {
                             request.setAttribute("errorMessage", "Can't delete this material.");
                             request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
-                        } else {
-                            ms.deleteMaterial(materialID);
+                        } else 
+                        {
+                            Material material = ms.getMaterial(materialID);
+                            ms.deleteMaterial(material);
                             request.setAttribute("sucessMessage", "Material has been deleted.");
                             request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
                             break;

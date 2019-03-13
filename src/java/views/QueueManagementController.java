@@ -47,7 +47,7 @@ public class QueueManagementController extends HttpServlet
                 case "add":
                     if(!(name == null || name.equals(""))  && (queueID != 0) && (printerID != 0))
                     {          
-                        OrderQueue queue = qs.createQueue(name, queueID, printerID);
+                        qs.createQueue(name, queueID, printerID);
                         ArrayList<Order> orders = (ArrayList<Order>) request.getAttribute("orders");
                         orders.add(queue);
                         request.setAttribute("orders", orders);
