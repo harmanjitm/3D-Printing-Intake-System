@@ -129,8 +129,8 @@
                             <template slot="expand" scope="props">
                                 <v-card>
                                     <v-card-text>
-                                        <v-data-table :headers="colourHeaders" :items="colours" item-key="colour" hide-actions class="elevation-3">
-                                            <template slot="items" scope="props">
+                                        <v-data-table :headers="colourHeaders" :items="materials.colours" item-key="colour" hide-actions class="elevation-3">
+                                            <template slot="colours" scope="props">
                                                 <td>{{ props.item.colour }}</td>
                                                 <td>{{ props.item.status }}</td>
                                             </template>
@@ -166,7 +166,13 @@
                              materialDesc: '${material.description}', 
                              materialColor: '${material.colours}', 
                              materialVal: '${material.cost}', 
-                             materialStat: '${material.status}'},
+                             materialStat: '${material.status}',
+                             colours: 
+                             [
+                                <c:forEach items="${material.colours}" var="colour">
+                                        {colour: '${colour.color}', status: '${colour.status}'},
+                                </c:forEach>
+                             ]},
                         </c:forEach>
                     ],
                     colourHeaders:
@@ -178,7 +184,7 @@
                     [
                         <c:forEach items="${materials}" var="material">
                             <c:forEach items="${material.colours}" var="colour">
-                                {materialName: '${material.name}',
+                                {materialId: '${material.materialId}',
                                  colour: '${colour.color}',
                                  status: '${colour.status}'},
                             </c:forEach>

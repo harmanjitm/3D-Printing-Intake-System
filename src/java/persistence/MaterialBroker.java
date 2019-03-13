@@ -292,11 +292,10 @@ public class MaterialBroker {
                 ResultSet costResults = materialCost.executeQuery();
 
                 while (costResults.next()) {
-                    System.out.println(costResults.getDouble("material_cost"));
                     material.setCost(costResults.getDouble("material_cost"));
                 }
 
-                
+                material.setColor(colours);
                 materials.add(material);
             }
         }
