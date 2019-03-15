@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import domain.Account;
 import java.sql.SQLException;
+import java.util.HashMap;
 import persistence.AccountBroker;
 
 /**
@@ -16,6 +17,7 @@ public class AccountService {
      * The account broker to persist changes to the database.
      */
     private AccountBroker ab;
+    public String emailPath;
 
     /**
      * Instantiates a new account service object.
@@ -31,6 +33,16 @@ public class AccountService {
      * @return the account if created or null if the creation fails
      */
     public int createAccount(String email, String password, String firstName, String lastName, String accountType) throws SQLException {
+        //If an account is created from the registration page, then send an email
+        if(accountType.startsWith("inactive"))
+        {
+            String fields[] = accountType.split(" ");
+
+            HashMap<String, String> tags = new HashMap<>();
+            tags.put("firstname", firstName);
+            tags.put("id", fields[1]);
+            EmailService.sendMail(email, "ARIS3D - Verify Account", emailPath + "/notificationtemplates/register.html", tags, "%%%", "%%%");
+        }
         Account account = new Account(email, password, firstName, lastName, accountType);
         return ab.insert(account);
     }
@@ -121,5 +133,11 @@ public class AccountService {
     public String getAccountType(int accountID) throws SQLException {
         Account account = getAccountByID(accountID);
         return account.getAccountType();
+    }
+    
+    public int updateAccountType(int accountId, String accountType) throws SQLException
+    {
+        AccountBroker ab = new AccountBroker();
+        return ab.updateAccountType(accountId, accountType);
     }
 }

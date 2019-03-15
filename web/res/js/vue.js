@@ -8,6 +8,7 @@ new Vue(
         logout: '',
         password: '',
         email: '',
+        verifyEmail: '',
         drawer: false,
         valid: false,
         carouselDelimiter: true,
@@ -52,6 +53,10 @@ new Vue(
         login()
         {
             document.getElementById('login').submit();
+        },
+        resend()
+        {
+            document.getElementById('resend').submit();
         }
     }
 });

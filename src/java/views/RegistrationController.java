@@ -8,6 +8,7 @@ package views;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -30,40 +31,36 @@ public class RegistrationController extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
-        String action = request.getParameter("action");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        String firstName = request.getParameter("fname");
-        String lastName = request.getParameter("lname");
-        String accountType = request.getParameter("accountType");
+        String firstName = request.getParameter("firstname");
+        String lastName = request.getParameter("lastname");
 
         AccountService as = new AccountService();
 
         try 
         {
-            switch(action)
+            if(!(email == null || email.equals("")) && !(password == null || password.equals("")) 
+                && !(firstName == null || firstName.equals("")) && !(lastName == null || lastName.equals("")))
+            {                   
+                String randomID = UUID.randomUUID().toString();
+                String id = randomID.substring(0,8);
+                as.emailPath = getServletContext().getRealPath("/WEB-INF");
+                as.createAccount(email, password, firstName, lastName, "inactive " + id);
+                request.setAttribute("successMessage", "An email has been sent to <b>" + email + "</b> with a code to verify your account.");
+                getServletContext().getRequestDispatcher("/WEB-INF/verifyAccount.jsp").forward(request, response);   
+            }
+            else
             {
-                case "add":
-                    if(!(email == null || email.equals("")) && !(password == null || password.equals("")) 
-                        && !(firstName == null || firstName.equals("")) && !(lastName == null || lastName.equals("")))
-                    {                   
-                        as.createAccount(email, password, firstName, lastName, accountType);
-                        request.setAttribute("sucessMessage", "New User added.");
-                        getServletContext().getRequestDispatcher("/WEB-INF/registration.jsp").forward(request, response);   
-                    }
-                    else
-                    {
-                        request.setAttribute("errorMessage", "Please enter the required fields.");
-                        getServletContext().getRequestDispatcher("/WEB-INF/registration.jsp").forward(request, response);
-                    }
-                    break;
-                default:
-                    break;
+                request.setAttribute("errorMessage", "Please enter all the required fields.");
+                getServletContext().getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
             }
         } 
         catch (Exception ex) 
         {
             Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("errorMessage", "An error occurred while creating your account. Please try again.");
+            request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
         }
     }
 }

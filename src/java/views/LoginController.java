@@ -102,8 +102,8 @@ public class LoginController extends HttpServlet
                 response.sendRedirect("dashboard");
                 return;
             default:
-                request.setAttribute("errorMessage", "Login Error: Your account is currently inactive. Please contact us <a href='contact'>here</a>");
-                request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+                request.setAttribute("errorMessage", "Your account is currently inactive. Please enter your verification code.");
+                request.getRequestDispatcher("/WEB-INF/verifyAccount.jsp").forward(request, response);
                 return;
         }
 //        if(!(email == null || email.equals("")) && !(password == null || password.equals("")))

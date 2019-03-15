@@ -4,6 +4,7 @@
     Author     : 687159
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib tagdir="/WEB-INF/tags/" prefix="ARIS3D" %>
 
@@ -29,76 +30,88 @@
                 <ARIS3D:Header isAdmin="false" pageName="Register"></ARIS3D:Header>
                 <v-content>
                     <br><br>
-                    <v-flex xs12 sm8 offset-sm2>
-                        <v-toolbar color="#1B222B" dark>
-                            <v-toolbar-title>Register New Account</v-toolbar-title>
-                        </v-toolbar>
-                        <v-card class="elevation-10">
-                            <v-container>
-                                <v-form ref="form" v-model="valid" id="create-account" method="post" action="accountmanagement" lazy-validation>
-                                    <v-text-field
-                                        name="firstname"
-                                        :counter="10"
-                                        :rules="nameRules"
-                                        label="First Name"
-                                        required
-                                        ></v-text-field>
+                    <v-container>
+                        <v-layout align-center justify-center>
+                            <v-flex xs12 sm8 md6 lg6 xl4>
+                                <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
+                                    ${successMessage}
+                                </v-alert>
+                                <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
+                                    ${errorMessage}
+                                </v-alert>
+                                <v-toolbar color="#1B222B" dark>
+                                    <v-toolbar-title>Register New Account</v-toolbar-title>
+                                </v-toolbar>
+                                <v-card class="elevation-10">
+                                    <v-container>
+                                        <v-form ref="form" v-model="valid" id="create-account" method="post" action="register" lazy-validation>
+                                            <v-text-field
+                                                name="firstname"
+                                                :counter="10"
+                                                :rules="nameRules"
+                                                label="First Name"
+                                                required
+                                                ></v-text-field>
 
-                                    <v-text-field
-                                        name="lastname"
-                                        :counter="10"
-                                        :rules="nameRules"
-                                        label="Last Name"
-                                        required
-                                        ></v-text-field>
+                                            <v-text-field
+                                                name="lastname"
+                                                :counter="10"
+                                                :rules="nameRules"
+                                                label="Last Name"
+                                                required
+                                                ></v-text-field>
 
-                                    <v-text-field
-                                        name="email"
-                                        :rules="emailRules"
-                                        label="Email"
-                                        required
-                                        ></v-text-field>
+                                            <v-text-field
+                                                name="email"
+                                                :rules="emailRules"
+                                                label="Email"
+                                                required
+                                                ></v-text-field>
 
-                                    <v-text-field
-                                        v-model="password"
-                                        label="Password"
-                                        hint="At least 8 characters"
-                                        :append-icon="show3 ? 'visibility_off' : 'visibility'"
-                                        :rules="[rules.min]"
-                                        :type="show3 ? 'text' : 'password'"
-                                        @click:append="show3 = !show3"
-                                        required
-                                        ></v-text-field>
+                                            <v-text-field
+                                                v-model="password"
+                                                label="Password"
+                                                name="password"
+                                                hint="At least 8 characters"
+                                                :append-icon="show3 ? 'visibility_off' : 'visibility'"
+                                                :rules="[rules.min]"
+                                                :type="show3 ? 'text' : 'password'"
+                                                @click:append="show3 = !show3"
+                                                required
+                                                ></v-text-field>
 
-                                    <v-text-field
-                                        v-model="confirmPass"
-                                        :append-icon="show4 ? 'visibility_off' : 'visibility'"
-                                        :error-messages='passMatch()'
-                                        :type="show4 ? 'text' : 'password'"
-                                        label="Confirm Password"
-                                        hint="At least 8 characters"
-                                        @click:append="show4 = !show4"
-                                        required
-                                        ></v-text-field>
+                                            <v-text-field
+                                                v-model="confirmPass"
+                                                :append-icon="show4 ? 'visibility_off' : 'visibility'"
+                                                :error-messages='passMatch()'
+                                                :type="show4 ? 'text' : 'password'"
+                                                label="Confirm Password"
+                                                name="password2"
+                                                hint="At least 8 characters"
+                                                @click:append="show4 = !show4"
+                                                required
+                                                ></v-text-field>
 
-                                    <v-checkbox
-                                        v-model="checkbox"
-                                        :rules="[v => !!v || 'You must agree to continue']"
-                                        label="Agree to terms of service"
-                                        required
-                                        ></v-checkbox>
+                                            <v-checkbox
+                                                v-model="checkbox"
+                                                :rules="[v => !!v || 'You must agree to continue']"
+                                                label="Agree to terms of service"
+                                                required
+                                                ></v-checkbox>
 
 
-                                    <v-layout row justify-space-between>
-                                        <v-flex xs6>
-                                            <input type="hidden" name="action" value="add">
-                                            <v-btn :disabled="!valid" color="#8B2635" dark @click="submit">Register</v-btn>
-                                        </v-flex>
-                                    </v-layout>
-                                </v-form>
-                            </v-container>
-                        </v-card>
-                    </v-flex>
+                                            <v-layout row justify-space-between>
+                                                <v-flex xs6>
+                                                    <input type="hidden" name="action" value="add">
+                                                    <v-btn :disabled="!valid" color="#8B2635" dark @click="submit">Register</v-btn>
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-form>
+                                    </v-container>
+                                </v-card>
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
                 </v-content>
             </v-app>
         </div>

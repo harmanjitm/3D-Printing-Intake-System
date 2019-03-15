@@ -235,4 +235,25 @@ public class AccountBroker {
             return false;
         }
     }
+    
+    public int updateAccountType(int accountId, String accountType) throws SQLException
+    {
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
+        if (connection == null) {
+            throw new SQLException("Error Updating Account: Connection error.");
+        }
+        if (accountType == null) {
+            throw new SQLException("Error Updating Account: Missing account information.");
+        }
+
+        CallableStatement cStmt = connection.prepareCall("{call updateAccountType(?, ?)}");
+
+        cStmt.setInt(1, accountId);
+        cStmt.setString(2, accountType);
+
+        int hadResults = cStmt.executeUpdate();
+        connection.close();
+        return hadResults;
+    }
 }
