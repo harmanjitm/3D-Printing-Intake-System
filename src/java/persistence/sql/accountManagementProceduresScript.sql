@@ -13,7 +13,7 @@ delimiter #
 
 CREATE  PROCEDURE `createAccount`($email VARCHAR(100), $password VARCHAR(50), $f_name VARCHAR(50), $l_name VARCHAR(50), $account_type VARCHAR(50))
 proc_main:BEGIN
-	INSERT INTO ACCOUNT(email, password, f_name, l_name, account_type) 
+	INSERT INTO ACCOUNTS(email, password, f_name, l_name, account_type) 
 		VALUES($email, $password, $f_name, $l_name, $account_type);
 END proc_main #
 delimiter ;
@@ -36,10 +36,10 @@ delimiter #
 CREATE PROCEDURE updateAccount($account_id INTEGER, $email VARCHAR(100), $f_name VARCHAR(50), $l_name VARCHAR(50), $account_type VARCHAR(50))
 proc_main:BEGIN
     SELECT email, f_name, l_name, account_type
-        FROM ACCOUNT
+        FROM ACCOUNTS
         WHERE account_id = $account_id;
         
-    UPDATE ACCOUNT
+    UPDATE ACCOUNTS
         SET email = $email, 
             f_name = $f_name, 
             l_name = $l_name, 
@@ -63,10 +63,10 @@ delimiter #
 CREATE  PROCEDURE `updateAccountType`($account_id INTEGER, $account_type VARCHAR(50))
 proc_main:BEGIN
 	SELECT account_type
-		FROM ACCOUNT
+		FROM ACCOUNTS
         WHERE account_id = $account_id;
         
-	UPDATE ACCOUNT
+	UPDATE ACCOUNTS
 		SET account_type = $account_type
 		WHERE account_id = $account_id;
 END proc_main #
@@ -85,7 +85,7 @@ delimiter #
 
 CREATE  PROCEDURE `updateAccountPassword`($account_id INTEGER, $password VARCHAR(50))
 proc_main:BEGIN        
-	UPDATE ACCOUNT
+	UPDATE ACCOUNTS
 		SET password = $password
 		WHERE account_id = $account_id;
 END proc_main #
@@ -111,10 +111,10 @@ proc_main:BEGIN
 	CALL deleteNotificationsByAccount($account_id);
 	
 	SELECT email, f_name, l_name, account_type 
-		FROM ACCOUNT
+		FROM ACCOUNTS
         WHERE account_id = $account_id;
 		
-	DELETE FROM ACCOUNT 
+	DELETE FROM ACCOUNTS 
 		WHERE account_id = $account_id;
 END proc_main #
 delimiter ;
@@ -161,10 +161,11 @@ CREATE  PROCEDURE `deleteOrderQueueByAccount`($account_id INTEGER)
 proc_main:BEGIN	
 	SELECT * 
 		FROM ORDER_QUEUE
-        WHERE account_id = $account_id;
+        WHERE order_id IN (SELECT order_id FROM PRINT_ORDER WHERE account_id = $account_id);
 		
 	DELETE FROM ORDER_QUEUE 
-		WHERE account_id = $account_id;
+		 WHERE order_id IN (SELECT order_id FROM PRINT_ORDER WHERE account_id = $account_id);
+
 END proc_main #
 delimiter ;
 
@@ -183,10 +184,10 @@ delimiter #
 CREATE  PROCEDURE `deleteFilesByAccount`($account_id INTEGER)
 proc_main:BEGIN	
 	SELECT * 
-		FROM FILE
+		FROM ORDER_FILE
         WHERE account_id = $account_id;
 		
-	DELETE FROM FILE 
+	DELETE FROM ORDER_FILE 
 		WHERE account_id = $account_id;
 END proc_main #
 delimiter ;
@@ -207,10 +208,10 @@ CREATE  PROCEDURE `deleteNotificationsByAccount`($account_id INTEGER)
 proc_main:BEGIN	
 	SELECT * 
 		FROM NOTIFICATION
-        WHERE account_id = $account_id;
+        WHERE order_id IN (SELECT order_id FROM PRINT_ORDER WHERE account_id = $account_id);
 		
 	DELETE FROM NOTIFICATION 
-		WHERE account_id = $account_id;
+		WHERE order_id IN (SELECT order_id FROM PRINT_ORDER WHERE account_id = $account_id);
 END proc_main #
 delimiter ;
 
@@ -231,7 +232,7 @@ delimiter #
 CREATE  PROCEDURE `getAccountById`($account_id INTEGER)
 proc_main:BEGIN
 	SELECT email, f_name, l_name, account_type 
-		FROM ACCOUNT
+		FROM ACCOUNTS
         WHERE account_id = $account_id;
 END proc_main #
 delimiter ;
@@ -250,7 +251,7 @@ delimiter #
 CREATE  PROCEDURE `getAccountByEmail`($email VARCHAR(100))
 proc_main:BEGIN
 	SELECT account_id
-		FROM ACCOUNT
+		FROM ACCOUNTS
         WHERE email = $email;
 END proc_main #
 delimiter ;
@@ -269,7 +270,7 @@ delimiter #
 CREATE  PROCEDURE `getAllAccounts`()
 proc_main:BEGIN
 	SELECT account_id, email, f_name, l_name, account_type
-		FROM ACCOUNT;
+		FROM ACCOUNTS;
 END proc_main #
 delimiter ;
 
@@ -289,7 +290,7 @@ delimiter #
 CREATE  PROCEDURE `validateAccount`($email VARCHAR(100), $password VARCHAR(50))
 proc_main:BEGIN
 	SELECT account_type
-		FROM ACCOUNT
+		FROM ACCOUNTS
         WHERE email = $email AND password = $password;
 END proc_main #
 delimiter ;

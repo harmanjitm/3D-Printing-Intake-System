@@ -17,11 +17,11 @@ CREATE SCHEMA IF NOT EXISTS `aris` DEFAULT CHARACTER SET utf8 ;
 USE `aris` ;
 
 -- -----------------------------------------------------
--- Table `aris`.`ACCOUNT`
+-- Table `aris`.`ACCOUNTS`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `aris`.`ACCOUNT` ;
+DROP TABLE IF EXISTS `aris`.`ACCOUNTS` ;
 
-CREATE TABLE IF NOT EXISTS `aris`.`ACCOUNT` (
+CREATE TABLE IF NOT EXISTS `aris`.`ACCOUNTS` (
   `account_id` INT NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(100) NOT NULL UNIQUE,
   `password` VARCHAR(50) NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `aris`.`ACCOUNT` (
   `l_name` VARCHAR(50) NOT NULL,
   `account_type` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`account_id`));
-ALTER TABLE ACCOUNT AUTO_INCREMENT=100000;
+ALTER TABLE ACCOUNTS AUTO_INCREMENT=100000;
 
 -- -----------------------------------------------------
 -- Table `aris`.`REPORT`
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `aris`.`REPORT` (
   `date_completed` DATE NULL,
   `report_status` VARCHAR(30) NOT NULL,
   `report_path` VARCHAR(500) NOT NULL,
-  `account_id` INT NOT NULL, FOREIGN KEY (account_id) REFERENCES ACCOUNT(account_id) ON DELETE CASCADE,
+  `account_id` INT NOT NULL, FOREIGN KEY (account_id) REFERENCES ACCOUNTS(account_id) ON DELETE CASCADE,
   PRIMARY KEY (`report_id`));
 ALTER TABLE REPORT AUTO_INCREMENT=100;
 
@@ -92,7 +92,7 @@ DROP TABLE IF EXISTS `aris`.`ORDER_FILE` ;
 
 CREATE TABLE IF NOT EXISTS `aris`.`ORDER_FILE` (
   `order_file_id` INT NOT NULL AUTO_INCREMENT,
-  `account_id` INT NOT NULL, FOREIGN KEY (account_id) REFERENCES ACCOUNT(account_id) ON DELETE CASCADE,
+  `account_id` INT NOT NULL, FOREIGN KEY (account_id) REFERENCES ACCOUNTS(account_id) ON DELETE CASCADE,
   `filename` VARCHAR(30) NOT NULL,
   `file_path` VARCHAR(500) NOT NULL,
   `file_size` DOUBLE(13,4) NULL,
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `aris`.`PRINT_ORDER` (
   `order_status` VARCHAR(20) NOT NULL,
   `printer_id` INT NOT NULL, FOREIGN KEY (printer_id) REFERENCES PRINTER(printer_id)  ON DELETE CASCADE,
   `material_id` INT NOT NULL, FOREIGN KEY (material_id) REFERENCES MATERIAL(material_id) ON DELETE CASCADE,
-  `account_id` INT NOT NULL, FOREIGN KEY (account_id) REFERENCES ACCOUNT(account_id) ON DELETE CASCADE,
+  `account_id` INT NOT NULL, FOREIGN KEY (account_id) REFERENCES ACCOUNTS(account_id) ON DELETE CASCADE,
   `order_file_id` INT NOT NULL, FOREIGN KEY (order_file_id) REFERENCES ORDER_FILE(order_file_id) ON DELETE CASCADE,
   PRIMARY KEY (`order_id`));
 ALTER TABLE PRINT_ORDER AUTO_INCREMENT=300000;
