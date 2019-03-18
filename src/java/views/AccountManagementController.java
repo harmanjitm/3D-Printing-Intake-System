@@ -143,7 +143,6 @@ public class AccountManagementController extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
-                System.out.println(firstName + " " + lastName + " " + email + " " + request.getParameter("accountID") + " " + accountType);
 
                 if (request.getParameter("accountID") == null || request.getParameter("accountID").equals("")) {
                     request.setAttribute("errorMessage", "Error Editing Account: An unexpected error occurred, please try again.");
@@ -197,6 +196,7 @@ public class AccountManagementController extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                 break;
             case "delete":
+                if()
             default:
                 request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                 break;

@@ -7,6 +7,7 @@
 <%@tag description="The header." pageEncoding="UTF-8"%>
 <%@attribute description="Specify if the user is a Tech or User. Will display specific page depening on which it is" required="true" name="isAdmin"%>
 <%@attribute description="The page name to display on the header." name="pageName" required="true" %>
+            <c:if test="${account != null}">
                 <v-navigation-drawer dark v-model="drawer" stateless clipped app fixed>
                     <v-list dense>
                         <c:if test="${account.accountType == 'admin'}">
@@ -31,17 +32,26 @@
                         </c:if>
                     </v-list>
                 </v-navigation-drawer>
+            </c:if>
                 <v-toolbar app fixed clipped-left color="#1B222B">
-                    <v-toolbar-side-icon @click.stop="drawer = !drawer" class="white--text"></v-toolbar-side-icon>
+                    <c:if test="${account != null}">
+                        <v-toolbar-side-icon @click.stop="drawer = !drawer" class="white--text"></v-toolbar-side-icon>
+                    </c:if>
                     <v-toolbar-title class="white--text">${pageName}</v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
                         <c:if test="${account != null}">
-                            <v-menu open-on-hover offset-y>
-                                <v-btn slot="activator" flat round>
-                                    <v-icon large color="white">account_circle</v-icon>
-                                </v-btn>
-                                <v-list>
+                            <v-btn href="account" slot="activator" icon>
+                                <v-icon large color="white">perm_identity</v-icon>
+                            </v-btn>
+                            <v-btn href="login?logout=true" slot="activator" icon>
+                                <v-icon large color="white">logout</v-icon>
+                            </v-btn>
+                            
+                            <!--<v-menu open-on-hover offset-y>-->
+                                
+                                
+<!--                                <v-list>
                                     <a href="account">
                                         <v-list-tile @click="">
                                             <v-list-tile-title>Account</v-list-tile-title>
@@ -52,8 +62,8 @@
                                             <v-list-tile-title>Logout</v-list-tile-title>
                                         </v-list-tile>
                                     </a>
-                                </v-list>
-                            </v-menu>
+                                </v-list>-->
+                            <!--</v-menu>-->
                         </c:if>
                         <c:if test="${account == null}">
                             <c:if test="${pageName != 'Register'}">

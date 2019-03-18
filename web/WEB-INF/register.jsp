@@ -39,15 +39,16 @@
                                 <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
                                     ${errorMessage}
                                 </v-alert>
-                                <v-toolbar color="#1B222B" dark>
-                                    <v-toolbar-title>Register New Account</v-toolbar-title>
-                                </v-toolbar>
+                                <v-card color="#8B2635" height="5px"></v-card>
                                 <v-card class="elevation-10">
+                                    <v-toolbar color="#1B222B" dark>
+                                        <v-toolbar-title>Register New Account</v-toolbar-title>
+                                    </v-toolbar>
                                     <v-container>
                                         <v-form ref="form" v-model="valid" id="create-account" method="post" action="register" lazy-validation>
                                             <v-text-field
                                                 name="firstname"
-                                                :counter="10"
+                                                :counter="50"
                                                 :rules="nameRules"
                                                 label="First Name"
                                                 required
@@ -55,7 +56,7 @@
 
                                             <v-text-field
                                                 name="lastname"
-                                                :counter="10"
+                                                :counter="50"
                                                 :rules="nameRules"
                                                 label="Last Name"
                                                 required
@@ -113,6 +114,17 @@
                         </v-layout>
                     </v-container>
                 </v-content>
+                <v-footer dark height="auto">
+                    <v-layout color="#1B222B" justify-center row wrap>
+                        <a href="home"><v-btn color="white" flat round>Home</v-btn></a>
+                        <a href="login"><v-btn color="white" flat round>Login</v-btn></a>
+                        <a href="register"><v-btn color="white" flat round>Register</v-btn></a>
+                        <a href="contact"><v-btn color="white" flat round>Contact Us</v-btn></a>
+                        <v-flex color="white" py-1 text-xs-center white--text xs12>
+                            <strong>ARIS3D</strong>
+                        </v-flex>
+                    </v-layout>
+                </v-footer>
             </v-app>
         </div>
 
@@ -135,7 +147,7 @@
                         ],
                         nameRules: [
                             v => !!v || 'Name is required',
-                            v => (v && v.length <= 30) || 'Name must be less than 30 characters'
+                            v => (v && v.length <= 50) || 'Name must be less than 50 characters'
                         ],
                         email: '',
                         emailRules: [
@@ -186,5 +198,6 @@
             });
 
         </script>
+        <link href="res/css/header.css" rel="stylesheet" type="text/css"/>
     </body>
 </html>

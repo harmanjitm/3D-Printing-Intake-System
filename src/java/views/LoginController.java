@@ -80,6 +80,11 @@ public class LoginController extends HttpServlet
             account = as.checkCredentials(email, password);
         } catch (SQLException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("email", email);
+            request.setAttribute("errorMessage", ex.getMessage());
+            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            return;
+            
         }
         
         if(account == null)
@@ -91,14 +96,15 @@ public class LoginController extends HttpServlet
         }
         
         account.setPassword("");
-        session.setAttribute("account", account);
         
         switch(account.getAccountType())
         {
             case "user":
+                session.setAttribute("account", account);
                 response.sendRedirect("userhome");
                 return;
             case "admin":
+                session.setAttribute("account", account);
                 response.sendRedirect("dashboard");
                 return;
             default:

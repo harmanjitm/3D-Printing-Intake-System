@@ -18,7 +18,9 @@
             <v-app>
                 <ARIS3D:Header isAdmin="true" pageName="Dashboard"></ARIS3D:Header>
                 <v-content>
-                    
+                    <v-container>
+                        
+                    </v-container>
                 </v-content>
             </v-app>
         </div>
