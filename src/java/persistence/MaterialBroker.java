@@ -293,15 +293,12 @@ public class MaterialBroker {
 
                 while (costResults.next()) {
                     material.setCost(costResults.getDouble("material_cost"));
+                    System.out.println(costResults.getDouble("material_cost"));
                 }
 
                 material.setColor(colours);
                 materials.add(material);
             }
-        }
-        
-        for(Material m:materials){
-            System.out.println(m.getMaterialId() + " " + m.getName() + " " + m.getStatus() + " " + m.getCost());
         }
 
         connection.close();

@@ -59,6 +59,7 @@ public class Material {
     public Material(int materialId, String name, String description) {
         super();
         this.name = name;
+        this.materialId = materialId;
         this.description = description;
         this.printerName = printerName;
         this.colours = colours;
@@ -213,7 +214,7 @@ public class Material {
      *
      * @param cost the new cost
      */
-    public void setCost(double Cost) {
+    public void setCost(double cost) {
         this.cost = cost;
     }
 
