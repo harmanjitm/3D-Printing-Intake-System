@@ -73,7 +73,7 @@
                         </v-toolbar>
                         <v-data-table hide-actions expand item-key="materialName" class="elevation-3" :headers="materialheaders" :items="materials" :search="search">
                             <template slot="items" slot-scope="props">
-                                <tr @click="props.expanded = !props.expanded">
+                                <tr @click="loadMaterialColour(props.item); props.expanded = !props.expanded">
                                     <td>{{ props.item.materialName }}</td>
                                     <td>{{ props.item.printerName }}</td>
                                     <td>{{ props.item.materialDesc }}</td>
@@ -131,8 +131,10 @@
                                     <v-card-text>
                                         <v-data-table :headers="colourHeaders" :items="colours" item-key="colour" hide-actions class="elevation-3">
                                             <template slot="items" scope="props">
-                                                <td>{{ props.item.colour }}</td>
-                                                <td>{{ props.item.status }}</td>
+                                                <tr v-if="props.item.materialId===selectedColourID">
+                                                    <td>{{props.item.colour}}</td>
+                                                    <td>{{props.item.status}}</td>
+                                                </tr>
                                             </template>
                                         </v-data-table>
                                     </v-card-text>
@@ -151,6 +153,8 @@
                 el: '#app',
                 data: 
                 {
+                    selectedColourID: 0,
+                    colourData: [],
                     search: '',
                     editIndex: -1,
                     dialog: false,
@@ -223,6 +227,28 @@
                 },
                 methods:
                 {
+                    loadMaterialColour(material)
+                    {  
+                        this.selectedColourID = material.materialId;
+                        <%--<c:set var="selectedMaterial" value="this.selectedColourID"></c:set>--%>
+                        
+                        
+//                        
+//                        this.colourData = [
+//                            <c:forEach items="${materials}" var="material">
+//                                <c:set var="materialIDToCompare" value="material.materialId"></c:set>
+//                                <c:if test="${materialIDToCompare == selectedMaterial}">
+//                                    <c:forEach items="${material.colours}" var="colour">
+//                                        {materialId: '${material.materialId}',
+//                                         colour: '${colour.color}',
+//                                         status: '${colour.status}'},
+//                                    </c:forEach>
+//                                    {materialId: '20', colour: 'red', status: 'in-stock'},
+//                                </c:if>
+//                            </c:forEach>
+//                        ]
+                        //alert(${materialIDToCompare} + ${selectedMaterial});
+                    },
                     close()
                     {
                         this.dialog = false,
