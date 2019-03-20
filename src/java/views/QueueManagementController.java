@@ -8,14 +8,20 @@ package views;
 
 import domain.Order;
 import domain.OrderQueue;
+import domain.Printer;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import services.AccountService;
 import services.OrderQueueService;
+import services.PrinterService;
 
 /**
  *
@@ -25,6 +31,7 @@ public class QueueManagementController extends HttpServlet
 {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
+        
         request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
     }
 
@@ -35,86 +42,38 @@ public class QueueManagementController extends HttpServlet
         String name = request.getParameter("name");
         String qID = request.getParameter("queueID");
         String prinID = request.getParameter("printerID");
+        String printerStatus;
         int queueID = Integer.parseInt(qID);
         int printerID = Integer.parseInt(prinID);
         
+        OrderQueue oq = new OrderQueue();
+        AccountService as = new AccountService();
         OrderQueueService qs = new OrderQueueService();
-        
-        try 
+        PrinterService ps = new PrinterService();
+
+        if((qs.getQueue(queueID) != null))
         {
-            switch(action)
+            Printer status = null;
+            status.getStatus();
+            Printer toUpdate = status;
+            try
             {
-                case "add":
-                    if(!(name == null || name.equals(""))  && (queueID != 0) && (printerID != 0))
-                    {          
-                        qs.createQueue(name, queueID, printerID);
-                        ArrayList<Order> orders = (ArrayList<Order>) request.getAttribute("orders");
-                        orders.add(queue);
-                        request.setAttribute("orders", orders);
-                        request.setAttribute("successMessage", "New Material added.");
-                        getServletContext().getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);   
-                    }
-                    else
-                    {
-                        request.setAttribute("errorMessage", "Please enter the required fields.");
-                        getServletContext().getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
-                    }
-                    break;
-                case "edit":
-                    if(!(name == null || name.equals(""))  && (queueID != 0) && (printerID != 0))
-                    {
-                        for(Order editOrder: qs.getAllMaterials())
-                        {
-                            System.out.println(editMaterial.getMaterialId());
-                            if(editMaterial.getName().equals(materialName))
-                            {
-                                System.out.println(editMaterial.getMaterialId());
-                                System.out.println("Finding Material");
-                                ms.updateMaterial(editMaterial);
-                                System.out.println("Found Material");
-                            }
-                        }
-                        System.out.println("Done updating");
-                        request.setAttribute("sucessMessage", "Material has been updated.");
-                        request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
-                        return;
-                    }
-                    else
-                    {
-                        request.setAttribute("errorMessage", "Please enter all of the required fields.");
-                        request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
-                    }
-                    break;
-                case "delete":
-                    String matID = request.getParameter("materialID");
-                    materialID = Integer.parseInt(matID);
-                    if(materialStatus = false)
-                    {
-                        request.setAttribute("errorMessage", "Material is out of Stock and cannot be deleted.");
-                        request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
-                    }
-                    else
-                    {
-                        if (materialID == 0)
-                        {
-                            request.setAttribute("errorMessage", "Can't delete this material.");
-                            request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
-                        }
-                        else
-                        {
-                            ms.deleteMaterial(materialID);
-                            request.setAttribute("sucessMessage", "Material has been deleted.");
-                            request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response); 
-                            break;
-                        }
-                    }                  
-                default:
-                    break;
+                as.emailPath = getServletContext().getRealPath("/WEB-INF");
+                ps.setPrinterStatus(toUpdate);
+                request.setAttribute("successMessage", "Status updated");
+                getServletContext().getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
+            } 
+            catch (SQLException ex)
+            {
+                Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("errorMessage", "Error setting status");
+                getServletContext().getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
             }
-        } 
-        catch (Exception ex) 
+        }
+        else
         {
-            Logger.getLogger(MaterialManagementController.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("errorMessage", "Error setting status");
+            getServletContext().getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
         }
     }
 }
