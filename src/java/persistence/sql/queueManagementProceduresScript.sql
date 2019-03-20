@@ -43,7 +43,7 @@ CREATE PROCEDURE `createQueuePosition`($order_id INTEGER, $position INTEGER)
 proc_main:BEGIN
 	UPDATE ORDER_QUEUE 
 	 SET queue_position = queue_position + 1
-	 WHERE queue_position >= $position AND queue_position < (SELECT queue_position FROM ORDER_QUEUE WHERE $order_id) AND order_id IN (SELECT order_id 
+	 WHERE queue_position >= $position AND queue_position < (SELECT queue_position FROM ORDER_QUEUE WHERE order_id = $order_id) AND order_id IN (SELECT order_id 
 			 FROM PRINT_ORDER 
 			 WHERE printer_id = 
 			 (SELECT printer_id 
