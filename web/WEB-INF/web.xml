@@ -138,7 +138,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>QueueManagementController</servlet-name>
-        <url-pattern>/queuemgmt</url-pattern>
+        <url-pattern>/queue</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ReportController</servlet-name>
