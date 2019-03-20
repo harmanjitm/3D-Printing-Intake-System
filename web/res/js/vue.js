@@ -28,7 +28,7 @@ new Vue(
             {title: 'Dashboard', icon: 'dashboard', link: 'userhome'},
             {title: 'Notifications', icon: 'mail', link: 'notifications'},
             {title: 'Previous Orders', icon: 'replay', link: 'previousorders'},
-            {title: 'Submit Order', icon: '', link: ''},
+            {title: 'Submit Order', icon: 'add_box', link: 'order'},
             {title: 'Orders', icon: '', link: 'orders'}
         ],
         accountmanagementheaders:
