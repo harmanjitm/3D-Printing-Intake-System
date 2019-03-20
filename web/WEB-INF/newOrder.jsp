@@ -13,8 +13,8 @@
         <ARIS3D:Imports/>
         <link href="res/css/header.css" rel="stylesheet" type="text/css"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-
+        <title>ARIS Submit Order</title>
+        
         <style>
             body {
                 text-align: center;
@@ -34,7 +34,7 @@
         <div id="app">
             <v-app>
                 <ARIS3D:Header isAdmin="false" pageName="New Order"></ARIS3D:Header>
-                    <br><br><br><br>
+                    <br><br><br>
 
                     <v-container grid-list-md text-xs-center>
                         <v-layout row wrap>
@@ -42,16 +42,17 @@
                             <v-flex>
                                 <v-card>
                                     <v-card-text class="px-0">
-                                        <div id="stl_cont" >
+                                        <div id="stl_cont" @change="viewInfo">
                                             <div>
                                                 <span>Drag and Drop your file here <span>
                                                 <span>OR <u> Browse your computer</u></span>
                                             </div>
                                         </div>
+                                        <v-btn @click="viewInfo">Get STL Info</v-btn>
                                         <br>
                                         <v-flex class="justify-center" xs10>
-                                            <v-select v-model="selectPrinter" :items="printers" :rules="[v => !!v || 'Item is required']" label="Select A Printer" required>
-                                                <option v-for="printer in printers" v-bind:value="printer.value">{{ printer }}</option>
+                                            <v-select v-model="selectedPrinter" :items="printerSelect" :rules="[v => !!v || 'Item is required']" label="Select A Printer" required>
+                                                <option v-for="printer in printers" v-bind:value="printer.name">{{ printer }}</option>
                                             </v-select>
                                             <br>
                                             <v-select v-model="selectMaterial" :items="materials" :rules="[v => !!v || 'Item is required']" label="Select A Material" required>
@@ -62,16 +63,8 @@
                                                 <option v-for="payment in payments" v-bind:value="payment.value">{{ payment }}</option>
                                             </v-select>
                                             <br>
-                                            <v-textarea
-                                                v-model="orderComment"
-                                                label="Comments"
-                                                placeholder="Additional comments"
-                                                outline
-                                                ></v-textarea>
-                                            <v-switch
-                                                v-model="switch1"
-                                                :label="`Save Order Preferences ${switch1.toString()}`"
-                                            ></v-switch>
+                                            <v-textarea v-model="orderComment" label="Comments" placeholder="Additional comments" outline></v-textarea>
+                                            <v-switch v-model="switch1" :label="`Save Order Preferences ${switch1.toString()}`"></v-switch>
                                         </v-flex>
                                         <br>
                                     <v-btn @click="viewInfo">Get STL Info</v-btn>
@@ -79,49 +72,46 @@
                                 </v-card-text>
                             </v-card>
                         </v-flex>
-                    <!-- Review Order form details -->        
+                <!-- Review Order form details -->        
                         <v-flex xs6>
                             <v-card>
                                 <v-card-text class="px-0">
-                                    <!-- STL file info -->
+                            <!-- STL file info -->
                                     <v-flex>
                                         <v-card>
-                                            <span>{{ showInfo }}</span>
+                                            <span>{{ fileMaterialInfo }}</span>
                                         </v-card>
                                     </v-flex>
-                                    <!-- Selected printer info -->
-                                    <v-flex>
-<!--                                        <div v-for="printer in printers">-->
-                                            <v-card v-if="selectPrinter === tech">
-                                                <span>Tech</span>
-                                            </v-card>
-                                            <v-card v-if="selectPrinter === form2">
-                                                <span>Form 2</span>
-                                            </v-card>
-                                            <v-card v-if="selectPrinter === fortus">
-                                                <span>Fortus 4000mc</span>
-                                            </v-card>
-                                            <v-card v-if="selectPrinter === ultimaker">
-                                                <span>Ultimaker 3 Extended</span>
-                                            </v-card>
-                                    </v-flex>
-                                    <v-flex>
-                                    <!-- Material info -->
-                                        <v-card>
-                                            <span>Info displayed here</span>
+                            <!-- Selected printer info -->
+                                    <v-flex v-for="printer in printers" :key="printer.printerId" xs12 sm6 md6 lg4 xl4>
+                        <!-- Printer Cards -->
+                                        <v-card color="#8B2635" height="5px"></v-card>
+                                        <v-card min-height="500px" class="elevation-5" class="clickable"> 
+                                            <v-img :src="printer.img" aspect-ratio="1.5" contain></v-img>
+                                            <v-card-title primary-title><h3 class="headline mb-0">{{printer.name}}</h3></v-card-title>
                                             <v-card-text>
-                                                {{fileMaterialInfo}}
+                                                <table class="printer-card-table" width="100%">
+                                                    <tr>
+                                                        <td width="50%" class="text-xs-left">Build Volume(LxWxH): </td>
+                                                        <td class="text-xs-right">{{printer.size}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-xs-left">Run Cost: </td>
+                                                        <td class="text-xs-right">$2.50/h</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-xs-left">Status: </td>
+                                                        <td class="text-xs-right">{{printer.status}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-xs-left">Available Material: </td>
+                                                        <td class="text-xs-right">{{printer.materials}}</td>
+                                                    </tr>
+                                                </table>
                                             </v-card-text>
                                         </v-card>
                                     </v-flex>
-                                    <!-- Payment info -->
-                                    <v-flex>
-                                        <v-card>
-                                            <span>More info</span>
-                                        </v-card>
-                                    </v-flex>
-                                </v-card-text>
-                            </v-card>
+                                </v-card>
                         </v-flex>
                     </v-layout>
                 </v-container>
@@ -137,24 +127,30 @@ new Vue({
         selectPrinter: '',
         switch1: true,
         drawer: '',
-        orderComment: [],
-        showInfo: '',
-        tech: [],
-        fortus: [],
-        form2: [],
-        ultimaker: [],
+        orderComment: '',
         userItems:
                 [
                     {title: 'Home', icon: 'home', link: 'home'},
                     {title: 'Dashboard', icon: 'dashboard', link: 'userhome'},
                     {title: 'New Order', icon: 'queue', link: 'order'}
                 ],
-        printers:
+        printerSelect:
                 [
                     {text: 'Technicians Preference', value: 'tech'},
                     {text: 'Form 2', value: 'form2'},
                     {text: 'Fortus 400mc', value: 'fortus'},
                     {text: 'Ultimaker 3E', value: 'ultimaker'}
+                ],
+        printers: //Printer info from database
+                [
+                    <c:forEach items="${printers}" var="printer">
+                        {printerId: '${printer.printerId}',
+                         size: '${printer.size}',
+                         status: '${printer.status}',
+                         name: '${printer.name}',
+                         materials: '${printer.materials}',
+                         img: 'res/img/printers/${printer.printerId}.jpg'},
+                    </c:forEach>
                 ],
         materials:
                 [
@@ -167,16 +163,19 @@ new Vue({
         
     },
     methods: {
-        selectPrinter() {
-            // Display printer info
+        selectedPrinter() {
+            
         },
+//        selectPrinter() {
+//            
+//        },
         selectMaterial() {
             // Display material info
         },
         selectPayment() {
             // Display payment info
         },
-        viewInfo: function () {
+        viewInfo() {
             this.fileMaterialInfo=JSON.stringify(stl_viewer.get_model_info(2));
             
         }
@@ -186,7 +185,7 @@ new Vue({
     }
 })
 
-var stl_viewer = new StlViewer
+    var stl_viewer = new StlViewer
         (
                 document.getElementById("stl_cont"),
                 {

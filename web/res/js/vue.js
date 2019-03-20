@@ -26,10 +26,10 @@ new Vue(
         [ 
             {title: 'Home', icon: 'home', link: 'home'},
             {title: 'Dashboard', icon: 'dashboard', link: 'userhome'},
-            {title: 'Notifications', icon: 'mail', link: 'notifications'},
-            {title: 'Previous Orders', icon: 'replay', link: 'previousorders'},
+            {title: 'Notifications', icon: 'mail', link: ''},
+            {title: 'Previous Orders', icon: 'replay', link: ''},
             {title: 'Submit Order', icon: 'add_box', link: 'order'},
-            {title: 'Orders', icon: '', link: 'orders'}
+            {title: 'Orders', icon: '', link: ''}
         ],
         accountmanagementheaders:
         [
