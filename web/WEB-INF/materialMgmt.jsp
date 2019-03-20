@@ -18,7 +18,6 @@
         <div id="app">
             <v-app>
                 <ARIS3D:Header isAdmin="true" pageName="Material Management"></ARIS3D:Header>
-                <br><br>
                 <v-content>
                     <v-container>
                         <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
