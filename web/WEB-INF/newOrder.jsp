@@ -25,8 +25,8 @@
                 height: 500px;
                 margin: 0 auto;
             }
-            .orderCon {
-                width: 50%;
+            .justify-center {
+                margin: 0 auto;
             }
         </style>
     </head>
@@ -36,111 +36,164 @@
                 <ARIS3D:Header isAdmin="false" pageName="New Order"></ARIS3D:Header>
                     <br><br><br><br>
 
-                    <v-container class="orderCon">
-                        <h2>Drag and Drop your file here</h2>
-                        <div id="stl_cont" ></div>
-                        <br>
-                        <v-flex xs12 sm8 md12>
-                        <v-select
-                            v-model="select"
-                            :items="printers"
-                            :rules="[v => !!v || 'Item is required']"
-                            label="Select A Printer"
-                            required
-                            ></v-select>
-                        <br>
-                        <v-select
-                            v-model="select"
-                            :items="materials"
-                            :rules="[v => !!v || 'Item is required']"
-                            label="Select A Material"
-                            required
-                            ></v-select>
-                        <br>
-                        <v-select
-                            v-model="select"
-                            :items="payment"
-                            :rules="[v => !!v || 'Item is required']"
-                            label="Method of payment"
-                            required
-                            ></v-select>
-                        <br>
-                            <v-text-field
-                                label="Comments"
-                                placeholder="Your comments here"
-                                outline
-                                ></v-text-field>
+                    <v-container grid-list-md text-xs-center>
+                        <v-layout row wrap>
+                        <!-- Order form -->
+                            <v-flex>
+                                <v-card>
+                                    <v-card-text class="px-0">
+                                        <div id="stl_cont" >
+                                            <div>
+                                                <span>Drag and Drop your file here <span>
+                                                <span>OR <u> Browse your computer</u></span>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <v-flex class="justify-center" xs10>
+                                            <v-select v-model="selectPrinter" :items="printers" :rules="[v => !!v || 'Item is required']" label="Select A Printer" required>
+                                                <option v-for="printer in printers" v-bind:value="printer.value">{{ printer }}</option>
+                                            </v-select>
+                                            <br>
+                                            <v-select v-model="selectMaterial" :items="materials" :rules="[v => !!v || 'Item is required']" label="Select A Material" required>
+                                                <option v-for="material in materials" v-bind:value="material.value">{{ material }}</option>
+                                            </v-select>
+                                            <br>
+                                            <v-select v-model="selectPayment" :items="payments" :rules="[v => !!v || 'Item is required']" label="Method of payment" required>
+                                                <option v-for="payment in payments" v-bind:value="payment.value">{{ payment }}</option>
+                                            </v-select>
+                                            <br>
+                                            <v-textarea
+                                                v-model="orderComment"
+                                                label="Comments"
+                                                placeholder="Additional comments"
+                                                outline
+                                                ></v-textarea>
+                                            <v-switch
+                                                v-model="switch1"
+                                                :label="`Save Order Preferences ${switch1.toString()}`"
+                                            ></v-switch>
+                                        </v-flex>
+                                        <br>
+                                    <v-btn @click="viewInfo">Get STL Info</v-btn>
+                                    <v-btn>Submit</v-btn>
+                                </v-card-text>
+                            </v-card>
                         </v-flex>
-                        <v-switch
-                            v-model="switch1"
-                            :label="`Preferences: ${switch1.toString()}`"
-                        ></v-switch>
-                        <br>
-                    <v-btn>Submit</v-btn>
+                    <!-- Review Order form details -->        
+                        <v-flex xs6>
+                            <v-card>
+                                <v-card-text class="px-0">
+                                    <!-- STL file info -->
+                                    <v-flex>
+                                        <v-card>
+                                            <span>{{ showInfo }}</span>
+                                        </v-card>
+                                    </v-flex>
+                                    <!-- Selected printer info -->
+                                    <v-flex>
+<!--                                        <div v-for="printer in printers">-->
+                                            <v-card v-if="selectPrinter === tech">
+                                                <span>Tech</span>
+                                            </v-card>
+                                            <v-card v-if="selectPrinter === form2">
+                                                <span>Form 2</span>
+                                            </v-card>
+                                            <v-card v-if="selectPrinter === fortus">
+                                                <span>Fortus 4000mc</span>
+                                            </v-card>
+                                            <v-card v-if="selectPrinter === ultimaker">
+                                                <span>Ultimaker 3 Extended</span>
+                                            </v-card>
+                                    </v-flex>
+                                    <v-flex>
+                                    <!-- Material info -->
+                                        <v-card>
+                                            <span>Info displayed here</span>
+                                        </v-card>
+                                    </v-flex>
+                                    <!-- Payment info -->
+                                    <v-flex>
+                                        <v-card>
+                                            <span>More info</span>
+                                        </v-card>
+                                    </v-flex>
+                                </v-card-text>
+                            </v-card>
+                        </v-flex>
+                    </v-layout>
                 </v-container>
-
             </v-app>
         </div>
 
+<script src="res/stl/stl_viewer.min.js"></script>
+<script>
+new Vue({
+    el: '#app',
+    data: {
+        selectPrinter: '',
+        switch1: true,
+        drawer: '',
+        orderComment: [],
+        showInfo: '',
+        tech: [],
+        fortus: [],
+        form2: [],
+        ultimaker: [],
+        userItems:
+                [
+                    {title: 'Home', icon: 'home', link: 'home'},
+                    {title: 'Dashboard', icon: 'dashboard', link: 'userhome'},
+                    {title: 'New Order', icon: 'queue', link: 'order'}
+                ],
+        printers:
+                [
+                    {text: 'Technicians Preference', value: 'tech'},
+                    {text: 'Form 2', value: 'form2'},
+                    {text: 'Fortus 400mc', value: 'fortus'},
+                    {text: 'Ultimaker 3E', value: 'ultimaker'}
+                ],
+        materials:
+                [
+                    {text: 'Technician Preference', value: 'tech'}
+                ],
+        payments:
+                [
+                    {text: 'Payments are currently unavailable', value: 'noPayment'}
+                ],
+        
+    },
+    methods: {
+        selectPrinter() {
+            // Display printer info
+        },
+        selectMaterial() {
+            // Display material info
+        },
+        selectPayment() {
+            // Display payment info
+        },
+        viewInfo: function () {
+            alert(JSON.stringify(stl_viewer.get_model_info(5)))
+        }
+    },
+    computed: {
 
-        <script src="res/stl/stl_viewer.min.js"></script>
-        <script>
-            new Vue({
-                el: '#app',
-                 data: {
-                    switch1: true,
-                    printers:
-                    [
-                        {text:'Technician Preference', value: 'tech'},
-                        <c:forEach items="${printers}" var="printer">
-                            {text: '${printer.name}', value: '${printer.name}'},
-                        </c:forEach>
-//                        {text:'Technician Preference', value: 'tech'},
-//                        {text:'Form 2', value: 'form2'},
-//                        {text:'Ultimaker 3E', value:'ultimaker'},
-//                        {text:'Fortus 400mc', value: 'fortus'}
-                    ],
-                    materials:
-                    [
-                        {text:'Technician Preference', value: 'tech'},
-                        <c:forEach items="${printers}" var="printer">
-                            {text: '${printer.materials}', value: '${printer.materials}'},
-                        </c:forEach>
-                    ],
-                    payment : 
-                    [
-                        {text: 'Payments are currently unavailable', value:'noPayment'}
-                    ]
+    }
+})
 
-
-                      
-//                    drawer: 'false',
-//                    dialog: false,
-//                    userItems:
-//                    [ 
-//                        {title: 'Home', icon: 'home', link: 'home'},
-//                        {title: 'Dashboard', icon: 'dashboard', link: 'dashboard'},
-//                        {title: 'Order Queue', icon: 'queue', link: 'queue'},
-//                        {title: 'Account Management', icon: 'people', link: 'accountmanagement'},
-//                        {title: 'Material Management', icon: 'texture', link: 'materialmanagement'},
-//                        {title: 'Printer Management', icon: 'print', link: 'printermanagement'},
-//                        {title: 'Reports', icon: 'poll', link: 'reportmanagement'}
-//                    ]
+var stl_viewer = new StlViewer
+        (
+                document.getElementById("stl_cont"),
+                {
+                    auto_rotate: false,
+                    allow_drag_and_drop: true,
+                    models:
+                            [
+                                {filename: "viewstl_plugin.stl"}
+                            ]
                 }
-            })
-            var stl_viewer = new StlViewer
-                    (
-                            document.getElementById("stl_cont"),
-                            {
-                                auto_rotate: true,
-//                                bgcolor: "#20FAAC",
-                                allow_drag_and_drop: true,
-                                models:
-                                        [
-                                            {filename: "viewstl_plugin.stl"}
-                                        ]
-                            }
-                    );
-        </script>
-    </body>
+        );
+</script>
+
+</body>
 </html>

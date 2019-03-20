@@ -12,24 +12,27 @@
     <head>
         <ARIS3D:Imports/>
         <link href="res/css/header.css" rel="stylesheet" type="text/css"/>
-        <!-- Definitely still a work in progess. Just trying some things out. Please don't hate -->
         <title>ARIS3D - Printer Management</title>
 
     </head>
     <body>
         <div id="app">
             <v-app>
+                <!-- Navbar header -->
                 <ARIS3D:Header isAdmin="true" pageName="Printer Management"></ARIS3D:Header>
                 <v-content>
                     <v-container grid-list-md>
+                    <!-- Display error messages -->
                         <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
                             ${successMessage}
                         </v-alert>
                         <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
                             ${errorMessage}
                         </v-alert>
+                    <!-- container for printer Cards -->
                         <v-layout row wrap>
                             <v-flex @click="selectItem(item)" v-for="printer in printers" xs12 sm6 md6 lg4 xl4>
+                            <!-- Edit printer modal -->    
                                 <v-dialog v-model="dialog" max-width="750px" v-if="selectedItem">
                                     <v-card>
                                         <v-card-title>
@@ -37,6 +40,7 @@
                                         </v-card-title>
                                     </v-card>
                                 </v-dialog>
+                        <!-- Printer Cards -->
                                 <v-card color="#8B2635" height="5px"></v-card>
                                 <v-card min-height="500px" class="elevation-5" class="clickable" @click.native="selectItem(printer)"> 
                                     <v-img :src="printer.img" aspect-ratio="1.5" contain></v-img>
@@ -77,9 +81,9 @@
             new Vue({
                 el: '#app',
                 data: {
-                    drawer: 'false',//Add a sleected item thingy somewhere here
+                    drawer: 'false',//Add a selected item thingy somewhere here
                     dialog: false,
-                    adminItems:
+                    adminItems: //Navbar Items
                     [ 
                         {title: 'Home', icon: 'home', link: 'home'},
                         {title: 'Dashboard', icon: 'dashboard', link: 'dashboard'},
@@ -89,7 +93,7 @@
                         {title: 'Printer Management', icon: 'print', link: 'printermanagement'},
                         {title: 'Reports', icon: 'poll', link: 'reportmanagement'}
                     ],
-                    printers:
+                    printers: //Printer info from database
                     [
                         <c:forEach items="${printers}" var="printer">
                             {printerId: '${printer.printerId}',
