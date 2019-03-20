@@ -109,6 +109,9 @@
                                     <!-- Material info -->
                                         <v-card>
                                             <span>Info displayed here</span>
+                                            <v-card-text>
+                                                {{fileMaterialInfo}}
+                                            </v-card-text>
                                         </v-card>
                                     </v-flex>
                                     <!-- Payment info -->
@@ -130,6 +133,7 @@
 new Vue({
     el: '#app',
     data: {
+        fileMaterialInfo: {},
         selectPrinter: '',
         switch1: true,
         drawer: '',
@@ -173,7 +177,8 @@ new Vue({
             // Display payment info
         },
         viewInfo: function () {
-            alert(JSON.stringify(stl_viewer.get_model_info(5)))
+            this.fileMaterialInfo=JSON.stringify(stl_viewer.get_model_info(2));
+            
         }
     },
     computed: {
