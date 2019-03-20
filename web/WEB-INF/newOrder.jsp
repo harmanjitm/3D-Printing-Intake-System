@@ -52,7 +52,7 @@
                                         <br>
                                         <v-flex class="justify-center" xs10>
                                             <v-select v-model="selectedPrinter" :items="printerSelect" :rules="[v => !!v || 'Item is required']" label="Select A Printer" required>
-                                                <option v-for="printer in printers" v-bind:value="printer.name">{{ printer }}</option>
+                                                <option @change="selectPrinter($event)" v-for="printer in printers" v-bind:value="printer.name">{{ printer }}</option>
                                             </v-select>
                                             <br>
                                             <v-select v-model="selectMaterial" :items="materials" :rules="[v => !!v || 'Item is required']" label="Select A Material" required>
@@ -83,7 +83,7 @@
                                         </v-card>
                                     </v-flex>
                             <!-- Selected printer info -->
-                                    <v-flex v-for="printer in printers" :key="printer.printerId" xs12 sm6 md6 lg4 xl4>
+                                    <v-flex v-for="printer in printers" :key="printer.printerId">
                         <!-- Printer Cards -->
                                         <v-card color="#8B2635" height="5px"></v-card>
                                         <v-card min-height="500px" class="elevation-5" class="clickable"> 
@@ -124,7 +124,7 @@ new Vue({
     el: '#app',
     data: {
         fileMaterialInfo: {},
-        selectPrinter: '',
+        selectPrinterId: -1,
         switch1: true,
         drawer: '',
         orderComment: '',
@@ -136,10 +136,11 @@ new Vue({
                 ],
         printerSelect:
                 [
-                    {text: 'Technicians Preference', value: 'tech'},
-                    {text: 'Form 2', value: 'form2'},
-                    {text: 'Fortus 400mc', value: 'fortus'},
-                    {text: 'Ultimaker 3E', value: 'ultimaker'}
+                    {text: 'Technicians Preference', value: '-1'},
+                    <c:forEach items="${printers}" var="printer">
+                        {value: '${printer.printerId}',
+                         text: '${printer.name}'},
+                    </c:forEach>
                 ],
         printers: //Printer info from database
                 [
@@ -166,9 +167,10 @@ new Vue({
         selectedPrinter() {
             
         },
-//        selectPrinter() {
-//            
-//        },
+        selectPrinter(event) {
+            this.selectPrinterId = printerId;
+            alert(event.target.value);
+        },
         selectMaterial() {
             // Display material info
         },
