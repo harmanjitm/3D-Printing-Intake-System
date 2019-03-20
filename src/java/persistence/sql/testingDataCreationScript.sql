@@ -107,5 +107,14 @@ call aris.createQueue(300007);
 call aris.createQueue(300008);
 call aris.createQueue(300009);
 
+/*NOTIFICATION*/
+call aris.createNotification(300006, 'printing');
+call aris.createNotification(300006, 'queued');
+call aris.createNotification(300006, 'ready');
+call aris.createNotification(300004, 'issue');
+
+
+
+
 
 

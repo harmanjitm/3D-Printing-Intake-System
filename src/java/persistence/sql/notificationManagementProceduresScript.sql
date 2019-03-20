@@ -70,3 +70,21 @@ proc_main:BEGIN
 		WHERE notification_type = $notification_type;
 END proc_main #
 delimiter ;
+
+/* ***************************************************************
+** Author:  Emily Pegg	                                       	**
+** Creation Date:  March, 2019     								**
+** Procedure Name: Get Notifications By Account Id             	**
+** Description:  Gets notifications with an account id			**
+** Input:  Account Id 										    **
+******************************************************************/
+DROP PROCEDURE IF EXISTS `getNotificationsByAccountId`;
+delimiter #
+
+CREATE  PROCEDURE `getNotificationsByAccountId`($account_id INTEGER)
+proc_main:BEGIN        
+	SELECT * 
+	FROM NOTIFICATION 
+	WHERE order_id IN (SELECT order_id FROM PRINT_ORDER WHERE account_id = $account_id);
+END proc_main #
+delimiter ;
