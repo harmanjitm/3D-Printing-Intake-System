@@ -208,7 +208,7 @@
                     },
                     adminItems: 
                     [ 
-                        {title: 'Home', icon: 'home', link: 'techhome'},
+                        {title: 'Home', icon: 'home', link: 'home'},
                         {title: 'Dashboard', icon: 'dashboard', link: 'dashboard'},
                         {title: 'Order Queue', icon: 'queue', link: 'queue'},
                         {title: 'Account Management', icon: 'people', link: 'accountmanagement'},
