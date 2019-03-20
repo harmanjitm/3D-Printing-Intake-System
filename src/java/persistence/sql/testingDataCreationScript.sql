@@ -77,6 +77,11 @@ call aris.createFile(100001, 'BenWozak.stl', 'test/', 100, 'STL');
 call aris.createFile(100002, 'GregTurnbull.stl', 'test/', 80, 'STL');
 call aris.createFile(100003, 'HarmanMohaar.stl', 'test/', 60, 'STL');
 call aris.createFile(100004, 'HaseebSheikTsuyi.stl', 'test/', 70, 'STL');
+call aris.createFile(100000, 'EmilyPegg.stl', 'test/', 90, 'STL');
+call aris.createFile(100001, 'BenWozak.stl', 'test/', 100, 'STL');
+call aris.createFile(100002, 'GregTurnbull.stl', 'test/', 80, 'STL');
+call aris.createFile(100003, 'HarmanMohaar.stl', 'test/', 60, 'STL');
+call aris.createFile(100004, 'HaseebSheikTsuyi.stl', 'test/', 70, 'STL');
 
 /*ORDERS*/
 call aris.createPrintOrder(123.00, 1, 50, 100000, 400000);
@@ -84,6 +89,11 @@ call aris.createPrintOrder(123.00, 2, 57, 100000, 400001);
 call aris.createPrintOrder(123.00, 3, 58, 100000, 400002);
 call aris.createPrintOrder(123.00, 1, 51, 100000, 400003);
 call aris.createPrintOrder(123.00, 2, 55, 100000, 400004);
+call aris.createPrintOrder(123.00, 1, 50, 100000, 400005);
+call aris.createPrintOrder(123.00, 2, 57, 100000, 400006);
+call aris.createPrintOrder(123.00, 3, 58, 100000, 400007);
+call aris.createPrintOrder(123.00, 1, 51, 100000, 400008);
+call aris.createPrintOrder(123.00, 2, 55, 100000, 400009);
 
 /*ORDER QUEUE*/
 call aris.createQueue(300000);
@@ -91,6 +101,11 @@ call aris.createQueue(300001);
 call aris.createQueue(300002);
 call aris.createQueue(300003);
 call aris.createQueue(300004);
+call aris.createQueue(300005);
+call aris.createQueue(300006);
+call aris.createQueue(300007);
+call aris.createQueue(300008);
+call aris.createQueue(300009);
 
 
 

@@ -31,6 +31,34 @@ delimiter ;
 /* ***************************************************************
 ** Author:  Emily Pegg	                                       	**
 ** Creation Date:  March, 2019 		                            **
+** Procedure Name: Create Queue Position                     	**
+** Description:  Associates an order id with a specific 		**
+** 				 queue position and bumps other orders back in q**
+** Input:  Order id, Position									**
+******************************************************************/
+DROP PROCEDURE IF EXISTS createQueuePosition;
+delimiter #
+
+CREATE PROCEDURE `createQueuePosition`($order_id INTEGER, $position INTEGER)
+proc_main:BEGIN
+	UPDATE ORDER_QUEUE 
+	 SET queue_position = queue_position + 1
+	 WHERE queue_position >= $position AND queue_position < (SELECT queue_position FROM ORDER_QUEUE WHERE $order_id) AND order_id IN (SELECT order_id 
+			 FROM PRINT_ORDER 
+			 WHERE printer_id = 
+			 (SELECT printer_id 
+			   FROM PRINT_ORDER 
+			   WHERE order_id = $order_id));
+	UPDATE ORDER_QUEUE 
+	 SET queue_position = $position
+	 WHERE order_id = $order_id;
+	
+END proc_main #
+delimiter ;
+
+/* ***************************************************************
+** Author:  Emily Pegg	                                       	**
+** Creation Date:  March, 2019 		                            **
 ** Procedure Name: Remove From Queue                          	**
 ** Description:  Removes an order from the queue and moves		**
 ** 				 other orders up one position 					**
