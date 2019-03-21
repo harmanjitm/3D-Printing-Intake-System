@@ -1,7 +1,7 @@
 <%-- 
     Document   : accountMgmt
     Created on : Jan 18, 2019, 10:36:48 AM
-    Author     : 756852
+    Author     : 756852 (Harmanjit M.)
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
