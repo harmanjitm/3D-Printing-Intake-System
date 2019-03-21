@@ -1,71 +1,60 @@
 package persistence;
 
+import domain.Material;
+import domain.Note;
+import domain.Order;
+import domain.Printer;
+import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
-public class OrderQueueBroker implements Broker{
+/**
+ * Class used to fetch and perform CRUD on the database for Queues related to
+ * specific printers
+ *
+ * @author Harmanjit Mohaar (000758243)
+ */
+public class OrderQueueBroker{
 
-	/**
-	 * Instantiates a new OrderQueue broker.
-	 */
-	private OrderQueueBroker() {
-		
-	}
-	
-	/**
-	 * Gets the broker.
-	 *
-	 * @return the broker
-	 */
-	public OrderQueueBroker getBroker() {
-		return null;
-		
-	}
-	
-	/* (non-Javadoc)
-	 * @see persistence.Broker#closeBroker()
-	 */
-	public void closeBroker() {
-		
-	}
+    /**
+     * Gets the broker.
+     *
+     * @return the broker
+     */
+    public OrderQueueBroker() {
 
-	/* (non-Javadoc)
-	 * @see persistence.Broker#search(int)
-	 */
-	@Override
-	public Object search(int id) {
-		return null;
-	}
+    }
 
-	/* (non-Javadoc)
-	 * @see persistence.Broker#persist(java.lang.Object)
-	 */
-	@Override
-	public boolean persist(Object object) {
-		return false;
-	}
+    /**
+     * Fetches a list of Orders from the database that are associated to a printer.
+     * 
+     * @return 
+     */
+    public ArrayList<Order> getOrdersByPrinter(int printerId) throws SQLException {
+        ArrayList<Order> orders = new ArrayList<>();
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
+        if (connection == null) {
+            throw new SQLException("Error Getting Printers: Connection error.");
+        }
+//TODO
+        CallableStatement cStmt = connection.prepareCall("{call getAllPrinters()}");
 
-	/* (non-Javadoc)
-	 * @see persistence.Broker#remove(java.lang.Object)
-	 */
-	@Override
-	public boolean remove(Object object) {
-		return false;
-	}
+        ResultSet rs = cStmt.executeQuery();
+        if (rs == null) {
+            throw new SQLException("Error Getting Printers: No printers found.");
+        }
+        List<Printer> printers = new ArrayList<Printer>();
+        ArrayList<Material> materials = new ArrayList<Material>();
+        while (rs.next()) {
+            
+        }
 
-	/* (non-Javadoc)
-	 * @see persistence.Broker#execute(java.lang.String)
-	 */
-	@Override
-	public ResultSet execute(String statement) {
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see persistence.Broker#getAll()
-	 */
-	@Override
-	public ArrayList<Object> getAll() {
-		return null;
-	}
+        connection.close();
+        return orders;
+    }
 }

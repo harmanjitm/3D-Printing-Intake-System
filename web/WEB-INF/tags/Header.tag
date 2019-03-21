@@ -7,14 +7,27 @@
 <%@tag description="The header." pageEncoding="UTF-8"%>
 <%@attribute description="Specify if the user is a Tech or User. Will display specific page depening on which it is" required="true" name="isAdmin"%>
 <%@attribute description="The page name to display on the header." name="pageName" required="true" %>
+<%@attribute description="This is used to make the nav drawer minified." name="mini" required="false" %>
             <c:if test="${account != null}">
-                <v-navigation-drawer dark v-model="drawer" stateless clipped app fixed>
+                <v-navigation-drawer <c:if test="${mini == true}">mini-variant</c:if> dark v-model="drawer" stateless clipped app fixed>
                     <v-list dense>
                         <c:if test="${account.accountType == 'admin'}">
                             <v-list-tile :href="item.link" :key="item.title" v-for="item in adminItems">
-                                <v-list-tile-action>
-                                    <v-icon>{{ item.icon }}</v-icon>
-                                </v-list-tile-action>
+                                <c:if test="${mini==true}">
+                                    <v-tooltip right>
+                                        <template v-slot:activator="{ on }">
+                                            <v-list-tile-action v-on="on">
+                                                <v-icon medium>{{ item.icon }}</v-icon>
+                                            </v-list-tile-action>
+                                        </template>
+                                        <span>{{item.title}}</span>
+                                    </v-tooltip>
+                                </c:if>
+                                <c:if test="${mini!=true}">
+                                    <v-list-tile-action v-on="on">
+                                        <v-icon>{{ item.icon }}</v-icon>
+                                    </v-list-tile-action>
+                                </c:if>
                                 <v-list-tile-content>
                                     <v-list-tile-title>{{ item.title }}</v-list-tile-title>
                                 </v-list-tile-content>

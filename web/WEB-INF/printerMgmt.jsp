@@ -81,7 +81,7 @@
             new Vue({
                 el: '#app',
                 data: {
-                    drawer: 'false',//Add a selected item thingy somewhere here
+                    drawer: false,//Add a selected item thingy somewhere here
                     dialog: false,
                     adminItems: //Navbar Items
                     [ 

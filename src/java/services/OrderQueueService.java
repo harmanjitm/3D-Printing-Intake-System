@@ -2,6 +2,8 @@ package services;
 
 import domain.Order;
 import domain.OrderQueue;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import persistence.OrderQueueBroker;
 
 /**
@@ -85,13 +87,9 @@ public class OrderQueueService {
 		
 	}
 	
-	/**
-	 * Gets the next id.
-	 *
-	 * @return the next id
-	 */
-	public int getNextId() {
-		return 0;
-		
-	}
+	public ArrayList<Order> getOrdersByPrinter(int printerId) throws SQLException
+        {
+            OrderQueueBroker oqb = new OrderQueueBroker();
+            return oqb.getOrdersByPrinter(printerId);
+        }
 }

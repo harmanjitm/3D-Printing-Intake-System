@@ -31,7 +31,19 @@ public class QueueManagementController extends HttpServlet
 {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
-        
+        PrinterService ps = new PrinterService();
+        OrderQueueService oqs = new OrderQueueService();
+        try {
+            ArrayList<Printer> printers = ps.getAllPrinters();
+            request.setAttribute("printers", printers);
+            
+            request.setAttribute("1", oqs.getOrdersByPrinter());
+        } catch (SQLException ex) {
+            Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("errorMessage", ex.getMessage());
+            request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
+            return;
+        }
         request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
     }
 
