@@ -54,7 +54,7 @@ public class QueueManagementController extends HttpServlet
         String name = request.getParameter("name");
         String qID = request.getParameter("queueID");
         String prinID = request.getParameter("printerID");
-        String printerStatus;
+        String printerStatus = request.getParameter("status");
         int queueID = Integer.parseInt(qID);
         int printerID = Integer.parseInt(prinID);
         
@@ -63,6 +63,21 @@ public class QueueManagementController extends HttpServlet
         OrderQueueService qs = new OrderQueueService();
         PrinterService ps = new PrinterService();
 
+        try
+        {
+            Printer status = new Printer();
+            if(status.getStatus().equals(printerStatus))
+            {
+                
+                request.setAttribute("successMessage", "Status updated");
+                getServletContext().getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
+            }
+        } 
+        catch(SQLException ex)
+        {
+            Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         if((qs.getQueue(queueID) != null))
         {
             Printer status = null;
