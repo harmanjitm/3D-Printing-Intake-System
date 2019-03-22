@@ -86,26 +86,44 @@ public class AccountManagementController extends HttpServlet {
         String lastName = request.getParameter("lastname");
         String accountType = request.getParameter("accountType");
 
-        switch (action) {
+        switch (action) 
+        {
             case "add":
                 accountType = "user";
-                if (email == null || email.equals("") || password == null || password.equals("") || firstName == null || firstName.equals("") || lastName == null || lastName.equals("") || accountType == null || accountType.equals("")) {
+                if (email == null || email.equals("") || password == null || password.equals("") 
+                        || firstName == null || firstName.equals("") || lastName == null || lastName.equals("") 
+                            || accountType == null || accountType.equals("")) 
+                {
                     request.setAttribute("errorMessage", "Error Adding Account: Make sure all fields are <b>NOT</b> empty.");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
 
-                if (!(accountType.equals("admin") || accountType.equals("user"))) {
+                if (!(accountType.equals("admin") || accountType.equals("user")))
+                {
                     request.setAttribute("errorMessage", "Error Adding Account: Invalid account type.");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
-
-                try {
-                    if (as.getAccountByEmail(email) != null) {
+                
+                if(email.length() < 100 || password.length() < 50 
+                        || firstName.length() < 50 || lastName.length() < 50 
+                            || accountType.length() < 50)
+                {
+                    request.setAttribute("errorMessage", "Error Adding Account: Invalid ammount of characters");
+                    request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                    return;
+                }
+                
+                try 
+                {
+                    if (as.getAccountByEmail(email) != null) 
+                    {
                         throw new Exception("Error Adding Account: An account already exists with the email: " + email);
                     }
-                } catch (Exception ex) {
+                } 
+                catch (Exception ex) 
+                {
                     Logger.getLogger(AccountManagementController.class.getName()).log(Level.SEVERE, null, ex);
                     request.setAttribute("errorMessage", ex.getMessage());
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
@@ -132,32 +150,48 @@ public class AccountManagementController extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                 break;
             case "edit":
-                if (email == null || email.equals("") || firstName == null || firstName.equals("") || lastName == null || lastName.equals("") || accountType == null || accountType.equals("")) {
+                if (email == null || email.equals("") || firstName == null || firstName.equals("") 
+                        || lastName == null || lastName.equals("") || accountType == null || accountType.equals("")) 
+                {
                     request.setAttribute("errorMessage", "Error Editing Account: Make sure all fields are <b>NOT</b> empty.");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
 
-                if (!(accountType.equals("admin") || accountType.equals("user"))) {
+                if (!(accountType.equals("admin") || accountType.equals("user")))
+                {
                     request.setAttribute("errorMessage", "Error Editing Account: Invalid account type.");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
 
-                if (request.getParameter("accountID") == null || request.getParameter("accountID").equals("")) {
+                if (request.getParameter("accountID") == null || request.getParameter("accountID").equals(""))
+                {
                     request.setAttribute("errorMessage", "Error Editing Account: An unexpected error occurred, please try again.");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
 
+                if(email.length() < 100 || password.length() < 50 
+                        || firstName.length() < 50 || lastName.length() < 50 
+                            || accountType.length() < 50)
+                {
+                    request.setAttribute("errorMessage", "Error Adding Account: Invalid ammount of characters");
+                    request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                    return;
+                }
+                
                 Account toEdit = null;
-                try {
+                try 
+                {
                     toEdit = as.getAccountByID(Integer.valueOf(request.getParameter("accountID")));
-                } catch (SQLException ex) {
+                } 
+                catch (SQLException ex) {
                     Logger.getLogger(AccountManagementController.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-                if (toEdit == null) {
+                if (toEdit == null) 
+                {
                     request.setAttribute("errorMessage", "Error Editing Account: An unexpected error occurred, please try again.");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
