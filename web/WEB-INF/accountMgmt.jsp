@@ -1,7 +1,7 @@
 <%-- 
     Document   : accountMgmt
     Created on : Jan 18, 2019, 10:36:48 AM
-    Author     : 756852
+    Author     : 756852 (Harmanjit M.)
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -29,6 +29,7 @@
                         <v-toolbar class="elevation-1" dark>
                             <v-toolbar-title>Manage Accounts</v-toolbar-title>
                             <v-spacer></v-spacer>
+                            <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
                             <!-- dialog window for adding a new account -->
                             <v-dialog v-model="dialog" max-width="750px" >
                                 <v-btn slot="activator" color="#8B2635" dark class="mb-2">New Account</v-btn>
@@ -65,8 +66,8 @@
                                 </v-card>
                             </v-dialog>
                         </v-toolbar>
-                        <v-data-table  class="elevation-3" :headers="accountmanagementheaders" :items="accounts">
-                            <template slot="items" slot-scope="props">
+                        <v-data-table  class="elevation-3" :headers="accountmanagementheaders" :items="accounts" :search="search">
+                            <template slot="items" v-bind:accountId="props.item.accountId" slot-scope="props">
                                 <td>{{ props.item.email }}</td>
                                 <td>{{ props.item.firstname }}</td>
                                 <td>{{ props.item.lastname }}</td>
@@ -109,10 +110,11 @@
                                         </form>
                                     </v-card>
                                 </v-dialog>
-                                <v-icon small @click="remove">delete</v-icon>
+                                <v-icon small @click="remove(props.item)">delete</v-icon>
                                 </td>
                             </template>
                         </v-data-table>
+                        <form id="remove-account" method="post" action="accountmanagement"><input type="hidden" name="action" value="remove"/><input type="hidden" id="removeAccountID" name="removeAccountID" value=""/></form>
                     </v-container>
                 </v-content>
             </v-app>
@@ -127,6 +129,7 @@
                     dialog: false,
                     editDialog: false,
                     account: '',
+                    search: '',
                     logout: '',
                     drawer: false,
                     accountStatusDropdown:
@@ -195,9 +198,12 @@
                         document.getElementById('accountType').value=this.editItem.status;
                         document.getElementById('edit-account').submit();
                     },
-                    remove()
+                    remove(item)
                     {
-                        alert('yoo')
+                        this.editIndex = this.accounts.indexOf(item)
+                        this.editItem = Object.assign({}, item)
+                        document.getElementById('removeAccountID').value=this.editItem.accountID;
+                        document.getElementById('remove-account').submit();
                     },
                     editAccount(item)
                     {

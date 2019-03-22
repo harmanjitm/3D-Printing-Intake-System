@@ -19,13 +19,40 @@
             <v-app>
                 <ARIS3D:Header mini="true" isAdmin="true" pageName="Order Queue"></ARIS3D:Header>
                 <v-content>
-                    <v-divider align></v-divider>
+                    <!--<v-card flat>-->
+                        <!--<v-card-text>-->
+                    <v-container grid-list-md>
+                        <v-layout row wrap>
+                            <v-flex v-for="i in 7" xs12 sm6 md4 lg3 xl2>
+                                <v-card color="#8B2635" height="5px"></v-card>
+                                <v-card elevation="5" height="170">
+                                    <v-card-title primary-title>
+                                        <div>
+                                            <div class="text-xs-left"><span style="color:darkslategray;" class="headline mb-0">Order #10{{i+(128%56)-(5%2)}}</span>
+                                                <!--<v-spacer></v-spacer>-->
+                                                <span class="ml-auto" style="color:#8B2635;font-weight: bold">Priority #</span><b style="font-size: 15px;font-weight: 500;">{{i}}</b>
+                                            </div>
+                                            <div>Benjamin Wozak</div>
+                                        </div>
+                                    </v-card-title>
+                                    <!--<v-divider></v-divider>-->
+                                    <v-card-actions>
+                                        <v-btn flat outline round color="red">Cancel</v-btn><v-spacer></v-spacer>
+                                        <v-btn flat outline round color="green">Complete</v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
+                    <!--<v-divider align></v-divider>-->
                     <v-bottom-nav shift :active.sync="bottomNav" :value="true" absolute colour="transparent">
                         <v-btn v-for="printer in miniNavPrinters" :key="printer.printerId" color="red" flat :value="printer.printerId">
                             <span>{{printer.name}}</span>
                             <v-icon>filter_{{printer.printerId}}</v-icon>
                         </v-btn>
                     </v-bottom-nav>
+                        <!--</v-card-text>-->
+                <!--</v-card>-->
                 </v-content>
                 
                 

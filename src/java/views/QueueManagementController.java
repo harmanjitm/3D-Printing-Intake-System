@@ -37,7 +37,7 @@ public class QueueManagementController extends HttpServlet
             ArrayList<Printer> printers = ps.getAllPrinters();
             request.setAttribute("printers", printers);
             
-            request.setAttribute("1", oqs.getOrdersByPrinter());
+            request.setAttribute("1", oqs.getOrdersByPrinter(printers.get(0).getPrinterId()));
         } catch (SQLException ex) {
             Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMessage", ex.getMessage());
@@ -63,24 +63,17 @@ public class QueueManagementController extends HttpServlet
         OrderQueueService qs = new OrderQueueService();
         PrinterService ps = new PrinterService();
 
-        try
+        Printer status = new Printer();
+        if(status.getStatus().equals(printerStatus))
         {
-            Printer status = new Printer();
-            if(status.getStatus().equals(printerStatus))
-            {
-                
-                request.setAttribute("successMessage", "Status updated");
-                getServletContext().getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
-            }
-        } 
-        catch(SQLException ex)
-        {
-            Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);
+            
+            request.setAttribute("successMessage", "Status updated");
+            getServletContext().getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
         }
         
         if((qs.getQueue(queueID) != null))
         {
-            Printer status = null;
+//            Printer status = null;
             status.getStatus();
             Printer toUpdate = status;
             try

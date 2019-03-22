@@ -80,3 +80,23 @@ proc_main:BEGIN
 		WHERE order_id IN (SELECT order_id FROM PRINT_ORDER WHERE printer_id = (SELECT printer_id FROM PRINT_ORDER WHERE order_id = $order_id));
 END proc_main #
 delimiter ;
+
+/* ***************************************************************
+** Author:  Emily Pegg	                                       	**
+** Creation Date:  March, 2019 		                            **
+** Procedure Name: Get Queue By Printer Id                     	**
+** Description:  Gets order info and position in queue			**
+** Input:  Printer id											**
+******************************************************************/
+DROP PROCEDURE IF EXISTS getQueueByPrinterId;
+delimiter #
+
+CREATE  PROCEDURE `getQueueByPrinterId`($printer_id INTEGER)
+proc_main:BEGIN
+	SELECT order_id, cost, order_date, print_date, printer_id, material_id, account_id, order_file_id, queue_position
+		FROM PRINT_ORDER NATURAL JOIN ORDER_QUEUE
+		WHERE printer_id = $printer_id
+		GROUP BY order_id
+		ORDER BY queue_position;
+END proc_main #
+delimiter ;

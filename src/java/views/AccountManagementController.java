@@ -197,8 +197,7 @@ public class AccountManagementController extends HttpServlet {
                     return;
                 }
 
-                if (accountType.equals("user") && toEdit.getAccountType().equals("admin"))
-                {
+                if (accountType.equals("user") && toEdit.getAccountType().equals("admin")) {
                     int admins = 0;
                     try {
                         ArrayList<Account> accounts = as.getAllAccounts();
@@ -231,40 +230,51 @@ public class AccountManagementController extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                 break;
             case "remove":
-                if (!(accountType.equals("user"))) 
+                int accID = 0;
+                accID = Integer.parseInt(request.getParameter("removeAccountID"));
+                
+                if(accID == 0)
                 {
-                    request.setAttribute("errorMessage", "Error Deleting Account: Invalid account type.");
+                    request.setAttribute("errorMessage", "Error Deleting Account: An unexpected error occurred, please try again.");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
-                else
-                {
-                    int toDelete;
-                    String accToDelete = request.getParameter("accountID");
-                    if (accToDelete== null ||accToDelete.equals("")) 
-                    {
-                        request.setAttribute("errorMessage", "Error Deleting Account: An unexpected error occurred, please try again.");
-                        request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
-                        return;
-                    }
-                    else
-                    {
-                        toDelete = Integer.parseInt(accToDelete);
-                        try
-                        {
-                            as.deleteAccount(toDelete);
-                            request.setAttribute("successMessage", "Success Removing Account: Account has successfully been deleted.");
-                            request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                
+                Account acc = null;
+                
+                try {
+                    acc = as.getAccountByID(accID);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AccountManagementController.class.getName()).log(Level.SEVERE, null, ex);
+                    request.setAttribute("errorMessage", ex.getMessage());
+                    request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                    return;
+                }
+                
+                if (!(acc.getAccountType().equals("user"))) {
+                    request.setAttribute("errorMessage", "Error Deleting Account: You cannot delete an Admin.");
+                    request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                    return;
+                }
+                
+                if (acc == null) {
+                    request.setAttribute("errorMessage", "Error Deleting Account: An unexpected error occurred, please try again.");
+                    request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                    return;
+                }
+                
+                try {
+                    as.deleteAccount(acc.getAccountID());
+                    request.setAttribute("successMessage", "Success Removing Account: Account has successfully been deleted.");
+                    ArrayList<Account> accounts = accounts = as.getAllAccounts();
+                    request.setAttribute("accounts", accounts);
+                    request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
 
-                        } 
-                        catch (SQLException ex)
-                        {
-                            request.setAttribute("errorMessage", "Error Deleting Account");
-                            request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
-                            Logger.getLogger(AccountManagementController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                } 
+                } catch (SQLException ex) {
+                    request.setAttribute("errorMessage", "Error Deleting Account");
+                    request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                    Logger.getLogger(AccountManagementController.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 break;
             default:
                 request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);

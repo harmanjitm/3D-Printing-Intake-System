@@ -6,6 +6,7 @@ import domain.Order;
 import domain.Printer;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -41,10 +42,10 @@ public class OrderQueueBroker{
         if (connection == null) {
             throw new SQLException("Error Getting Printers: Connection error.");
         }
-//TODO
-        CallableStatement cStmt = connection.prepareCall("{call getAllPrinters()}");
-
-        ResultSet rs = cStmt.executeQuery();
+        
+        CallableStatement getAllPrinters = connection.prepareCall("{call getAllPrinters()}");
+        CallableStatement getAllOrders = connection.prepareCall("{call getOrdersByPrinter(?)}");
+        ResultSet rs = getAllPrinters.executeQuery();
         if (rs == null) {
             throw new SQLException("Error Getting Printers: No printers found.");
         }

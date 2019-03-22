@@ -10,7 +10,7 @@ public class OrderQueue {
     /**
      * The queue id.
      */
-    private int orderId;
+    private Order order;
 
     /**
      * The orders.
@@ -29,18 +29,18 @@ public class OrderQueue {
 
     }
 
-    public OrderQueue(int orderId, int position, int printerId) {
-        this.orderId = orderId;
+    public OrderQueue(Order order, int position, int printerId) {
+        this.order = order;
         this.position = position;
         this.printerId = printerId;
     }
 
-    public int getOrderId() {
-        return orderId;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
+    public void setOrderId(Order order) {
+        this.order = order;
     }
 
     public int getPosition() {

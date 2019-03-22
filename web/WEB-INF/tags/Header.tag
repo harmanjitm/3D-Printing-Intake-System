@@ -24,7 +24,7 @@
                                     </v-tooltip>
                                 </c:if>
                                 <c:if test="${mini!=true}">
-                                    <v-list-tile-action v-on="on">
+                                    <v-list-tile-action>
                                         <v-icon>{{ item.icon }}</v-icon>
                                     </v-list-tile-action>
                                 </c:if>
