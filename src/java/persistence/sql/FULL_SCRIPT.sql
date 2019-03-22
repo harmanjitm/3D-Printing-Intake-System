@@ -1095,6 +1095,26 @@ delimiter ;
 
 /* ***************************************************************
 ** Author:  Emily Pegg	                                       	**
+** Creation Date:  March, 2019 		                            **
+** Procedure Name: Get Queue By Printer Id                     	**
+** Description:  Gets order info and position in queue			**
+** Input:  Printer id											**
+******************************************************************/
+DROP PROCEDURE IF EXISTS getQueueByPrinterId;
+delimiter #
+
+CREATE  PROCEDURE `getQueueByPrinterId`($printer_id INTEGER)
+proc_main:BEGIN
+	SELECT order_id, cost, order_date, print_date, printer_id, material_id, account_id, order_file_id, queue_position
+		FROM PRINT_ORDER NATURAL JOIN ORDER_QUEUE
+		WHERE printer_id = $printer_id
+		GROUP BY order_id
+		ORDER BY queue_position;
+END proc_main #
+delimiter ;
+
+/* ***************************************************************
+** Author:  Emily Pegg	                                       	**
 ** Creation Date:  February, 2019                               **
 ** Script Name: Test Data Creation								**
 ** Description: Creates test data for the ARIS 3D Printing DB   **
