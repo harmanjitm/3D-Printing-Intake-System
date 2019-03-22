@@ -29,6 +29,7 @@
                         <v-toolbar class="elevation-1" dark>
                             <v-toolbar-title>Manage Accounts</v-toolbar-title>
                             <v-spacer></v-spacer>
+                            <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
                             <!-- dialog window for adding a new account -->
                             <v-dialog v-model="dialog" max-width="750px" >
                                 <v-btn slot="activator" color="#8B2635" dark class="mb-2">New Account</v-btn>
@@ -65,7 +66,7 @@
                                 </v-card>
                             </v-dialog>
                         </v-toolbar>
-                        <v-data-table  class="elevation-3" :headers="accountmanagementheaders" :items="accounts">
+                        <v-data-table  class="elevation-3" :headers="accountmanagementheaders" :items="accounts" :search="search">
                             <template slot="items" v-bind:accountId="props.item.accountId" slot-scope="props">
                                 <td>{{ props.item.email }}</td>
                                 <td>{{ props.item.firstname }}</td>
@@ -128,6 +129,7 @@
                     dialog: false,
                     editDialog: false,
                     account: '',
+                    search: '',
                     logout: '',
                     drawer: false,
                     accountStatusDropdown:
