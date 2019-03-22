@@ -109,3 +109,22 @@ proc_main:BEGIN
 		FROM PRINT_ORDER;
 END proc_main #
 delimiter ;
+
+/* ***************************************************************
+** Author:  Emily Pegg	                                       	**
+** Creation Date:  March, 2019                              	**
+** Procedure Name: Get Order Position by order id              	**
+** Description:  Gets position of an order by order id			**
+** Input:	OrderId												**
+** Output: queue position										**
+******************************************************************/
+DROP PROCEDURE IF EXISTS getOrderPositionById;
+delimiter #
+
+CREATE  PROCEDURE `getOrderPositionById`($order_id INTEGER)
+proc_main:BEGIN
+	SELECT queue_position
+		FROM ORDER_QUEUE
+		WHERE order_id = $order_id;
+END proc_main #
+delimiter ;
