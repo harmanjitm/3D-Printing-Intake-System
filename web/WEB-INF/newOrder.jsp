@@ -92,33 +92,27 @@
                             </v-stepper-content>
 
                             <v-stepper-content step="2">
-                                <v-card class="mb-5" color="grey lighten-1" height="400px" xs12 sm6 md6 lg4 xl4>
-                                    <v-container fill-height fluid>
-                                        <v-layout row wrap>
+                                <v-card class="mb-5" color="grey lighten-1" height="400px" xs12 sm6 md6 lg4 xl4 fill-height fluid>
+                                    <v-container>
+                                        <v-layout row wrap fluid>
                                     <v-flex v-for="printer in printers" xs12 sm6 md6 lg4 xl4>
                         <!-- Printer Cards -->
-                                        <v-card height="95%" width="95%" class="elevation-5" class="clickable"> 
-                                            <v-img :src="printer.img" aspect-ratio="2.0" contain></v-img>
-                                            <v-card-title primary-title><h3 class="headline mb-0">{{printer.name}}</h3></v-card-title>
-                                            <v-card-text>
-                                                <table class="printer-card-table" width="100%">
-                                                    <tr>
-                                                        <td class="text-xs-left">Run Cost: </td>
-                                                        <td class="text-xs-right"><span>$</span>{{ printer.runCost }}<span>/h</span> </td>
-                                                    </tr>
-<!--                                                    <tr>-->
-<!--                                                        <td class="text-xs-left">Description: </td>-->
-                                                        <tr>{{printer.description}}</td>
-<!--                                                    </tr>-->
-
-                                                </table>
-                                            </v-card-text>
+                                        <v-card height="99%" width="95%" class="elevation-5" class="clickable"> 
+                                            <v-img :src="printer.img" aspect-ratio="2.5" contain></v-img>
+                                            <v-card-title secondary-title>
+                                                <h3 class="headline mb-0">{{printer.name}}</h3>
+                                                <div>{{printer.description}}</div>
+                                            </v-card-title>
+                                                <span>Run Cost: $</span>{{ printer.runCost }}<span>/h</span>
+                                            <v-card-actions>
+                                                <v-btn color="#8B2635">Select</v-btn>
+                                            </v-card-actions>
+                                            
                                         </v-card>
                                     </v-flex>
                                             </v-layout>
                                 </v-container>
                                 </v-card>
-
                                 <v-btn color="primary" @click="e1 = 3">
                                     Continue
                                 </v-btn>
