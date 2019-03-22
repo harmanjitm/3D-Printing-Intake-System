@@ -68,31 +68,35 @@ public class AccountController extends HttpServlet
         String lastName = request.getParameter("lname");
         String accountType = request.getParameter("accountType");
 
+        String accID = request.getParameter("accountID");
+        
         AccountService as = new AccountService();
 
         try 
         {
             switch(action)
             {
-                case "add":
-                    if(!(email == null || email.equals("")) && !(password == null || password.equals("")) 
-                        && !(firstName == null || firstName.equals("")) && !(lastName == null || lastName.equals("")))
-                    {                   
-                        as.createAccount(email, password, firstName, lastName, accountType);
-                        request.setAttribute("sucessMessage", "New User added.");
-                        getServletContext().getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);   
-                    }
-                    else
-                    {
-                        request.setAttribute("errorMessage", "Please enter the required fields.");
-                        getServletContext().getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
-                    }
-                    break;
                 case "edit":
+                    if (email == null || email.equals("") || password == null || password.equals("") 
+                        || firstName == null || firstName.equals("") || lastName == null || lastName.equals("")) 
+                    {
+                        request.setAttribute("errorMessage", "Error Adding Account: Make sure all fields are <b>NOT</b> empty.");
+                        request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                        return;
+                    }
+
+                    if(email.length() < 100 || password.length() < 50 
+                                || firstName.length() < 50 || lastName.length() < 50)
+                    {
+                        request.setAttribute("errorMessage", "Error Creating Account: Invalid ammount of characters");
+                        request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                        return;
+                    }
+                    
                     if(!(email == null || email.equals("")) && !(password == null || password.equals("")) 
                         && !(firstName == null || firstName.equals("")) && !(lastName == null || lastName.equals("")))
                     {                   
-                        String accID = request.getParameter("accountID");
+                        accID = request.getParameter("accountID");
                         accountID = Integer.parseInt(accID);
                         as.updateAccount(email, password, firstName, lastName, accountID, accountType);
                         request.setAttribute("successMessage", "User has been updated.");
@@ -104,8 +108,27 @@ public class AccountController extends HttpServlet
                         getServletContext().getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     }
                     break;
+                case "inactive":
+                    accID = request.getParameter("accountID");
+                    accountID = Integer.parseInt(accID);
+                    accountType = as.getAccountType(accountID);
+                    if(accountType == "active")
+                    {
+                        accountType = "inactive";
+                        as.updateAccountType(accountID, accountType);
+                        request.setAttribute("successMessage", "The account has been set as Inactive, everything will be deleted permamently");
+                        getServletContext().getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                    }
+                    else
+                    {
+                        request.setAttribute("errorMessage", "The account is not active. Contact an admin for reactivation");
+                        getServletContext().getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                    }
+                    
+                    
+                    break;
                 case "delete":
-                    String accID = request.getParameter("accountID");
+                    accID = request.getParameter("accountID");
                     accountID = Integer.parseInt(accID);
                     int acc = as.deleteAccount(accountID);
                     if (acc == 0)

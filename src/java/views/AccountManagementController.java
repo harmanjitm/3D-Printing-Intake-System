@@ -176,7 +176,7 @@ public class AccountManagementController extends HttpServlet {
                         || firstName.length() < 50 || lastName.length() < 50 
                             || accountType.length() < 50)
                 {
-                    request.setAttribute("errorMessage", "Error Adding Account: Invalid ammount of characters");
+                    request.setAttribute("errorMessage", "Error Editing Account: Invalid ammount of characters");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
