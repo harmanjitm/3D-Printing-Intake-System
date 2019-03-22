@@ -29,6 +29,8 @@ public class Printer {
 	
 	/** The name. */
 	private String name;
+        
+        private ArrayList<OrderQueue> queue;
 	
 	/**
 	 * Instantiates a new printer.
