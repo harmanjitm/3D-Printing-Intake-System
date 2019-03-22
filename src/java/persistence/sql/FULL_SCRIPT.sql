@@ -1107,9 +1107,9 @@ call aris.createAccount('harmanjit.mohaar@edu.sait.ca', 'password', 'Hamanjit', 
 call aris.createAccount('haseeb.sheiktsuyi@edu.sait.ca', 'password', 'Haseeb', 'Sheikh', 'user');
 
 /* PRINTERS */
-call aris.createPrinter('406x355x406mm', 'active', 'Fortus 400mc', 'This is an FDM type printer; it is our largest build volume and fastest printer, but the material is much more expensive than the Ultimaker. It is the best printer for ABS plastic, because it has a heated chamber that prevents layers from splitting as they cool. Run cost: $2.5/hour', 2.5);
-call aris.createPrinter('215x215x300mm', 'active', 'Ultimaker 3 Extended', 'This is an FDM type printer; it is smaller and slower than the Fortus, but many more materials are available, and they are much cheaper for the most part. Run cost: $1/hour', 1);
-call aris.createPrinter('215x215x300mm', 'active', 'Form 2+', 'This is an SLA type printer. It is best used for parts that have small features that need high precision; it will be expensive to produce a large part on this printer, so it is best saved for smaller parts, generally. Run cost: $1/hour', 1);
+call aris.createPrinter('406x355x406mm', 'active', 'Fortus 400mc', 'This is an FDM type printer; it is our largest build volume and fastest printer, but the material is much more expensive than the Ultimaker. It is the best printer for ABS plastic, because it has a heated chamber that prevents layers from splitting as they cool.', 2.5);
+call aris.createPrinter('215x215x300mm', 'active', 'Ultimaker 3 Extended', 'This is an FDM type printer; it is smaller and slower than the Fortus, but many more materials are available, and they are much cheaper for the most part.', 1);
+call aris.createPrinter('215x215x300mm', 'active', 'Form 2+', 'This is an SLA type printer. It is best used for parts that have small features that need high precision; it will be expensive to produce a large part on this printer, so it is best saved for smaller parts, generally.', 1);
 
 /* MATERIALS */
 call aris.createMaterial('ABS-M30', 'This is a basic ABS Plastic', 06.00);

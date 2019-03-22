@@ -21,7 +21,7 @@
                 text-align: center;
             }
             #stl_cont {
-                border-style: solid;
+/*                border-style: solid;*/
                 width: 400px;
                 height: 400px;
                 margin: 0 auto;
@@ -79,10 +79,10 @@
                                         <h2>Select an STL file</h2>
                                         <input type="file" @change="onFileChange">
 
-                                      <div v-else>
+<!--                                      <div v-else>
 
                                         <button @click="removeImage">Remove file</button>
-                                      </div>
+                                      </div>-->
                                     </div>
                                 </v-card>
                                 <v-btn color="primary" @click="e1 = 2">
@@ -92,32 +92,25 @@
                             </v-stepper-content>
 
                             <v-stepper-content step="2">
-                                <v-card class="mb-5" color="grey lighten-1" height="400px">
-                                    <v-container>
+                                <v-card class="mb-5" color="grey lighten-1" height="400px" xs12 sm6 md6 lg4 xl4>
+                                    <v-container fill-height fluid>
                                         <v-layout row wrap>
-                                    <v-flex v-for="printer in printers" >
+                                    <v-flex v-for="printer in printers" xs12 sm6 md6 lg4 xl4>
                         <!-- Printer Cards -->
-                                        <v-card min-height="80px" width="80%" class="elevation-5" class="clickable" > 
-                                            <v-img :src="printer.img" aspect-ratio="1.5" contain></v-img>
+                                        <v-card height="95%" width="95%" class="elevation-5" class="clickable"> 
+                                            <v-img :src="printer.img" aspect-ratio="2.0" contain></v-img>
                                             <v-card-title primary-title><h3 class="headline mb-0">{{printer.name}}</h3></v-card-title>
                                             <v-card-text>
                                                 <table class="printer-card-table" width="100%">
                                                     <tr>
-                                                        <td width="50%" class="text-xs-left">Build Volume(LxWxH): </td>
-                                                        <td class="text-xs-right">{{printer.size}}</td>
-                                                    </tr>
-                                                    <tr>
                                                         <td class="text-xs-left">Run Cost: </td>
                                                         <td class="text-xs-right"><span>$</span>{{ printer.runCost }}<span>/h</span> </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td class="text-xs-left">Status: </td>
-                                                        <td class="text-xs-right">{{printer.status}}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-xs-left">Available Material: </td>
-                                                        <td class="text-xs-right">{{printer.materials}}</td>
-                                                    </tr>
+<!--                                                    <tr>-->
+<!--                                                        <td class="text-xs-left">Description: </td>-->
+                                                        <tr>{{printer.description}}</td>
+<!--                                                    </tr>-->
+
                                                 </table>
                                             </v-card-text>
                                         </v-card>
@@ -175,7 +168,8 @@ new Vue({
     
     el: '#app',
     data: {
-        e1: 0, //Setpper element
+        e1: 0, //Stepper element
+        image: '',
         fileMaterialInfo: {},
         selectPrinterId: '',
         switch1: true,
@@ -201,6 +195,7 @@ new Vue({
                         {printerId: '${printer.printerId}',
                          size: '${printer.size}',
                          status: '${printer.status}',
+                         description: '${printer.description}',
                          runCost: '${printer.runCost}',
                          name: '${printer.name}',
                          materials: '${printer.materials}',
