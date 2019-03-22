@@ -9,7 +9,7 @@
 <%@attribute description="The page name to display on the header." name="pageName" required="true" %>
 <%@attribute description="This is used to make the nav drawer minified." name="mini" required="false" %>
             <c:if test="${account != null}">
-                <v-navigation-drawer <c:if test="${mini == true}">mini-variant</c:if> dark v-model="drawer" stateless clipped app fixed>
+                <v-navigation-drawer <c:if test="${mini == true}">mini-variant</c:if> <c:if test="${mini!=true}">dark</c:if> v-model="drawer" stateless clipped app fixed>
                     <v-list dense>
                         <c:if test="${account.accountType == 'admin'}">
                             <v-list-tile :href="item.link" :key="item.title" v-for="item in adminItems">
