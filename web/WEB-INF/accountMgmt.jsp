@@ -66,7 +66,7 @@
                             </v-dialog>
                         </v-toolbar>
                         <v-data-table  class="elevation-3" :headers="accountmanagementheaders" :items="accounts">
-                            <template slot="items" slot-scope="props">
+                            <template slot="items" v-bind:accountId="props.item.accountId" slot-scope="props">
                                 <td>{{ props.item.email }}</td>
                                 <td>{{ props.item.firstname }}</td>
                                 <td>{{ props.item.lastname }}</td>
@@ -109,10 +109,11 @@
                                         </form>
                                     </v-card>
                                 </v-dialog>
-                                <v-icon small @click="remove">delete</v-icon>
+                                <v-icon small @click="remove(props.item)">delete</v-icon>
                                 </td>
                             </template>
                         </v-data-table>
+                        <form id="remove-account" method="post" action="accountmanagement"><input type="hidden" name="action" value="remove"/><input type="hidden" id="removeAccountID" name="removeAccountID" value=""/></form>
                     </v-container>
                 </v-content>
             </v-app>
@@ -195,9 +196,12 @@
                         document.getElementById('accountType').value=this.editItem.status;
                         document.getElementById('edit-account').submit();
                     },
-                    remove()
+                    remove(item)
                     {
-                        alert('yoo')
+                        this.editIndex = this.accounts.indexOf(item)
+                        this.editItem = Object.assign({}, item)
+                        document.getElementById('removeAccountID').value=this.editItem.accountID;
+                        document.getElementById('remove-account').submit();
                     },
                     editAccount(item)
                     {
