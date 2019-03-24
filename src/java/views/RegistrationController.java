@@ -48,13 +48,13 @@ public class RegistrationController extends HttpServlet
                 return;
             }
             
-            if(email.length() < 100 || password.length() < 50 
-                        || firstName.length() < 50 || lastName.length() < 50)
-            {
-                request.setAttribute("errorMessage", "Error Creating Account: Invalid ammount of characters");
-                request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
-                return;
-            }
+            if(email.length() > 100 || password.length() > 50 
+                        || firstName.length() > 50 || lastName.length() > 50)
+                {
+                    request.setAttribute("errorMessage", "Error Adding Account: Invalid ammount of characters");
+                    request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                    return;
+                }
             
             if(!(email == null || email.equals("")) && !(password == null || password.equals("")) 
                 && !(firstName == null || firstName.equals("")) && !(lastName == null || lastName.equals("")))

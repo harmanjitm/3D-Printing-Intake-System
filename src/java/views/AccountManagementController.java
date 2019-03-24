@@ -106,9 +106,9 @@ public class AccountManagementController extends HttpServlet {
                     return;
                 }
                 
-                if(email.length() < 100 || password.length() < 50 
-                        || firstName.length() < 50 || lastName.length() < 50 
-                            || accountType.length() < 50)
+                if(email.length() > 100 || password.length() > 50 
+                        || firstName.length() > 50 || lastName.length() > 50 
+                            || accountType.length() > 50)
                 {
                     request.setAttribute("errorMessage", "Error Adding Account: Invalid ammount of characters");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
@@ -172,11 +172,10 @@ public class AccountManagementController extends HttpServlet {
                     return;
                 }
 
-                if(email.length() < 100 || password.length() < 50 
-                        || firstName.length() < 50 || lastName.length() < 50 
-                            || accountType.length() < 50)
+                if(email.length() > 100 || firstName.length() > 50 
+                        || lastName.length() > 50 || accountType.length() > 50)
                 {
-                    request.setAttribute("errorMessage", "Error Editing Account: Invalid ammount of characters");
+                    request.setAttribute("errorMessage", "Error Adding Account: Invalid ammount of characters");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
