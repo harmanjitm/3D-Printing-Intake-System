@@ -39,7 +39,7 @@ public class OrderQueue {
         return order;
     }
 
-    public void setOrderId(Order order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 
