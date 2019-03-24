@@ -15,15 +15,14 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>ARIS Submit Order</title>
         <script type="text/javascript" src="node_modules/vuejs/dist/vue.min.js"></script>
-        <script type="text/javascript" src="node_modules/vuetify-upload-button/dist/upload-button.min.js"></script>
         <style>
             body {
                 text-align: center;
             }
             #stl_cont {
                 /*                border-style: solid;*/
-                width: 400px;
-                height: 400px;
+                width: 800px;
+                height: 350px;
                 margin: 0 auto;
             }
             .justify-center {
@@ -74,27 +73,24 @@
                             <v-stepper-items>
                                 <v-stepper-content step="1">
                                     <v-card class="mb-5" color="grey lighten-1" height="400px">
-                                        <div id="stl_cont" v-if="!image" @change="viewInfo">
-
+                                        <div id="stl_cont" >
                                             <h2>Select an STL file</h2>
-                                            <input type="file" @change="onFileChange">
-
-                                            <!--                                      <div v-else>
-                                            
-                                                                                    <button @click="removeImage">Remove file</button>
-                                                                                  </div>-->
+                                            <input type="file" onchange='stl_viewer.add_model({local_file:this.files[0]});' @change="viewInfo" accept="*.*">
+                                            <p>Or Drag and drop</p>
                                         </div>
                                     </v-card>
+                                    
                                     <v-btn color="primary" @click="e1 = 2">
                                         Continue
                                     </v-btn>
-                                    <v-btn flat>Cancel</v-btn>
+                                    <v-btn color="secondary">cancel</v-btn>
                                 </v-stepper-content>
 
                                 <v-stepper-content step="2">
                                     <v-card class="mb-5" color="grey lighten-1" height="400px" xs12 sm6 md6 lg4 xl4 fill-height fluid>
                                         <v-container>
                                             <v-layout row wrap fluid>
+                                                <form id="select-printer" method="post" action="ordermanagement">
                                                 <v-flex v-for="printer in printers" xs12 sm6 md6 lg4 xl4>
                                                     <!-- Printer Cards -->
                                                     <v-card height="99%" width="95%" class="elevation-5" class="clickable"> 
@@ -105,18 +101,19 @@
                                                         </v-card-title>
                                                         <span>Run Cost: $</span>{{ printer.runCost }}<span>/h</span>
                                                         <v-card-actions>
-                                                            <v-btn color="#8B2635">Select</v-btn>
+                                                            <input type="hidden" name="action" value="add">
+                                                            <v-btn color="#8B2635" @click="selectPrinter(selectedPrinter); e1 = 3;">Select</v-btn>
                                                         </v-card-actions>
-
                                                     </v-card>
                                                 </v-flex>
+                                                </form>
                                             </v-layout>
                                         </v-container>
                                     </v-card>
                                     <v-btn color="primary" @click="e1 = 3">
                                         Continue
                                     </v-btn>
-                                    <v-btn flat>Cancel</v-btn>
+                                    <v-btn color="secondary" @click="el = 1">Back</v-btn>
                                 </v-stepper-content>
 
                                 <v-stepper-content step="3">
@@ -127,7 +124,7 @@
                                     <v-btn color="primary" @click="e1 = 4">
                                         Continue
                                     </v-btn>
-                                    <v-btn flat>Cancel</v-btn>
+                                    <v-btn color="secondary" @click="el = 2">Back</v-btn>
                                 </v-stepper-content>
                                 <v-stepper-content step="4">
                                     <v-card class="mb-5" color="grey lighten-1" height="400px">
@@ -137,12 +134,32 @@
                                     <v-btn color="primary" @click="e1 = 5">
                                         Continue
                                     </v-btn>
-                                    <v-btn flat>Cancel</v-btn>
+                                    <v-btn color="secondary" @click="el = 3">Back</v-btn>
                                 </v-stepper-content>
                                 <v-stepper-content step="5">
                                     <v-card class="mb-5" color="grey lighten-1" height="400px">
-
-                                    </v-card>
+                                    <v-container>
+                                        <v-layout row wrap fluid>
+                                    <!-- User selected file information -->
+                                    <v-flex xs12 sm6 md6 lg4 xl4>
+                                        <v-card>
+                                            <span>{{ fileMaterialInfo }}</span>
+                                            <p id="demo"></p>
+                                            <v-btn @click="viewInfo">Get STL Info</v-btn>
+                                        </v-card>
+                                   `<!-- User selected printer -->
+                                                <v-card height="99%" width="95%" class="elevation-5" v-if="selectPrinter"> 
+                                                    <v-img :src="selectedPrinter.img" aspect-ratio="2.5" contain></v-img>
+                                                    <v-card-title secondary-title>
+                                                        <h3 class="headline mb-0">{{selectedPrinter.name}}</h3>
+                                                        <div>{{selectedPrinter.description}}</div>
+                                                    </v-card-title>
+                                                    <span>Run Cost: $</span>{{ selectedPrinter.runCost }}<span>/h</span>
+                                                </v-card>
+                                            </v-flex>
+                                        </v-layout>
+                                    </v-container>
+                                    </v-card> 
 
                                     <v-btn color="primary" @click="e1 = 1">
                                         Continue
@@ -160,102 +177,92 @@
 
 new Vue({
 
-el: '#app',
-        data: {
+    el: '#app',
+    data: {
         e1: 0, //Stepper element
-                image: '',
-                fileMaterialInfo: {},
-                selectPrinterId: '',
-                switch1: true,
-                drawer: '',
-                orderComment: '',
-                userItems:
+        image: '',
+        fileMaterialInfo: '',
+        selectPrinterId: '',
+        switch1: true,
+        drawer: '',
+        orderComment: '',
+        userItems:
         [
-        {title: 'Home', icon: 'home', link: 'home'},
-        {title: 'Dashboard', icon: 'dashboard', link: 'userhome'},
-        {title: 'New Order', icon: 'queue', link: 'order'}
+            {title: 'Home', icon: 'home', link: 'home'},
+            {title: 'Dashboard', icon: 'dashboard', link: 'userhome'},
+            {title: 'New Order', icon: 'queue', link: 'order'}
         ],
-                printerSelect:
+        printerSelect:
         [
-        {text: 'Technicians Preference', value: '-1'},
+            {text: 'Technicians Preference', value: '-1'},
             <c:forEach items="${printers}" var="printer">
-        {value: '${printer.printerId}',
+            {value: '${printer.printerId}',
                 text: '${printer.name}'},
             </c:forEach>
         ],
-                printers: //Printer info from database
+        printers: //Printer info from database
         [
             <c:forEach items="${printers}" var="printer">
-        {printerId: '${printer.printerId}',
-                size: '${printer.size}',
-                status: '${printer.status}',
-                description: '${printer.description}',
-                runCost: '${printer.runCost}',
-                name: '${printer.name}',
-                materials: '${printer.materials}',
-                img: 'res/img/printers/${printer.printerId}.jpg'},
+            {printerId: '${printer.printerId}',
+            size: '${printer.size}',
+            status: '${printer.status}',
+            description: '${printer.description}',
+            runCost: '${printer.runCost}',
+            name: '${printer.name}',
+            materials: '${printer.materials}',
+            img: 'res/img/printers/${printer.printerId}.jpg'},
             </c:forEach>
         ],
+        selectedPrinter:
+        {
+            name: '',
+            description: '',
+            img: '',
+            runCost: ''
+            
+        },
         materials:
         [
-        {text: 'Technician Preference', value: 'tech'}
+            {text: 'Technician Preference', value: 'tech'}
         ],
         payments:
         [
-        {text: 'Payments are currently unavailable', value: 'noPayment'}
+            {text: 'Payments are currently unavailable', value: 'noPayment'}
         ],
+    },
+    methods: {
+        selectPrinter() {
+            name = this.printer.name,
+            description = this.printer.description,
+            img = this.printer.img,
+            runCost = this.printer.runCost
         },
-        methods: {
-        onFileChange(e) {
-        var files = e.target.files || e.dataTransfer.files;
-        if (!files.length)
-                return;
-        this.createImage(files[0]);
-        },
-                createImage(file) {
-        var image = new Image();
-        var reader = new FileReader();
-        var vm = this;
-        reader.onload = (e) => {
-        vm.image = e.target.result;
-        };
-        reader.readAsDataURL(file);
-        },
-                removeImage: function (e) {
-                this.image = '';
-                },
-                selectPrinter(event) {
-        this.selectPrinterId = printer.printerId;
-        alert(event.target.value);
-        },
-                selectedPrinter() {
-
-        },
-                selectMaterial() {
+        selectMaterial() {
         // Display material info
         },
-                selectPayment() {
+        selectPayment() {
         // Display payment info
         },
-                viewInfo() {
-        this.fileMaterialInfo = JSON.stringify(stl_viewer.get_model_info(2));
-        }
+        viewInfo() {
+            this.fileMaterialInfo = JSON.parse(JSON.stringify(stl_viewer.get_model_info(2)));
+            }
         },
+            
         computed: {
 
         }
-})
+    })
         var stl_viewer = new StlViewer
         (
-                document.getElementById("stl_cont"),
-        {
-        auto_rotate: false,
+            document.getElementById("stl_cont"),
+            {
+                auto_rotate: false,
                 allow_drag_and_drop: true,
                 models:
-        [
-        {filename: "viewstl_plugin.stl"}
-        ]
-        }
+                    [
+                        {filename: "viewstl_plugin.stl"}
+                    ]
+            }
         );
         </script>
 
