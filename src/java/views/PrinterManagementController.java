@@ -71,12 +71,12 @@ public class PrinterManagementController extends HttpServlet
                             ps.createPrinter(printerSize, printerStatus, printerName);
                             ArrayList<Printer> printers =  (ArrayList<Printer>) request.getAttribute("printers");
                             request.setAttribute("printers", printers);
-                            request.setAttribute("addM", "New Printer added.");
+                            request.setAttribute("successMessage", "New Printer added.");
                             request.getRequestDispatcher("/WEB-INF/printerMgmt.jsp").forward(request, response);  
                         }
                         else
                         {
-                            request.setAttribute("errorM", "Please enter the required fields.");
+                            request.setAttribute("errorMessage", "Please enter the required fields.");
                             request.getRequestDispatcher("/WEB-INF/printerMgmt.jsp").forward(request, response);
                         }
                         break;
@@ -88,12 +88,12 @@ public class PrinterManagementController extends HttpServlet
                             printerID = Integer.parseInt(prntID);
                             Printer printer = ps.getPrinterById(printerID);
                             ps.updatePrinter(printer);
-                            request.setAttribute("editM", "Printer has been updated.");
+                            request.setAttribute("successMessage", "Printer has been updated.");
                             request.getRequestDispatcher("/WEB-INF/printerMgmt.jsp").forward(request, response);
                         }
                         else
                         {
-                            request.setAttribute("errorM", "Please enter all of the required fields.");
+                            request.setAttribute("errorMessage", "Please enter all of the required fields.");
                             request.getRequestDispatcher("/WEB-INF/printerMgmt.jsp").forward(request, response);
                         }
                         break;
@@ -102,7 +102,7 @@ public class PrinterManagementController extends HttpServlet
                         printerID = Integer.parseInt(prntID);
                         Printer printer = ps.getPrinterById(printerID);
                         ps.deletePrinter(printer);
-                        request.setAttribute("deleteM", "Printer has been deleted.");
+                        request.setAttribute("successMessage", "Printer has been deleted.");
                         request.getRequestDispatcher("/WEB-INF/printerMgmt.jsp").forward(request, response); 
                         break;
                     default:
