@@ -72,7 +72,7 @@
 
                             <v-stepper-items>
                                 <v-stepper-content step="1">
-                                    <v-card class="mb-5" color="grey lighten-1" height="400px">
+                                    <v-card class="mb-5 elevation-10" color="grey lighten-1" height="400px">
                                         <div id="stl_cont" >
                                             <h2>Select an STL file</h2>
                                             <input type="file" onchange='stl_viewer.add_model({local_file:this.files[0]});' @change="viewInfo" accept="*.*">
@@ -87,11 +87,11 @@
                                 </v-stepper-content>
 
                                 <v-stepper-content step="2">
-                                    <v-card class="mb-5" color="grey lighten-1" height="400px" xs12 sm6 md6 lg4 xl4 fill-height fluid>
+                                    <v-card class="mb-5 elevation-10" color="grey lighten-1" height="400px">
+                                        <form id="select-printer" method="post" action="ordermanagement">
                                         <v-container>
-                                            <v-layout row wrap fluid>
-                                                <form id="select-printer" method="post" action="ordermanagement">
-                                                <v-flex v-for="printer in printers" xs12 sm6 md6 lg4 xl4>
+                                            <v-layout row wrap fluid>                                              
+                                                <v-flex v-for="printer in printers" xs12 sm6 md4 lg4>
                                                     <!-- Printer Cards -->
                                                     <v-card height="99%" width="95%" class="elevation-5" class="clickable"> 
                                                         <v-img :src="printer.img" aspect-ratio="2.5" contain></v-img>
@@ -106,9 +106,9 @@
                                                         </v-card-actions>
                                                     </v-card>
                                                 </v-flex>
-                                                </form>
                                             </v-layout>
                                         </v-container>
+                                        </form>
                                     </v-card>
                                     <v-btn color="primary" @click="e1 = 3">
                                         Continue
@@ -117,7 +117,7 @@
                                 </v-stepper-content>
 
                                 <v-stepper-content step="3">
-                                    <v-card class="mb-5" color="grey lighten-1" height="400px">
+                                    <v-card class="mb-5 elevation-10" color="grey lighten-1" height="400px">
 
                                     </v-card>
 
@@ -127,7 +127,7 @@
                                     <v-btn color="secondary" @click="el = 2">Back</v-btn>
                                 </v-stepper-content>
                                 <v-stepper-content step="4">
-                                    <v-card class="mb-5" color="grey lighten-1" height="400px">
+                                    <v-card class="mb-5 elevation-10" color="grey lighten-1" height="400px">
 
                                     </v-card>
 
@@ -136,52 +136,60 @@
                                     </v-btn>
                                     <v-btn color="secondary" @click="el = 3">Back</v-btn>
                                 </v-stepper-content>
+                        <!-- confirm choices -->
                                 <v-stepper-content step="5">
-                                    <v-card class="mb-5" color="grey lighten-1" height="400px">
+                                    <v-card class="mb-5 elevation-10" color="grey lighten-1" height="400px">
                                     <v-container>
                                         <v-layout row wrap fluid>
-                                    <!-- User selected file information -->
-                                    <v-flex xs12 sm6 md6 lg4 xl4>
-                                        <v-card>
-                                            <span>{{ fileMaterialInfo }}</span>
-                                            <p id="demo"></p>
-                                            <v-btn @click="viewInfo">Get STL Info</v-btn>
-                                        </v-card>
-                                   `<!-- User selected printer -->
-                                                <v-card height="99%" width="95%" class="elevation-5" v-if="selectPrinter"> 
-                                                    <v-img :src="selectedPrinter.img" aspect-ratio="2.5" contain></v-img>
-                                                    <v-card-title secondary-title>
-                                                        <h3 class="headline mb-0">{{selectedPrinter.name}}</h3>
-                                                        <div>{{selectedPrinter.description}}</div>
-                                                    </v-card-title>
-                                                    <span>Run Cost: $</span>{{ selectedPrinter.runCost }}<span>/h</span>
-                                                </v-card>
-                                            </v-flex>
-                                        </v-layout>
-                                    </v-container>
-                                    </v-card> 
-
-                                    <v-btn color="primary" @click="e1 = 1">
-                                        Continue
-                                    </v-btn>
-                                    <v-btn flat>Cancel</v-btn>
-                                </v-stepper-content>
+                        <!-- User selected file information -->
+                                    <v-flex xs12 sm6 md6 lg4>
+                                        <v-flex>
+                                            <v-card height="99%" width="95%">
+                                                <span>{{ fileInfo }}</span>
+                                                <p id="demo"></p>
+                                                <v-btn @click="viewInfo">Get STL Info</v-btn>
+                                            </v-card>
+                                        </v-flex>
+                        <!-- User selected printer -->
+                                        <v-flex>
+                                            <v-card height="99%" width="95%" class="elevation-5" v-if="selectPrinter"> 
+                                                <v-img :src="selectedPrinter.img" aspect-ratio="2.5" contain></v-img>
+                                                <v-card-title secondary-title>
+                                                    <h3 class="headline mb-0">{{selectedPrinter.name}}</h3>
+                                                    <div>{{selectedPrinter.description}}</div>
+                                                </v-card-title>
+                                                <span>Run Cost: $</span>{{ selectedPrinter.runCost }}<span>/h</span>
+                                            </v-card>
+                                        </v-flex>
+                                        <v-flex>
+                                            <v-card height="99%" width="95%">
+                                                <span>{{ MaterialInfo }}</span>
+                                            </v-card>
+                                        </v-flex>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+                        </v-card> 
+                            <v-btn color="primary" @click="e1 = 1">
+                                Continue
+                            </v-btn>
+                            <v-btn flat>Cancel</v-btn>
+                        </v-stepper-content>
                             </v-stepper-items>
                         </v-stepper>
                     </v-content>
                 </v-app>
             </div>
 
-            <script src="res/stl/stl_viewer.min.js"></script>
-            <script>
-
+<script src="res/stl/stl_viewer.min.js"></script>
+<script>
 new Vue({
 
     el: '#app',
     data: {
         e1: 0, //Stepper element
         image: '',
-        fileMaterialInfo: '',
+        fileInfo: '',
         selectPrinterId: '',
         switch1: true,
         drawer: '',
@@ -244,7 +252,7 @@ new Vue({
         // Display payment info
         },
         viewInfo() {
-            this.fileMaterialInfo = JSON.parse(JSON.stringify(stl_viewer.get_model_info(2)));
+            this.fileInfo = JSON.parse(JSON.stringify(stl_viewer.get_model_info(2)));
             }
         },
             
