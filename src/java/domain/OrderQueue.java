@@ -10,37 +10,78 @@ public class OrderQueue {
     /**
      * The queue id.
      */
-    private Order order;
+    private int orderId;
 
     /**
-     * The orders.
+     * The position of the order in the queue.
      */
     private int position;
-
+    
     /**
-     * The printer id.
+     * The cost of the order
+     */
+    private double cost;
+    
+    /**
+     * The email of the user who submitted the order
+     */
+    private String email;
+    
+    /**
+     * The first name of the user
+     */
+    private String firstname;
+    
+    /**
+     * The last name of the user
+     */
+    private String lastname;
+    
+    /**
+     * The printer ID that this order belongs to
      */
     private int printerId;
-
+    
     /**
-     * Instantiates a new order queue.
+     * The name of the printer
      */
-    public OrderQueue() {
+    private String printerName;
+    
+    /**
+     * The name of the material
+     */
+    private String materialName;
+    
+    /**
+     * The colour of the selected material
+     */
+    private String materialColour;
+    
+    /**
+     * The additional comments added to the order
+     */
+    private String comments;
 
-    }
-
-    public OrderQueue(Order order, int position, int printerId) {
-        this.order = order;
+    public OrderQueue(int position, Order order, Account account) {
         this.position = position;
-        this.printerId = printerId;
+        this.orderId = order.getOrderId();
+        this.cost = order.getCost();
+        this.printerId = order.getPrinter().getPrinterId();
+        this.printerName = order.getPrinter().getName();
+        this.firstname = account.getFirstname();
+        this.lastname = account.getLastname();
+        this.email = account.getEmail();
+        this.materialName = order.getMaterial().getName();
+        this.materialColour = order.getColour().getColor();
+        this.comments = order.getComments();
     }
 
-    public Order getOrder() {
-        return order;
+    public int getOrderId() {
+        return orderId;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 
     public int getPosition() {
@@ -51,12 +92,76 @@ public class OrderQueue {
         this.position = position;
     }
 
+    public double getCost() {
+        return cost;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
     public int getPrinterId() {
         return printerId;
     }
 
     public void setPrinterId(int printerId) {
         this.printerId = printerId;
+    }
+
+    public String getPrinterName() {
+        return printerName;
+    }
+
+    public void setPrinterName(String printerName) {
+        this.printerName = printerName;
+    }
+
+    public String getMaterialName() {
+        return materialName;
+    }
+
+    public void setMaterialName(String materialName) {
+        this.materialName = materialName;
+    }
+
+    public String getMaterialColour() {
+        return materialColour;
+    }
+
+    public void setMaterialColour(String materialColour) {
+        this.materialColour = materialColour;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
     }
     
     
