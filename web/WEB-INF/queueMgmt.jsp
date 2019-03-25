@@ -23,7 +23,7 @@
                         <v-layout row wrap>
                             <v-flex v-for="order in orders" xs12 sm12 md6 lg4 xl2 :key="order.orderId" v-if="order.printerId === bottomNav">
                                 <v-card color="#8B2635" height="5px"></v-card>
-                                <v-card elevation="5" min-height="150">
+                                <v-card @click="dialog = true" elevation="5" min-height="150">
                                     <v-card-title>
                                         <span primary class="headline text-xs-left">{{num}}{{order.orderId}}</span>
                                         <v-spacer></v-spacer>
@@ -52,6 +52,11 @@
                                 </v-card>
                             </v-flex>
                         </v-layout>
+                        <v-dialog v-model="dialog" max-width="1000px" >
+                            <v-card>
+                                <v-card-title>Test</v-card-title>
+                            </v-card>
+                        </v-dialog>
                     </v-container>
                 </v-content>
                 <v-bottom-nav dark app fixed shift :active.sync="bottomNav" :value="true" colour="transparent">
@@ -95,6 +100,7 @@
                 data:
                 {
                     drawer: true,
+                    dialog: false,
                     bottomNav: '${printers[0].printerId}',
                     num: '#',
                     adminItems: 
