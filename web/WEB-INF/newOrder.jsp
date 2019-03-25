@@ -20,8 +20,8 @@
                 text-align: center;
             }
             #stl_cont {
-                /*                border-style: solid;*/
-                width: 800px;
+/*                border-style: solid;*/
+                width: 400px;
                 height: 350px;
                 margin: 0 auto;
             }
@@ -73,11 +73,49 @@
                             <v-stepper-items>
                                 <v-stepper-content step="1">
                                     <v-card class="mb-5 elevation-10" color="grey lighten-1" height="400px">
-                                        <div id="stl_cont" >
-                                            <h2>Select an STL file</h2>
-                                            <input type="file" onchange='stl_viewer.add_model({local_file:this.files[0]});' @change="viewInfo" accept="*.*">
-                                            <p>Or Drag and drop</p>
-                                        </div>
+                                        <v-container fluid grid-list-md>
+                                        <v-layout row wrap >
+                                            <v-flex xs6 sm6 md6 lg4>
+                                                <div id="stl_cont" >
+                                                    <h2>Select an STL file</h2>
+                                                    <input type="file" onchange='stl_viewer.add_model({local_file:this.files[0]});' @change="viewInfo" accept="*.*">
+                                                    <p>Or Drag and drop</p>
+                                                </div>
+                                            </v-flex>
+                                            <v-flex>
+                                                <v-card height="99%" width="95%">
+                                                 <v-card-title><h4>File Info</h4></v-card-title>
+                                                 <v-divider></v-divider>
+                                                    <v-list dense>
+                                                    <v-list-tile>
+                                                        <v-list-tile-content>File name: </v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">{{ fileInfo.name }}</v-list-tile-content>
+                                                    </v-list-tile>
+                                                    <v-list-tile>
+                                                        <v-list-tile-content>Dimensions: </v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">Work in progress</v-list-tile-content>
+                                                    </v-list-tile>
+                                                    <v-list-tile>
+                                                        <v-list-tile-content>Volume: </v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">{{ fileInfo.volume }} mm^3</v-list-tile-content>
+                                                    </v-list-tile>
+                                                    <v-list-tile>
+                                                        <v-list-tile-content>Area: </v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">{{ fileInfo.area }} mm^2</v-list-tile-content>
+                                                    </v-list-tile>
+                                                    <v-list-tile>
+                                                        <v-list-tile-content>Triangles: </v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">{{ fileInfo.triangles }}</v-list-tile-content>
+                                                    </v-list-tile>
+                                                        
+                                                    </v-list>
+                                                
+                                                
+                                                <v-btn @click="viewInfo">Get STL Info</v-btn>
+                                                </v-card>
+                                            </v-flex>
+                                        </v-layout>
+                                        </v-container>
                                     </v-card>
                                     
                                     <v-btn color="primary" @click="e1 = 2">
@@ -139,16 +177,13 @@
                         <!-- confirm choices -->
                                 <v-stepper-content step="5">
                                     <v-card class="mb-5 elevation-10" color="grey lighten-1" height="400px">
-                                    <v-container>
-                                        <v-layout row wrap fluid>
+                                    <v-container fluid grid-list-md>
+                                        <v-layout row wrap >
                         <!-- User selected file information -->
                                     <v-flex xs12 sm6 md6 lg4>
                                         <v-flex>
-                                            <v-card height="99%" width="95%">
-                                                <span>{{ fileInfo }}</span>
-                                                <p id="demo"></p>
-                                                <v-btn @click="viewInfo">Get STL Info</v-btn>
-                                            </v-card>
+                                            
+                                            
                                         </v-flex>
                         <!-- User selected printer -->
                                         <v-flex>
@@ -163,7 +198,7 @@
                                         </v-flex>
                                         <v-flex>
                                             <v-card height="99%" width="95%">
-                                                <span>{{ MaterialInfo }}</span>
+                                                <span>{{ materialInfo }}</span>
                                             </v-card>
                                         </v-flex>
                                     </v-flex>
@@ -190,6 +225,7 @@ new Vue({
         e1: 0, //Stepper element
         image: '',
         fileInfo: '',
+        materialInfo: '',
         selectPrinterId: '',
         switch1: true,
         drawer: '',
@@ -252,7 +288,11 @@ new Vue({
         // Display payment info
         },
         viewInfo() {
-            this.fileInfo = JSON.parse(JSON.stringify(stl_viewer.get_model_info(2)));
+//            this.fileInfo = JSON.parse(JSON.stringify(stl_viewer.get_model_info(2)));
+//                this.fileInfo = JSON.parse(stl_viewer.get_model_info(2));
+                var info = JSON.stringify(stl_viewer.get_model_info(2));
+                var obj = JSON.parse(info);
+                this.fileInfo = obj
             }
         },
             
