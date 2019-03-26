@@ -97,8 +97,11 @@ public class OrderManagementController extends HttpServlet
             case "edit":
                 order = new Order();
                 order = os.getOrderDetails(orderID);
+                status = order.getStatus();
+                String newStatus = request.getParameter("newStatus");
                 Order toUpdate = new Order();
                 toUpdate = order;
+                os.setOrderStatus(orderID, newStatus);
                 os.updateOrderDetails(toUpdate);
                 request.setAttribute("successMessage", "Order has been updated.");
                 request.getRequestDispatcher("/WEB-INF/orderHistory.jsp").forward(request, response);
