@@ -6,6 +6,7 @@
 
 package views;
 
+import domain.Material;
 import domain.Order;
 import domain.OrderQueue;
 import domain.Printer;
@@ -20,7 +21,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import services.AccountService;
+import services.MaterialService;
 import services.OrderQueueService;
+import services.OrderService;
 import services.PrinterService;
 
 /**
@@ -31,12 +34,22 @@ public class QueueManagementController extends HttpServlet
 {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
+        String status = request.getParameter("status");
+        Printer printer = new Printer();
+        Material material = new Material();
+        Order order = new Order();
+        
+        MaterialService ms = new MaterialService();
         PrinterService ps = new PrinterService();
+        OrderService os = new OrderService();
         OrderQueueService oqs = new OrderQueueService();
         try {
             ArrayList<Printer> printers = ps.getAllPrinters();
+            ArrayList<Material> materials = ms.getAllMaterials();
+            ArrayList<Order> orders = os.getOrdersByStatus(status);
             request.setAttribute("printers", printers);
-            
+            request.setAttribute("materials", materials);
+            request.setAttribute("orders", orders);
             request.setAttribute("1", oqs.getOrdersByPrinter(printers.get(0).getPrinterId()));
         } catch (SQLException ex) {
             Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);

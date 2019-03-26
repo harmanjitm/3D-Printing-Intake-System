@@ -48,10 +48,7 @@ import services.PrinterService;
 public class OrderController extends HttpServlet 
 {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
-    {
-         String accIDs = request.getParameter("accountID");
-        int accountID = Integer.parseInt(accIDs);
-        
+    {        
         Printer printer = new Printer();
         Material material = new Material();
        
@@ -60,7 +57,6 @@ public class OrderController extends HttpServlet
         
         try
         {
- 
             ArrayList<Material> materials = ms.getAllMaterials();
             ArrayList<Printer> printers = ps.getAllPrinters();
             request.setAttribute("materials", materials);
