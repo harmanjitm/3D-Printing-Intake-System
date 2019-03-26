@@ -20,6 +20,12 @@
                 <ARIS3D:Header mini="true" isAdmin="true" pageName="Order Queue"></ARIS3D:Header>
                 <v-content>
                     <v-container grid-list-lg>
+                        <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
+                            ${successMessage}
+                        </v-alert>
+                        <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
+                            ${errorMessage}
+                        </v-alert>
                         <v-layout row wrap>
                             <v-flex v-for="order in orders" xs12 sm12 md6 lg4 xl2 :key="order.orderId" v-if="order.printerId === bottomNav">
                                 <v-card color="#8B2635" height="5px"></v-card>

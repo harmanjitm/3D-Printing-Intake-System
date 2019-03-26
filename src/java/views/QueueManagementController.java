@@ -34,22 +34,29 @@ public class QueueManagementController extends HttpServlet
 {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
-        PrinterService ps = new PrinterService();
-        OrderService os = new OrderService();
-        OrderQueueService oqs = new OrderQueueService();
         try {
+            PrinterService ps = new PrinterService();
             ArrayList<Printer> printers = ps.getAllPrinters();
-            ArrayList<Order> orders = oqs.getOrderQueue();
-
             request.setAttribute("printers", printers);
-            request.setAttribute("orders", orders);
-            request.setAttribute("1", oqs.getOrdersByPrinter(printers.get(0).getPrinterId()));
         } catch (SQLException ex) {
             Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMessage", ex.getMessage());
             request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
             return;
         }
+        
+        try {
+            OrderQueueService oqs = new OrderQueueService();
+            ArrayList<OrderQueue> orders = oqs.getOrderQueue();
+            
+            request.setAttribute("orders", orders);
+        } catch (SQLException ex) {
+            Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("errorMessage", ex.getMessage());
+            request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
+            return;
+        }
+        
         request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
     }
 
