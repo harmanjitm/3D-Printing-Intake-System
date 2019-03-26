@@ -21,7 +21,7 @@
             }
             #stl_cont {
 /*                border-style: solid;*/
-                width: 400px;
+/*                width: 600px; */
                 height: 350px;
                 margin: 0 auto;
             }
@@ -71,20 +71,22 @@
                             </v-stepper-header>
 
                             <v-stepper-items>
+                    <!-- File select -->
                                 <v-stepper-content step="1">
                                     <v-card class="mb-5 elevation-10" color="grey lighten-1" height="400px">
                                         <v-container fluid grid-list-md>
-                                        <v-layout row wrap >
+                                        <v-layout row wrap>
                                             <v-flex xs6 sm6 md6 lg4>
-                                                <div id="stl_cont" >
+                                                <v-card id="stl_cont" >
                                                     <h2>Select an STL file</h2>
                                                     <input type="file" onchange='stl_viewer.add_model({local_file:this.files[0]});' @change="viewInfo" accept="*.*">
                                                     <p>Or Drag and drop</p>
-                                                </div>
+                                                </v-card>
                                             </v-flex>
-                                            <v-flex>
-                                                <v-card height="99%" width="95%">
-                                                 <v-card-title><h4>File Info</h4></v-card-title>
+                                            <v-spacer></v-spacer>
+                                            <v-flex xs6 sm6 md6 lg4>
+                                                <v-card>
+                                                 <v-card-title><h4>File Information</h4></v-card-title>
                                                  <v-divider></v-divider>
                                                     <v-list dense>
                                                     <v-list-tile>
@@ -109,8 +111,6 @@
                                                     </v-list-tile>
                                                         
                                                     </v-list>
-                                                
-                                                
                                                 <v-btn @click="viewInfo">Get STL Info</v-btn>
                                                 </v-card>
                                             </v-flex>
@@ -123,15 +123,16 @@
                                     </v-btn>
                                     <v-btn color="secondary">cancel</v-btn>
                                 </v-stepper-content>
-
+                <!-- Select printer -->
                                 <v-stepper-content step="2">
                                     <v-card class="mb-5 elevation-10" color="grey lighten-1" height="400px">
-                                        <form id="select-printer" method="post" action="ordermanagement">
+<!--                                        <form id="select-printer" method="post" action="ordermanagement">-->
                                         <v-container>
                                             <v-layout row wrap fluid>                                              
-                                                <v-flex v-for="printer in printers" xs12 sm6 md4 lg4>
+                                                <v-flex v-for="printer in printers" xs8 sm4 md4 lg4>
+                                                    
                                                     <!-- Printer Cards -->
-                                                    <v-card height="99%" width="95%" class="elevation-5" class="clickable"> 
+                                                    <v-card height="99%" width="95%" class="elevation-5"> 
                                                         <v-img :src="printer.img" aspect-ratio="2.5" contain></v-img>
                                                         <v-card-title secondary-title>
                                                             <h3 class="headline mb-0">{{printer.name}}</h3>
@@ -139,24 +140,38 @@
                                                         </v-card-title>
                                                         <span>Run Cost: $</span>{{ printer.runCost }}<span>/h</span>
                                                         <v-card-actions>
-                                                            <input type="hidden" name="action" value="add">
-                                                            <v-btn color="#8B2635" @click="selectPrinter(selectedPrinter); e1 = 3;">Select</v-btn>
+                                                            <input type="hidden" name="action" value="selectPrinter">
+                                                            <input type="hidden" name="printerID" v-model="printerSelect.printerID">
+                                                            <v-btn color="#8B2635" @click="selectPrinter(printer)">Select</v-btn>
                                                         </v-card-actions>
                                                     </v-card>
                                                 </v-flex>
                                             </v-layout>
                                         </v-container>
-                                        </form>
+<!--                                        </form>-->
                                     </v-card>
                                     <v-btn color="primary" @click="e1 = 3">
                                         Continue
                                     </v-btn>
                                     <v-btn color="secondary" @click="el = 1">Back</v-btn>
                                 </v-stepper-content>
-
+                <!-- Select material based on selected printer -->
                                 <v-stepper-content step="3">
                                     <v-card class="mb-5 elevation-10" color="grey lighten-1" height="400px">
-
+                                        <v-containter>
+                                            <v-layout>
+                                                <v-flex>
+                                                    <v-select v-model="selectMaterial" :items="materials" :rules="[v => !!v || 'Item is required']" label="Select Material" required>
+                                                        <option v-for="printer in printers" v-bind:value="printer.value">{{ printer.material }}</option>
+                                                    </v-select>
+                                                </v-flex>
+                                                <v-flex>
+                                                    <v-select v-model="selectMaterial" :items="materials" :rules="[v => !!v || 'Item is required']" label="Select Material Color" required>
+                                                        <option v-for="material in materials" v-bind:value="material.value">{{ material }}</option>
+                                                    </v-select>
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-containter>
                                     </v-card>
 
                                     <v-btn color="primary" @click="e1 = 4">
@@ -178,15 +193,39 @@
                                 <v-stepper-content step="5">
                                     <v-card class="mb-5 elevation-10" color="grey lighten-1" height="400px">
                                     <v-container fluid grid-list-md>
-                                        <v-layout row wrap >
+                                        <v-layout row wrap>
                         <!-- User selected file information -->
-                                    <v-flex xs12 sm6 md6 lg4>
-                                        <v-flex>
-                                            
-                                            
+                                        <v-flex xs12 sm4 md4 lg3>
+                                            <v-card height="99%" width="80%">
+                                                 <v-card-title><h4>File Information</h4></v-card-title>
+                                                 <v-divider></v-divider>
+                                                    <v-list dense>
+                                                    <v-list-tile>
+                                                        <v-list-tile-content>File name: </v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">{{ fileInfo.name }}</v-list-tile-content>
+                                                    </v-list-tile>
+                                                    <v-list-tile>
+                                                        <v-list-tile-content>Dimensions: </v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">Work in progress</v-list-tile-content>
+                                                    </v-list-tile>
+                                                    <v-list-tile>
+                                                        <v-list-tile-content>Volume: </v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">{{ fileInfo.volume }} mm^3</v-list-tile-content>
+                                                    </v-list-tile>
+                                                    <v-list-tile>
+                                                        <v-list-tile-content>Area: </v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">{{ fileInfo.area }} mm^2</v-list-tile-content>
+                                                    </v-list-tile>
+                                                    <v-list-tile>
+                                                        <v-list-tile-content>Triangles: </v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">{{ fileInfo.triangles }}</v-list-tile-content>
+                                                    </v-list-tile>
+                                                        
+                                                    </v-list>
+                                                </v-card>
                                         </v-flex>
                         <!-- User selected printer -->
-                                        <v-flex>
+                                        <v-flex xs12 sm6 md4 lg4>
                                             <v-card height="99%" width="95%" class="elevation-5" v-if="selectPrinter"> 
                                                 <v-img :src="selectedPrinter.img" aspect-ratio="2.5" contain></v-img>
                                                 <v-card-title secondary-title>
@@ -196,12 +235,17 @@
                                                 <span>Run Cost: $</span>{{ selectedPrinter.runCost }}<span>/h</span>
                                             </v-card>
                                         </v-flex>
+                        <!-- User selected material -->
                                         <v-flex>
-                                            <v-card height="99%" width="95%">
-                                                <span>{{ materialInfo }}</span>
+                                            <v-card>
+                                                <span>{{ materialInfo }} Material info</span>
                                             </v-card>
                                         </v-flex>
-                                    </v-flex>
+                                        <v-flex>
+                                            <v-card>
+                                                <span>{{ materialInfo }} payment info</span>
+                                            </v-card>
+                                        </v-flex>
                                 </v-layout>
                             </v-container>
                         </v-card> 
@@ -267,7 +311,15 @@ new Vue({
         },
         materials:
         [
-            {text: 'Technician Preference', value: 'tech'}
+            <c:forEach items="${materials}" var="material">
+                {materialId: '${material.materialId}',
+                 materialName: '${material.name}',
+                 printerName: '${material.printerName}', 
+                 materialDesc: '${material.description}', 
+                 materialColor: '${material.colours}', 
+                 materialVal: '${material.cost}', 
+                 materialStat: '${material.status}'},
+            </c:forEach>
         ],
         payments:
         [
@@ -276,10 +328,8 @@ new Vue({
     },
     methods: {
         selectPrinter() {
-            name = this.printer.name,
-            description = this.printer.description,
-            img = this.printer.img,
-            runCost = this.printer.runCost
+//            this.selectedPrinter = Object.assign(this.printer);
+            alert(this.selectedPrinter = this.printer);
         },
         selectMaterial() {
         // Display material info

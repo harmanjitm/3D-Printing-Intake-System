@@ -68,6 +68,18 @@ public class OrderController extends HttpServlet
             request.setAttribute("errorMessage", ex.getMessage());
         }
         
+        String action = request.getParameter("action");
+        if (action != null && action.equals("selectPrinter")) {
+            String printID = request.getParameter("printerSelected");
+            int printerID = Integer.parseInt(printID);
+            try {
+                printer = ps.getPrinterById(printerID);
+                request.setAttribute("printers", printer);
+            } catch (Exception ex) {
+                Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
         request.getRequestDispatcher("/WEB-INF/newOrder.jsp").forward(request, response);
     }
     @Override
