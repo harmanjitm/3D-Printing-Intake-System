@@ -62,6 +62,11 @@ public class OrderQueue {
      */
     private String comments;
 
+    public OrderQueue() 
+    {
+    
+    }
+    
     public OrderQueue(int position, Order order, Account account) {
         this.position = position;
         this.orderId = order.getOrderId();
