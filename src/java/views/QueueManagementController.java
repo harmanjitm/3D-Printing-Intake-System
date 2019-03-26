@@ -34,21 +34,14 @@ public class QueueManagementController extends HttpServlet
 {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
-        String status = request.getParameter("status");
-        Printer printer = new Printer();
-        Material material = new Material();
-        Order order = new Order();
-        
-        MaterialService ms = new MaterialService();
         PrinterService ps = new PrinterService();
         OrderService os = new OrderService();
         OrderQueueService oqs = new OrderQueueService();
         try {
             ArrayList<Printer> printers = ps.getAllPrinters();
-            ArrayList<Material> materials = ms.getAllMaterials();
-            ArrayList<Order> orders = os.getOrdersByStatus(status);
+            ArrayList<Order> orders = oqs.getOrderQueue();
+
             request.setAttribute("printers", printers);
-            request.setAttribute("materials", materials);
             request.setAttribute("orders", orders);
             request.setAttribute("1", oqs.getOrdersByPrinter(printers.get(0).getPrinterId()));
         } catch (SQLException ex) {
