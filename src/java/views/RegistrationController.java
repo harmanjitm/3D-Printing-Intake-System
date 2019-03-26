@@ -51,7 +51,7 @@ public class RegistrationController extends HttpServlet
             if(email.length() > 100 || password.length() > 50 
                         || firstName.length() > 50 || lastName.length() > 50)
                 {
-                    request.setAttribute("errorMessage", "Error Adding Account: Invalid ammount of characters");
+                    request.setAttribute("errorMessage", "Error Adding Account: Invalid amount of characters");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }

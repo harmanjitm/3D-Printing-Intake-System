@@ -6,6 +6,7 @@
 
 package views;
 
+import domain.Account;
 import domain.Material;
 import domain.Order;
 import domain.Printer;
@@ -24,6 +25,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -34,6 +36,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import services.AccountService;
 import services.MaterialService;
 import services.OrderService;
 import services.PrinterService;
@@ -46,14 +49,27 @@ public class OrderController extends HttpServlet
 {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
+         String accIDs = request.getParameter("accountID");
+        int accountID = Integer.parseInt(accIDs);
+        
+        Printer printer = new Printer();
+        Material material = new Material();
+       
+        MaterialService ms = new MaterialService();
         PrinterService ps = new PrinterService();
-        try {
-            request.setAttribute("printers", ps.getAllPrinters());
-        } catch (SQLException ex) {
-            Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
+        
+        try
+        {
+ 
+            ArrayList<Material> materials = ms.getAllMaterials();
+            ArrayList<Printer> printers = ps.getAllPrinters();
+            request.setAttribute("materials", materials);
+            request.setAttribute("printers", printers);
+            System.out.println("Got all orders");
+        } catch (SQLException ex)
+        {
+            Logger.getLogger(OrderManagementController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMessage", ex.getMessage());
-            request.getRequestDispatcher("/WEB-INF/newOrder.jsp").forward(request, response);
-            return;
         }
         
         request.getRequestDispatcher("/WEB-INF/newOrder.jsp").forward(request, response);
