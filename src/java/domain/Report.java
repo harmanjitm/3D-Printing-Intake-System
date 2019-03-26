@@ -21,7 +21,7 @@ public class Report {
 	private Date dateCreated;
 	
 	/** The contents. */
-	private ArrayList<ReportContent> contents;
+	private String content;
 	
 	/** The date completed. */
 	private Date dateCompleted;
@@ -51,14 +51,14 @@ public class Report {
 	 * @param status the status
 	 * @param path the path
 	 */
-	public Report(int reportId, String title, Account owner, Date dateCreated, ArrayList<ReportContent> contents,
+	public Report(int reportId, String title, Account owner, Date dateCreated, String content,
 			Date dateCompleted, String status, String path) {
 		super();
 		this.reportId = reportId;
 		this.title = title;
 		this.owner = owner;
 		this.dateCreated = dateCreated;
-		this.contents = contents;
+		this.content = content;
 		this.dateCompleted = dateCompleted;
 		this.status = status;
 		this.path = path;
@@ -141,8 +141,8 @@ public class Report {
 	 *
 	 * @return the contents
 	 */
-	public ArrayList<ReportContent> getContents() {
-		return contents;
+	public String getContents() {
+		return content;
 	}
 
 	/**
@@ -150,8 +150,8 @@ public class Report {
 	 *
 	 * @param contents the new contents
 	 */
-	public void setContents(ArrayList<ReportContent> contents) {
-		this.contents = contents;
+	public void setContents(String content) {
+		this.content = content;
 	}
 
 	/**
