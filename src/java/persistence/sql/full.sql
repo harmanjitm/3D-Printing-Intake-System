@@ -913,7 +913,7 @@ delimiter #
 
 CREATE  PROCEDURE `getOrdersByPrinter`($printer_id INTEGER)
 proc_main:BEGIN
-	SELECT order_id, cost, order_date, print_date, order_status, material_id, account_id, order_file_id
+	SELECT order_id, cost, order_date, print_date, order_status, material_id, account_id, order_file_id, order_status
 		FROM PRINT_ORDER
         WHERE printer_id = $printer_id;
 END proc_main #
@@ -933,7 +933,7 @@ delimiter #
 
 CREATE  PROCEDURE `getOrdersByStatus`($order_status VARCHAR(20))
 proc_main:BEGIN
-	SELECT order_id, cost, order_date, print_date, printer_id, material_id, account_id, order_file_id
+	SELECT order_id, cost, order_date, print_date, printer_id, material_id, account_id, order_file_id, order_status
 		FROM PRINT_ORDER
         WHERE order_status = $order_status;
 END proc_main #
@@ -952,7 +952,7 @@ delimiter #
 
 CREATE  PROCEDURE `getAllOrders`()
 proc_main:BEGIN
-	SELECT order_id, cost, order_date, print_date, printer_id, material_id, account_id, order_file_id
+	SELECT order_id, cost, order_date, print_date, printer_id, material_id, account_id, order_file_id, order_status
 		FROM PRINT_ORDER;
 END proc_main #
 delimiter ;
@@ -1010,7 +1010,7 @@ delimiter #
 
 CREATE  PROCEDURE `getFilesByAccountId`($account_id INTEGER)
 proc_main:BEGIN
-	SELECT order_file_id, filename, file_path, date_submitted
+	SELECT order_file_id, filename, file_path, date_submitted, file_size
 		FROM ORDER_FILE
         WHERE account_id = $account_id;
 END proc_main #
