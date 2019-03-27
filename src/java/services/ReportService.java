@@ -10,6 +10,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import persistence.ReportBroker;
 
 /**
@@ -32,17 +33,21 @@ public class ReportService {
         PDDocument report = new PDDocument();
         PDPage page = new PDPage();
 
-        report.addPage(page);
+        
 
         PDPageContentStream cs = new PDPageContentStream(report, page);
         
         cs.beginText();//Begin writing
-        
-        cs.newLineAtOffset(25, 700);
-        cs.setFont(PDType1Font.COURIER_BOLD, 20);
-        cs.showText("ARIS3D Report");
+        cs.setLeading(14.5f);
+        cs.newLineAtOffset(50, 725);
+        cs.setFont(PDType1Font.HELVETICA_BOLD, 25);
+        cs.showText("ARIS3D System Report");
+        cs.newLine();
+        cs.setFont(PDType1Font.HELVETICA, 12);
+        cs.showText("3D Printing Intake System");
         cs.endText();//End writing
-        
+        cs.close();
+        report.addPage(page);
         report.save("C:/PDF/test.pdf");
         report.close();
     }
