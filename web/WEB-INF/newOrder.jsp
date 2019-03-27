@@ -13,7 +13,7 @@
         <ARIS3D:Imports/>
         <link href="res/css/header.css" rel="stylesheet" type="text/css"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>ARIS Submit Order</title>
+        <title>ARIS Submit New Order</title>
         <script type="text/javascript" src="node_modules/vuejs/dist/vue.min.js"></script>
         <style>
             body {
@@ -21,7 +21,7 @@
             }
             #stl_cont {
 /*                border-style: solid;*/
-/*                width: 600px; */
+                width: 600px;
                 height: 350px;
                 margin: 0 auto;
             }
@@ -111,7 +111,7 @@
                                                     </v-list-tile>
                                                         
                                                     </v-list>
-                                                <v-btn @click="viewInfo">Get STL Info</v-btn>
+                                                <v-btn @click="viewInfo">Get File Info</v-btn>
                                                 </v-card>
                                             </v-flex>
                                         </v-layout>
@@ -161,8 +161,8 @@
                                         <v-containter>
                                             <v-layout>
                                                 <v-flex>
-                                                    <v-select v-model="selectMaterial" :items="materials" :rules="[v => !!v || 'Item is required']" label="Select Material" required>
-                                                        <option v-for="printer in printers" v-bind:value="printer.value">{{ printer.material }}</option>
+                                                    <v-select :items="materials" :rules="[v => !!v || 'Item is required']" label="Select Material" required>
+                                                        <option v-for="material in materials" v-if="selectPrinterName === material.printerName" v-bind:value="material.materialId">{{ material.materialName }}</option>
                                                     </v-select>
                                                 </v-flex>
                                                 <v-flex>
@@ -270,7 +270,7 @@ new Vue({
         image: '',
         fileInfo: '',
         materialInfo: '',
-        selectPrinterId: '',
+        selectPrinterName: '',
         switch1: true,
         drawer: '',
         orderComment: '',
@@ -327,9 +327,9 @@ new Vue({
         ],
     },
     methods: {
-        selectPrinter() {
-//            this.selectedPrinter = Object.assign(this.printer);
-            alert(this.selectedPrinter = this.printer);
+        selectPrinter(printer) {
+            selectPrinterName = printer.name;
+            
         },
         selectMaterial() {
         // Display material info
