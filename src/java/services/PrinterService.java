@@ -13,7 +13,6 @@ import persistence.PrinterBroker;
 public class PrinterService {
 
 	/** The printer broker to persist changes to the database. */
-	@SuppressWarnings("unused")
 	private PrinterBroker pb;
 	
 	/**
