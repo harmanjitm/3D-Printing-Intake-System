@@ -161,9 +161,11 @@
                                         <v-containter>
                                             <v-layout>
                                                 <v-flex>
-                                                    <v-select :items="materials" :rules="[v => !!v || 'Item is required']" label="Select Material" required>
-                                                        <option v-for="material in materials" v-if="selectPrinterName === material.printerName" v-bind:value="material.materialId">{{ material.materialName }}</option>
-                                                    </v-select>
+                                                    <select :rules="[v => !!v || 'Item is required']" label="Select Material" required>
+                                                        <option v-for="material in materials" v-if="selectPrinterName === material.printerName" value="material.materialId">
+                                                            {{ material.materialName }}
+                                                        </option>
+                                                    </select>
                                                 </v-flex>
                                                 <v-flex>
                                                     <v-select v-model="selectMaterial" :items="materials" :rules="[v => !!v || 'Item is required']" label="Select Material Color" required>
@@ -328,8 +330,8 @@ new Vue({
     },
     methods: {
         selectPrinter(printer) {
-            selectPrinterName = printer.name;
-            
+            this.selectPrinterName = printer.name;
+            alert(this.selectPrinterName);
         },
         selectMaterial() {
         // Display material info
