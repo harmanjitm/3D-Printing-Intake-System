@@ -14,7 +14,7 @@ public class File {
 	private String path;
 	
 	/** The size. */
-	private String size;
+	private Double size;
 	
 	/** The file type. */
 	private String fileType;
@@ -23,7 +23,10 @@ public class File {
 	private Date dateSubmitted;
 	
 	/** The date archived. */
-	private Date dateArchived;
+	//private Date dateArchived;
+        
+        /** The file ID */
+        private int fileID;
 	
 	/**
 	 * Default constructor for a File Object.
@@ -42,13 +45,14 @@ public class File {
 	 * @param dateSubmitted the date submitted
 	 * @param dateArchived the date archived
 	 */
-	public File(String name, String path, String size, String fileType, Date dateSubmitted, Date dateArchived) {
+	public File(String name, int fileID, String path, double size, Date dateSubmitted) {
 		this.name = name;
+                this.fileID = fileID;
 		this.path = path;
 		this.size = size;
-		this.fileType = fileType;
+		//this.fileType = fileType;
 		this.dateSubmitted = dateSubmitted;
-		this.dateArchived = dateArchived;
+		//this.dateArchived = dateArchived;
 	}
 
 	/**
@@ -69,6 +73,14 @@ public class File {
 		this.name = name;
 	}
 
+        public void setFileID(int fileID){
+            this.fileID = fileID;
+        }
+        
+        public int getFileID(){
+            return fileID;
+        }
+        
 	/**
 	 * Gets the path of the file.
 	 *
@@ -92,7 +104,7 @@ public class File {
 	 *
 	 * @return size of the file
 	 */
-	public String getSize() {
+	public double getSize() {
 		return size;
 	}
 
@@ -101,7 +113,7 @@ public class File {
 	 *
 	 * @param size of the file
 	 */
-	public void setSize(String size) {
+	public void setSize(double size) {
 		this.size = size;
 	}
 
@@ -146,17 +158,17 @@ public class File {
 	 *
 	 * @return the date archived
 	 */
-	public Date getDateArchived() {
-		return dateArchived;
-	}
+//	public Date getDateArchived() {
+//		return dateArchived;
+//	}
 
 	/**
 	 * Sets the date archived.
 	 *
 	 * @param dateArchived the new date archived
 	 */
-	public void setDateArchived(Date dateArchived) {
-		this.dateArchived = dateArchived;
-	}
+//	public void setDateArchived(Date dateArchived) {
+//		this.dateArchived = dateArchived;
+//	}
 	
 }

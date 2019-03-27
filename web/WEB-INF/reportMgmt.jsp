@@ -18,9 +18,97 @@
         <div id="app">
             <v-app>
                 <ARIS3D:Header isAdmin="true" pageName="Report Management"></ARIS3D:Header>
-                <!--Insert some trash ass data table in here to display past reports from DB-->
+                <v-content>
+                    <v-container>
+                        <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
+                            ${successMessage}
+                        </v-alert>
+                        <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
+                            ${errorMessage}
+                        </v-alert>
+                        <v-card color="#8B2635" height="5px"></v-card>
+                        <v-toolbar class="elevation-1" dark>
+                            <v-toolbar-title>Manage Reports</v-toolbar-title>
+                            <v-spacer></v-spacer>
+                            <v-btn color="#8B2635" @click="add" dark class="mb-2">Generate Report</v-btn>
+                        </v-toolbar>
+                        <v-data-table class="elevation-3" :headers="reportHeaders" :items="reports">
+                            <template slot="items" v-bind:id="props.item.id" slot-scope="props">
+                                <td>{{ props.item.name }}</td>
+                                <td>{{ props.item.creator }}</td>
+                                <td>{{ props.item.created }}</td>
+                                <td>{{ props.item.completed }}</td>
+                                <td>{{ props.item.content }}</td>
+                                <td>{{ props.item.status }}</td>
+                                <td><v-icon @click="download(props.item)">cloud_download</v-icon></td>
+                            </template>
+                        </v-data-table>
+                        <form action="reportmanagement" method="post" id="download"><input type="hidden" name="action" value="download"><input type="hidden" name="downloadID" value=""></form>
+                        <form action="reportmanagement" method="post" id="add"><input type="hidden" name="action" value="add"></form>
+                    </v-container>
+                </v-content>
             </v-app>
         </div>
+        <script>
+            new Vue ({ 
+                el: '#app',
+                data: 
+                {
+                    account: '',
+                    logout: '',
+                    drawer: false,
+                    downloadReport:
+                    {
+                        id: '',
+                        name: '',
+                        creator: '',
+                        created: '',
+                        content: '',
+                        completed: '',
+                        status: '',
+                        path: ''
+                    },
+                    reports:
+                    [
+                        <c:forEach items="${reports}" var="report">
+                            {id: '${report.reportId}', name: '${report.title}', creator: '${report.owner}', created: '${report.dateCreated}',content: '${report.content}', completed: '${report.dateCompleted}', status: '${report.status}',path: '${report.path}',},
+                        </c:forEach>
+                    ],
+                    adminItems: 
+                    [ 
+                        {title: 'Home', icon: 'home', link: 'home'},
+                        {title: 'Dashboard', icon: 'dashboard', link: 'dashboard'},
+                        {title: 'Order Queue', icon: 'queue', link: 'queue'},
+                        {title: 'Account Management', icon: 'people', link: 'accountmanagement'},
+                        {title: 'Material Management', icon: 'texture', link: 'materialmanagement'},
+                        {title: 'Printer Management', icon: 'print', link: 'printermanagement'},
+                        {title: 'Reports', icon: 'poll', link: 'reportmanagement'}
+                    ],
+                    reportHeaders:
+                    [
+                        {text: 'Report Name', value: 'name'},
+                        {text: 'Owner', value: 'creator'},
+                        {text: 'Date Created', value: 'created'},
+                        {text: 'Date Completed', value: 'completed'},
+                        {text: 'Content', value: 'content'},
+                        {text: 'Status', value: 'status'},
+                        {text: 'Actions', value: '', sortable:false}
+                    ]
+                },
+                methods:
+                {
+                    download(item)
+                    {
+                        this.downloadReport = Object.assign({}, item);
+                        document.getElementById('downloadID').value=this.downloadReport.id;
+                        document.getElementById('download').submit();
+                    },
+                    add()
+                    {
+                        document.getElementById('add').submit();
+                    }
+                }
+            });
+        </script>
     </body>
-    <script src="res/js/vue.js" type="text/javascript"></script>
 </html>
