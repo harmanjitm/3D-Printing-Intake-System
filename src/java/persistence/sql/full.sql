@@ -582,17 +582,19 @@ use aris;
 ** Author:  Emily Pegg	                                       	**
 ** Creation Date:  February, 2019                               **
 ** Procedure Name: Create Material                            	**
-** Description:  Creates a Material and assigns it the	 	   	**
-**               next availiable id.                 		   	**
-** Input:  Material Name, Material Description,Material Cost	**
+** Description:  Creates a Material and assigns it the	 	**
+**               next availiable id.                 		**
+** Input:  Material Name, Material Description,Material Cost    **
+**         Printer id                                   	**
 ******************************************************************/
 DROP PROCEDURE IF EXISTS createMaterial;
 delimiter #
 
-CREATE  PROCEDURE `createMaterial`($material_name VARCHAR(30), $material_description VARCHAR(500), $material_cost DECIMAL(13,4))
+CREATE  PROCEDURE `createMaterial`($material_name VARCHAR(30), $material_description VARCHAR(500), $material_cost DECIMAL(13,4), $printer_id INTEGER)
 proc_main:BEGIN
 	INSERT INTO MATERIAL(material_name, material_description,material_cost) 
 		VALUES($material_name, $material_description, $material_cost);
+        CALL createPrinterMaterial($printer_id, (SELECT material_id FROM MATERIAL WHERE material_name = $material_name AND material_description = $material_description AND material_cost = $material_cost));
 END proc_main #
 delimiter ;
 
