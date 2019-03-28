@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import domain.Report;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,13 +41,6 @@ public class ReportService {
 
     public void createReport(Account acc) throws IOException, SQLException {
         ReportBroker rb = new ReportBroker();
-        int printers;
-        int totalPending;
-        int totalComplete;
-        int totalCancelled;
-        int totalApproved;
-        int totalAdmins;
-        int totalUsers;
 
         PDDocument report = new PDDocument();
         PDPage page = new PDPage();
@@ -55,11 +51,13 @@ public class ReportService {
         Date startDate = new Date();
 
         //Make the directory structure if it's not already there.
-        String path = System.getProperty("user.dir").concat("/Reports/") + acc.getAccountID() + date + ".pdf";
-        path = path.replace("\\", "/");
-        File folder = new File(System.getProperty("user.dir").concat("/Reports"));
+        String path = "C:/Reports/" + acc.getAccountID() + date + ".pdf";
+        File folder = new File("C:/Reports");
         folder.mkdirs();
+        System.out.println(path);
 
+        //System.getProperty("user.dir");
+        
         //Start writing to the PDF
         PDPageContentStream cs = new PDPageContentStream(report, page);
 
