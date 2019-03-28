@@ -32,7 +32,7 @@
                             <v-spacer></v-spacer>
                             <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
                             <!-- dialog window for adding a new material -->
-                            <v-dialog v-model="dialog" max-width="750px" >
+                            <v-dialog persistent v-model="dialog" max-width="750px" >
                                 <v-btn slot="activator" color="#8B2635" dark class="mb-2">New Material</v-btn>
                                 <v-card>
                                     <v-card-title>
@@ -48,11 +48,11 @@
                                                     <v-flex xs12 sm6 md6>
                                                         <v-text-field name="materialDesc" label="Description"></v-text-field>
                                                     </v-flex>
-                                                    <v-flex xs12 sm6 md6>
+<!--                                                    <v-flex xs12 sm6 md6>
                                                         <v-text-field name="materialColor" label="Colors"></v-text-field>
-                                                    </v-flex>
+                                                    </v-flex>-->
                                                     <v-flex xs12 sm6 md6>
-                                                        <v-text-field name="materialVal" label="Value"></v-text-field>
+                                                        <v-text-field name="materialVal" label="Price/mm3"></v-text-field>
                                                     </v-flex>
                                                     <v-flex xs12 sm6 md6>
                                                         <v-text-field name="materialStat" label="Status"></v-text-field>
@@ -70,7 +70,7 @@
                                 </v-card>
                             </v-dialog>
                         </v-toolbar>
-                        <v-data-table hide-actions expand item-key="materialName" class="elevation-3" :headers="materialheaders" :items="materials" :search="search">
+                        <v-data-table hide-actions expand item-key="materialName" :expand="expand" class="elevation-3" :headers="materialheaders" :items="materials" :search="search">
                             <template slot="items" slot-scope="props">
                                 <tr @click="loadMaterialColour(props.item); props.expanded = !props.expanded">
                                     <td>{{ props.item.materialName }}</td>
@@ -125,7 +125,7 @@
                                     </td>
                                 </tr>
                             </template>
-                            <template slot="expand" scope="props">
+                            <template v-slot:expand="props">
                                 <v-card>
                                     <v-card-text>
                                         <v-data-table :headers="colourHeaders" :items="colours" item-key="colour" hide-actions class="elevation-3">
@@ -133,6 +133,7 @@
                                                 <tr v-if="props.item.materialId===selectedColourID">
                                                     <td>{{props.item.colour}}</td>
                                                     <td>{{props.item.status}}</td>
+                                                    <td class="justify-center"><v-icon small @click="deleteColour(props.item)">delete</v-icon></td>
                                                 </tr>
                                             </template>
                                         </v-data-table>
@@ -157,6 +158,7 @@
                     search: '',
                     editIndex: -1,
                     dialog: false,
+                    expand: false,
                     editDialog: false,
                     account: '',
                     logout: '',
@@ -176,7 +178,8 @@
                     colourHeaders:
                     [
                         {text: 'Colour', value: 'colour'},
-                        {text: 'Status', value: 'status'}
+                        {text: 'Status', value: 'status'},
+                        {text: 'Actions', value: 'delete', sortable: false}
                     ],
                     colours:
                     [
