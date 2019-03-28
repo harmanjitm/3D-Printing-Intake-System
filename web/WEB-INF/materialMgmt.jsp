@@ -42,35 +42,38 @@
                                         <v-card-text>
                                             <v-container grid-list-md>
                                                 <v-layout wrap>
-                                                    <v-flex xs12 sm6 md6>
-                                                        <v-text-field name="materialName" label="Material"></v-text-field>
-                                                    </v-flex>
-                                                    <v-flex xs12 sm6 md6>
-                                                        <v-text-field name="materialDesc" label="Description"></v-text-field>
-                                                    </v-flex>
-<!--                                                    <v-flex xs12 sm6 md6>
-                                                        <v-text-field name="materialColor" label="Colors"></v-text-field>
-                                                    </v-flex>-->
-                                                    <v-flex xs12 sm6 md6>
-                                                        <v-text-field name="materialVal" label="Price/mm3"></v-text-field>
-                                                    </v-flex>
-                                                    <v-flex xs12 sm6 md6>
-                                                        <v-text-field name="materialStat" label="Status"></v-text-field>
-                                                    </v-flex>
-                                                    <input type="hidden" name="action" value="add">
+                                                        <v-flex xs12 sm6 md6>
+                                                            <v-text-field name="materialName" label="Material"></v-text-field>
+                                                        </v-flex>
+    <!--                                                    <v-flex xs12 sm6 md6>
+                                                            <v-text-field name="materialColor" label="Colors"></v-text-field>
+                                                        </v-flex>-->
+                                                        <v-flex xs12 sm6 md6>
+                                                            <v-text-field type="number" name="materialCost" prefix="$" label="Price/mm3"></v-text-field>
+                                                        </v-flex>
+                                                        <v-flex xs12 sm6 md6>
+                                                            <v-text-field name="printerName" label="Printer"></v-text-field>
+                                                        </v-flex>
+    <!--                                                    <v-flex xs12 sm6 md6>
+                                                            <v-text-field name="materialStat" label="Status"></v-text-field>
+                                                        </v-flex>-->
+                                                        <input type="hidden" name="action" value="add">
+                                                        <v-flex xs12 sm6 md6>
+                                                            <v-text-field name="materialDescription" label="Description"></v-text-field>
+                                                        </v-flex>
                                                 </v-layout>
                                             </v-container>
                                         </v-card-text>
                                         <v-card-actions>
                                             <v-spacer></v-spacer>
                                             <v-btn flat color="primary" @click="close">Cancel</v-btn>
-                                            <v-btn flat color="primary" @click="submit">Save</v-btn>
+                                            <v-btn flat color="primary" @click="submitMaterial">Save</v-btn>
                                         </v-card-actions>
                                     </form>
                                 </v-card>
                             </v-dialog>
                         </v-toolbar>
-                        <v-data-table hide-actions expand item-key="materialName" :expand="expand" class="elevation-3" :headers="materialheaders" :items="materials" :search="search">
+                        <v-data-table expand item-key="materialName" :expand="expand" class="elevation-3" :headers="materialheaders" :items="materials" :search="search">
                             <template slot="items" slot-scope="props">
                                 <tr @click="loadMaterialColour(props.item); props.expanded = !props.expanded">
                                     <td>{{ props.item.materialName }}</td>
@@ -141,6 +144,12 @@
                                 </v-card>
                             </template>
                         </v-data-table>
+                        <form method="post" id="addMaterial" action="materialmanagement">
+                            <input type="hidden" id="newMaterialName" name="materialName" value="">
+                            <input type="hidden" id="newMaterialPrice" name="materialPrice" value="">
+                            <input type="hidden" name="action" value="add">
+                            <input type="hidden" id="newMaterialDescription" name="materialDescription" value="">
+                        </form>
                     </v-container>
                 </v-content>
             </v-app>
@@ -229,6 +238,10 @@
                 },
                 methods:
                 {
+                    deleteColour(item)
+                    {
+                        document.getElementById('').value = this.selectedMaterial.materialId;//TODO
+                    },
                     loadMaterialColour(material)
                     {  
                         this.selectedColourID = material.materialId;
@@ -256,9 +269,10 @@
                         this.dialog = false,
                         this.editDialog = false
                     },
-                    submit()
+                    submitMaterial()
                     {
-                        document.getElementById('create-account').submit();
+                        
+                        document.getElementById('create-material').submit();
                     },
                     editMaterial() 
                     {

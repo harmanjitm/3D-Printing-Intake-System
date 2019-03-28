@@ -21,6 +21,11 @@ public class Material {
      * The printer the material is available to
      */
     private String printerName;
+    
+    /**
+     * The ID of the printer that this material is associated to.
+     */
+    private int printerId;
 
     /**
      * The description.
@@ -78,6 +83,14 @@ public class Material {
         super();
         this.materialId = materialId;
         this.colours = colors;
+    }
+
+    public int getPrinterId() {
+        return printerId;
+    }
+
+    public void setPrinterId(int printerId) {
+        this.printerId = printerId;
     }
 
     /**

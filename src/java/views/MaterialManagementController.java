@@ -58,7 +58,7 @@ public class MaterialManagementController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         String materialName = request.getParameter("materialName");
-        String materialDesc = request.getParameter("materialDesc");
+        String materialDesc = request.getParameter("materialDescription");
         String printerName = request.getParameter("printerName");
         String status = request.getParameter("status");
         double materialCost = Double.parseDouble(request.getParameter("materialCost"));
@@ -72,7 +72,7 @@ public class MaterialManagementController extends HttpServlet {
             switch (action) {
                 case "add":
                     if (!(materialName == null || materialName.equals("")) && !(materialDesc == null || materialDesc.equals(""))
-                            && !(printerName == null || printerName.equals("")) && !(materialColour == null || materialColour.equals(""))
+                            && !(printerName == null || printerName.equals(""))
                             && (materialCost != 0)) {
                         ms.createMaterial(materialName, materialDesc, printerName, materialColour, materialCost, status);
                         ArrayList<Material> materials = (ArrayList<Material>) request.getAttribute("materials");
