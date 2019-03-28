@@ -21,7 +21,8 @@
             }
             #stl_cont {
 /*                border-style: solid;*/
-                width: 600px;
+                
+/*                width: 600px;*/
                 height: 350px;
                 margin: 0 auto;
             }
@@ -37,8 +38,28 @@
                 display: block;
                 margin-bottom: 10px;
             }
-            button {
-
+            .dropdown {
+             display: block;
+             font-size: 16px;
+             font-family: sans-serif;
+            font-weight: 700;
+            color: #444;
+            line-height: 1.3;
+            padding: .6em 1.4em .5em .8em;
+            width: 200px;
+            max-width: 100%; 
+            box-sizing: border-box;
+            margin: 0;
+            border: 1px solid #aaa;
+            box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+            border-radius: .5em;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: #fff;
+            background-repeat: no-repeat, repeat;
+            background-position: right .7em top 50%, 0 0;
+            background-size: .65em auto, 100%;  
             }
         </style>
 
@@ -73,10 +94,10 @@
                             <v-stepper-items>
                     <!-- File select -->
                                 <v-stepper-content step="1">
-                                    <v-card class="mb-5 elevation-10" color="grey lighten-1" height="400px">
+                                    <v-card class="mb-5" height="400px">
                                         <v-container fluid grid-list-md>
                                         <v-layout row wrap>
-                                            <v-flex xs6 sm6 md6 lg4>
+                                            <v-flex xs6 sm6 md4 lg8>
                                                 <v-card id="stl_cont" >
                                                     <h2>Select an STL file</h2>
                                                     <input type="file" onchange='stl_viewer.add_model({local_file:this.files[0]});' @change="viewInfo" accept="*.*">
@@ -125,8 +146,7 @@
                                 </v-stepper-content>
                 <!-- Select printer -->
                                 <v-stepper-content step="2">
-                                    <v-card class="mb-5 elevation-10" color="grey lighten-1" height="400px">
-<!--                                        <form id="select-printer" method="post" action="ordermanagement">-->
+                                    <v-card class="mb-5" height="400px">
                                         <v-container>
                                             <v-layout row wrap fluid>                                              
                                                 <v-flex v-for="printer in printers" xs8 sm4 md4 lg4>
@@ -140,7 +160,7 @@
                                                         </v-card-title>
                                                         <span>Run Cost: $</span>{{ printer.runCost }}<span>/h</span>
                                                         <v-card-actions>
-                                                            <input type="hidden" name="action" value="selectPrinter">
+<!--                                                            <input type="hidden" name="action" value="selectPrinter">-->
                                                             <input type="hidden" name="printerID" v-model="printerSelect.printerID">
                                                             <v-btn color="#8B2635" @click="selectPrinter(printer)">Select</v-btn>
                                                         </v-card-actions>
@@ -148,7 +168,6 @@
                                                 </v-flex>
                                             </v-layout>
                                         </v-container>
-<!--                                        </form>-->
                                     </v-card>
                                     <v-btn color="primary" @click="e1 = 3">
                                         Continue
@@ -157,20 +176,23 @@
                                 </v-stepper-content>
                 <!-- Select material based on selected printer -->
                                 <v-stepper-content step="3">
-                                    <v-card class="mb-5 elevation-10" color="grey lighten-1" height="400px">
+                                    <v-card class="mb-5" height="400px">
                                         <v-containter>
                                             <v-layout>
                                                 <v-flex>
-                                                    <select :rules="[v => !!v || 'Item is required']" label="Select Material" required>
-                                                        <option v-for="material in materials" v-if="selectPrinterName === material.printerName" value="material.materialId">
+                                                    <!-- onchange="selectMaterial(material)" -->
+                                                    <label>Material</label>
+                                                    <select class="dropdown" v-model="material" :rules="[v => !!v || 'Item is required']" label="Select Material" required>
+                                                        <option v-for="material in materials" v-if="selectPrinterName === material.printerName" 
+                                                                value="material.materialId" v-on:change="selectMaterial(material)">
                                                             {{ material.materialName }}
                                                         </option>
                                                     </select>
                                                 </v-flex>
                                                 <v-flex>
-                                                    <v-select v-model="selectMaterial" :items="materials" :rules="[v => !!v || 'Item is required']" label="Select Material Color" required>
-                                                        <option v-for="material in materials" v-bind:value="material.value">{{ material }}</option>
-                                                    </v-select>
+                                                    <select v-model="selectMaterial" :items="materials" :rules="[v => !!v || 'Item is required']" label="Select Material Color" required>
+                                                        <option v-for="material in materials" v-if="" value="material.value">{{ material }}</option>
+                                                    </select>
                                                 </v-flex>
                                             </v-layout>
                                         </v-containter>
@@ -181,9 +203,27 @@
                                     </v-btn>
                                     <v-btn color="secondary" @click="el = 2">Back</v-btn>
                                 </v-stepper-content>
+                <!-- Comments and payment opens -->
                                 <v-stepper-content step="4">
-                                    <v-card class="mb-5 elevation-10" color="grey lighten-1" height="400px">
-
+                                    <v-card class="mb-5" height="400px">
+                                        <v-container>
+                                            <v-layout>
+                                                <v-flex sm6 md4 lg6>
+                                                    <v-textarea outline  label="Comments" min-width="300px" height="300px">
+                                                    </v-textarea>
+                                                </v-flex>
+                                                <v-spacer></v-spacer>
+                                                <v-flex>
+                                                    <v-card sm6 md4 lg3>
+                                                        <v-toolbar color="#1B222B" dark>
+                                                             <v-toolbar-title>Payment</v-toolbar-title>
+                                                        </v-toolbar>
+                                                        
+                                                        <v-card-text>You will be contacted by ARIS regarding payment options</v-card-text>
+                                                    </v-card>
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-container>
                                     </v-card>
 
                                     <v-btn color="primary" @click="e1 = 5">
@@ -193,7 +233,7 @@
                                 </v-stepper-content>
                         <!-- confirm choices -->
                                 <v-stepper-content step="5">
-                                    <v-card class="mb-5 elevation-10" color="grey lighten-1" height="400px">
+                                    <v-card class="mb-5" height="400px">
                                     <v-container fluid grid-list-md>
                                         <v-layout row wrap>
                         <!-- User selected file information -->
@@ -228,7 +268,7 @@
                                         </v-flex>
                         <!-- User selected printer -->
                                         <v-flex xs12 sm6 md4 lg4>
-                                            <v-card height="99%" width="95%" class="elevation-5" v-if="selectPrinter"> 
+                                            <v-card height="99%" width="95%" class="elevation-5" v-if="selectedPrinter"> 
                                                 <v-img :src="selectedPrinter.img" aspect-ratio="2.5" contain></v-img>
                                                 <v-card-title secondary-title>
                                                     <h3 class="headline mb-0">{{selectedPrinter.name}}</h3>
@@ -273,7 +313,7 @@ new Vue({
         fileInfo: '',
         materialInfo: '',
         selectPrinterName: '',
-        switch1: true,
+        selectMaterialId: '',
         drawer: '',
         orderComment: '',
         userItems:
@@ -323,6 +363,16 @@ new Vue({
                  materialStat: '${material.status}'},
             </c:forEach>
         ],
+        colours:
+        [
+            <c:forEach items="${materials}" var="material">
+                <c:forEach items="${material.colours}" var="colour">
+                    {materialId: '${material.materialId}',
+                     colour: '${colour.color}',
+                     status: '${colour.status}'},
+                </c:forEach>
+            </c:forEach>
+        ],
         payments:
         [
             {text: 'Payments are currently unavailable', value: 'noPayment'}
@@ -332,16 +382,18 @@ new Vue({
         selectPrinter(printer) {
             this.selectPrinterName = printer.name;
             alert(this.selectPrinterName);
+            
+            selectedPrinter = this.printer;
+            return selectedPrinter;
         },
-        selectMaterial() {
-        // Display material info
+        selectMaterial(material) {
+            this.selectMaterialId = material.materialId;
+            alert(this.selectMaterialId);
         },
         selectPayment() {
         // Display payment info
         },
         viewInfo() {
-//            this.fileInfo = JSON.parse(JSON.stringify(stl_viewer.get_model_info(2)));
-//                this.fileInfo = JSON.parse(stl_viewer.get_model_info(2));
                 var info = JSON.stringify(stl_viewer.get_model_info(2));
                 var obj = JSON.parse(info);
                 this.fileInfo = obj
