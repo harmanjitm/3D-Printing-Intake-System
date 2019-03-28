@@ -94,11 +94,11 @@
                             <v-stepper-items>
                     <!-- File select -->
                                 <v-stepper-content step="1">
-                                    <v-card class="mb-5" height="400px">
+                                    <v-card class="mb-5" height="400px" flat>
                                         <v-container fluid grid-list-md>
                                         <v-layout row wrap>
                                             <v-flex xs6 sm6 md4 lg8>
-                                                <v-card id="stl_cont" >
+                                                <v-card id="stl_cont" flat>
                                                     <h2>Select an STL file</h2>
                                                     <input type="file" onchange='stl_viewer.add_model({local_file:this.files[0]});' @change="viewInfo" accept="*.*">
                                                     <p>Or Drag and drop</p>
@@ -138,7 +138,6 @@
                                         </v-layout>
                                         </v-container>
                                     </v-card>
-                                    
                                     <v-btn color="primary" @click="e1 = 2">
                                         Continue
                                     </v-btn>
@@ -146,7 +145,7 @@
                                 </v-stepper-content>
                 <!-- Select printer -->
                                 <v-stepper-content step="2">
-                                    <v-card class="mb-5" height="400px">
+                                    <v-card class="mb-5" height="400px" flat>
                                         <v-container>
                                             <v-layout row wrap fluid>                                              
                                                 <v-flex v-for="printer in printers" xs8 sm4 md4 lg4>
@@ -176,23 +175,46 @@
                                 </v-stepper-content>
                 <!-- Select material based on selected printer -->
                                 <v-stepper-content step="3">
-                                    <v-card class="mb-5" height="400px">
+                                    <v-card class="mb-5" height="400px" flat>
                                         <v-containter>
                                             <v-layout>
-                                                <v-flex>
-                                                    <!-- onchange="selectMaterial(material)" -->
-                                                    <label>Material</label>
-                                                    <select class="dropdown" v-model="material" :rules="[v => !!v || 'Item is required']" label="Select Material" required>
-                                                        <option v-for="material in materials" v-if="selectPrinterName === material.printerName" 
-                                                                value="material.materialId" v-on:change="selectMaterial(material)">
-                                                            {{ material.materialName }}
-                                                        </option>
-                                                    </select>
+                                                <v-flex xs8 sm4 md4 lg8>
+                                                    <v-toolbar dark flat class="headline blue-grey darken-4 white--text">
+                                                        <v-toolbar-title>Choose a Material</v-toolbar-title>
+                                                    </v-toolbar>
+                                                    <v-expansion-panel focusable>
+                                                        <v-expansion-panel-content min-width="400"
+                                                          v-for="material in materials" :key="material" v-if="selectPrinterName === material.printerName">
+                                                          <template v-slot:header>
+                                                            <div>{{ material.materialName }}</div>
+                                                          </template>
+                                                          <v-card min-width="400">
+                                                            <v-card-text class="grey lighten-3">{{ material.materialDesc }}</v-card-text>
+                                                            <v-card-text class="grey lighten-3">{{ material.materialVal }}
+                                                                <v-btn @click="selectMaterial(material)">Select</v-btn>
+                                                            </v-card-text>
+                                                          </v-card>
+                                                        </v-expansion-panel-content>
+                                                    </v-expansion-panel>
                                                 </v-flex>
                                                 <v-flex>
-                                                    <select v-model="selectMaterial" :items="materials" :rules="[v => !!v || 'Item is required']" label="Select Material Color" required>
-                                                        <option v-for="material in materials" v-if="" value="material.value">{{ material }}</option>
-                                                    </select>
+                                                    <v-toolbar dark flat class="headline blue-grey darken-4 white--text">
+                                                        <v-toolbar-title>Choose a Color</v-toolbar-title>
+                                                    </v-toolbar>
+                                                    <v-expansion-panel focusable>
+                                                        <v-expansion-panel-content min-width="400"
+                                                          v-for="material in materials" :key="material" v-if="selectMaterialId === material.materialId">
+                                                          <template v-slot:header>
+                                                            <div @click="selectMaterial(material)">{{ material.colours }}</div>
+                                                          </template>
+                                                          <v-card min-width="400">
+                                                            <v-card-text class="grey lighten-3">{{ colours.colour }}</v-card-text>
+                                                            <v-card-text class="grey lighten-3">{{ colours.status }}
+                                                                <v-btn class="align-end">Select</v-btn>
+                                                            </v-card-text>
+                                                          </v-card>
+                                                        </v-expansion-panel-content>
+                                                    </v-expansion-panel>
                                                 </v-flex>
                                             </v-layout>
                                         </v-containter>
@@ -205,7 +227,7 @@
                                 </v-stepper-content>
                 <!-- Comments and payment opens -->
                                 <v-stepper-content step="4">
-                                    <v-card class="mb-5" height="400px">
+                                    <v-card class="mb-5" height="400px" flat>
                                         <v-container>
                                             <v-layout>
                                                 <v-flex sm6 md4 lg6>
@@ -233,7 +255,7 @@
                                 </v-stepper-content>
                         <!-- confirm choices -->
                                 <v-stepper-content step="5">
-                                    <v-card class="mb-5" height="400px">
+                                    <v-card class="mb-5" height="400px" flat>
                                     <v-container fluid grid-list-md>
                                         <v-layout row wrap>
                         <!-- User selected file information -->
@@ -268,7 +290,7 @@
                                         </v-flex>
                         <!-- User selected printer -->
                                         <v-flex xs12 sm6 md4 lg4>
-                                            <v-card height="99%" width="95%" class="elevation-5" v-if="selectedPrinter"> 
+                                            <v-card height="99%" width="95%" v-if="selectedPrinter"> 
                                                 <v-img :src="selectedPrinter.img" aspect-ratio="2.5" contain></v-img>
                                                 <v-card-title secondary-title>
                                                     <h3 class="headline mb-0">{{selectedPrinter.name}}</h3>
@@ -309,6 +331,7 @@ new Vue({
     el: '#app',
     data: {
         e1: 0, //Stepper element
+        maxWidth: 4000,
         image: '',
         fileInfo: '',
         materialInfo: '',
@@ -345,10 +368,14 @@ new Vue({
         ],
         selectedPrinter:
         {
-            name: '',
+            printerId: '',
+            size: '',
+            status: '',
             description: '',
-            img: '',
-            runCost: ''
+            runCost: '',
+            name: '',
+            materials: '',
+            img: ''
             
         },
         materials:
@@ -363,6 +390,16 @@ new Vue({
                  materialStat: '${material.status}'},
             </c:forEach>
         ],
+        selectedMaterial:
+        {
+            materialId: '',
+            materialName: '',
+            printerName: '', 
+            materialDesc: '', 
+            materialColor: '', 
+            materialVal: '', 
+            materialStat: ''
+        },
         colours:
         [
             <c:forEach items="${materials}" var="material">
@@ -383,12 +420,15 @@ new Vue({
             this.selectPrinterName = printer.name;
             alert(this.selectPrinterName);
             
-            selectedPrinter = this.printer;
+            this.selectedPrinter = Object.assign({}, printer);
             return selectedPrinter;
         },
         selectMaterial(material) {
             this.selectMaterialId = material.materialId;
+            this.selectedMaterial = Object.assign({}, material);
             alert(this.selectMaterialId);
+            
+            return selectedMaterial;
         },
         selectPayment() {
         // Display payment info
