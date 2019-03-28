@@ -141,7 +141,7 @@ public class Report {
 	 *
 	 * @return the contents
 	 */
-	public String getContents() {
+	public String getContent() {
 		return content;
 	}
 
@@ -150,7 +150,7 @@ public class Report {
 	 *
 	 * @param contents the new contents
 	 */
-	public void setContents(String content) {
+	public void setContent(String content) {
 		this.content = content;
 	}
 

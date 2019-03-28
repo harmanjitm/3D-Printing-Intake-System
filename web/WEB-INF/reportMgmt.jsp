@@ -43,7 +43,7 @@
                                 <td><v-icon @click="download(props.item)">cloud_download</v-icon></td>
                             </template>
                         </v-data-table>
-                        <form action="reportmanagement" method="post" id="download"><input type="hidden" name="action" value="download"><input type="hidden" name="downloadID" value=""></form>
+                        <form action="reportmanagement" method="post" id="download"><input type="hidden" name="action" value="download"><input id="path" type="hidden" name="path" value=""></form>
                         <form action="reportmanagement" method="post" id="add"><input type="hidden" name="action" value="add"></form>
                     </v-container>
                 </v-content>
@@ -100,7 +100,7 @@
                     download(item)
                     {
                         this.downloadReport = Object.assign({}, item);
-                        document.getElementById('downloadID').value=this.downloadReport.id;
+                        document.getElementById('path').value=this.downloadReport.path;
                         document.getElementById('download').submit();
                     },
                     add()

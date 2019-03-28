@@ -2,10 +2,13 @@ package persistence;
 
 import domain.Report;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Broker class used to get report information from the database. Information
@@ -35,8 +38,41 @@ public class ReportBroker {
      * @param report The Report object to persist.
      * @return true if the Report was added, else false.
      */
-    public boolean addReport(Report report) {
-        return false;
+    public boolean addReport(Report report) throws SQLException {
+        if(report == null)
+        {
+            throw new SQLException("Error Creating Report: An unknown database issue occurred. Please try again.");
+        }
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection conn = cp.getConnection();
+        
+        PreparedStatement ps = conn.prepareStatement("INSERT INTO report VALUES(?,?,?,?,?,?,?,?)");
+        ps.setInt(1, getNextID());
+        ps.setString(2, report.getTitle());
+        ps.setDate(3, convertUtilToSql(report.getDateCreated()));
+        ps.setString(4, report.getContent());
+        ps.setDate(5, convertUtilToSql(report.getDateCompleted()));
+        ps.setString(6, report.getStatus());
+        ps.setString(7, report.getPath());
+        ps.setInt(8, report.getOwner().getAccountID());
+        
+        boolean result = ps.execute();
+        return result;
+    }
+    
+    public int getNextID() throws SQLException
+    {
+        int num;
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection conn = cp.getConnection();
+        
+        ResultSet rs = conn.prepareStatement("SELECT COUNT(*) AS id FROM report").executeQuery();
+        rs.next();
+        num = rs.getInt("id")+1;
+        rs.close();
+        conn.close();
+        return num;
     }
 
     /**
@@ -62,8 +98,261 @@ public class ReportBroker {
             Report report = new Report(rs.getInt("report_id"), rs.getString("report_title"), ab.getAccountByID(rs.getInt("account_id")), rs.getDate("date_created"), rs.getString("report_content"), rs.getDate("date_completed"), rs.getString("report_status"), rs.getString("report_path"));
             reports.add(report);
         }
-        
+        rs.close();
         conn.close();
         return reports;
+    }
+
+    public int getTotalAccounts() {
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection conn = cp.getConnection();
+        int num = 0;
+        
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) AS total FROM account");
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            num = rs.getInt("total");
+            rs.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportBroker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return num;
+    }
+
+    public int getTotalMaterials() {
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection conn = cp.getConnection();
+        int num = 0;
+        
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) AS total FROM material");
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            num = rs.getInt("total");
+            rs.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportBroker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return num;
+    }
+
+    public int getTotalMaterialColours() {
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection conn = cp.getConnection();
+        int num = 0;
+        
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) AS total FROM material_colour");
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            num = rs.getInt("total");
+            rs.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportBroker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return num;
+    }
+
+    public int getTotalPrinters() {
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection conn = cp.getConnection();
+        int num = 0;
+        
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) AS total FROM printer");
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            num = rs.getInt("total");
+            rs.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportBroker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return num;
+    }
+
+    public int getOutOfStockMaterials() {
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection conn = cp.getConnection();
+        int num = 0;
+        
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) AS total FROM material_colour WHERE colour_status='out-of-stock'");
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            num = rs.getInt("total");
+            rs.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportBroker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return num;
+    }
+
+    public int getInStockMaterials() {
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection conn = cp.getConnection();
+        int num = 0;
+        
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) AS total FROM material_colour WHERE colour_status='in-stock'");
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            num = rs.getInt("total");
+            rs.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportBroker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return num;
+    }
+
+    public int getTotalPendingOrders() {
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection conn = cp.getConnection();
+        int num = 0;
+        
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) AS total FROM print_order WHERE order_status='recieved'");
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            num = rs.getInt("total");
+            rs.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportBroker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return num;
+    }
+
+    public int getTotalCompleteOrders() {
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection conn = cp.getConnection();
+        int num = 0;
+        
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) AS total FROM print_order WHERE order_status='complete'");
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            num = rs.getInt("total");
+            rs.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportBroker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return num;
+    }
+
+    public int getTotalApprovedOrders() {
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection conn = cp.getConnection();
+        int num = 0;
+        
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) AS total FROM print_order WHERE order_status='queued'");
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            num = rs.getInt("total");
+            rs.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportBroker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return num;
+    }
+
+    public int getTotalCancelledOrders() {
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection conn = cp.getConnection();
+        int num = 0;
+        
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) AS total FROM print_order WHERE order_status='cancelled'");
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            num = rs.getInt("total");
+            rs.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportBroker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return num;
+    }
+
+    public int getTotalAdmins() {
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection conn = cp.getConnection();
+        int num = 0;
+        
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) AS total FROM account WHERE account_type='admin'");
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            num = rs.getInt("total");
+            rs.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportBroker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return num;
+    }
+
+    public int getTotalUsers() {
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection conn = cp.getConnection();
+        int num = 0;
+        
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) AS total FROM account WHERE account_type='user'");
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            num = rs.getInt("total");
+            rs.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportBroker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return num;
+    }
+    
+    public int getTotalOrders()
+    {
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection conn = cp.getConnection();
+        int num = 0;
+        
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) AS total FROM print_order");
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            num = rs.getInt("total");
+            rs.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportBroker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return num;
+    }
+    
+    private static java.sql.Date convertUtilToSql(java.util.Date uDate) {
+        java.sql.Date sDate = new java.sql.Date(uDate.getTime());
+        return sDate;
     }
 }
