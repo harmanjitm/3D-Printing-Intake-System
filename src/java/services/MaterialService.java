@@ -31,26 +31,19 @@ public class MaterialService {
 	 */
 	public int createMaterial(String name, String description, String printerName, Colour color, double cost, String status) throws SQLException{
             Material material = new Material(name, description);
-            mb.insertMaterial(material);
-            
-            ArrayList<Material> materials = (ArrayList<Material>) mb.getAllMaterials();
-            for(Material m : materials)
-            {
-                if(m.getName().equals(material.getName()))
-                {
-                    material.setMaterialId(m.getMaterialId());
-                }
-            }
-            
             PrinterService ps = new PrinterService();
             ArrayList<Printer> printers = ps.getAllPrinters();
+            
             for(Printer p : printers)
             {
                 if(p.getName().equals(printerName))
                 {
-                    ps.addMaterial(material, p.getPrinterId());
+                    material.setPrinterId(p.getPrinterId());
                 }
             }
+            mb.insertMaterial(material);
+            ps.addMaterial(material, material.getPrinterId());
+            
             return 1;
 	}
         

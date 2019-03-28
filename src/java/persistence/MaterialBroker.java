@@ -35,11 +35,12 @@ public class MaterialBroker {
             throw new SQLException("Error Adding Material: Missing material information.");
         }
 
-        CallableStatement cStmt = connection.prepareCall("{call createMaterial(?, ?, ?)}");
+        CallableStatement cStmt = connection.prepareCall("{call createMaterial(?, ?, ?, ?)}");
 
         cStmt.setString(1, material.getName());
         cStmt.setString(2, material.getDescription());
         cStmt.setDouble(3, material.getCost());
+        cStmt.setInt(4, material.getPrinterId());
 
         boolean hadResults = cStmt.execute();
         connection.close();
