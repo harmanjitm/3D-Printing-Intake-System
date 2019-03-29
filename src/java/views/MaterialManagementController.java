@@ -47,9 +47,12 @@ public class MaterialManagementController extends HttpServlet {
                 request.setAttribute("materials", materials);
             } catch (Exception ex) {
                 Logger.getLogger(MaterialManagementController.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("errorMessage", ex.getMessage());
+                request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
+                return;
             }
         }
-        
+
         request.setAttribute("materials", materials);
         request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
     }
@@ -80,35 +83,43 @@ public class MaterialManagementController extends HttpServlet {
                         request.setAttribute("materials", materials);
                         request.setAttribute("successMessage", "New Material added.");
                         getServletContext().getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
+                        return;
                     } else {
-                        request.setAttribute("errorMessage", "Please enter the required fields.");
+                        request.setAttribute("errorMessage", "Please enter all the required fields.");
                         getServletContext().getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
+                        return;
                     }
+                case "addColour":
+                    String colourName = request.getParameter("colourName");
+                    String colourStatus = request.getParameter("colourStatus");
+                    
+                    if(colourName == null || colourName.equals("") || colourStatus == null || !colourStatus.equals("in-stock") || !colourStatus.equals("out-of-stock"))
+                    {
+                        request.setAttribute("errorMessage", "Error Creating Colour: Please enter all of the required fields.");
+                        request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
+                        return;
+                    }
+                    
+                    
+                    
                     break;
                 case "edit":
                     if (!(materialName == null || materialName.equals("")) && !(materialDesc == null || materialDesc.equals(""))
                             && !(printerName == null || printerName.equals("")) && !(materialColour == null || materialColour.equals(""))
                             && (materialCost != 0) && !(status == null || status.equals(""))) {
-                        for (Material editMaterial : ms.getAllMaterials()) 
-                        {
-                            System.out.println(editMaterial.getMaterialId());
-                            if (editMaterial.getName().equals(materialName)) 
-                            {
-                                System.out.println(editMaterial.getMaterialId());
-                                System.out.println("Finding Material");
+                        for (Material editMaterial : ms.getAllMaterials()) {
+                            if (editMaterial.getName().equals(materialName)) {
                                 ms.updateMaterial(editMaterial);
-                                System.out.println("Found Material");
                             }
                         }
-                        System.out.println("Done updating");
-                        request.setAttribute("sucessMessage", "Material has been updated.");
+                        request.setAttribute("successMessage", "Material has been updated.");
                         request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
                         return;
                     } else {
                         request.setAttribute("errorMessage", "Please enter all of the required fields.");
                         request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
+                        return;
                     }
-                    break;
                 case "delete":
                     String matID = request.getParameter("materialID");
                     materialID = Integer.parseInt(matID);
@@ -119,13 +130,13 @@ public class MaterialManagementController extends HttpServlet {
                         if (materialID == 0) {
                             request.setAttribute("errorMessage", "Can't delete this material.");
                             request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
-                        } else 
-                        {
+                            return;
+                        } else {
                             Material material = ms.getMaterial(materialID);
                             ms.deleteMaterial(material);
-                            request.setAttribute("sucessMessage", "Material has been deleted.");
+                            request.setAttribute("successMessage", "Material has been deleted.");
                             request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
-                            break;
+                            return;
                         }
                     }
                 default:
@@ -133,6 +144,9 @@ public class MaterialManagementController extends HttpServlet {
             }
         } catch (Exception ex) {
             Logger.getLogger(MaterialManagementController.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("errorMessage", ex.getMessage());
+            request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
+            return;
         }
     }
 }

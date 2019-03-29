@@ -82,6 +82,24 @@
                                     <td>{{ props.item.materialVal }}</td>
                                     <td class="justify-center">
                                     <!-- dialog window for editing an existing material -->
+                                    <v-dialog v-model="addColourDialog" max-width="750px">
+                                        <v-icon small slot="activator" @click="addMaterialColour(props.item)">invert_colors</v-icon>
+                                        <v-card>
+                                            <v-card-title>
+                                                <span class="headline">Add Colour for {{editItem.materialName}} in {{editItem.printerName}}</span>
+                                            </v-card-title>
+                                            <form id="addMaterialColour" method="post" action="materialmanagement">
+                                                <v-card-text>
+                                                    <v-container grid-list-md>
+                                                        <v-layout wrap>
+                                                            <input type="hidden" name="action" value="addColour">
+                                                            
+                                                        </v-layout>
+                                                    </v-container>
+                                                </v-card-text>
+                                            </form>
+                                        </v-card>
+                                    </v-dialog>
                                     <v-dialog v-model="editDialog" max-width="750px" v-show="editMaterial">
                                         <v-icon small slot="activator" @click="editMaterial(props.item)">edit</v-icon>
                                         <v-card>
@@ -93,7 +111,7 @@
                                                     <v-container grid-list-md>
                                                         <v-layout wrap>
                                                             <input type="hidden" name="action" value="edit">
-                                                            <input type="hidden" name="materialID" v-model="editItem.accountID">
+                                                            <input type="hidden" name="materialID" v-model="editItem.materialId">
                                                             <v-flex xs12 sm6 md6>
                                                                 <v-text-field name="materialName" v-model="editItem.materialName" label="Material"></v-text-field>
                                                             </v-flex>
@@ -169,6 +187,7 @@
                     dialog: false,
                     expand: false,
                     editDialog: false,
+                    addColourDialog: false,
                     account: '',
                     logout: '',
                     drawer: false,
@@ -211,11 +230,13 @@
                     ],
                     editItem: 
                     {
+                        materialId: '',
                         materialName: '',
                         materialDesc: '',
                         materialColor: '',
                         materialVal: '',
-                        materialStat: ''
+                        materialStat: '',
+                        printerName: ''
                     },
                     adminItems: 
                     [ 

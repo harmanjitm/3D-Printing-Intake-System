@@ -31,6 +31,7 @@ public class MaterialService {
 	 */
 	public int createMaterial(String name, String description, String printerName, Colour color, double cost, String status) throws SQLException{
             Material material = new Material(name, description);
+            material.setCost(cost);
             PrinterService ps = new PrinterService();
             ArrayList<Printer> printers = ps.getAllPrinters();
             
