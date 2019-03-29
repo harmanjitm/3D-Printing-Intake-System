@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import services.AccountService;
 
 /**
@@ -25,36 +26,26 @@ public class AccountController extends HttpServlet
 {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
-        int accountID;
+        HttpSession session = request.getSession();
         AccountService as = new AccountService();
         
+        //Edit function used through GET
         String action = request.getParameter("action");
         if (action != null && action.equals("edit")) 
         {
-            String accountSelected = request.getParameter("accountSelected");
-            accountID = Integer.parseInt(accountSelected);
             try 
             {
-                Account acc = as.getAccountByID(accountID);
-                request.setAttribute("accountSelected", acc);
+                //Creates an instance of Account that is populated by the Session attribute. This populates the users account information
+                Account account = (Account) request.getSession().getAttribute("account");
+                request.setAttribute("account", account);
+                request.getRequestDispatcher("/WEB-INF/accountInfo.jsp").forward(request, response);
             } 
             catch (Exception ex) 
             {
                 Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        
-        ArrayList<Account> accounts;        
-        try 
-        {
-            accounts = as.getAllAccounts(); 
-            request.setAttribute("accounts", accounts);
-        } 
-        catch (Exception ex) 
-        {
-            Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
         }        
-        getServletContext().getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/WEB-INF/accountInfo.jsp").forward(request, response);
     }
 
     @Override
@@ -74,25 +65,20 @@ public class AccountController extends HttpServlet
 
         try 
         {
+            //Switch that uses action to get the desired case
             switch(action)
             {
+                //Case to use as Edit
                 case "edit":
-                    if (email == null || email.equals("") || password == null || password.equals("") 
-                        || firstName == null || firstName.equals("") || lastName == null || lastName.equals("")) 
-                    {
-                        request.setAttribute("errorMessage", "Error Adding Account: Make sure all fields are <b>NOT</b> empty.");
-                        request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
-                        return;
-                    }
-
+                    //If the fields contain more characters than allow, display error message
                     if(email.length() > 100 || firstName.length() > 50 
                         || lastName.length() > 50 || accountType.length() > 50)
                     {
                         request.setAttribute("errorMessage", "Error Adding Account: Invalid amount of characters");
-                        request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                        request.getRequestDispatcher("/WEB-INF/accountInfo.jsp").forward(request, response);
                         return;
                     }
-                    
+                    //If the fields are not empty, edit the account
                     if(!(email == null || email.equals("")) && !(password == null || password.equals("")) 
                         && !(firstName == null || firstName.equals("")) && !(lastName == null || lastName.equals("")))
                     {                   
@@ -100,47 +86,32 @@ public class AccountController extends HttpServlet
                         accountID = Integer.parseInt(accID);
                         as.updateAccount(email, password, firstName, lastName, accountID, accountType);
                         request.setAttribute("successMessage", "User has been updated.");
-                        getServletContext().getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                        request.getRequestDispatcher("/WEB-INF/accountInfo.jsp").forward(request, response);
                     }
+                    //Else display error message
                     else
                     {
-                        request.setAttribute("errorMessage", "Please enter all of the required fields.");
-                        getServletContext().getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
+                        request.setAttribute("errorMessage", "Error Adding Account: Make sure all fields are <b>NOT</b> empty.");
+                        request.getRequestDispatcher("/WEB-INF/accountInfo.jsp").forward(request, response);
                     }
                     break;
-                case "inactive":
-                    accID = request.getParameter("accountID");
-                    accountID = Integer.parseInt(accID);
-                    accountType = as.getAccountType(accountID);
-                    if(accountType == "active")
-                    {
-                        accountType = "inactive";
-                        as.updateAccountType(accountID, accountType);
-                        request.setAttribute("successMessage", "The account has been set as Inactive, everything will be deleted permamently");
-                        getServletContext().getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
-                    }
-                    else
-                    {
-                        request.setAttribute("errorMessage", "The account is not active. Contact an admin for reactivation");
-                        getServletContext().getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
-                    }
-                    
-                    
-                    break;
+                //Case used to delete
                 case "delete":
+                    //Grabs the Account ID 
                     accID = request.getParameter("accountID");
                     accountID = Integer.parseInt(accID);
-                    int acc = as.deleteAccount(accountID);
-                    if (acc == 0)
+                    //If AccountID is empty then display error message
+                    if (accountID != 0)
                     {
                         request.setAttribute("errorMessage", "Can't delete this user.");
-                        getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
+                        request.getRequestDispatcher("/WEB-INF/accountInfo.jsp").forward(request, response);
                     }
+                    //else delete the account and display successful message
                     else
                     {
                         as.deleteAccount(accountID);
                         request.setAttribute("successMessage", "User has been deleted.");
-                        getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response); 
+                        request.getRequestDispatcher("/WEB-INF/accountInfo.jsp").forward(request, response);
                     }
                     break;
                 default:

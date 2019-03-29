@@ -73,7 +73,7 @@ public class AccountManagementController extends HttpServlet {
             request.setAttribute("errorMessage", ex.getMessage());
             request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
         }
-
+        //Error protection
         if (action == null) {
             request.setAttribute("errorMessage", "An unexpected error occurred.");
             request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
@@ -86,10 +86,13 @@ public class AccountManagementController extends HttpServlet {
         String lastName = request.getParameter("lastname");
         String accountType = request.getParameter("accountType");
 
+        //Switch dependent on action
         switch (action) 
         {
+            //Case used to add account
             case "add":
                 accountType = "user";
+                //If fields are empty, display error message
                 if (email == null || email.equals("") || password == null || password.equals("") 
                         || firstName == null || firstName.equals("") || lastName == null || lastName.equals("") 
                             || accountType == null || accountType.equals("")) 
@@ -98,14 +101,14 @@ public class AccountManagementController extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
-
+                //if the account type is user, display error message 
                 if (!(accountType.equals("admin") || accountType.equals("user")))
                 {
                     request.setAttribute("errorMessage", "Error Adding Account: Invalid account type.");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
-                
+                //If fields have more characters than allowed, display error message
                 if(email.length() > 100 || password.length() > 50 
                         || firstName.length() > 50 || lastName.length() > 50 
                             || accountType.length() > 50)
@@ -117,6 +120,7 @@ public class AccountManagementController extends HttpServlet {
                 
                 try 
                 {
+                    //Checks to see if the email is in the system already
                     if (as.getAccountByEmail(email) != null) 
                     {
                         throw new Exception("Error Adding Account: An account already exists with the email: " + email);
@@ -132,6 +136,7 @@ public class AccountManagementController extends HttpServlet {
 
                 Account account = null;
                 try {
+                    //Account gets created
                     int created = as.createAccount(email, password, firstName, lastName, accountType);
                     request.setAttribute("accounts", as.getAllAccounts());
                     if (created == 1) {
@@ -139,7 +144,9 @@ public class AccountManagementController extends HttpServlet {
                     } else {
                         throw new Exception("Error Creating Account: An unexpected error occurred and account has not been created.");
                     }
-                } catch (Exception ex) {
+                } 
+                catch (Exception ex) 
+                {
                     Logger.getLogger(AccountManagementController.class.getName()).log(Level.SEVERE, null, ex);
                     request.setAttribute("errorMessage", ex.getMessage());
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
@@ -149,7 +156,9 @@ public class AccountManagementController extends HttpServlet {
                 request.setAttribute("successMessage", "Account #" + account.getAccountID() + " has been successfully created!");
                 request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                 break;
+            //Case used to edit
             case "edit":
+                //If fields are empty, display error message
                 if (email == null || email.equals("") || firstName == null || firstName.equals("") 
                         || lastName == null || lastName.equals("") || accountType == null || accountType.equals("")) 
                 {
