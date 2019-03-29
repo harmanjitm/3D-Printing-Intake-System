@@ -1257,7 +1257,7 @@ call aris.createMaterial('PLA', 'A basic PLA plastic; rigid and cheap', 00.09,2)
 call aris.createMaterial('Nylon', 'Tougher and more flexible than ABS or PLA.', 00.15,2);
 call aris.createMaterial('TPU95A', 'Very flexible and extremely tough; thin parts are stretchable too.', 00.15,2);
 call aris.createMaterial('Polycarbonate', 'Rigid and resistant to high temperatures (up to about 110C).', 00.15,2);
-call aris.createMaterial('PVA', 'This is support material. It is soluble in water for removal. Most parts will not need it.', 00.21,,2);
+call aris.createMaterial('PVA', 'This is support material. It is soluble in water for removal. Most parts will not need it.', 00.21,2);
 call aris.createMaterial('Clear', 'A rigid resin, and the cheapest. It is fairly brittle if bent or cyclically loaded.', 29.00,3);
 call aris.createMaterial('Flexible', 'Flexible like a gasket type material.', 39.00,3);
 call aris.createMaterial('Tough', 'More tough than the clear material.', 35.00,3);
