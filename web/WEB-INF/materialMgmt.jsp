@@ -49,7 +49,7 @@
                                                             <v-text-field name="materialColor" label="Colors"></v-text-field>
                                                         </v-flex>-->
                                                         <v-flex xs12 sm6 md6>
-                                                            <v-text-field type="number" name="materialCost" prefix="$" label="Price/mm3"></v-text-field>
+                                                            <v-text-field type="number" name="materialCost" prefix="$" label="Price/mm&#179"></v-text-field>
                                                         </v-flex>
                                                         <v-flex xs12 sm6 md6>
                                                             <v-text-field name="printerName" label="Printer"></v-text-field>

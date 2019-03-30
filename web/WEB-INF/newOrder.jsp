@@ -98,10 +98,13 @@
                                         <v-container fluid grid-list-md>
                                         <v-layout row wrap>
                                             <v-flex xs6 sm6 md4 lg8>
-                                                <v-card id="stl_cont" flat>
-                                                    <h2>Select an STL file</h2>
-                                                    <input type="file" onchange='stl_viewer.add_model({local_file:this.files[0]});' @change="viewInfo" accept="*.*">
-                                                    <p>Or Drag and drop</p>
+                                                <v-card id="stl_cont" flat @change="viewInfo()">
+                                                    <div>
+                                                        <h2>Select an STL file</h2>
+                                                        <input type="file" onchange='stl_viewer.add_model({local_file:this.files[0]}); ' accept="*.*">
+                                                        <p>Or Drag and drop</p>
+                                                    </div>
+                                                    
                                                 </v-card>
                                             </v-flex>
                                             <v-spacer></v-spacer>
@@ -120,11 +123,11 @@
                                                     </v-list-tile>
                                                     <v-list-tile>
                                                         <v-list-tile-content>Volume: </v-list-tile-content>
-                                                        <v-list-tile-content class="align-end">{{ fileInfo.volume }} mm^3</v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">{{ fileInfo.volume }} mm&#179</v-list-tile-content>
                                                     </v-list-tile>
                                                     <v-list-tile>
                                                         <v-list-tile-content>Area: </v-list-tile-content>
-                                                        <v-list-tile-content class="align-end">{{ fileInfo.area }} mm^2</v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">{{ fileInfo.area }} mm&#178</v-list-tile-content>
                                                     </v-list-tile>
                                                     <v-list-tile>
                                                         <v-list-tile-content>Triangles: </v-list-tile-content>
@@ -149,9 +152,9 @@
                                         <v-container>
                                             <v-layout row wrap fluid>                                              
                                                 <v-flex v-for="printer in printers" xs8 sm4 md4 lg4>
-                                                    
-                                                    <!-- Printer Cards -->
-                                                    <v-card height="99%" width="95%" class="elevation-5"> 
+                                            <!-- Printer Cards -->
+                                                    <v-hover>
+                                                    <v-card slot-scope="{ hover }" :class="`elevation-${hover ? 12 : 2}`" class="mx-auto" width="344"> 
                                                         <v-img :src="printer.img" aspect-ratio="2.5" contain></v-img>
                                                         <v-card-title secondary-title>
                                                             <h3 class="headline mb-0">{{printer.name}}</h3>
@@ -161,9 +164,10 @@
                                                         <v-card-actions>
 <!--                                                            <input type="hidden" name="action" value="selectPrinter">-->
                                                             <input type="hidden" name="printerID" v-model="printerSelect.printerID">
-                                                            <v-btn color="#8B2635" @click="selectPrinter(printer)">Select</v-btn>
+                                                            <v-btn dark color="#8B2635" @click="selectPrinter(printer)">Select</v-btn>
                                                         </v-card-actions>
                                                     </v-card>
+                                                    </v-hover>
                                                 </v-flex>
                                             </v-layout>
                                         </v-container>
@@ -178,7 +182,7 @@
                                     <v-card class="mb-5" height="400px" flat>
                                         <v-containter>
                                             <v-layout>
-                                                <v-flex xs8 sm4 md4 lg8>
+                                                <v-flex xs8 sm4 md4 lg6>
                                                     <v-toolbar dark flat class="headline blue-grey darken-4 white--text">
                                                         <v-toolbar-title>Choose a Material</v-toolbar-title>
                                                     </v-toolbar>
@@ -189,9 +193,11 @@
                                                             <div>{{ material.materialName }}</div>
                                                           </template>
                                                           <v-card min-width="400">
-                                                            <v-card-text class="grey lighten-3">{{ material.materialDesc }}</v-card-text>
-                                                            <v-card-text class="grey lighten-3">{{ material.materialVal }}
-                                                                <v-btn @click="selectMaterial(material)">Select</v-btn>
+                                                              <v-card-text class="grey lighten-3">
+                                                                  <span><h4>About Material: </h4>{{ material.materialDesc }}</span>
+                                                                  <p><h4>Cost per mm&#179: </h4>{{ material.materialVal }}</p>
+<!--                                                              <input type="hidden" name="materialID" v-model="materialSelect.materialID">-->
+                                                            <v-spacer></v-spacer><v-btn dark color="#8B2635" @click="selectMaterial(material)">Select</v-btn>
                                                             </v-card-text>
                                                           </v-card>
                                                         </v-expansion-panel-content>
@@ -231,7 +237,7 @@
                                         <v-container>
                                             <v-layout>
                                                 <v-flex sm6 md4 lg6>
-                                                    <v-textarea outline  label="Comments" min-width="300px" height="300px">
+                                                    <v-textarea outline v-model="comments" label="Comments" min-width="300px" height="300px">
                                                     </v-textarea>
                                                 </v-flex>
                                                 <v-spacer></v-spacer>
@@ -260,7 +266,7 @@
                                         <v-layout row wrap>
                         <!-- User selected file information -->
                                         <v-flex xs12 sm4 md4 lg3>
-                                            <v-card height="99%" width="80%">
+                                            <v-card>
                                                  <v-card-title><h4>File Information</h4></v-card-title>
                                                  <v-divider></v-divider>
                                                     <v-list dense>
@@ -274,11 +280,11 @@
                                                     </v-list-tile>
                                                     <v-list-tile>
                                                         <v-list-tile-content>Volume: </v-list-tile-content>
-                                                        <v-list-tile-content class="align-end">{{ fileInfo.volume }} mm^3</v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">{{ fileInfo.volume }} mm&#179</v-list-tile-content>
                                                     </v-list-tile>
                                                     <v-list-tile>
                                                         <v-list-tile-content>Area: </v-list-tile-content>
-                                                        <v-list-tile-content class="align-end">{{ fileInfo.area }} mm^2</v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">{{ fileInfo.area }} mm&#178</v-list-tile-content>
                                                     </v-list-tile>
                                                     <v-list-tile>
                                                         <v-list-tile-content>Triangles: </v-list-tile-content>
@@ -289,8 +295,8 @@
                                                 </v-card>
                                         </v-flex>
                         <!-- User selected printer -->
-                                        <v-flex xs12 sm6 md4 lg4>
-                                            <v-card height="99%" width="95%" v-if="selectedPrinter"> 
+                                        <v-flex xs12 sm6 md4 lg3>
+                                            <v-card v-if="selectedPrinter"> 
                                                 <v-img :src="selectedPrinter.img" aspect-ratio="2.5" contain></v-img>
                                                 <v-card-title secondary-title>
                                                     <h3 class="headline mb-0">{{selectedPrinter.name}}</h3>
@@ -300,16 +306,63 @@
                                             </v-card>
                                         </v-flex>
                         <!-- User selected material -->
-                                        <v-flex>
+                                        <v-flex xs12 sm4 md4 lg3>
                                             <v-card>
-                                                <span>{{ materialInfo }} Material info</span>
+                                                 <v-card-title><h4>Additional Information</h4></v-card-title>
+                                                 <v-divider></v-divider>
+                                                    <v-list dense>
+                                                    <v-list-tile>
+                                                        <v-list-tile-content>Material: </v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">{{ selectedMaterial.materialName }}</v-list-tile-content>
+                                                    </v-list-tile>
+                                                    <v-list-tile>
+                                                        <v-list-tile-content>Description: </v-list-tile-content>
+                                                    </v-list-tile>
+                                                    <v-list-tile two-line>
+                                                        <v-list-tile-content>{{ selectedMaterial.materialDesc }}</v-list-tile-content>
+                                                    </v-list-tile>
+                                                    <v-list-tile>
+                                                        <v-list-tile-content>Price: </v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">$ {{ selectedMaterial.materialVal }}/ mm&#179</v-list-tile-content>
+                                                    </v-list-tile>
+                                                    <v-list-tile>
+                                                        <v-list-tile-content>Type: </v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">{{ selectedMaterial.materialColor }}</v-list-tile-content>
+                                                    </v-list-tile>
+                                                    <v-list-tile>
+                                                        <v-list-tile-content>Status: </v-list-tile-content>
+                                                        <v-list-tile-content class="align-end">{{ fileInfo.triangles }}</v-list-tile-content>
+                                                    </v-list-tile>
+                                                    </v-list>
+                                                </v-card>
+                                            <v-card>
+                                        </v-flex>
+                                        <v-flex xs12 sm4 md4 lg3>
+                                            <v-card height="40%">
+                                                <span><h4>Message: </h4>{{ comments }}</span>
+                                            </v-card>
+                                            <br>
+                                            <v-card height="40%">
+                                                <span><h4>Payment: </h4>You will be contacted by the lab once your submission has been processed.</span>
                                             </v-card>
                                         </v-flex>
-                                        <v-flex>
-                                            <v-card>
-                                                <span>{{ materialInfo }} payment info</span>
+<!--                                        <v-flex>
+                                            <v-card v-if="selectedMaterial">
+                                                <v-card-text>
+                                                    <span><h4>Material: </h4>{{ selectedMaterial.materialName }}</span>
+                                                    <span><h4>Description: </h4>{{ selectedMaterial.materialDesc }}</span>
+                                                    <span><h4>Cost per mm&#179: </h4>{{ selectedMaterial.materialVal }}</span>
+                                                    <span><h4>Status: </h4>{{ selectedMaterial.materialStat }}</span>
+                                                    <span><h4>Colour: </h4>{{ selectedMaterial.materialColor }}</span>
+                                                </v-card-text>
                                             </v-card>
-                                        </v-flex>
+                                            <v-card>
+                                                <span><h4>Message: </h4>{{ comments }}</span>
+                                            </v-card>
+                                            <v-card>
+                                                <span><h4>Payment: </h4>You will be contacted by the lab once your submission has been processed.</span>
+                                            </v-card>
+                                        </v-flex>-->
                                 </v-layout>
                             </v-container>
                         </v-card> 
@@ -334,7 +387,7 @@ new Vue({
         maxWidth: 4000,
         image: '',
         fileInfo: '',
-        materialInfo: '',
+        comments: '',
         selectPrinterName: '',
         selectMaterialId: '',
         drawer: '',
@@ -418,7 +471,7 @@ new Vue({
     methods: {
         selectPrinter(printer) {
             this.selectPrinterName = printer.name;
-            alert(this.selectPrinterName);
+            alert('you selected ' + this.selectPrinterName);
             
             this.selectedPrinter = Object.assign({}, printer);
             return selectedPrinter;
@@ -426,9 +479,12 @@ new Vue({
         selectMaterial(material) {
             this.selectMaterialId = material.materialId;
             this.selectedMaterial = Object.assign({}, material);
-            alert(this.selectMaterialId);
+            alert('you selected ' + this.selectMaterialId);
             
             return selectedMaterial;
+        },
+        loadMaterialColour(material) {
+            this.selectMaterialId = material.materialId;
         },
         selectPayment() {
         // Display payment info
@@ -456,6 +512,11 @@ new Vue({
                     ]
             }
         );
+        function viewInfo() {
+                var info = JSON.stringify(stl_viewer.get_model_info(2));
+                var obj = JSON.parse(info);
+                this.fileInfo = obj;
+            };
         </script>
 
     </body>
