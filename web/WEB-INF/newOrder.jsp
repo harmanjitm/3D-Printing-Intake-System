@@ -69,7 +69,6 @@
             <v-app>
                 <ARIS3D:Header isAdmin="false" pageName="New Order"></ARIS3D:Header>
                     <v-content>
-
                         <v-stepper v-model="e1">
                             <v-stepper-header>
                                 <v-stepper-step :complete="e1 > 1" step="1">Submit a File</v-stepper-step>
@@ -261,12 +260,17 @@
                                 </v-stepper-content>
                         <!-- confirm choices -->
                                 <v-stepper-content step="5">
-                                    <v-card class="mb-5" height="400px" flat>
-                                    <v-container fluid grid-list-md>
-                                        <v-layout row wrap>
-                        <!-- User selected file information -->
-                                        <v-flex xs12 sm4 md4 lg3>
+                                    <v-card class="mb-5" height="500px" flat>
+                                        <div style="max-width: 800px; margin: auto;" class="grey lighten-3">
+                                            <v-toolbar color="#1B222B" dark>
+                                              <v-toolbar-title>Order Confirmation</v-toolbar-title>
+                                              <v-spacer></v-spacer>
+                                            </v-toolbar>
                                             <v-card>
+                                              <v-container fluid grid-list-lg>
+                                                <v-layout row wrap>
+                                                  <v-flex xs8 sm4 md4 lg6>
+                                                    <v-card flat min-height="300px">
                                                  <v-card-title><h4>File Information</h4></v-card-title>
                                                  <v-divider></v-divider>
                                                     <v-list dense>
@@ -275,16 +279,8 @@
                                                         <v-list-tile-content class="align-end">{{ fileInfo.name }}</v-list-tile-content>
                                                     </v-list-tile>
                                                     <v-list-tile>
-                                                        <v-list-tile-content>Dimensions: </v-list-tile-content>
-                                                        <v-list-tile-content class="align-end">Work in progress</v-list-tile-content>
-                                                    </v-list-tile>
-                                                    <v-list-tile>
                                                         <v-list-tile-content>Volume: </v-list-tile-content>
                                                         <v-list-tile-content class="align-end">{{ fileInfo.volume }} mm&#179</v-list-tile-content>
-                                                    </v-list-tile>
-                                                    <v-list-tile>
-                                                        <v-list-tile-content>Area: </v-list-tile-content>
-                                                        <v-list-tile-content class="align-end">{{ fileInfo.area }} mm&#178</v-list-tile-content>
                                                     </v-list-tile>
                                                     <v-list-tile>
                                                         <v-list-tile-content>Triangles: </v-list-tile-content>
@@ -292,84 +288,66 @@
                                                     </v-list-tile>
                                                         
                                                     </v-list>
+                                                 <v-divider light></v-divider>
+                                                        <v-card-text>
+                                                            <h4>Payment: </h4>You will be contacted by the lab once your submission has been processed.
+                                                        </v-card-text>
                                                 </v-card>
-                                        </v-flex>
-                        <!-- User selected printer -->
-                                        <v-flex xs12 sm6 md4 lg3>
-                                            <v-card v-if="selectedPrinter"> 
-                                                <v-img :src="selectedPrinter.img" aspect-ratio="2.5" contain></v-img>
-                                                <v-card-title secondary-title>
-                                                    <h3 class="headline mb-0">{{selectedPrinter.name}}</h3>
-                                                    <div>{{selectedPrinter.description}}</div>
-                                                </v-card-title>
-                                                <span>Run Cost: $</span>{{ selectedPrinter.runCost }}<span>/h</span>
+                                                  </v-flex>
+
+                                                  <v-flex xs8 sm4 md4 lg6>
+                                                    <v-card v-if="selectedPrinter" flat>
+                                                      <v-layout>
+                                                        <v-flex xs5>
+                                                          <v-img :src="selectedPrinter.img" height="174px" contain></v-img>
+                                                        </v-flex>
+                                                        <v-flex xs7>
+                                                          <v-card-title secondary-title>
+                                                            <h3 class="headline mb-0">{{selectedPrinter.name}}</h3>
+                                                           </v-card-title>
+                                                            <v-list dense>
+                                                              <v-list-tile>
+                                                                <v-list-tile-content> Run Cost: </v-list-tile-content>
+                                                                <v-list-tile-content class="align-end"> $ {{ selectedPrinter.runCost }} /h</v-list-tile-content>
+                                                            </v-list-tile>
+                                                            </v-list>
+                                                        </v-flex>
+                                                      </v-layout>
+                                                      <v-divider light></v-divider>
+                                                      <v-card-text>
+                                                          <v-list dense flat>
+                                                            <v-list-tile>
+                                                                <v-list-tile-content>Selected Material: </v-list-tile-content>
+                                                                <v-list-tile-content class="align-end">{{ selectedMaterial.materialName }}</v-list-tile-content>
+                                                            </v-list-tile>
+                                                            <v-list-tile>
+                                                                <v-list-tile-content>Material Cost: </v-list-tile-content>
+                                                                <v-list-tile-content class="align-end">$ {{ selectedMaterial.materialVal }}/ mm&#179</v-list-tile-content>
+                                                            </v-list-tile>
+                                                            <v-list-tile>
+                                                                <v-list-tile-content>Material Type: </v-list-tile-content>
+                                                                <v-list-tile-content class="align-end">{{ selectedMaterial.materialColor }}</v-list-tile-content>
+                                                            </v-list-tile>
+                                                      </v-card-text>
+                                                    </v-card>
+                                                </v-layout>
+                                                  <v-flex>
+                                                    <v-card flat>
+                                                      <v-list dense flat>
+                                                            <v-list-tile>
+                                                                <v-list-tile-content><h4>Your Message: </h4> {{ comments }}</v-list-tile-content>
+                                                            </v-list-tile>
+                                                      </v-list>
+                                                    </v-card>
+                                                  </v-flex>
+                                              </v-container>
                                             </v-card>
-                                        </v-flex>
-                        <!-- User selected material -->
-                                        <v-flex xs12 sm4 md4 lg3>
-                                            <v-card>
-                                                 <v-card-title><h4>Additional Information</h4></v-card-title>
-                                                 <v-divider></v-divider>
-                                                    <v-list dense>
-                                                    <v-list-tile>
-                                                        <v-list-tile-content>Material: </v-list-tile-content>
-                                                        <v-list-tile-content class="align-end">{{ selectedMaterial.materialName }}</v-list-tile-content>
-                                                    </v-list-tile>
-                                                    <v-list-tile>
-                                                        <v-list-tile-content>Description: </v-list-tile-content>
-                                                    </v-list-tile>
-                                                    <v-list-tile two-line>
-                                                        <v-list-tile-content>{{ selectedMaterial.materialDesc }}</v-list-tile-content>
-                                                    </v-list-tile>
-                                                    <v-list-tile>
-                                                        <v-list-tile-content>Price: </v-list-tile-content>
-                                                        <v-list-tile-content class="align-end">$ {{ selectedMaterial.materialVal }}/ mm&#179</v-list-tile-content>
-                                                    </v-list-tile>
-                                                    <v-list-tile>
-                                                        <v-list-tile-content>Type: </v-list-tile-content>
-                                                        <v-list-tile-content class="align-end">{{ selectedMaterial.materialColor }}</v-list-tile-content>
-                                                    </v-list-tile>
-                                                    <v-list-tile>
-                                                        <v-list-tile-content>Status: </v-list-tile-content>
-                                                        <v-list-tile-content class="align-end">{{ fileInfo.triangles }}</v-list-tile-content>
-                                                    </v-list-tile>
-                                                    </v-list>
-                                                </v-card>
-                                            <v-card>
-                                        </v-flex>
-                                        <v-flex xs12 sm4 md4 lg3>
-                                            <v-card height="40%">
-                                                <span><h4>Message: </h4>{{ comments }}</span>
-                                            </v-card>
-                                            <br>
-                                            <v-card height="40%">
-                                                <span><h4>Payment: </h4>You will be contacted by the lab once your submission has been processed.</span>
-                                            </v-card>
-                                        </v-flex>
-<!--                                        <v-flex>
-                                            <v-card v-if="selectedMaterial">
-                                                <v-card-text>
-                                                    <span><h4>Material: </h4>{{ selectedMaterial.materialName }}</span>
-                                                    <span><h4>Description: </h4>{{ selectedMaterial.materialDesc }}</span>
-                                                    <span><h4>Cost per mm&#179: </h4>{{ selectedMaterial.materialVal }}</span>
-                                                    <span><h4>Status: </h4>{{ selectedMaterial.materialStat }}</span>
-                                                    <span><h4>Colour: </h4>{{ selectedMaterial.materialColor }}</span>
-                                                </v-card-text>
-                                            </v-card>
-                                            <v-card>
-                                                <span><h4>Message: </h4>{{ comments }}</span>
-                                            </v-card>
-                                            <v-card>
-                                                <span><h4>Payment: </h4>You will be contacted by the lab once your submission has been processed.</span>
-                                            </v-card>
-                                        </v-flex>-->
-                                </v-layout>
-                            </v-container>
-                        </v-card> 
-                            <v-btn color="primary" @click="e1 = 1">
-                                Continue
+                                          </div>
+                                    </v-card> 
+                            <v-btn dark color="#8B2635" @click="e1 = 1">
+                                Submit
                             </v-btn>
-                            <v-btn flat>Cancel</v-btn>
+                            <v-btn color="primary" @click="e1 = 1">Make Changes</v-btn>
                         </v-stepper-content>
                             </v-stepper-items>
                         </v-stepper>
