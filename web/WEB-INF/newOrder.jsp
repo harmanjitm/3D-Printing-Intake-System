@@ -20,9 +20,6 @@
                 text-align: center;
             }
             #stl_cont {
-/*                border-style: solid;*/
-                
-/*                width: 600px;*/
                 height: 350px;
                 margin: 0 auto;
             }
@@ -37,29 +34,6 @@
                 margin: auto;
                 display: block;
                 margin-bottom: 10px;
-            }
-            .dropdown {
-             display: block;
-             font-size: 16px;
-             font-family: sans-serif;
-            font-weight: 700;
-            color: #444;
-            line-height: 1.3;
-            padding: .6em 1.4em .5em .8em;
-            width: 200px;
-            max-width: 100%; 
-            box-sizing: border-box;
-            margin: 0;
-            border: 1px solid #aaa;
-            box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
-            border-radius: .5em;
-            -moz-appearance: none;
-            -webkit-appearance: none;
-            appearance: none;
-            background-color: #fff;
-            background-repeat: no-repeat, repeat;
-            background-position: right .7em top 50%, 0 0;
-            background-size: .65em auto, 100%;  
             }
         </style>
 
@@ -97,8 +71,8 @@
                                         <v-container fluid grid-list-md>
                                         <v-layout row wrap>
                                             <v-flex xs6 sm6 md4 lg8>
-                                                <v-card id="stl_cont" flat @change="viewInfo()">
-                                                    <div>
+                                                <v-card flat>
+                                                    <div id="stl_cont" @change="showInfo">
                                                         <h2>Select an STL file</h2>
                                                         <input type="file" onchange='stl_viewer.add_model({local_file:this.files[0]}); ' accept="*.*">
                                                         <p>Or Drag and drop</p>
@@ -134,7 +108,7 @@
                                                     </v-list-tile>
                                                         
                                                     </v-list>
-                                                <v-btn @click="viewInfo">Get File Info</v-btn>
+<!--                                                <v-btn @click="viewInfo">Get File Info</v-btn>-->
                                                 </v-card>
                                             </v-flex>
                                         </v-layout>
@@ -152,21 +126,26 @@
                                             <v-layout row wrap fluid>                                              
                                                 <v-flex v-for="printer in printers" xs8 sm4 md4 lg4>
                                             <!-- Printer Cards -->
-                                                    <v-hover>
-                                                    <v-card slot-scope="{ hover }" :class="`elevation-${hover ? 12 : 2}`" class="mx-auto" width="344"> 
+                                            <v-hover>
+                                                    <v-card id="printerCard" @click="selectPrinter(printer)" onmouseover="" 
+                                                            style="cursor: pointer;" width="344"
+                                                            slot-scope="{ hover }"
+                                                            :class="`elevation-${hover ? 24 : 2}`"
+                                                            class="mx-auto"
+                                                        > 
                                                         <v-img :src="printer.img" aspect-ratio="2.5" contain></v-img>
                                                         <v-card-title secondary-title>
                                                             <h3 class="headline mb-0">{{printer.name}}</h3>
                                                             <div>{{printer.description}}</div>
                                                         </v-card-title>
-                                                        <span>Run Cost: $</span>{{ printer.runCost }}<span>/h</span>
+                                                        <span><h4>Run Cost:</h4> $</span>{{ printer.runCost }}<span>/h</span>
                                                         <v-card-actions>
 <!--                                                            <input type="hidden" name="action" value="selectPrinter">-->
                                                             <input type="hidden" name="printerID" v-model="printerSelect.printerID">
-                                                            <v-btn dark color="#8B2635" @click="selectPrinter(printer)">Select</v-btn>
+<!--                                                            <v-btn dark color="#8B2635" @click="selectPrinter(printer)">Select</v-btn>-->
                                                         </v-card-actions>
                                                     </v-card>
-                                                    </v-hover>
+                                            </v-hover>        
                                                 </v-flex>
                                             </v-layout>
                                         </v-container>
@@ -210,7 +189,7 @@
                                                         <v-expansion-panel-content min-width="400"
                                                           v-for="material in materials" :key="material" v-if="selectMaterialId === material.materialId">
                                                           <template v-slot:header>
-                                                            <div @click="selectMaterial(material)">{{ material.colours }}</div>
+                                                            <div>{{ colours.colour }}</div>
                                                           </template>
                                                           <v-card min-width="400">
                                                             <v-card-text class="grey lighten-3">{{ colours.colour }}</v-card-text>
@@ -286,12 +265,13 @@
                                                         <v-list-tile-content>Triangles: </v-list-tile-content>
                                                         <v-list-tile-content class="align-end">{{ fileInfo.triangles }}</v-list-tile-content>
                                                     </v-list-tile>
-                                                        
                                                     </v-list>
                                                  <v-divider light></v-divider>
-                                                        <v-card-text>
-                                                            <h4>Payment: </h4>You will be contacted by the lab once your submission has been processed.
-                                                        </v-card-text>
+                                                    <v-list dense two-line flat>
+                                                        <v-list-tile>
+                                                            <v-list-tile-content><h4>Payment: </h4>You will be contacted by the lab once your submission has been processed.</v-list-tile-content>
+                                                        </v-list-tile>
+                                                      </v-list>
                                                 </v-card>
                                                   </v-flex>
 
@@ -307,7 +287,7 @@
                                                            </v-card-title>
                                                             <v-list dense>
                                                               <v-list-tile>
-                                                                <v-list-tile-content> Run Cost: </v-list-tile-content>
+                                                                  <v-list-tile-content><h4>Run Cost:</h4> </v-list-tile-content>
                                                                 <v-list-tile-content class="align-end"> $ {{ selectedPrinter.runCost }} /h</v-list-tile-content>
                                                             </v-list-tile>
                                                             </v-list>
@@ -347,7 +327,7 @@
                             <v-btn dark color="#8B2635" @click="e1 = 1">
                                 Submit
                             </v-btn>
-                            <v-btn color="primary" @click="e1 = 1">Make Changes</v-btn>
+                            <v-btn color="secondary" @click="e1 = 1">Make Changes</v-btn>
                         </v-stepper-content>
                             </v-stepper-items>
                         </v-stepper>
@@ -471,6 +451,9 @@ new Vue({
                 var info = JSON.stringify(stl_viewer.get_model_info(2));
                 var obj = JSON.parse(info);
                 this.fileInfo = obj
+            },
+            showInfo() {
+                setTimeout(this.viewInfo, 3000)
             }
         },
             
