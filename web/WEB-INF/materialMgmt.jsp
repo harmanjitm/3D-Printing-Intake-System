@@ -82,21 +82,35 @@
                                     <td>{{ props.item.materialVal }}</td>
                                     <td class="justify-center">
                                     <!-- dialog window for editing an existing material -->
-                                    <v-dialog v-model="addColourDialog" max-width="750px">
-                                        <v-icon small slot="activator" @click="addMaterialColour(props.item)">invert_colors</v-icon>
+                                    <v-dialog v-model="addColourDialog" max-width="600px">
+                                        <v-icon small slot="activator" @click="editMaterial(props.item)">invert_colors</v-icon>
+                                        <v-card color="#8B2635" height="5px"></v-card>
                                         <v-card>
-                                            <v-card-title>
-                                                <span class="headline">Add Colour for {{editItem.materialName}} in {{editItem.printerName}}</span>
+                                            <v-card-title class="headline blue-grey darken-4 white--text" primary-title>
+                                                <span class="headline">New Colour for {{editItem.materialName}} in {{editItem.printerName}}</span>
                                             </v-card-title>
                                             <form id="addMaterialColour" method="post" action="materialmanagement">
                                                 <v-card-text>
                                                     <v-container grid-list-md>
                                                         <v-layout wrap>
-                                                            <input type="hidden" name="action" value="addColour">
-                                                            
+                                                            <v-flex xs8>
+                                                                <input type="hidden" name="action" value="addColour">
+                                                                <v-text-field name="colourName" label="Colour Name"></v-text-field>
+                                                            </v-flex>
+                                                            <v-flex xs4>
+                                                                <input id="newColourMaterialId" type="hidden" name="materialId" value="">
+                                                                <input id="newColourStatus" type="hidden" name="colourStatus" value="">
+                                                                <v-switch v-if="newColourStatus === true" label="In Stock" v-model="newColourStatus"></v-switch>
+                                                                <v-switch v-if="newColourStatus === false" label="Out of Stock" v-model="newColourStatus"></v-switch>
+                                                            </v-flex>
                                                         </v-layout>
                                                     </v-container>
                                                 </v-card-text>
+                                                <v-card-actions>
+                                                    <v-spacer></v-spacer>
+                                                    <v-btn flat color="primary" @click="close">Cancel</v-btn>
+                                                    <v-btn flat color="primary" @click="addMaterialColour">Save</v-btn>
+                                                </v-card-actions>
                                             </form>
                                         </v-card>
                                     </v-dialog>
@@ -184,6 +198,7 @@
                     colourData: [],
                     search: '',
                     editIndex: -1,
+                    newColourStatus: true,
                     dialog: false,
                     expand: false,
                     editDialog: false,
@@ -259,6 +274,12 @@
                 },
                 methods:
                 {
+                    addMaterialColour()
+                    {
+                        document.getElementById('newColourStatus').value = this.newColourStatus;
+                        document.getElementById('newColourMaterialId').value = this.editItem.materialId;
+                        document.getElementById('addMaterialColour').submit();
+                    },
                     deleteColour(item)
                     {
                         document.getElementById('').value = this.selectedMaterial.materialId;//TODO
@@ -288,7 +309,8 @@
                     close()
                     {
                         this.dialog = false,
-                        this.editDialog = false
+                        this.editDialog = false,
+                        this.addColourDialog = false
                     },
                     submitMaterial()
                     {
@@ -315,9 +337,9 @@
                     },
                     editMaterial(item)
                     {
-                        this.editIndex = this.materials.indexOf(item)
-                        this.editItem = Object.assign({}, item)
-                        this.editDialog = false
+                        this.editIndex = this.materials.indexOf(item);
+                        this.editItem = Object.assign({}, item);
+                        this.editDialog = false;
                     }
                 }
             });
