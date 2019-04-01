@@ -162,7 +162,7 @@
                                             <v-layout>
                                                 <v-flex xs8 sm4 md4 lg6>
                                                     <v-toolbar dark flat class="headline blue-grey darken-4 white--text">
-                                                        <v-toolbar-title>Choose a Material</v-toolbar-title>
+                                                        <v-toolbar-title>Choose {{ selectedPrinter.name }} Material</v-toolbar-title>
                                                     </v-toolbar>
                                                     <v-expansion-panel focusable>
                                                         <v-expansion-panel-content min-width="400"
