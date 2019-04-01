@@ -48,6 +48,11 @@ public class MaterialService {
             return 1;
 	}
         
+        public int changeColourStatus(int materialId, String colour, String status)
+        {
+            return mb.changeColourStatus(materialId, colour, status);
+        }
+        
         /**
          * 
          */

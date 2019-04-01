@@ -93,15 +93,15 @@
                                                 <v-card-text>
                                                     <v-container grid-list-md>
                                                         <v-layout wrap>
-                                                            <v-flex xs8>
+                                                            <v-flex xs12>
                                                                 <input type="hidden" name="action" value="addColour">
-                                                                <v-text-field name="colourName" label="Colour Name"></v-text-field>
+                                                                <v-text-field id="colourName" name="colourName" v-model="newColourName" label="Colour Name"></v-text-field>
                                                             </v-flex>
                                                             <v-flex xs4>
-                                                                <input id="newColourMaterialId" type="hidden" name="materialId" value="">
-                                                                <input id="newColourStatus" type="hidden" name="colourStatus" value="">
-                                                                <v-switch v-if="newColourStatus === true" label="In Stock" v-model="newColourStatus"></v-switch>
-                                                                <v-switch v-if="newColourStatus === false" label="Out of Stock" v-model="newColourStatus"></v-switch>
+                                                                <input id="newColourMaterialId" type="hidden" name="materialId" value="editItem.materialId" v-model="editItem.materialId">
+                                                                <!--<input id="newColourStatus" type="hidden" name="colourStatus" value="">-->
+                                                                <!--<v-switch v-if="newColourStatus === true" label="In Stock" v-model="newColourStatus"></v-switch>-->
+                                                                <!--<v-switch v-if="newColourStatus === false" label="Out of Stock" v-model="newColourStatus"></v-switch>-->
                                                             </v-flex>
                                                         </v-layout>
                                                     </v-container>
@@ -167,7 +167,10 @@
                                             <template slot="items" scope="props">
                                                 <tr v-if="props.item.materialId===selectedColourID">
                                                     <td>{{props.item.colour}}</td>
-                                                    <td>{{props.item.status}}</td>
+                                                    <td>
+                                                        <v-switch @change="changeColourStatus(props.item)" v-if="props.item.status === 'in-stock'" v-model="this.colourStatus = true" color="red"></v-switch>
+                                                        <v-switch @change="changeColourStatus(props.item)" v-if="props.item.status === 'out-of-stock'" v-model="this.colourStatus = false" color="red"></v-switch>
+                                                    </td>
                                                     <td class="justify-center"><v-icon small @click="deleteColour(props.item)">delete</v-icon></td>
                                                 </tr>
                                             </template>
@@ -181,6 +184,11 @@
                             <input type="hidden" id="newMaterialPrice" name="materialPrice" value="">
                             <input type="hidden" name="action" value="add">
                             <input type="hidden" id="newMaterialDescription" name="materialDescription" value="">
+                        </form>
+                        <form method="post" id="changeColourStatus" action="materialmanagement">
+                            <input type="hidden" id="colourStatusName" name="colourName">
+                            <input type="hidden" id="colourStatusMaterialId" name="materialId">
+                            <input type="hidden" name="action" value="changeColourStatus">
                         </form>
                     </v-container>
                 </v-content>
@@ -198,7 +206,8 @@
                     colourData: [],
                     search: '',
                     editIndex: -1,
-                    newColourStatus: true,
+//                    newColourStatus: true,
+                    newColourName: '',
                     dialog: false,
                     expand: false,
                     editDialog: false,
@@ -206,6 +215,7 @@
                     account: '',
                     logout: '',
                     drawer: false,
+                    colourStatus: true,
                     materials:
                     [
                         <c:forEach items="${materials}" var="material">
@@ -274,9 +284,15 @@
                 },
                 methods:
                 {
+                    changeColourStatus(colour)
+                    {
+                        document.getElementById('colourStatusName').value = colour.colour;
+                        document.getElementById('colourStatusMaterialId').value = colour.materialId;
+                        document.getElementById('changeColourStatus').submit();
+                    },
                     addMaterialColour()
                     {
-                        document.getElementById('newColourStatus').value = this.newColourStatus;
+//                        document.getElementById('colourName').value = this.newColourName;
                         document.getElementById('newColourMaterialId').value = this.editItem.materialId;
                         document.getElementById('addMaterialColour').submit();
                     },

@@ -46,6 +46,31 @@ public class MaterialBroker {
         connection.close();
         return hadResults ? 0 : 1;
     }
+    
+    public int changeColourStatus(int materialId, String colour, String status) throws SQLException
+    {
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
+        if (connection == null) {
+            throw new SQLException("Error Editing Material Colour: Connection error.");
+        }
+        if (materialId == 0) {
+            throw new SQLException("Error Editing Material Colour: Missing material colour information.");
+        }
+        if (colour == null) {
+            throw new SQLException("Error Editing Material Colour: Missing material colour information.");
+        }
+
+        CallableStatement cStmt = connection.prepareCall("{call updateColourStatus(?, ?, ?)}");
+
+        cStmt.setInt(1, materialId);
+        cStmt.setString(2, colour);
+        cStmt.setString(3, status);
+
+        boolean hadResults = cStmt.execute();
+        connection.close();
+        return hadResults ? 0 : 1;
+    }
 
     /**
      * Inserts a new colour for a material into the database
@@ -294,7 +319,6 @@ public class MaterialBroker {
 
                 while (costResults.next()) {
                     material.setCost(costResults.getDouble("material_cost"));
-                    System.out.println(costResults.getDouble("material_cost"));
                 }
 
                 material.setColor(colours);

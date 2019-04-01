@@ -67,7 +67,7 @@ public class MaterialManagementController extends HttpServlet {
         String materialDesc = request.getParameter("materialDesc");
         String printerName = request.getParameter("printerName");
         String status = request.getParameter("status");
-        double materialCost = Double.parseDouble(request.getParameter("materialCost"));
+        double materialCost = 0;
 
         Colour materialColour = null;
         int materialID = 0;
@@ -82,6 +82,7 @@ public class MaterialManagementController extends HttpServlet {
                 //This case is used to add
                 case "add":
                     //if the variables are not empty, the material gets created and added to the system
+                    materialCost = Double.parseDouble(request.getParameter("materialCost"));
                     if (!(materialName == null || materialName.equals("")) && !(materialDesc == null || materialDesc.equals(""))
                             && !(printerName == null || printerName.equals("")) && !(materialColour == null || materialColour.equals(""))
                             && (materialCost != 0)) {
@@ -98,22 +99,116 @@ public class MaterialManagementController extends HttpServlet {
                         getServletContext().getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
                         return;
                     }
-                case "addColour":
-                    String colourName = request.getParameter("colourName");
-                    String colourStatus = request.getParameter("colourStatus");
+                case "changeColourStatus":
+                    if(request.getParameter("materialId") == null || request.getParameter("materialId").equals(""))
+                    {
+                        request.setAttribute("errorMessage", "Error Editing Colour: Unable to get Material. Please try again.");
+                        request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
+                        return;
+                    }
+                    Colour toChange = null;
+                    materialID = Integer.parseInt(request.getParameter("materialId"));
+                    String colourStatusName = request.getParameter("colourName");
+                    for(Material m : ms.getAllMaterials())
+                    {
+                        if(m.getMaterialId() == materialID && m.getColours() != null)
+                        {
+                            for(Colour c : m.getColours())
+                            {
+                                if(c.getColor().equals(colourStatusName))
+                                {
+                                    toChange = c;
+                                }
+                            }
+                        }
+                    }
                     
-                    if(colourName == null || colourName.equals("") || colourStatus == null || !colourStatus.equals("in-stock") || !colourStatus.equals("out-of-stock"))
+                    if(toChange == null)
+                    {
+                        request.setAttribute("errorMessage", "Error Editing Colour: Unable to change colour.");
+                        request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
+                        return;
+                    }
+                    
+                    if(toChange.getStatus().equals("in-stock"))
+                    {
+                        ms.changeColourStatus(materialID, colourStatusName, "out-of-stock");
+                        request.setAttribute("successMessage", "Successfully changed status of colour <b>" + colourStatusName + "</b> to <b>Out of Stock</b>.");
+                    }
+                    if(toChange.getStatus().equals("out-of-stock"))
+                    {
+                        ms.changeColourStatus(materialID, colourStatusName, "in-stock");
+                        request.setAttribute("successMessage", "Successfully changed status of colour <b>" + colourStatusName + "</b> to <b>In Stock</b>.");
+                    }
+                    
+                    try {
+                        request.setAttribute("materials", ms.getAllMaterials());
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MaterialManagementController.class.getName()).log(Level.SEVERE, null, ex);
+                        request.setAttribute("errorMessage", ex.getMessage());
+                        request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
+                        return;
+                    }
+                    request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
+                    return;
+                //Adding a new colour to a Material
+                case "addColour":
+                    try {
+                        request.setAttribute("materials", ms.getAllMaterials());
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MaterialManagementController.class.getName()).log(Level.SEVERE, null, ex);
+                        request.setAttribute("errorMessage", ex.getMessage());
+                        request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
+                        return;
+                    }
+                    
+                    String colourName = request.getParameter("colourName");
+                    
+                    if(request.getParameter("materialId") == null || request.getParameter("materialId").equals(""))
+                    {
+                        request.setAttribute("errorMessage", "Error Creating Colour: Unable to get Material. Please try again.");
+                        request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
+                        return;
+                    }
+                    
+                    materialID = Integer.parseInt(request.getParameter("materialId"));
+                    
+                    if(materialID == 0 || colourName == null || colourName.equals(""))
                     {
                         request.setAttribute("errorMessage", "Error Creating Colour: Please enter all of the required fields.");
                         request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
                         return;
                     }
+                    //Check if colour already exists
+                    Material toAdd = ms.getMaterial(materialID);
+                    for(Colour c : toAdd.getColours())
+                    {
+                        if(c.getColor().equals(colourName))
+                        {
+                            request.setAttribute("errorMessage", "Error Creating Colour: The colour: <b>" + colourName + "</b> already exists for the selected material.");
+                            
+                            request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
+                            return;
+                        }
+                    }
                     
+                    ms = new MaterialService();
+                    ms.addMaterialColour(materialID, colourName);
                     
-                    
-                    break;
+                    request.setAttribute("successMessage", "Successfully added new colour <b>" + colourName + "</b> for Material ID: <b>" + materialID + "</b>");
+                    try {
+                        request.setAttribute("materials", ms.getAllMaterials());
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MaterialManagementController.class.getName()).log(Level.SEVERE, null, ex);
+                        request.setAttribute("errorMessage", ex.getMessage());
+                        request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
+                        return;
+                    }
+                    request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
+                    return;
                 //This case is used to edit a material
                 case "edit":
+                    materialCost = Double.parseDouble(request.getParameter("materialCost"));
                     //If the variables are not empty in the front end, it'll grab the information and edit it.
                     if (!(materialName == null || materialName.equals("")) && !(materialDesc == null || materialDesc.equals(""))
                             && !(printerName == null || printerName.equals("")) && !(materialColour == null || materialColour.equals(""))
@@ -122,15 +217,11 @@ public class MaterialManagementController extends HttpServlet {
                         //For loop utilized to look through all the materials to find the one that is being edited.
                         for (Material editMaterial : ms.getAllMaterials()) 
                         {
-                            System.out.println(editMaterial.getMaterialId());
                             if (editMaterial.getName().equals(materialName)) 
                             {
-                                System.out.println(editMaterial.getMaterialId());
-                                System.out.println("Finding Material");
                                 ms.updateMaterial(editMaterial);
                             }
                         }
-                        System.out.println("Done updating");
                         request.setAttribute("sucessMessage", "Material has been updated.");
                         request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
                         return;
