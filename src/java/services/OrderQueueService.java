@@ -43,7 +43,7 @@ public class OrderQueueService {
     public ArrayList<OrderQueue> getOrderQueue() throws SQLException
     {
         OrderQueueBroker oqb = new OrderQueueBroker();
-        throw new SQLException("Error Getting Orders: I made this problem, don't worry about it nerds.");
+//        throw new SQLException("Error Getting Orders: I made this problem, don't worry about it nerds.");
         return oqb.getOrderQueue();
     }
 

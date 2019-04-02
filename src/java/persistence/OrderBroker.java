@@ -8,6 +8,7 @@ import domain.Printer;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -215,5 +216,68 @@ public class OrderBroker{
         }
         connection.close();
         return orders;
+    }
+
+    public Order getOrder(int orderId) throws SQLException {
+        ConnectionPool cp = ConnectionPool.getInstance();    
+        Connection connection = cp.getConnection();
+        Order order = new Order();
+        //Error checking
+        if (connection == null) {
+            throw new SQLException("Error Getting Orders: Connection error.");
+        }
+        
+        //Creating prepared statement + getting result set
+        PreparedStatement cStmt = connection.prepareStatement("SELECT * FROM print_order WHERE order_id=?");
+        ResultSet rs = cStmt.executeQuery();
+        
+        //Error checking
+        if (rs == null) {
+            throw new SQLException("Error Getting Order: No order found with specified ID.");
+        }
+        
+        PrinterBroker pb = new PrinterBroker();
+        MaterialBroker mb = new MaterialBroker();
+        FileBroker fb = new FileBroker();
+        AccountBroker ab = new AccountBroker();
+        //Iterating through result set to create Orders
+        while (rs.next()) {
+            order= new Order(rs.getInt("order_id"),rs.getDouble("cost"),new java.util.Date(),new java.util.Date(),rs.getString("order_status"),fb.getFileByFileID(rs.getInt("order_file_id")),pb.getPrinterByID(rs.getInt("printer_id")),mb.getMaterialByID(rs.getInt("material_id")), ab.getAccountByID(rs.getInt("account_id")));
+            order.setOrderDate(rs.getDate("order_date"));
+            order.setPrintDate(rs.getDate("print_date"));
+        }
+        
+        connection.close();
+        return order;
+    }
+    
+    //Move this over to file broker
+    public File getFileByFileId(int fileId) throws SQLException
+    {
+        ConnectionPool cp = ConnectionPool.getInstance();    
+        Connection connection = cp.getConnection();
+        File file = new File();
+        
+        if (connection == null) {
+            throw new SQLException("Error Getting Orders: Connection error.");
+        }
+        
+        CallableStatement cStmt = connection.prepareCall("{call getFileByFileId(?)}");
+        cStmt.setInt(1, fileId);
+        ResultSet rs = cStmt.executeQuery();
+        
+        if (rs == null) {
+            throw new SQLException("Error Getting Order: No order found with specified ID.");
+        }
+        
+        while (rs.next()) {
+            file.setName(rs.getString("filename"));
+            file.setDateSubmitted(rs.getDate("date_submitted"));
+            file.setPath("file_path");
+            file.setSize(0);
+        }
+        
+        connection.close();
+        return file;
     }
 }

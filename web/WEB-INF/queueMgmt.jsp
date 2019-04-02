@@ -88,7 +88,10 @@
                                 </v-card>
                             </v-dialog>
                         </v-layout>
-                        
+                        <form action="queue" method="post" id="download">
+                            <input type="hidden" name="action" value="download">
+                            <input type="hidden" name="orderId" value="" id="downloadOrderId">
+                        </form>
                     </v-container>
                 </v-content>
                 <v-bottom-nav dark app fixed shift :active.sync="bottomNav" :value="true" colour="transparent">
@@ -169,6 +172,9 @@
                     ],
                     orders:
                     [
+                        <c:forEach items="${orders}" var="order">
+                            
+                        </c:forEach>
                         {orderId: 1001, position: 1, cost: 10.25, dimensions: '12x15x5', fileName: '400000-1001.stl', email: 'harmanjit.mohaar@edu.sait.ca', firstname: 'Harmanjit', lastname: 'Mohaar', printerId: '1', printerName: 'Fortus 400mc', material: 'ABS', materialColour: 'grey', comments: 'Uhh Question: What if the bin file returns null?.'},
                         {orderId: 1002, position: 1, cost: 6.76, dimensions: '2x11x8', fileName: '400001-1002.stl', email: 'benjamin.wozak@edu.sait.ca', firstname: 'Benjamin', lastname: 'Wozak', printerId: '2', printerName: 'Ultimaker 3 Extended', material: 'ABS', materialColour: 'red', comments: 'Yooooo wassuppp.'},
                         {orderId: 1003, position: 1, cost: 2.52, dimensions: '20x13x4', fileName: '400002-1003.stl', email: 'emily.pegg@edu.sait.ca', firstname: 'Emily', lastname: 'Pegg', printerId: '3', printerName: 'Form 2+', material: 'ABS', materialColour: 'green', comments: 'I\'m in so much pain constantly.'},
@@ -181,6 +187,11 @@
                     {
                         this.viewOrder = Object.assign({}, order);
                         this.dialog = true;
+                    },
+                    downloadOrder()
+                    {
+                        document.getElementById('downloadOrderId').value = this.viewOrder.orderId;
+                        document.getElementById('download').submit();
                     }
                 }
             });

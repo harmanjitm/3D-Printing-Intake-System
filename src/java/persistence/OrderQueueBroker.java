@@ -3,6 +3,7 @@ package persistence;
 import domain.Material;
 import domain.Note;
 import domain.Order;
+import domain.OrderQueue;
 import domain.Printer;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -55,6 +56,36 @@ public class OrderQueueBroker{
             
         }
 
+        connection.close();
+        return orders;
+    }
+
+    public ArrayList<OrderQueue> getOrderQueue() throws SQLException {
+        ArrayList<OrderQueue> orders = new ArrayList<>();
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection connection = cp.getConnection();
+        
+        if (connection == null) {
+            throw new SQLException("Error Getting Printers: Connection error.");
+        }
+        
+        CallableStatement cStmt = connection.prepareCall("{call getAllOrders()}");
+        
+        ResultSet rs = cStmt.executeQuery();
+        
+        if(rs == null)
+        {
+            throw new SQLException("Error Getting Printers: No printers found.");
+        }
+        
+        AccountBroker ab = new AccountBroker();
+        OrderBroker ob = new OrderBroker();
+        while(rs.next())
+        {
+            OrderQueue q = new OrderQueue(rs.getInt("queue_position"), ob.getOrder(rs.getInt("order_id")), ab.getAccountByID(rs.getInt("account_id")));
+            orders.add(q);
+        }
+        
         connection.close();
         return orders;
     }
