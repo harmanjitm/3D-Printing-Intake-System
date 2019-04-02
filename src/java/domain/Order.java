@@ -7,48 +7,37 @@ import java.util.Date;
  */
 public class Order {
 
-    /**
-     * The order id.
-     */
+    /** The order id. */
     private int orderId;
 
-    /**
-     * The cost.
-     */
+    /** The cost.  */
     private double cost;
 
-    /**
-     * The order date.
-     */
+    /** The order date. */
     private Date orderDate;
 
-    /**
-     * The print date.
-     */
+    /** The print date. */
     private Date printDate;
 
-    /**
-     * The status.
-     */
+    /** The status.  */
     private String status;
 
-    /**
-     * The file.
-     */
+    /** The file.    */
     private File file;
 
-    /**
-     * The printer.
-     */
+    /** The printer. */
     private Printer printer;
 
-    /**
-     * The printer.
-     */
+    /** The printer. */
     private Material material;
+    
+    /** The account */
+    private Account account;
 
+    /** The colour */
     private Colour colour;
     
+    /** The comments  */
     private String comments;
 
     /**
@@ -70,7 +59,7 @@ public class Order {
      * @param printer the printer
      * @param material the material
      */
-    public Order(int orderId, double cost, Date orderDate, Date printDate, String status, File file, Printer printer, Material material) {
+    public Order(int orderId, double cost, Date orderDate, Date printDate, String status, File file, Printer printer, Material material, Account account) {
         super();
         this.orderId = orderId;
         this.cost = cost;
@@ -80,6 +69,7 @@ public class Order {
         this.file = file;
         this.printer = printer;
         this.material = material;
+        this.account = account;
     }
 
     /**
@@ -100,6 +90,19 @@ public class Order {
         this.orderId = orderId;
     }
 
+    public Account getAccount() {
+        return account;
+    }
+
+    /**
+     * Sets the printer.
+     *
+     * @param printer the new printer
+     */
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+    
     /**
      * Gets the cost.
      *
