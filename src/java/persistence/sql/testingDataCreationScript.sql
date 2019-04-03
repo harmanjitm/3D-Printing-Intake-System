@@ -1,7 +1,7 @@
 /* ***************************************************************
 ** Author:  Emily Pegg	                                       	**
 ** Creation Date:  February, 2019                               **
-** Script Name: Test Data Creation								**
+** Script Name: Test Data Creation				**
 ** Description: Creates test data for the ARIS 3D Printing DB   **
 ******************************************************************/
 /* ACCOUNTS */
@@ -24,7 +24,7 @@ call aris.createMaterial('PLA', 'A basic PLA plastic; rigid and cheap', 00.09,2)
 call aris.createMaterial('Nylon', 'Tougher and more flexible than ABS or PLA.', 00.15,2);
 call aris.createMaterial('TPU95A', 'Very flexible and extremely tough; thin parts are stretchable too.', 00.15,2);
 call aris.createMaterial('Polycarbonate', 'Rigid and resistant to high temperatures (up to about 110C).', 00.15,2);
-call aris.createMaterial('PVA', 'This is support material. It is soluble in water for removal. Most parts will not need it.', 00.21,,2);
+call aris.createMaterial('PVA', 'This is support material. It is soluble in water for removal. Most parts will not need it.', 00.21,2);
 call aris.createMaterial('Clear', 'A rigid resin, and the cheapest. It is fairly brittle if bent or cyclically loaded.', 29.00,3);
 call aris.createMaterial('Flexible', 'Flexible like a gasket type material.', 39.00,3);
 call aris.createMaterial('Tough', 'More tough than the clear material.', 35.00,3);
@@ -52,6 +52,19 @@ call aris.createMaterialColour(58, 'transparent');
 call aris.createMaterialColour(59, 'black');
 call aris.createMaterialColour(60, 'transparent blue');
 
+/* PRINTER MATERIALS */
+call aris.createPrinterMaterial(1, 50);
+call aris.createPrinterMaterial(1, 51);
+call aris.createPrinterMaterial(2, 52);
+call aris.createPrinterMaterial(2, 53);
+call aris.createPrinterMaterial(2, 54);
+call aris.createPrinterMaterial(2, 55);
+call aris.createPrinterMaterial(2, 56);
+call aris.createPrinterMaterial(2, 57);
+call aris.createPrinterMaterial(3, 58);
+call aris.createPrinterMaterial(3, 59);
+call aris.createPrinterMaterial(3, 60);
+
 /*NOTIFICATION DEFAULT MESSAGE*/
 call aris.createNotificationDefaultMessage('issue','There was an issue when processing your print. Please check your account for more information.');
 call aris.createNotificationDefaultMessage('ready','Your print has been printed sucessfully! Please pick it up from the lab!');
@@ -71,16 +84,16 @@ call aris.createFile(100003, 'HarmanMohaar.stl', 'test/', 60, 'STL');
 call aris.createFile(100004, 'HaseebSheikTsuyi.stl', 'test/', 70, 'STL');
 
 /*ORDERS*/
-call aris.createPrintOrder(123.00, 1, 50, 100000, 400000);
-call aris.createPrintOrder(123.00, 2, 57, 100000, 400001);
-call aris.createPrintOrder(123.00, 3, 58, 100000, 400002);
-call aris.createPrintOrder(123.00, 1, 51, 100000, 400003);
-call aris.createPrintOrder(123.00, 2, 55, 100000, 400004);
-call aris.createPrintOrder(123.00, 1, 50, 100000, 400005);
-call aris.createPrintOrder(123.00, 2, 57, 100000, 400006);
-call aris.createPrintOrder(123.00, 3, 58, 100000, 400007);
-call aris.createPrintOrder(123.00, 1, 51, 100000, 400008);
-call aris.createPrintOrder(123.00, 2, 55, 100000, 400009);
+call aris.createPrintOrder(123.00, 1, 50, 100000, 400000, 'gray');
+call aris.createPrintOrder(123.00, 2, 57, 100000, 400001, 'gray');
+call aris.createPrintOrder(123.00, 3, 58, 100000, 400002, 'gray');
+call aris.createPrintOrder(123.00, 1, 51, 100000, 400003, 'gray');
+call aris.createPrintOrder(123.00, 2, 55, 100000, 400004, 'gray');
+call aris.createPrintOrder(123.00, 1, 50, 100000, 400005, 'gray');
+call aris.createPrintOrder(123.00, 2, 57, 100000, 400006, 'gray');
+call aris.createPrintOrder(123.00, 3, 58, 100000, 400007, 'gray');
+call aris.createPrintOrder(123.00, 1, 51, 100000, 400008, 'gray');
+call aris.createPrintOrder(123.00, 2, 55, 100000, 400009, 'gray');
 
 /*ORDER QUEUE*/
 call aris.createQueue(300000);
@@ -99,9 +112,3 @@ call aris.createNotification(300006, 'printing');
 call aris.createNotification(300006, 'queued');
 call aris.createNotification(300006, 'ready');
 call aris.createNotification(300004, 'issue');
-
-
-
-
-
-

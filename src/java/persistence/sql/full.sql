@@ -138,6 +138,7 @@ CREATE TABLE IF NOT EXISTS `aris`.`PRINT_ORDER` (
   `material_id` INT NOT NULL, FOREIGN KEY (material_id) REFERENCES MATERIAL(material_id) ON DELETE CASCADE,
   `account_id` INT NOT NULL, FOREIGN KEY (account_id) REFERENCES ACCOUNTS(account_id) ON DELETE CASCADE,
   `order_file_id` INT NOT NULL, FOREIGN KEY (order_file_id) REFERENCES ORDER_FILE(order_file_id) ON DELETE CASCADE,
+  `colour` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`order_id`));
 ALTER TABLE PRINT_ORDER AUTO_INCREMENT=300000;
 
@@ -853,39 +854,39 @@ use aris;
 ** Author:  Emily Pegg	                                       	**
 ** Creation Date:  March, 2019                              	**
 ** Procedure Name: Create Print Order                          	**
-** Description:  Creates a print order and assigns it the 	   	**
-**               next availiable id.                 		   	**
-** Input:  Cost, Printer id, material id, account id			**
-**		   file id												**
+** Description:  Creates a print order and assigns it the 	**
+**               next availiable id.                	  	**
+** Input:  Cost, Printer id, material id, account id            **
+**		   file id, colour             			**
 ******************************************************************/
 DROP PROCEDURE IF EXISTS createPrintOrder;
 delimiter #
 
-CREATE  PROCEDURE `createPrintOrder`($cost DECIMAL(13,4),$printer_id INTEGER, $material_id INTEGER, $account_id INTEGER, $order_file_id INTEGER)
+CREATE  PROCEDURE `createPrintOrder`($cost DECIMAL(13,4),$printer_id INTEGER, $material_id INTEGER, $account_id INTEGER, $order_file_id INTEGER, $colour VARCHAR(50))
 proc_main:BEGIN
-	INSERT INTO PRINT_ORDER(cost, order_date, order_status, printer_id, material_id, account_id, order_file_id) 
-		VALUES($cost, CURDATE(), 'recieved', $printer_id, $material_id, $account_id, $order_file_id);
+	INSERT INTO PRINT_ORDER(cost, order_date, order_status, printer_id, material_id, account_id, order_file_id, colour) 
+		VALUES($cost, CURDATE(), 'recieved', $printer_id, $material_id, $account_id, $order_file_id, $colour);
 END proc_main #
 delimiter ;
 
 /* ***************************************************************
 ** Author:  Emily Pegg	                                       	**
-** Creation Date:  March, 2019      							**
+** Creation Date:  March, 2019      				**
 ** Procedure Name: Update Print Order                         	**
 ** Description:  Updates the values of an existing order by     **
 **               finding the provided id and changing the values**
-**				 to the values provided							**
+**              to the values provided				**
 ** Input:  order Id, cost, print date, order status, printer id	**
-**		   material id, order file id							**
+**		   material id, order file id,colour		**
 ** Output: Old values for print date, order status, printer id	**
-**		   material id, order file id,cost		           			**
+**		   material id, order file id,cost, colour      **
 ******************************************************************/
 DROP PROCEDURE IF EXISTS updatePrintOrder;
 delimiter #
 
-CREATE  PROCEDURE `updatePrintOrder`($order_id INT(11), $cost DECIMAL(13,4), $print_date DATE, $order_status VARCHAR(20), $printer_id INT(11), $material_id INT(11), $order_file_id INT(11))
+CREATE  PROCEDURE `updatePrintOrder`($order_id INT(11), $cost DECIMAL(13,4), $print_date DATE, $order_status VARCHAR(20), $printer_id INT(11), $material_id INT(11), $order_file_id INT(11), $colour VARCHAR(50))
 proc_main:BEGIN
-	SELECT order_id, cost, print_date, order_status, printer_id, material_id, order_file_id
+	SELECT order_id, cost, print_date, order_status, printer_id, material_id, order_file_id, colour
 		FROM PRINT_ORDER
         WHERE order_id = $order_id;
         
@@ -895,7 +896,8 @@ proc_main:BEGIN
             order_status = $order_status,
 			material_id = $material_id,
 			printer_id = $printer_id,
-			order_file_id = $order_file_id
+			order_file_id = $order_file_id,
+                        colour = $colour
         WHERE order_id = $order_id;
 END proc_main #
 delimiter ;
@@ -908,14 +910,14 @@ delimiter ;
 **				 found return null.								**
 ** Input:  Printer Id											**
 ** Output: Order Id, Cost, Order Date, Print Date, Order Status	**
-**		   Material Id, Account Id, Order File Id				**
+**		   Material Id, Account Id, Order File Id,colour				**
 ******************************************************************/
 DROP PROCEDURE IF EXISTS getOrdersByPrinter;
 delimiter #
 
 CREATE  PROCEDURE `getOrdersByPrinter`($printer_id INTEGER)
 proc_main:BEGIN
-	SELECT order_id, cost, order_date, print_date, order_status, material_id, account_id, order_file_id, order_status
+	SELECT order_id, cost, order_date, print_date, order_status, material_id, account_id, order_file_id, order_status,colour
 		FROM PRINT_ORDER
         WHERE printer_id = $printer_id;
 END proc_main #
@@ -928,14 +930,14 @@ delimiter ;
 ** Description:  Gets all orders with status.					**
 ** Input:  order status											**
 ** Output: Order Id, Cost, Order Date, Print Date, Order Status	**
-**		   Material Id, Account Id, Order File Id				**
+**		   Material Id, Account Id, Order File Id,colour				**
 ******************************************************************/
 DROP PROCEDURE IF EXISTS getOrdersByStatus;
 delimiter #
 
 CREATE  PROCEDURE `getOrdersByStatus`($order_status VARCHAR(20))
 proc_main:BEGIN
-	SELECT order_id, cost, order_date, print_date, printer_id, material_id, account_id, order_file_id, order_status
+	SELECT order_id, cost, order_date, print_date, printer_id, material_id, account_id, order_file_id, order_status,colour
 		FROM PRINT_ORDER
         WHERE order_status = $order_status;
 END proc_main #
@@ -947,14 +949,14 @@ delimiter ;
 ** Procedure Name: Get Orders				                   	**
 ** Description:  Gets all orders.								**
 ** Output: Order Id, Cost, Order Date, Print Date, Order Status	**
-**		   Material Id, Account Id, Order File Id				**
+**		   Material Id, Account Id, Order File Id,colour				**
 ******************************************************************/
 DROP PROCEDURE IF EXISTS getAllOrders;
 delimiter #
 
 CREATE  PROCEDURE `getAllOrders`()
 proc_main:BEGIN
-	SELECT order_id, cost, order_date, print_date, printer_id, material_id, account_id, order_file_id, order_status
+	SELECT order_id, cost, order_date, print_date, printer_id, material_id, account_id, order_file_id, order_status,colour
 		FROM PRINT_ORDER;
 END proc_main #
 delimiter ;
@@ -1234,7 +1236,7 @@ delimiter ;
 /* ***************************************************************
 ** Author:  Emily Pegg	                                       	**
 ** Creation Date:  February, 2019                               **
-** Script Name: Test Data Creation								**
+** Script Name: Test Data Creation				**
 ** Description: Creates test data for the ARIS 3D Printing DB   **
 ******************************************************************/
 /* ACCOUNTS */
@@ -1317,16 +1319,16 @@ call aris.createFile(100003, 'HarmanMohaar.stl', 'test/', 60, 'STL');
 call aris.createFile(100004, 'HaseebSheikTsuyi.stl', 'test/', 70, 'STL');
 
 /*ORDERS*/
-call aris.createPrintOrder(123.00, 1, 50, 100000, 400000);
-call aris.createPrintOrder(123.00, 2, 57, 100000, 400001);
-call aris.createPrintOrder(123.00, 3, 58, 100000, 400002);
-call aris.createPrintOrder(123.00, 1, 51, 100000, 400003);
-call aris.createPrintOrder(123.00, 2, 55, 100000, 400004);
-call aris.createPrintOrder(123.00, 1, 50, 100000, 400005);
-call aris.createPrintOrder(123.00, 2, 57, 100000, 400006);
-call aris.createPrintOrder(123.00, 3, 58, 100000, 400007);
-call aris.createPrintOrder(123.00, 1, 51, 100000, 400008);
-call aris.createPrintOrder(123.00, 2, 55, 100000, 400009);
+call aris.createPrintOrder(123.00, 1, 50, 100000, 400000, 'gray');
+call aris.createPrintOrder(123.00, 2, 57, 100000, 400001, 'gray');
+call aris.createPrintOrder(123.00, 3, 58, 100000, 400002, 'gray');
+call aris.createPrintOrder(123.00, 1, 51, 100000, 400003, 'gray');
+call aris.createPrintOrder(123.00, 2, 55, 100000, 400004, 'gray');
+call aris.createPrintOrder(123.00, 1, 50, 100000, 400005, 'gray');
+call aris.createPrintOrder(123.00, 2, 57, 100000, 400006, 'gray');
+call aris.createPrintOrder(123.00, 3, 58, 100000, 400007, 'gray');
+call aris.createPrintOrder(123.00, 1, 51, 100000, 400008, 'gray');
+call aris.createPrintOrder(123.00, 2, 55, 100000, 400009, 'gray');
 
 /*ORDER QUEUE*/
 call aris.createQueue(300000);
