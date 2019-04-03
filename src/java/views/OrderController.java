@@ -88,10 +88,14 @@ public class OrderController extends HttpServlet
         
         /**
          * order submit needs to take in:
-         *          fileName,
-         *          printerID,
-         *          materialID,
-         *          selectedColour,
+         *          cost
+         *          orderDate
+         *          PrintDate
+         *          Status
+         *          file object
+         *          printer object
+         *          material object
+         *          account object     
          *          comments,    
          */
         

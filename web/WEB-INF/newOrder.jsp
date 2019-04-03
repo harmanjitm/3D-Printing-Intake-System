@@ -70,7 +70,7 @@
                 ${errorMessage}
             </v-alert>
             
-          <form id="create-order" method="post" action="order">  
+          
           <v-stepper-items>
           <!-- File select -->
             <v-stepper-content step="1">
@@ -136,24 +136,24 @@
                                         <v-flex v-for="printer in printers" xs8 sm4 md4 lg4>
                                     <!-- Printer Cards -->
                                     <v-hover>
-                                            <v-card id="printerCard" @click="selectPrinter(printer)" onmouseover="" 
-                                                    style="cursor: pointer;" width="344"
-                                                    slot-scope="{ hover }"
-                                                    :class="`elevation-${hover ? 24 : 2}`"
-                                                    class="mx-auto"
-                                                > 
-                                                <v-img :src="printer.img" aspect-ratio="2.5" contain></v-img>
-                                                <v-card-title secondary-title>
-                                                    <h3 class="headline mb-0">{{printer.name}}</h3>
-                                                    <div>{{printer.description}}</div>
-                                                </v-card-title>
-                                                <span><h4>Run Cost:</h4> $</span>{{ printer.runCost }}<span>/h</span>
-                                                <v-card-actions>
+                                        <v-card id="printerCard" @click="selectPrinter(printer)" onmouseover="" 
+                                                style="cursor: pointer;" width="344"
+                                                slot-scope="{ hover }"
+                                                :class="`elevation-${hover ? 24 : 2}`"
+                                                class="mx-auto"
+                                            > 
+                                            <v-img :src="printer.img" aspect-ratio="2.5" contain></v-img>
+                                            <v-card-title secondary-title>
+                                                <h3 class="headline mb-0">{{printer.name}}</h3>
+                                                <div>{{printer.description}}</div>
+                                            </v-card-title>
+                                            <span><h4>Run Cost:</h4> $</span>{{ printer.runCost }}<span>/h</span>
+                                            <v-card-actions>
 <!--                                                 <input type="hidden" name="action" value="selectPrinter">-->
-                                                    <input type="hidden" name="printerID" v-model="printerSelect.printerID">
+                                                <input type="hidden" name="printerID" v-model="printerSelect.printerID">
 <!--                                                 <v-btn dark color="#8B2635" @click="selectPrinter(printer)">Select</v-btn>-->
-                                                </v-card-actions>
-                                            </v-card>
+                                            </v-card-actions>
+                                        </v-card>
                                     </v-hover>        
                                         </v-flex>
                                     </v-layout>
@@ -225,7 +225,6 @@
                                             </template>
                                         </v-data-table>
                                     
-
                                         </v-flex>
                                     </v-layout>
                                 </v-containter>
@@ -236,8 +235,6 @@
                             </v-btn>
                             <v-btn color="secondary" @click="el = 2">Back</v-btn>
                         </v-stepper-content>
-        
-        
         
         <!-- Comments and payment opens -->
                         <v-stepper-content step="4">
@@ -365,18 +362,18 @@
          *          selectedColour,
          *          comments,    
          */-->
-<!--                    <input type="hidden" v-model="fileInfo.name" name="fileName" value="">
-                    <input type="hidden" v-model="selectedPrinter.printerId" name="printerId" value="">
-                    <input type="hidden" v-model="selectedMaterial.materialId" name="materialId" value="">
-                    <input type="hidden" v-model="selectedMaterial.materialId" name="materialId" value="">
-                    <input type="hidden" name="action" value="add">
-                    <input type="hidden" id="newMaterialDescription" name="materialDescription" value="">-->
+                <form id="create-order" method="post" action="order">  
+                    <input type="hidden" id="stl_cont" name="file" value="">
+                    <input type="hidden" id="selectedPrinter" name="printer" value="">
+                    <input type="hidden" id="selectedMaterial" name="material" value="">
+                    <input type="hidden" id="selectedMaterialColour" name="material" value="">
+                    <input type="hidden" id="comment" name="comments" value="">
+                </form>
                     <v-btn dark color="#8B2635" @click="submit">
                         Submit
                     </v-btn>
                     <v-btn color="secondary" @click="e1 = 1">Make Changes</v-btn>
                 </v-stepper-content>
-          </form>
                     </v-stepper-items>
                 </v-stepper>
             </v-content>
