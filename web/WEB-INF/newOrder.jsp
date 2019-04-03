@@ -90,6 +90,7 @@
                         <input type="hidden" id="selectedMaterial" name="material" value="">
                         <input type="hidden" id="selectedMaterialColour" name="colour" value="">
                         <input type="hidden" id="comment" name="comments" value="">
+                        <input type="hidden" name="action" value="download">
                         </form>
                             
                             

@@ -125,7 +125,7 @@ public class OrderController extends HttpServlet
         MaterialService ms = new MaterialService();
         
         //int orderID = Integer.parseInt(orderIDs);
-        double cost = Double.parseDouble(costS);
+//        double cost = Double.parseDouble(costS);
         
         switch(action)
         {
@@ -196,7 +196,7 @@ public class OrderController extends HttpServlet
                 break;
             case "download":
                 try {
-                    String path = request.getParameter("C:\\Users\\687159\\Desktop\\18.stl");
+                    String path = request.getParameter("file");
                     File downloadFile = new File(path);
                     FileInputStream inStream = new FileInputStream(downloadFile);
                     String mimeType = getServletContext().getMimeType(path);

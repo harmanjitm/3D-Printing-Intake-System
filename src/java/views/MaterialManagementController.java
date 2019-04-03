@@ -84,8 +84,7 @@ public class MaterialManagementController extends HttpServlet {
                     //if the variables are not empty, the material gets created and added to the system
                     materialCost = Double.parseDouble(request.getParameter("materialCost"));
                     if (!(materialName == null || materialName.equals("")) && !(materialDesc == null || materialDesc.equals(""))
-                            && !(printerName == null || printerName.equals("")) && !(materialColour == null || materialColour.equals(""))
-                            && (materialCost != 0)) {
+                            && !(printerName == null || printerName.equals("")) && (materialCost != 0)) {
                         ms.createMaterial(materialName, materialDesc, printerName, materialColour, materialCost, status);
                         ArrayList<Material> materials = (ArrayList<Material>) request.getAttribute("materials");
                         materials = ms.getAllMaterials();
