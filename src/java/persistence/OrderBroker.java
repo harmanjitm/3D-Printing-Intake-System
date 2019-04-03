@@ -1,6 +1,7 @@
 package persistence;
 
 import domain.Account;
+import domain.Colour;
 import domain.File;
 import domain.Material;
 import domain.Order;
@@ -243,9 +244,11 @@ public class OrderBroker{
         AccountBroker ab = new AccountBroker();
         //Iterating through result set to create Orders
         while (rs.next()) {
+            Colour colour = new Colour(rs.getString("colour"), "in-stock");
             order= new Order(rs.getInt("order_id"),rs.getDouble("cost"),new java.util.Date(),new java.util.Date(),rs.getString("order_status"),fb.getFileByFileID(rs.getInt("order_file_id")),pb.getPrinterByID(rs.getInt("printer_id")),mb.getMaterialByID(rs.getInt("material_id")), ab.getAccountByID(rs.getInt("account_id")));
             order.setOrderDate(rs.getDate("order_date"));
             order.setPrintDate(rs.getDate("print_date"));
+            order.setColour(colour);
         }
         
         connection.close();

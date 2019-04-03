@@ -113,35 +113,37 @@ public class OrderQueueBroker {
      * @return Returns an ArrayList<OrderQueue> with the printer's queue
      * @throws SQLException 
      */
-    public ArrayList<OrderQueue> getOrderQueue(Printer printer) throws SQLException {
+    public ArrayList<OrderQueue> getOrderQueue() throws SQLException {
         ConnectionPool cp = ConnectionPool.getInstance();        
         Connection connection = cp.getConnection();
         AccountBroker ab = new AccountBroker();
         OrderBroker ob = new OrderBroker();
-        ArrayList<OrderQueue> queue = null;
+        ArrayList<OrderQueue> queue = new ArrayList<>();
         
         if (connection == null) {
             throw new SQLException("Error Getting Printer Queue: Connection error.");
         }
-        if (printer == null) {
-            throw new SQLException("Error Getting Printer Queue: No printer given");
-        }
 
-        CallableStatement cStmt = connection.prepareCall("{call getQueueByPrinterId(?)}");
-        cStmt.setInt(1, printer.getPrinterId());
-        ResultSet rs = cStmt.executeQuery();
+        PrinterBroker pb = new PrinterBroker();
         
-        if (rs == null) {
-            throw new SQLException("Error Getting Queue: Queue not found");
-        }
+        for(Printer p : pb.getAllPrinters())
+        {
+            CallableStatement cStmt = connection.prepareCall("{call getQueueByPrinterId(?)}");
+            cStmt.setInt(1, p.getPrinterId());
+            ResultSet rs = cStmt.executeQuery();
 
-        OrderQueue orderQueue = null;
-        while (rs.next()) {
-            int position = rs.getInt("queue_position");
-            Order order = ob.getOrder(rs.getInt("order_id"));
-            Account account = ab.getAccountByID(rs.getInt("account_id"));
-            orderQueue = new OrderQueue(position,order,account);            
-            queue.add(orderQueue);
+            if (rs == null) {
+                throw new SQLException("Error Getting Queue: Queue not found");
+            }
+
+            OrderQueue orderQueue = new OrderQueue();
+            while (rs.next()) {
+                int position = rs.getInt("queue_position");
+                Order order = ob.getOrder(rs.getInt("order_id"));
+                Account account = ab.getAccountByID(rs.getInt("account_id"));
+                orderQueue = new OrderQueue(position,order,account);            
+                queue.add(orderQueue);
+            }
         }
 
         connection.close();

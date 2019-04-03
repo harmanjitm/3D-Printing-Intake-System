@@ -47,8 +47,8 @@ public class OrderQueueService {
         return oqb.getOrderQueue();
     }
 
-    public ArrayList<Order> getOrdersByPrinter(int printerId) throws SQLException {
-        OrderQueueBroker oqb = new OrderQueueBroker();
-        return oqb.getOrdersByPrinter(printerId);
-    }
+//    public ArrayList<Order> getOrdersByPrinter(int printerId) throws SQLException {
+//        OrderQueueBroker oqb = new OrderQueueBroker();
+//        return oqb.getOrdersByPrinter(printerId);
+//    }
 }
