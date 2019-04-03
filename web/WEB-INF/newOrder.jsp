@@ -81,8 +81,18 @@
                       <v-card flat>
                         <div id="stl_cont" @change="showInfo">
                           <h2>Select an STL file</h2>
+                          <form id="create-order" method="post" action="order" enctype="multipart/form-data">  
+                
                           <input type="file" onchange='stl_viewer.add_model({local_file:this.files[0]}); ' accept="*.*">
-                            <p>Or Drag and drop</p>
+                          
+                          <input type="hidden" id="stl_cont" name="file" value="">
+                        <input type="hidden" id="selectedPrinter" name="printer" value="">
+                        <input type="hidden" id="selectedMaterial" name="material" value="">
+                        <input type="hidden" id="selectedMaterialColour" name="colour" value="">
+                        <input type="hidden" id="comment" name="comments" value="">
+                        </form>
+                            
+                            
                         </div>
 
                       </v-card>
@@ -354,13 +364,6 @@
                                   </div>
                             </v-card> 
                             
-                <form id="create-order" method="post" action="order">  
-                    <input type="hidden" id="stl_cont" name="file" value="">
-                    <input type="hidden" id="selectedPrinter" name="printer" value="">
-                    <input type="hidden" id="selectedMaterial" name="material" value="">
-                    <input type="hidden" id="selectedMaterialColour" name="colour" value="">
-                    <input type="hidden" id="comment" name="comments" value="">
-                </form>
                     <v-btn dark color="#8B2635" @click="submit">
                         Submit
                     </v-btn>
@@ -479,6 +482,7 @@ new Vue({
     },
     methods: {
         submit() {  
+            document.getElementById('stl_cont').value = this.fileInfo.obj.name;
             document.getElementById('selectedPrinter').value = this.selectedPrinter.printerId;
             document.getElementById('selectedMaterial').value = this.selectedMaterial.materialId;
             document.getElementById('selectedMaterialColour').value = this.selectedColour.materialId.colour;
