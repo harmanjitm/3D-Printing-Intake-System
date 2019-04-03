@@ -164,7 +164,7 @@
                                 <v-card>
                                     <v-card-text>
                                         <v-data-table :headers="colourHeaders" :items="colours" item-key="colour" hide-actions class="elevation-3">
-                                            <template slot="items" scope="props">
+                                            <template slot="items" slot-scope="props">
                                                 <tr v-if="props.item.materialId===selectedColourID">
                                                     <td>{{props.item.colour}}</td>
                                                     <td>
@@ -355,7 +355,7 @@
                     {
                         this.editIndex = this.materials.indexOf(item);
                         this.editItem = Object.assign({}, item);
-                        this.editDialog = false;
+//                        this.editDialog = false;
                     }
                 }
             });

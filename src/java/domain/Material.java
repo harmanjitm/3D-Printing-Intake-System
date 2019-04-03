@@ -35,7 +35,7 @@ public class Material {
     /**
      * The color.
      */
-    private ArrayList<Colour> colours;
+    private ArrayList<Colour> colours = new ArrayList<>();
 
     /**
      * value of material per unit.
