@@ -218,13 +218,13 @@
                                             </v-toolbar>   
                                         <v-data-table :headers="colourHeaders" :items="colours" item-key="colour" hide-actions class="elevation-2">
                                             <template slot="items" slot-scope="props">
-                                                <tr v-if="props.item.materialId===selectMaterialId">
+                                                <tr v-if="props.item.materialId === selectMaterialId" >
                                                     <td>{{ props.item.colour }}</td>
                                                     <td>{{ props.item.status }}</td>
                                                 </tr>
                                             </template>
                                         </v-data-table>
-                                    
+                                    <!-- @click="selectColour(colour)" -->
                                         </v-flex>
                                     </v-layout>
                                 </v-containter>
@@ -354,19 +354,11 @@
                                   </div>
                             </v-card> 
                             
-<!--        /**
-         * order submit needs to take in:
-         *          fileName,
-         *          printerID,
-         *          materialID,
-         *          selectedColour,
-         *          comments,    
-         */-->
                 <form id="create-order" method="post" action="order">  
                     <input type="hidden" id="stl_cont" name="file" value="">
                     <input type="hidden" id="selectedPrinter" name="printer" value="">
                     <input type="hidden" id="selectedMaterial" name="material" value="">
-                    <input type="hidden" id="selectedMaterialColour" name="material" value="">
+                    <input type="hidden" id="selectedMaterialColour" name="colour" value="">
                     <input type="hidden" id="comment" name="comments" value="">
                 </form>
                     <v-btn dark color="#8B2635" @click="submit">
@@ -469,6 +461,12 @@ new Vue({
                 </c:forEach>
             </c:forEach>
         ],
+        selectedColour:
+        {
+            materialId: '',
+            colour: '',
+            status: ''
+        },
         colourHeaders:
         [
             {text: 'Colour', value: 'colour'},
@@ -480,8 +478,12 @@ new Vue({
         ],
     },
     methods: {
-        submit() {
-//            document.getElementById('create-order').submit();
+        submit() {  
+            document.getElementById('selectedPrinter').value = this.selectedPrinter.printerId;
+            document.getElementById('selectedMaterial').value = this.selectedMaterial.materialId;
+            document.getElementById('selectedMaterialColour').value = this.selectedColour.materialId.colour;
+            document.getElementById('create-order').submit();
+            document.getElementById('comment').value = this.comments;
             alert('We did it!')
         },
         selectPrinter(printer) {
@@ -500,6 +502,10 @@ new Vue({
         },
         loadMaterialColour(material) {
             this.selectMaterialId = material.materialId;
+        },
+        selectColour() {
+            this.selectedColour = Object.assign({}, colour);
+            alert('you selected' + this.selectedColour.colour);
         },
         selectPayment() {
         // Display payment info
