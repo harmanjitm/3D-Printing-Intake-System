@@ -83,9 +83,9 @@
                           <h2>Select an STL file</h2>
                           <form id="create-order" method="post" action="order" enctype="multipart/form-data">  
                 
-                          <input type="file" onchange='stl_viewer.add_model({local_file:this.files[0]}); ' accept="*.*">
-                          
-                          <input type="hidden" id="stl_cont" name="file" value="">
+                          <input type="file" name="file" onchange='stl_viewer.add_model({local_file:this.files[0]}); ' accept="*.*">
+                          <input type="hidden" id="fileName" name="fileName">
+                          <!--<input type="hidden" id="stl_cont" name="file" value="">-->
                         <input type="hidden" id="selectedPrinter" name="printer" value="">
                         <input type="hidden" id="selectedMaterial" name="material" value="">
                         <input type="hidden" id="selectedMaterialColour" name="colour" value="">
@@ -179,7 +179,7 @@
         <!-- Select material based on selected printer -->
                         <v-stepper-content step="3">
                             <v-card class="mb-5" height="400px" flat>
-                                <v-containter>
+                                <v-container>
                                     <v-layout>
                                         <v-flex xs8 sm4 md4 lg6>
                                             <v-toolbar dark flat class="headline blue-grey darken-4 white--text">
@@ -237,7 +237,7 @@
                                     <!-- @click="selectColour(colour)" -->
                                         </v-flex>
                                     </v-layout>
-                                </v-containter>
+                                </v-container>
                             </v-card>
 
                             <v-btn color="primary" @click="e1 = 4">
@@ -444,6 +444,16 @@ new Vue({
                  materialStat: '${material.status}'},
             </c:forEach>
         ],
+        adminItems: 
+        [ 
+            {title: 'Home', icon: 'home', link: 'home'},
+            {title: 'Dashboard', icon: 'dashboard', link: 'dashboard'},
+            {title: 'Order Queue', icon: 'queue', link: 'queue'},
+            {title: 'Account Management', icon: 'people', link: 'accountmanagement'},
+            {title: 'Material Management', icon: 'texture', link: 'materialmanagement'},
+            {title: 'Printer Management', icon: 'print', link: 'printermanagement'},
+            {title: 'Reports', icon: 'poll', link: 'reportmanagement'}
+        ],
         selectedMaterial:
         {
             materialId: '',
@@ -482,11 +492,9 @@ new Vue({
     },
     methods: {
         submit() {  
-            document.getElementById('stl_cont').value = JSON.stringify(stl_viewer.get_model_info(2));
-             alert(stl_viewer.get_model_info(2).toString());
-            var file = JSON.parse(JSON.stringify(stl_viewer.get_model_info(2)).toString());
-            alert(file);
-            document.getElementById('stl_cont').value = file["name"];
+//            document.getElementById('stl_cont').value = JSON.stringify(stl_viewer.get_model_info(2));
+            var file = JSON.parse(JSON.stringify(stl_viewer.get_model_info(2)));
+            document.getElementById('fileName').value = file["name"];
             document.getElementById('selectedPrinter').value = this.selectedPrinter.printerId;
             document.getElementById('selectedMaterial').value = this.selectedMaterial.materialId;
             document.getElementById('selectedMaterialColour').value = this.selectedColour.materialId.colour;
@@ -525,6 +533,7 @@ new Vue({
             },
             showInfo() {
                 setTimeout(this.viewInfo, 3000)
+                alert(JSON.stringify(stl_viewer.get_model_info(2)));
             }
         },
             
