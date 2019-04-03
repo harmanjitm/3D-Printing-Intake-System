@@ -117,7 +117,7 @@ public class PrinterBroker  {
             throw new SQLException("Error getting account: invalid account ID.");
         }
 
-        CallableStatement cStmt = connection.prepareCall("{call getPrintert(?)}");
+        CallableStatement cStmt = connection.prepareCall("{call getPrinter(?)}");
 
         cStmt.setInt(1, printerId);
 

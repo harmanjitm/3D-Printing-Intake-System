@@ -229,6 +229,7 @@ public class OrderBroker{
         
         //Creating prepared statement + getting result set
         PreparedStatement cStmt = connection.prepareStatement("SELECT * FROM print_order WHERE order_id=?");
+        cStmt.setInt(1, orderId);
         ResultSet rs = cStmt.executeQuery();
         
         //Error checking

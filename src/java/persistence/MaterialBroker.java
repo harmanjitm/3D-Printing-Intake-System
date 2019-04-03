@@ -245,19 +245,19 @@ public class MaterialBroker {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection connection = cp.getConnection();
         if (connection == null) {
-            throw new SQLException("Error Getting Account: Connection error.");
+            throw new SQLException("Error Getting Material: Connection error.");
         }
         if (materialId == 0) {
-            throw new SQLException("Error Getting Account: Invalid account ID.");
+            throw new SQLException("Error Getting Material: Invalid material ID.");
         }
 
-        CallableStatement cStmt = connection.prepareCall("{call getPrinter(?)}");
+        CallableStatement cStmt = connection.prepareCall("{call getMaterial(?)}");
 
         cStmt.setInt(1, materialId);
 
         ResultSet rs = cStmt.executeQuery();
         if (rs == null) {
-            throw new SQLException("Error Getting Printer: Printer not found");
+            throw new SQLException("Error Getting Material: Material not found");
         }
 
         Material material = null;

@@ -19,7 +19,7 @@ import java.util.List;
  *
  * @author Harmanjit Mohaar (000758243)
  */
-public class OrderQueueBroker{
+public class OrderQueueBroker {
 
     /**
      * Gets the broker.
@@ -31,19 +31,20 @@ public class OrderQueueBroker{
     }
 
     /**
-     * Fetches a list of Orders from the database that are associated to a printer.
-     * 
-     * @return 
+     * Fetches a list of Orders from the database that are associated to a
+     * printer.
+     *
+     * @return
      */
     public ArrayList<Order> getOrdersByPrinter(int printerId) throws SQLException {
         ArrayList<Order> orders = new ArrayList<>();
-        
+
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection connection = cp.getConnection();
         if (connection == null) {
             throw new SQLException("Error Getting Printers: Connection error.");
         }
-        
+
         CallableStatement getAllPrinters = connection.prepareCall("{call getAllPrinters()}");
         CallableStatement getAllOrders = connection.prepareCall("{call getOrdersByPrinter(?)}");
         ResultSet rs = getAllPrinters.executeQuery();
@@ -53,7 +54,7 @@ public class OrderQueueBroker{
         List<Printer> printers = new ArrayList<Printer>();
         ArrayList<Material> materials = new ArrayList<Material>();
         while (rs.next()) {
-            
+
         }
 
         connection.close();
@@ -64,28 +65,30 @@ public class OrderQueueBroker{
         ArrayList<OrderQueue> orders = new ArrayList<>();
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection connection = cp.getConnection();
-        
+
         if (connection == null) {
             throw new SQLException("Error Getting Printers: Connection error.");
         }
-        
-        CallableStatement cStmt = connection.prepareCall("{call getAllOrders()}");
-        
-        ResultSet rs = cStmt.executeQuery();
-        
-        if(rs == null)
-        {
-            throw new SQLException("Error Getting Printers: No printers found.");
-        }
-        
+
+        PrinterBroker pb = new PrinterBroker();
         AccountBroker ab = new AccountBroker();
         OrderBroker ob = new OrderBroker();
-        while(rs.next())
-        {
-            OrderQueue q = new OrderQueue(rs.getInt("queue_position"), ob.getOrder(rs.getInt("order_id")), ab.getAccountByID(rs.getInt("account_id")));
-            orders.add(q);
+
+        for (Printer p : pb.getAllPrinters()) {
+            CallableStatement cStmt = connection.prepareCall("{call getQueueByPrinterId(?)}");
+            cStmt.setInt(1, p.getPrinterId());
+            ResultSet rs = cStmt.executeQuery();
+
+            if (rs == null) {
+                throw new SQLException("Error Getting Order Queue: No queue found.");
+            }
+
+            while (rs.next()) {
+                OrderQueue q = new OrderQueue(rs.getInt("queue_position"), ob.getOrder(rs.getInt("order_id")), ab.getAccountByID(rs.getInt("account_id")));
+                orders.add(q);
+            }
         }
-        
+
         connection.close();
         return orders;
     }

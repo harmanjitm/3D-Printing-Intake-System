@@ -99,8 +99,8 @@ public class FileBroker {
         File file = null;
         while (rs.next()) {
             java.util.Date submitDate = rs.getTimestamp("date_submitted"); 
-            file = new File(rs.getString("filename"),Integer.parseInt(rs.getString("order_file_id")),
-                                 rs.getString("file_path"),Double.parseDouble(rs.getString("file_size")),submitDate);
+            file = new File(rs.getString("filename"),id,
+                                 rs.getString("file_path"), 0, submitDate);
         }
         connection.close();
         return file;
