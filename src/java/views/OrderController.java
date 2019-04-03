@@ -85,13 +85,23 @@ public class OrderController extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
+        
+        /**
+         * order submit needs to take in:
+         *          fileName,
+         *          printerID,
+         *          materialID,
+         *          selectedColour,
+         *          comments,    
+         */
+        
         String action = request.getParameter("action");
         String orderIDs = request.getParameter("orderID");
         String costS = request.getParameter("cost");
         String printerIDs = request.getParameter("printerID");
         String materialIDs = request.getParameter("materialID");
-        String status = request.getParameter("status");
-        String payment = request.getParameter("payment");
+        String status = request.getParameter("status"); //dont think you need
+        String payment = request.getParameter("payment"); //dont think you need this
         
         
         Part filePart = request.getPart("file");
