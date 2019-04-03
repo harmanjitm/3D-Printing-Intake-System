@@ -482,7 +482,11 @@ new Vue({
     },
     methods: {
         submit() {  
-            document.getElementById('stl_cont').value = this.fileInfo.obj.name;
+            document.getElementById('stl_cont').value = JSON.stringify(stl_viewer.get_model_info(2));
+             alert(stl_viewer.get_model_info(2).toString());
+            var file = JSON.parse(JSON.stringify(stl_viewer.get_model_info(2)).toString());
+            alert(file);
+            document.getElementById('stl_cont').value = file["name"];
             document.getElementById('selectedPrinter').value = this.selectedPrinter.printerId;
             document.getElementById('selectedMaterial').value = this.selectedMaterial.materialId;
             document.getElementById('selectedMaterialColour').value = this.selectedColour.materialId.colour;
