@@ -42,19 +42,32 @@
                                         <span class="subheading font-weight-light"><v-icon>print</v-icon> {{order.printerName}}</span><br/>
                                         <span class="subheading font-weight-light"><v-icon>texture</v-icon>{{order.material}} - {{order.materialColour}}</span><br/>
                                         <span class="subheading font-weight-light"><v-icon>attach_money</v-icon>{{order.cost}}</span>
+
                                     </v-card-text>
                                     <v-divider></v-divider>
                                     <!--<v-spacer vertical></v-spacer>-->
                                     <v-card-actions>
-                                        <v-btn flat color="red accent-3">Cancel</v-btn>
+                                        <form action="queue" method="post">
+                                            <input type="hidden" name="action" value="cancel">
+                                            <input type="hidden" name="orderId" :value="order.orderId">
+                                            <v-btn type="submit" flat color="red accent-3">Cancel</v-btn>
+                                        </form>
                                         <v-spacer></v-spacer>
                                         <v-divider vertical></v-divider>
                                         <v-spacer></v-spacer>
-                                        <v-btn flat color="orange darken-2">Download</v-btn>
+                                        <form method="post" action="queue">
+                                            <input type="hidden" name="filePath" :value="order.filePath">
+                                            <input type="hidden" name="action" value="download">
+                                            <v-btn type="submit" flat color="orange darken-2">Download</v-btn>
+                                        </form>
                                         <v-spacer></v-spacer>
                                         <v-divider vertical></v-divider>
                                         <v-spacer></v-spacer>
-                                        <v-btn flat color="light-green darken-2">Complete</v-btn>
+                                        <form action="queue" method="post">
+                                            <input type="hidden" name="action" value="complete">
+                                            <input type="hidden" name="orderId" :value="order.orderId">
+                                            <v-btn type="submit" flat color="light-green darken-2">Complete</v-btn>
+                                        </form>
                                     </v-card-actions>
                                 </v-card>
                             </v-flex>
@@ -76,21 +89,25 @@
                                                 <v-text-field readonly prepend-icon="insert_drive_file" v-model="viewOrder.fileName" label="File Name"></v-text-field>
                                                 <v-text-field readonly prepend-icon="format_shapes" v-model="viewOrder.dimensions" label="Dimensions LxWxH"></v-text-field>
                                                 <v-textarea readonly rows="4" prepend-icon="message" name="input-7-1" label="Comments" v-model="viewOrder.comments"></v-textarea>
+                                                <v-alert type="warning" <c:if test="${warning!=null}">value="true"</c:if>>
+                                                    ${warning}
+                                                </v-alert>
                                             </v-flex>
                                         </v-layout>
                                     </v-card-text>
                                     <v-card-actions>
                                         <v-btn flat @click="dialog = false" color="primary">Close</v-btn>
                                         <v-spacer></v-spacer>
-                                        <v-btn flat outline color="red accent-3">Cancel</v-btn>
-                                        <v-btn flat outline color="light-green darken-2">Complete</v-btn>
+                                        <v-btn flat outline color="red accent-3">Cancel Order</v-btn>
+                                        <v-btn flat outline color="light-green darken-2">Complete Order</v-btn>
                                     </v-card-actions>
                                 </v-card>
                             </v-dialog>
                         </v-layout>
                         <form action="queue" method="post" id="download">
                             <input type="hidden" name="action" value="download">
-                            <input type="hidden" name="orderId" value="" id="downloadOrderId">
+                            <input type="hidden" name="filePath" value="" id="filePath">
+                            <!--<input type="hidden" name="orderId" value="" id="downloadOrderId">-->
                         </form>
                     </v-container>
                 </v-content>
@@ -152,7 +169,8 @@
                         materialColour: '',
                         comments: '',
                         fileName: '',
-                        dimensions: ''
+                        dimensions: '',
+                        filePath: ''
                     },
                     adminItems: 
                     [ 
@@ -173,12 +191,8 @@
                     orders:
                     [
                         <c:forEach items="${orders}" var="order">
-                            
+                            {orderId: ${order.orderId}, position: ${order.position}, cost: ${order.cost}, printerDimensions: '${order.printerDimensions}', dimensions: '${order.fileDimensions}', filePath: '${order.filePath}', fileName: '${order.fileName}', email: '${order.email}', firstname: '${order.firstname}', lastname: '${order.lastname}', printerId: '${order.printerId}', printerName: '${order.printerName}', material: '${order.materialName}', materialColour: '${order.materialColour}', comments: '${order.comments}'},
                         </c:forEach>
-                        {orderId: 1001, position: 1, cost: 10.25, dimensions: '12x15x5', fileName: '400000-1001.stl', email: 'harmanjit.mohaar@edu.sait.ca', firstname: 'Harmanjit', lastname: 'Mohaar', printerId: '1', printerName: 'Fortus 400mc', material: 'ABS', materialColour: 'grey', comments: 'Uhh Question: What if the bin file returns null?.'},
-                        {orderId: 1002, position: 1, cost: 6.76, dimensions: '2x11x8', fileName: '400001-1002.stl', email: 'benjamin.wozak@edu.sait.ca', firstname: 'Benjamin', lastname: 'Wozak', printerId: '2', printerName: 'Ultimaker 3 Extended', material: 'ABS', materialColour: 'red', comments: 'Yooooo wassuppp.'},
-                        {orderId: 1003, position: 1, cost: 2.52, dimensions: '20x13x4', fileName: '400002-1003.stl', email: 'emily.pegg@edu.sait.ca', firstname: 'Emily', lastname: 'Pegg', printerId: '3', printerName: 'Form 2+', material: 'ABS', materialColour: 'green', comments: 'I\'m in so much pain constantly.'},
-                        {orderId: 1004, position: 2, cost: 14.79, dimensions: '6x5x3', fileName: '400003-1004.stl', email: 'gregory.turnbull@edu.sait.ca', firstname: 'Gregory', lastname: 'Turnbull', printerId: '1', printerName: 'Fortus 400mc', material: 'ABS', materialColour: 'blue', comments: 'I wanna die.'}
                     ]
                 },
                 methods:
@@ -190,7 +204,7 @@
                     },
                     downloadOrder()
                     {
-                        document.getElementById('downloadOrderId').value = this.viewOrder.orderId;
+                        document.getElementById('filePath').value = this.viewOrder.filePath;
                         document.getElementById('download').submit();
                     }
                 }

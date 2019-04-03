@@ -32,17 +32,17 @@ public class FileBroker {
             throw new SQLException("Error Adding File: Missing file information.");
         }
 
-        CallableStatement cStmt = connection.prepareCall("{call createFile(?, ?, ?, ?, ?)}");
+        CallableStatement cStmt = connection.prepareCall("{call createFile(?, ?, ?, ?, ?, ?)}");
 
         cStmt.setInt(1, file.getFileID());
         cStmt.setString(2, file.getName());
         cStmt.setString(3, file.getPath());
         cStmt.setDouble(4, file.getSize());
         cStmt.setString(5, file.getFileType());
+        cStmt.setString(6, file.getDimensions());
 
         boolean hadResults = cStmt.execute();
         connection.close();
-        System.out.println("HAD RESULTS: " + hadResults);
         return hadResults ? 0 : 1;
     }
     
@@ -69,7 +69,7 @@ public class FileBroker {
             //Converting SQL timestamp to JAVA Date format. Java Date does not contain a timestamp, but SQL does!
             java.util.Date submitDate = rs.getTimestamp("date_submitted"); 
             File file = new File(rs.getString("filename"),Integer.parseInt(rs.getString("order_file_id")),
-                                 rs.getString("file_path"),Double.parseDouble(rs.getString("file_size")),submitDate);
+                                 rs.getString("file_path"),Double.parseDouble(rs.getString("file_size")),submitDate, rs.getString("dimensions"));
             files.add(file);
         }
         connection.close();
@@ -100,7 +100,7 @@ public class FileBroker {
         while (rs.next()) {
             java.util.Date submitDate = rs.getTimestamp("date_submitted"); 
             file = new File(rs.getString("filename"),id,
-                                 rs.getString("file_path"), 0, submitDate);
+                                 rs.getString("file_path"), 0, submitDate, rs.getString("dimensions"));
         }
         connection.close();
         return file;

@@ -31,18 +31,18 @@ public class OrderBroker{
             throw new SQLException("Error Adding Order: Missing order information.");
         }
 
-        CallableStatement cStmt = connection.prepareCall("{call createPrintOrder(?, ?, ?, ?, ?)}");
+        CallableStatement cStmt = connection.prepareCall("{call createPrintOrder(?, ?, ?, ?, ?, ?, ?)}");
 
         cStmt.setDouble(1, order.getCost());
         cStmt.setInt(3, order.getPrinter().getPrinterId());
         cStmt.setInt(2, order.getMaterial().getMaterialId()); 
         cStmt.setInt(4, order.getAccount().getAccountID());
         cStmt.setInt(5, order.getFile().getFileID());
-        
+        cStmt.setString(6, order.getColour());
+        cStmt.setString(7, order.getComments());
 
         boolean hadResults = cStmt.execute();
         connection.close();
-        System.out.println("HAD RESULTS: " + hadResults);
         return hadResults ? 0 : 1;
     }
     /**
@@ -60,7 +60,7 @@ public class OrderBroker{
             throw new SQLException("Error Updating Order: NULL order");
         }
 
-        CallableStatement cStmt = connection.prepareCall("{call updateMaterial(?, ?, ?, ?, ?, ?, ?)}");
+        CallableStatement cStmt = connection.prepareCall("{call updateMaterial(?, ?, ?, ?, ?, ?, ?, ?)}");
 
         cStmt.setInt(1, order.getOrderId());
         cStmt.setDouble(2, order.getCost());
@@ -69,6 +69,7 @@ public class OrderBroker{
         cStmt.setInt(5, order.getPrinter().getPrinterId());
         cStmt.setInt(6, order.getMaterial().getMaterialId());
         cStmt.setInt(7, order.getFile().getFileID());
+        cStmt.setString(8, order.getColour());
 
         int hadResults = cStmt.executeUpdate();
         connection.close();
@@ -117,7 +118,7 @@ public class OrderBroker{
             Material material = mb.getMaterialByID(Integer.parseInt(rs.getString("material_id")));
             Account account = ab.getAccountByID(Integer.parseInt(rs.getString("account_id")));
             
-            Order order= new Order(orderID,cost,orderDate,printDate,orderStatus,file,printer,material,account);
+            Order order= new Order(orderID,cost,orderDate,printDate,orderStatus,file,printer,material,account, rs.getString("comments"), rs.getString("colour"));
             orders.add(order);
         }
         connection.close();
@@ -165,7 +166,7 @@ public class OrderBroker{
             Material material = mb.getMaterialByID(Integer.parseInt(rs.getString("material_id")));
             Account account = ab.getAccountByID(Integer.parseInt(rs.getString("account_id")));
             
-            Order order= new Order(orderID,cost,orderDate,printDate,orderStatus,file,printer,material,account);
+            Order order= new Order(orderID,cost,orderDate,printDate,orderStatus,file,printer,material,account, rs.getString("comments"), rs.getString("colour"));
             orders.add(order);
         }
         connection.close();
@@ -211,8 +212,7 @@ public class OrderBroker{
             Printer printer = pb.getPrinterByID(Integer.parseInt(rs.getString("printer_id")));
             Material material = mb.getMaterialByID(Integer.parseInt(rs.getString("material_id")));
             Account account = ab.getAccountByID(Integer.parseInt(rs.getString("account_id")));
-            
-            Order order= new Order(orderID,cost,orderDate,printDate,orderStatus,file,printer,material,account);
+            Order order= new Order(orderID,cost,orderDate,printDate,orderStatus,file,printer,material,account, rs.getString("comments"), rs.getString("colour"));
             orders.add(order);
         }
         connection.close();
@@ -245,10 +245,9 @@ public class OrderBroker{
         //Iterating through result set to create Orders
         while (rs.next()) {
             Colour colour = new Colour(rs.getString("colour"), "in-stock");
-            order= new Order(rs.getInt("order_id"),rs.getDouble("cost"),new java.util.Date(),new java.util.Date(),rs.getString("order_status"),fb.getFileByFileID(rs.getInt("order_file_id")),pb.getPrinterByID(rs.getInt("printer_id")),mb.getMaterialByID(rs.getInt("material_id")), ab.getAccountByID(rs.getInt("account_id")));
+            order= new Order(rs.getInt("order_id"),rs.getDouble("cost"),new java.util.Date(),new java.util.Date(),rs.getString("order_status"),fb.getFileByFileID(rs.getInt("order_file_id")),pb.getPrinterByID(rs.getInt("printer_id")),mb.getMaterialByID(rs.getInt("material_id")), ab.getAccountByID(rs.getInt("account_id")), rs.getString("comments"), rs.getString("colour"));
             order.setOrderDate(rs.getDate("order_date"));
             order.setPrintDate(rs.getDate("print_date"));
-            order.setColour(colour);
         }
         
         connection.close();

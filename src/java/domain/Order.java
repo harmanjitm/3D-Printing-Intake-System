@@ -35,7 +35,7 @@ public class Order {
     private Account account;
 
     /** The colour */
-    private Colour colour;
+    private String colour;
     
     /** The comments  */
     private String comments;
@@ -59,7 +59,7 @@ public class Order {
      * @param printer the printer
      * @param material the material
      */
-    public Order(int orderId, double cost, Date orderDate, Date printDate, String status, File file, Printer printer, Material material, Account account) {
+    public Order(int orderId, double cost, Date orderDate, Date printDate, String status, File file, Printer printer, Material material, Account account, String comments, String colour) {
         super();
         this.orderId = orderId;
         this.cost = cost;
@@ -70,6 +70,8 @@ public class Order {
         this.printer = printer;
         this.material = material;
         this.account = account;
+        this.comments = comments;
+        this.colour = colour;
     }
 
     /**
@@ -219,11 +221,11 @@ public class Order {
         this.material = material;
     }
 
-    public Colour getColour() {
+    public String getColour() {
         return colour;
     }
 
-    public void setColour(Colour colour) {
+    public void setColour(String colour) {
         this.colour = colour;
     }
 

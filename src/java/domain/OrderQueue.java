@@ -61,13 +61,21 @@ public class OrderQueue {
      * The additional comments added to the order
      */
     private String comments;
+    
+    private String filePath;
+    
+    private String printerDimensions;
+    
+    private String fileDimensions;
+    
+    private String fileName;
 
     public OrderQueue() 
     {
     
     }
     
-    public OrderQueue(int position, Order order, Account account) {
+    public OrderQueue(int position, Order order, Account account, File file) {
         this.position = position;
         this.orderId = order.getOrderId();
         this.cost = order.getCost();
@@ -77,10 +85,50 @@ public class OrderQueue {
         this.lastname = account.getLastname();
         this.email = account.getEmail();
         this.materialName = order.getMaterial().getName();
-        this.materialColour = order.getColour().getColor();
+        this.materialColour = order.getColour();
         this.comments = order.getComments();
+        this.fileName = file.getName();
+        this.filePath = file.getPath();
+        this.printerDimensions = order.getPrinter().getSize();
+        this.fileDimensions = file.getDimensions();
     }
 
+    public String getPrinterDimensions() {
+        return printerDimensions;
+    }
+
+    public void setPrinterDimensions(String printerDimensions) {
+        this.printerDimensions = printerDimensions;
+    }
+
+    public String getFileDimensions() {
+        return fileDimensions;
+    }
+
+    public void setFileDimensions(String fileDimensions) {
+        this.fileDimensions = fileDimensions;
+    }
+
+    
+    
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    
+    
     public int getOrderId() {
         return orderId;
     }

@@ -117,6 +117,7 @@ CREATE TABLE IF NOT EXISTS `aris`.`ORDER_FILE` (
   `file_path` VARCHAR(500) NOT NULL,
   `file_size` DOUBLE(13,4) NULL,
   `file_type` VARCHAR(5) NULL,
+  `dimensions` VARCHAR(30) NULL,
   `date_submitted` DATE NOT NULL,
   `date_archived` DATE NULL,
   PRIMARY KEY (`order_file_id`));
@@ -139,6 +140,7 @@ CREATE TABLE IF NOT EXISTS `aris`.`PRINT_ORDER` (
   `account_id` INT NOT NULL, FOREIGN KEY (account_id) REFERENCES ACCOUNTS(account_id) ON DELETE CASCADE,
   `order_file_id` INT NOT NULL, FOREIGN KEY (order_file_id) REFERENCES ORDER_FILE(order_file_id) ON DELETE CASCADE,
   `colour` VARCHAR(50) NOT NULL,
+  `comments` VARCHAR(500) NOT NULL,
   PRIMARY KEY (`order_id`));
 ALTER TABLE PRINT_ORDER AUTO_INCREMENT=300000;
 
@@ -862,10 +864,10 @@ use aris;
 DROP PROCEDURE IF EXISTS createPrintOrder;
 delimiter #
 
-CREATE  PROCEDURE `createPrintOrder`($cost DECIMAL(13,4),$printer_id INTEGER, $material_id INTEGER, $account_id INTEGER, $order_file_id INTEGER, $colour VARCHAR(50))
+CREATE  PROCEDURE `createPrintOrder`($cost DECIMAL(13,4),$printer_id INTEGER, $material_id INTEGER, $account_id INTEGER, $order_file_id INTEGER, $colour VARCHAR(50), $comments VARCHAR(500))
 proc_main:BEGIN
-	INSERT INTO PRINT_ORDER(cost, order_date, order_status, printer_id, material_id, account_id, order_file_id, colour) 
-		VALUES($cost, CURDATE(), 'recieved', $printer_id, $material_id, $account_id, $order_file_id, $colour);
+	INSERT INTO PRINT_ORDER(cost, order_date, order_status, printer_id, material_id, account_id, order_file_id, colour, comments) 
+		VALUES($cost, CURDATE(), 'recieved', $printer_id, $material_id, $account_id, $order_file_id, $colour, $comments);
 END proc_main #
 delimiter ;
 
@@ -917,7 +919,7 @@ delimiter #
 
 CREATE  PROCEDURE `getOrdersByPrinter`($printer_id INTEGER)
 proc_main:BEGIN
-	SELECT order_id, cost, order_date, print_date, order_status, material_id, account_id, order_file_id, order_status,colour
+	SELECT order_id, cost, order_date, print_date, order_status, material_id, account_id, order_file_id, order_status, colour, comments
 		FROM PRINT_ORDER
         WHERE printer_id = $printer_id;
 END proc_main #
@@ -937,7 +939,7 @@ delimiter #
 
 CREATE  PROCEDURE `getOrdersByStatus`($order_status VARCHAR(20))
 proc_main:BEGIN
-	SELECT order_id, cost, order_date, print_date, printer_id, material_id, account_id, order_file_id, order_status,colour
+	SELECT order_id, cost, order_date, print_date, printer_id, material_id, account_id, order_file_id, order_status, colour, comments
 		FROM PRINT_ORDER
         WHERE order_status = $order_status;
 END proc_main #
@@ -956,7 +958,7 @@ delimiter #
 
 CREATE  PROCEDURE `getAllOrders`()
 proc_main:BEGIN
-	SELECT order_id, cost, order_date, print_date, printer_id, material_id, account_id, order_file_id, order_status,colour
+	SELECT order_id, cost, order_date, print_date, printer_id, material_id, account_id, order_file_id, order_status,colour, comments
 		FROM PRINT_ORDER;
 END proc_main #
 delimiter ;
@@ -993,10 +995,10 @@ use aris;
 DROP PROCEDURE IF EXISTS createFile;
 delimiter #
 
-CREATE  PROCEDURE `createFile`($account_id INTEGER(11), $filename VARCHAR(30), $file_path VARCHAR(500), $file_size DOUBLE(13,4), $file_type VARCHAR(5))
+CREATE  PROCEDURE `createFile`($account_id INTEGER(11), $filename VARCHAR(30), $file_path VARCHAR(500), $file_size DOUBLE(13,4), $file_type VARCHAR(5), $dimensions VARCHAR(30))
 proc_main:BEGIN
-	INSERT INTO ORDER_FILE(account_id, filename, file_path, file_size, file_type, date_submitted) 
-		VALUES($account_id, $filename, $file_path, $file_size, $file_type, CURDATE());
+	INSERT INTO ORDER_FILE(account_id, filename, file_path, file_size, file_type, date_submitted, dimensions) 
+		VALUES($account_id, $filename, $file_path, $file_size, $file_type, CURDATE(), $dimensions);
 END proc_main #
 delimiter ;
 
@@ -1014,7 +1016,7 @@ delimiter #
 
 CREATE  PROCEDURE `getFilesByAccountId`($account_id INTEGER)
 proc_main:BEGIN
-	SELECT order_file_id, filename, file_path, date_submitted, file_size
+	SELECT order_file_id, filename, file_path, date_submitted, file_size, dimensions
 		FROM ORDER_FILE
         WHERE account_id = $account_id;
 END proc_main #
@@ -1033,7 +1035,7 @@ delimiter #
 
 CREATE  PROCEDURE `getFileByFileId`($order_file_id INTEGER)
 proc_main:BEGIN
-	SELECT filename, file_path, date_submitted
+	SELECT filename, file_path, date_submitted, dimensions
 		FROM ORDER_FILE
 		WHERE order_file_id = $order_file_id;
 END proc_main #
@@ -1307,28 +1309,28 @@ call aris.createNotificationDefaultMessage('printing','Your print is currently b
 call aris.createNotificationDefaultMessage('queued','Your print has been approved and added to the queue of prints.');
 
 /*FILES*/
-call aris.createFile(100000, 'EmilyPegg.stl', 'test/', 90, 'STL');
-call aris.createFile(100001, 'BenWozak.stl', 'test/', 100, 'STL');
-call aris.createFile(100002, 'GregTurnbull.stl', 'test/', 80, 'STL');
-call aris.createFile(100003, 'HarmanMohaar.stl', 'test/', 60, 'STL');
-call aris.createFile(100004, 'HaseebSheikTsuyi.stl', 'test/', 70, 'STL');
-call aris.createFile(100000, 'EmilyPegg.stl', 'test/', 90, 'STL');
-call aris.createFile(100001, 'BenWozak.stl', 'test/', 100, 'STL');
-call aris.createFile(100002, 'GregTurnbull.stl', 'test/', 80, 'STL');
-call aris.createFile(100003, 'HarmanMohaar.stl', 'test/', 60, 'STL');
-call aris.createFile(100004, 'HaseebSheikTsuyi.stl', 'test/', 70, 'STL');
+call aris.createFile(100000, 'EmilyPegg.stl', 'test/', 90, 'STL', '1x1x1');
+call aris.createFile(100001, 'BenWozak.stl', 'test/', 100, 'STL', '1x1x1');
+call aris.createFile(100002, 'GregTurnbull.stl', 'test/', 80, 'STL', '1x1x1');
+call aris.createFile(100003, 'HarmanMohaar.stl', 'test/', 60, 'STL', '1x1x1');
+call aris.createFile(100004, 'HaseebSheikTsuyi.stl', 'test/', 70, 'STL', '1x1x1');
+call aris.createFile(100000, 'EmilyPegg.stl', 'test/', 90, 'STL', '1x1x1');
+call aris.createFile(100001, 'BenWozak.stl', 'test/', 100, 'STL', '1x1x1');
+call aris.createFile(100002, 'GregTurnbull.stl', 'test/', 80, 'STL', '1x1x1');
+call aris.createFile(100003, 'HarmanMohaar.stl', 'test/', 60, 'STL', '1x1x1');
+call aris.createFile(100004, 'HaseebSheikTsuyi.stl', 'test/', 70, 'STL', '1x1x1');
 
 /*ORDERS*/
-call aris.createPrintOrder(123.00, 1, 50, 100000, 400000, 'gray');
-call aris.createPrintOrder(123.00, 2, 57, 100000, 400001, 'gray');
-call aris.createPrintOrder(123.00, 3, 58, 100000, 400002, 'gray');
-call aris.createPrintOrder(123.00, 1, 51, 100000, 400003, 'gray');
-call aris.createPrintOrder(123.00, 2, 55, 100000, 400004, 'gray');
-call aris.createPrintOrder(123.00, 1, 50, 100000, 400005, 'gray');
-call aris.createPrintOrder(123.00, 2, 57, 100000, 400006, 'gray');
-call aris.createPrintOrder(123.00, 3, 58, 100000, 400007, 'gray');
-call aris.createPrintOrder(123.00, 1, 51, 100000, 400008, 'gray');
-call aris.createPrintOrder(123.00, 2, 55, 100000, 400009, 'gray');
+call aris.createPrintOrder(123.00, 1, 50, 100000, 400000, 'gray', 'Test comment!');
+call aris.createPrintOrder(123.00, 2, 57, 100000, 400001, 'gray', 'Test comment!');
+call aris.createPrintOrder(123.00, 3, 58, 100000, 400002, 'gray', 'Test comment!');
+call aris.createPrintOrder(123.00, 1, 51, 100000, 400003, 'gray', 'Test comment!');
+call aris.createPrintOrder(123.00, 2, 55, 100000, 400004, 'gray', 'Test comment!');
+call aris.createPrintOrder(123.00, 1, 50, 100000, 400005, 'gray', 'Test comment!');
+call aris.createPrintOrder(123.00, 2, 57, 100000, 400006, 'gray', 'Test comment!');
+call aris.createPrintOrder(123.00, 3, 58, 100000, 400007, 'gray', 'Test comment!');
+call aris.createPrintOrder(123.00, 1, 51, 100000, 400008, 'gray', 'Test comment!');
+call aris.createPrintOrder(123.00, 2, 55, 100000, 400009, 'gray', 'Test comment!');
 
 /*ORDER QUEUE*/
 call aris.createQueue(300000);

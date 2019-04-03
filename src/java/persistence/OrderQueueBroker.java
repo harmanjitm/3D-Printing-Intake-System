@@ -1,6 +1,7 @@
 package persistence;
 
 import domain.Account;
+import domain.File;
 import domain.Material;
 import domain.Note;
 import domain.Order;
@@ -118,6 +119,7 @@ public class OrderQueueBroker {
         Connection connection = cp.getConnection();
         AccountBroker ab = new AccountBroker();
         OrderBroker ob = new OrderBroker();
+        FileBroker fb = new FileBroker();
         ArrayList<OrderQueue> queue = new ArrayList<>();
         
         if (connection == null) {
@@ -141,7 +143,7 @@ public class OrderQueueBroker {
                 int position = rs.getInt("queue_position");
                 Order order = ob.getOrder(rs.getInt("order_id"));
                 Account account = ab.getAccountByID(rs.getInt("account_id"));
-                orderQueue = new OrderQueue(position,order,account);            
+                orderQueue = new OrderQueue(position,order,account, order.getFile());            
                 queue.add(orderQueue);
             }
         }
