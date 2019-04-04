@@ -1,9 +1,14 @@
 package services;
 
+import domain.Account;
+import domain.File;
+import domain.Material;
 import java.util.ArrayList;
 
 import domain.Order;
+import domain.Printer;
 import java.sql.SQLException;
+import java.util.Date;
 import persistence.OrderBroker;
 
 /**
@@ -28,8 +33,9 @@ public class OrderService {
      *
      * @return the new order
      */
-    public Order createOrder() {
-        return null;
+    public int createOrder(int orderId, double cost, Date orderDate, Date printDate, String status, File file, Printer printer, Material material, Account account, String comments, String colour) throws SQLException {
+        Order order = new Order(orderId, cost, orderDate, printDate, status, file, printer, material, account, comments, colour);
+        return ob.createOrder(order);
 
     }
 
@@ -50,11 +56,21 @@ public class OrderService {
      * @param toUpdate the updated order
      * @return the order that is being replaced
      */
-    public Order updateOrderDetails(Order toUpdate) {
-        return null;
-
+    public int updateOrderDetails(Order toUpdate) throws SQLException {
+        Order order = new Order();
+        return ob.updateOrder(order);
     }
 
+    /**
+     * 
+     * @param status
+     * @return
+     * @throws SQLException 
+     */
+    public ArrayList<Order> getOrderByStatus(String status) throws SQLException {
+        return ob.getOrderByStatus(status);
+    }
+    
     /**
      * Takes in the order id and the new status. Sets the order status to one
      * of: "pending", "underReview", "printed", "cancelled" or "changesRequired"
@@ -75,8 +91,8 @@ public class OrderService {
      * @return the order object with that id or null if the object cannot be
      * found
      */
-    public Order getOrderDetails(int orderId) {
-        return null;
+    public Order getOrderDetails(int orderId) throws SQLException {
+        return ob.getOrder(orderId);
 
     }
 
@@ -86,8 +102,8 @@ public class OrderService {
      * @param accountId the account id
      * @return all orders for that account
      */
-    public ArrayList<Order> getAllOrders(int accountId) {
-        return null;
+    public ArrayList<Order> getAllOrders(int accountId) throws SQLException {
+        return ob.getAllOrders();
 
     }
 
@@ -103,6 +119,11 @@ public class OrderService {
 
     }
 
+    public File getFileByFileId(int fileId) throws SQLException {
+        
+        return ob.getFileByFileId(fileId);
+    }
+    
     /**
      * Gets the next id.
      *

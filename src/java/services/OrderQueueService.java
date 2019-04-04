@@ -1,9 +1,14 @@
 package services;
 
+import domain.Account;
+import domain.File;
+import domain.Material;
 import domain.Order;
 import domain.OrderQueue;
+import domain.Printer;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import persistence.OrderQueueBroker;
 
 /**
@@ -11,11 +16,14 @@ import persistence.OrderQueueBroker;
  * objects.
  */
 public class OrderQueueService {
+    
+    private OrderQueueBroker oqb;
 
     /**
      * Instantiates a new order queue service.
      */
     public OrderQueueService() {
+        oqb = new OrderQueueBroker();
     }
 
     /**
@@ -24,31 +32,41 @@ public class OrderQueueService {
      * @param toAdd the order to add to the queue
      * @return true, if successfully added
      */
-    public boolean addToQueue(Order toAdd) {
-        return false;
-
+    public int insertQueue(int orderId, double cost, Date orderDate, Date printDate, String status, File file, Printer printer, Material material, Account account, String comments, String colour) throws SQLException {
+        Order order = new Order(orderId, cost, orderDate, printDate, status, file, printer, material, account, comments, colour);
+        
+        return oqb.insertQueue(order);
     }
 
+    /**
+     * Updates an orders position within the Queue
+     * 
+     * @param order
+     * @param position
+     * @return
+     * @throws SQLException 
+     */
+    public int updateQueuePosition(Order order, int position) throws SQLException {
+        OrderQueue orderQ = new OrderQueue();
+        
+        return obq.updateQueuePosition(orderQ);
+    }
+    
     /**
      * Removes the order from the queue by order id.
      *
      * @param orderId the order id to be removed from the queue
      * @return the order that was removed or null if an order could not be found
      */
-    public Order removeFromQueue(int orderId) {
-        return null;
+    public int removeFromQueue(Order order) throws SQLException {
+        return oqb.deleteFromQueue(order);
 
     }
     
     public ArrayList<OrderQueue> getOrderQueue() throws SQLException
     {
         OrderQueueBroker oqb = new OrderQueueBroker();
-//        throw new SQLException("Error Getting Orders: I made this problem, don't worry about it nerds.");
         return oqb.getOrderQueue();
     }
 
-//    public ArrayList<Order> getOrdersByPrinter(int printerId) throws SQLException {
-//        OrderQueueBroker oqb = new OrderQueueBroker();
-//        return oqb.getOrdersByPrinter(printerId);
-//    }
 }
