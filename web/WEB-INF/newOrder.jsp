@@ -13,7 +13,7 @@
         <ARIS3D:Imports/>
         <link href="res/css/header.css" rel="stylesheet" type="text/css"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>ARIS Submit New Order</title>
+        <title>ARIS3D - Submit New Order</title>
         <script type="text/javascript" src="node_modules/vuejs/dist/vue.min.js"></script>
         <style>
             body {
@@ -41,7 +41,7 @@
     <body>
         <div id="app">
             <v-app>
-                <ARIS3D:Header isAdmin="false" pageName="New Order"></ARIS3D:Header>
+                <ARIS3D:Header isAdmin="false" pageName="Order Submission"></ARIS3D:Header>
                     <v-content>
                         <v-container>
                             <v-stepper v-model="e1">
@@ -392,9 +392,7 @@ new Vue({
         comments: '',
         selectPrinterName: '',
         selectMaterialId: '',
-        
         selectedColourID: 0,
-        
         drawer: '',
         orderComment: '',
         userItems:
