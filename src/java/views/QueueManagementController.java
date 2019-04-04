@@ -83,25 +83,11 @@ public class QueueManagementController extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
         String action = request.getParameter("action");
-        String email = request.getParameter("email");
-        String orderIDs = request.getParameter("orderID");
-        String printerIDs = request.getParameter("printerID");
-        String materialIDs = request.getParameter("materialID");
-        
-        
-        AccountService as = new AccountService();
-        OrderQueueService qs = new OrderQueueService();
-        PrinterService ps = new PrinterService();
-        MaterialService ms = new MaterialService();
+        String orderIDs = request.getParameter("orderId");
+
         OrderService os = new OrderService();
 
         Order order = new Order();
-        Account account = new Account();
-        OrderQueue queue = new OrderQueue();
-        Printer printer = new Printer();
-        Material material = new Material();
-        
-        order.getOrderId();
         
         try
         {
@@ -112,16 +98,17 @@ public class QueueManagementController extends HttpServlet
                     order = os.getOrderDetails(orderID);
                     if(order == null)
                     {
-                        request.setAttribute("errorMessage", "Error, Order doesnt exist.");
+                        request.setAttribute("errorMessage", "Error Completing Order: Order doesn't exist.");
                         request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
+                        return;
                     }
                     if(order.getStatus() != "complete")
                     {
                         String orderStatus = "complete";
-                        String newStatus = os.setOrderStatus(orderID, orderStatus);
-                        //order.setStatus(newStatus);
+                        os.setOrderStatus(orderID, orderStatus);
                         request.setAttribute("successMessage", "Order has been completed.");
                         request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
+                        return;
                     }
                     break;
                 case "cancel":
@@ -129,16 +116,17 @@ public class QueueManagementController extends HttpServlet
                     order = os.getOrderDetails(orderID);
                     if(order == null)
                     {
-                        request.setAttribute("errorMessage", "Error, Order doesnt exist.");
+                        request.setAttribute("errorMessage", "Error Completing Order: Order doesn't exist.");
                         request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
+                        return;
                     }
                     if(order.getStatus() != "complete")
                     {
                         String orderStatus = "cancel";
-                        String newStatus = os.setOrderStatus(orderID, orderStatus);
-                        //order.setStatus(newStatus);
+                        os.setOrderStatus(orderID, orderStatus);
                         request.setAttribute("successMessage", "Order has been cancelled.");
                         request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
+                        return;
                     }
                     break;
                 case "download":

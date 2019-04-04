@@ -56,7 +56,7 @@
                                         <v-divider vertical></v-divider>
                                         <v-spacer></v-spacer>
                                         <form method="post" action="queue">
-                                            <input type="hidden" name="filePath" :value="order.filePath">
+                                            <input type="hidden" name="path" :value="order.filePath">
                                             <input type="hidden" name="action" value="download">
                                             <v-btn type="submit" flat color="orange darken-2">Download</v-btn>
                                         </form>
