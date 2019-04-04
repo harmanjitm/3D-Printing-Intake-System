@@ -283,4 +283,29 @@ public class OrderBroker{
         connection.close();
         return file;
     }
+
+    public int getNextOrderID() throws SQLException {
+        ConnectionPool cp = ConnectionPool.getInstance();    
+        Connection connection = cp.getConnection();
+        
+        int nextOrderId = 0;
+        
+        PreparedStatement ps = connection.prepareStatement("SELECT MAX(order_id) AS nextId FROM print_order");
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            nextOrderId = rs.getInt("nextId");
+            System.out.println("RS Value: " + rs.getInt("nextId") + "\nNext ID: " + nextOrderId);
+        }
+        connection.close();
+        
+        if(nextOrderId < 300000)
+        {
+            nextOrderId = 300000;
+        }
+        else
+        {
+            nextOrderId++;
+        }
+        return nextOrderId;
+    }
 }
