@@ -25,6 +25,13 @@ import services.MaterialService;
  */
 public class MaterialManagementController extends HttpServlet {
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         MaterialService ms = new MaterialService();
         //ArrayList used to populate all the materials in the materials table
@@ -59,6 +66,13 @@ public class MaterialManagementController extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
     }
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Request variables from the Front end to populate them

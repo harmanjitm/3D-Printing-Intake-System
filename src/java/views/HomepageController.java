@@ -17,6 +17,14 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class HomepageController extends HttpServlet
 {
+
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
@@ -24,6 +32,13 @@ public class HomepageController extends HttpServlet
         request.getRequestDispatcher("/WEB-INF/homepage.jsp").forward(request, response);
     }
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException

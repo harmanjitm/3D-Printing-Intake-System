@@ -88,7 +88,7 @@ public class OrderQueueBroker {
      * @return Returns 0 if unsuccessful, 1 if successful
      * @throws SQLException 
      */
-    public int deleteQueue(Order order) throws SQLException{
+    public int deleteFromQueue(Order order) throws SQLException{
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection connection = cp.getConnection();
         if (connection == null) {

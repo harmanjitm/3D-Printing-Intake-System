@@ -27,6 +27,14 @@ import services.PrinterService;
  */
 public class PrinterManagementController extends HttpServlet 
 {
+
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
         System.out.println("Trying to make new service");
@@ -48,6 +56,13 @@ public class PrinterManagementController extends HttpServlet
         request.getRequestDispatcher("/WEB-INF/printerMgmt.jsp").forward(request, response);
     }
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {

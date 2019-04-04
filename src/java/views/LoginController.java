@@ -24,6 +24,14 @@ import services.AccountService;
  */
 public class LoginController extends HttpServlet 
 {
+
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
         HttpSession session = request.getSession();
@@ -51,6 +59,13 @@ public class LoginController extends HttpServlet
         request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
     }
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {

@@ -31,6 +31,14 @@ import services.PrinterService;
  */
 public class OrderManagementController extends HttpServlet 
 {
+
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
         String accIDs = request.getParameter("accountID");
@@ -65,6 +73,13 @@ public class OrderManagementController extends HttpServlet
         request.getRequestDispatcher("/WEB-INF/orderHistory.jsp").forward(request, response);
     }
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
@@ -92,8 +107,10 @@ public class OrderManagementController extends HttpServlet
         PrinterService ps = new PrinterService();
         OrderService os = new OrderService();
         
-        switch(action)
+        try
         {
+            switch(action)
+            {
             case "edit":
                 order = new Order();
                 order = os.getOrderDetails(orderID);
@@ -114,6 +131,11 @@ public class OrderManagementController extends HttpServlet
                 break;
             default:
                 break;
+            }
+        } 
+        catch (SQLException ex)
+        {
+            Logger.getLogger(OrderManagementController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

@@ -6,6 +6,7 @@
 
 package views;
 
+import domain.Account;
 import domain.Material;
 import domain.Order;
 import domain.OrderQueue;
@@ -32,6 +33,14 @@ import services.PrinterService;
  */
 public class QueueManagementController extends HttpServlet 
 {
+
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
         try {
@@ -60,53 +69,80 @@ public class QueueManagementController extends HttpServlet
         request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
     }
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
         String action = request.getParameter("action");
-        String name = request.getParameter("name");
-        String qID = request.getParameter("queueID");
-        String prinID = request.getParameter("printerID");
-        String printerStatus = request.getParameter("status");
-        int queueID = Integer.parseInt(qID);
-        int printerID = Integer.parseInt(prinID);
+        String email = request.getParameter("email");
+        String orderIDs = request.getParameter("orderID");
+        String printerIDs = request.getParameter("printerID");
+        String materialIDs = request.getParameter("materialID");
         
-        OrderQueue oq = new OrderQueue();
+        
         AccountService as = new AccountService();
         OrderQueueService qs = new OrderQueueService();
         PrinterService ps = new PrinterService();
+        MaterialService ms = new MaterialService();
+        OrderService os = new OrderService();
 
-        Printer status = new Printer();
-        if(status.getStatus().equals(printerStatus))
-        {
-            
-            request.setAttribute("successMessage", "Status updated");
-            getServletContext().getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
-        }
+        Order order = new Order();
+        Account account = new Account();
+        OrderQueue queue = new OrderQueue();
+        Printer printer = new Printer();
+        Material material = new Material();
         
-        if((qs.getQueue(queueID) != null))
+        order.getOrderId();
+        
+        try
         {
-//            Printer status = null;
-            status.getStatus();
-            Printer toUpdate = status;
-            try
+            switch(action)
             {
-                as.emailPath = getServletContext().getRealPath("/WEB-INF");
-                ps.setPrinterStatus(toUpdate);
-                request.setAttribute("successMessage", "Status updated");
-                getServletContext().getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
-            } 
-            catch (SQLException ex)
-            {
-                Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);
-                request.setAttribute("errorMessage", "Error setting status");
-                getServletContext().getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
+                case "complete":
+                    int orderID = Integer.parseInt(orderIDs);
+                    order = os.getOrderDetails(orderID);
+                    if(order == null)
+                    {
+                        request.setAttribute("errorMessage", "Error, Order doesnt exist.");
+                        request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
+                    }
+                    if(order.getStatus() != "complete")
+                    {
+                        String orderStatus = "complete";
+                        String newStatus = os.setOrderStatus(orderID, orderStatus);
+                        //order.setStatus(newStatus);
+                        request.setAttribute("successMessage", "Order has been completed.");
+                        request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
+                    }
+                    break;
+                case "cancel":
+                    orderID = Integer.parseInt(orderIDs);
+                    order = os.getOrderDetails(orderID);
+                    if(order == null)
+                    {
+                        request.setAttribute("errorMessage", "Error, Order doesnt exist.");
+                        request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
+                    }
+                    if(order.getStatus() != "complete")
+                    {
+                        String orderStatus = "cancel";
+                        String newStatus = os.setOrderStatus(orderID, orderStatus);
+                        //order.setStatus(newStatus);
+                        request.setAttribute("successMessage", "Order has been cancelled.");
+                        request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
+                    }
+                    break;
             }
-        }
-        else
+        } 
+        catch (SQLException ex)
         {
-            request.setAttribute("errorMessage", "Error setting status");
-            getServletContext().getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
+            Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
