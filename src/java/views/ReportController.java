@@ -26,6 +26,13 @@ import services.ReportService;
  */
 public class ReportController extends HttpServlet {
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ReportService rs = new ReportService();
         try {
@@ -40,6 +47,13 @@ public class ReportController extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/reportMgmt.jsp").forward(request, response);
     }
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
