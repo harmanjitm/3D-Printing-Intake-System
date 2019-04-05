@@ -42,7 +42,19 @@
                             </a>
                         </c:if>
                     </v-toolbar>
+                    <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
+                            ${successMessage}
+                        </v-alert>
+                        <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
+                            ${errorMessage}
+                        </v-alert>
                     <div class="overlayContainer">
+                        <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
+                            ${successMessage}
+                        </v-alert>
+                        <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
+                            ${errorMessage}
+                        </v-alert>
                         <span class="carouselOverlay mt-5">
                             <c:if test="${account == null}"><h1 class="display-2 font-weight-bold">ARIS 3D Printing Service</h1></c:if>
                             <c:if test="${account != null}"><h1 class="display-2 font-weight-bold">Welcome Back, ${sessionScope.account.firstname}!</h1></c:if>
