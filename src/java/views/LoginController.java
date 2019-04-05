@@ -116,7 +116,7 @@ public class LoginController extends HttpServlet
         {
             case "user":
                 session.setAttribute("account", account);
-                response.sendRedirect("userhome");
+                response.sendRedirect("home");
                 return;
             case "admin":
                 session.setAttribute("account", account);

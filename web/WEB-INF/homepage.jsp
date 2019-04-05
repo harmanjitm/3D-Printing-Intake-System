@@ -37,14 +37,15 @@
                             </a>
                         </c:if>
                         <c:if test="${account.accountType == 'user'}">
-                            <a href="userhome">
-                                <v-btn color="#8B2635">Dashboard</v-btn>
+                            <a href="login?logout=true">
+                                <v-btn color="#8B2635">Logout</v-btn>
                             </a>
                         </c:if>
                     </v-toolbar>
                     <div class="overlayContainer">
                         <span class="carouselOverlay mt-5">
-                            <h1 class="display-2 font-weight-bold">ARIS 3D Printing Service</h1>
+                            <c:if test="${account == null}"><h1 class="display-2 font-weight-bold">ARIS 3D Printing Service</h1></c:if>
+                            <c:if test="${account != null}"><h1 class="display-2 font-weight-bold">Welcome Back, ${sessionScope.account.firstname}!</h1></c:if>
                             <c:if test="${account == null}"><h1 class="subheading font-weight-regular">Sign up now to get started!</h1></c:if>
                             <c:if test="${account != null}"><h1 class="subheading font-weight-regular">Submit your 3D project below!</h1></c:if>
                             <c:if test="${account == null}"><a href="register"><v-btn large color="#8B2635" dark round>Get Started!</v-btn></a></c:if>
@@ -95,6 +96,7 @@
                     <v-container grid-list-md text-xs-center>
                         <h1 class="display-1 text-xs-center font-weight-thin">Our Printing Service</h1>
                         <v-divider></v-divider>
+                        <br>
                         <v-layout row wrap>
                             <v-flex xs12 sm12 md6 lg4 xl4>
                                 <v-card color="#8B2635" height="5px"></v-card>

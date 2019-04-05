@@ -25,11 +25,8 @@ new Vue(
         userItems: 
         [ 
             {title: 'Home', icon: 'home', link: 'home'},
-            {title: 'Dashboard', icon: 'dashboard', link: 'userhome'},
-            {title: 'Notifications', icon: 'mail', link: ''},
             {title: 'Previous Orders', icon: 'replay', link: ''},
             {title: 'Submit Order', icon: 'add_box', link: 'order'},
-            {title: 'Orders', icon: '', link: ''}
         ],
         accountmanagementheaders:
         [

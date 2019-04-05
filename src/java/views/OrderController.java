@@ -274,6 +274,6 @@ public class OrderController extends HttpServlet
         }
         
         request.setAttribute("successMessage", "Your order has been submitted successfully. Please check your email for more information.");
-        request.getRequestDispatcher("/WEB-INF/newOrder.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/homepage.jsp").forward(request, response);
     }
 }
