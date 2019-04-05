@@ -205,9 +205,13 @@
                                             <v-toolbar dark flat class="headline blue-grey darken-4 white--text">
                                                 <v-toolbar-title>Material Options</v-toolbar-title>
                                             </v-toolbar>   
-                                            <v-data-table :headers="colourHeaders" :items="colours" item-key="colour" hide-actions hide-headers class="elevation-2">
+                                            <v-data-table v-model="selected" :headers="colourHeaders" :items="colours" 
+                                                          item-key="colour" select-all item-key="props.item" hide-actions hide-headers class="elevation-2">
                                                 <template slot="items" slot-scope="props">
                                                     <tr v-if="props.item.materialId === selectMaterialId" @click="selectColour(props.item)">
+                                                        <td>
+                                                            <v-checkbox :input-value="props.selected" primary hide-details></v-checkbox>
+                                                        </td>
                                                         <td>{{ props.item.colour }}</td>
                                                         <td>{{ props.item.status }}</td>
                                                     </tr>
@@ -365,6 +369,7 @@ new Vue({
         image: '',
         fileInfo: '',
         comments: '',
+        selected: [],
         selectPrinterName: '',
         selectMaterialId: '',
         selectedColourID: 0,
