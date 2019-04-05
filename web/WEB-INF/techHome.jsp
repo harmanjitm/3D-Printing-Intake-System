@@ -71,7 +71,7 @@
                             
                             <h1 class="headline font-weight-light text-xs-center">Orders Pending Approval</h1>
                             <v-divider></v-divider>
-                            <c:if test="${orders == null}">
+                            <c:if test="${orders[0] == null}">
                                 <h1 class="subheading font-weight-light text-xs-center">No orders are pending approval.</h1>
                             </c:if>
                             <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
