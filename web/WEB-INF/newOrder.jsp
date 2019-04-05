@@ -509,7 +509,7 @@ new Vue({
         },
         selectColour(colour) {
             this.selectedColour = Object.assign({}, colour);
-            alert('you selected ' + this.selectedColour.materialId);
+//            alert('you selected ' + this.selectedColour.materialId);
         },
         selectPayment() {
         // Display payment info
