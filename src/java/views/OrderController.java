@@ -20,6 +20,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -93,10 +94,23 @@ public class OrderController extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
         String action = request.getParameter("action");
-        System.out.println(action);
-        if(action == null || action.equals(""))
+        int printer = Integer.parseInt(request.getParameter("printer"));
+        int material = Integer.parseInt(request.getParameter("material"));
+        String colour = request.getParameter("colour");
+        String comments = request.getParameter("comments");
+        String dimensions = request.getParameter("dimensions");
+        Double volume = Double.parseDouble(request.getParameter("volume"));
+        Double area = Double.parseDouble(request.getParameter("area"));
+        
+        if(action == null || action.equals("")
+                || printer == 0 || material == 0
+                || colour == null || colour.equals("")
+                || comments == null || comments.equals("")
+                || dimensions == null || dimensions.equals("")
+                || volume == null || volume == 0
+                || area == null || area == 0)
         {
-            request.setAttribute("errorMessage", "Error: Something went wrong. Please try again.");
+            request.setAttribute("errorMessage", "Error Submitting Order: Please make sure all criteria is selected..");
             request.getRequestDispatcher("/WEB-INF/newOrder.jsp").forward(request, response);
             return;
         }
@@ -138,7 +152,7 @@ public class OrderController extends HttpServlet
         File folder = new File("C:/STL");
         folder.mkdirs();
         Part filePart = request.getPart("file");
-        String fileName = user.getAccountID() + "-" + nextId + ".obj";
+        String fileName = user.getAccountID() + "-" + nextId + ".stl";
         
         OutputStream out = null;
         InputStream fileContent = null;
@@ -154,15 +168,76 @@ public class OrderController extends HttpServlet
             {
                 out.write(bytes, 0, read);
             }
-            request.setAttribute("successMessage", "File successfully uploaded to: " + path + " as " + fileName);
-            request.getRequestDispatcher("/WEB-INF/newOrder.jsp").forward(request, response);
-            return;
         } catch (Exception e) {
             request.setAttribute("errorMessage", "Error Uploading File: " + e.getMessage() + ".");
             request.getRequestDispatcher("/WEB-INF/newOrder.jsp").forward(request, response);
             return;
         }
         
+        PrinterService ps = new PrinterService();
+        MaterialService ms = new MaterialService();
+        ArrayList<Printer> printers = null;
+        try {
+            printers = ps.getAllPrinters();
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        if(printers == null)
+        {
+            request.setAttribute("errorMessage", "An unknown error occurred. Please try again.");
+            request.getRequestDispatcher("/WEB-INF/newOrder.jsp").forward(request, response);
+            return;
+        }
+        
+        Double cost = 0.0;
+        Double costMM3 = 0.0;
+        Material materialSelected = null;
+        
+        try {
+            costMM3 = ms.getMaterial(material).getCost();
+            materialSelected = ms.getMaterial(material);
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("errorMessage", "An unknown error occurred. Please try again.");
+            request.getRequestDispatcher("/WEB-INF/newOrder.jsp").forward(request, response);
+            return;
+        }
+        
+        Printer printerSelected = null;
+        
+        for(Printer p : printers)
+        {
+            printerSelected = p;
+            if(p.getPrinterId() == printer)
+            {
+                switch(printer)
+                {
+                    case 1:
+                        cost = ((volume/(30*3600)) * p.getRunCost()) + (volume*costMM3);
+                        break;
+                    case 2:
+                        cost = ((volume/(15*3600)) * p.getRunCost()) + (volume*costMM3);
+                        break;
+                    case 3:
+                        cost = ((volume/(10*3600)) * p.getRunCost()) + (volume*costMM3);
+                        break;
+                }
+            }
+        }
+        domain.File file = new domain.File(user.getAccountID() + "-" + nextId, 0, path, 0, new Date(), dimensions);
+        try {
+            os.createOrder(0, cost, null, null, path, file, printerSelected, materialSelected, user, comments, colour);
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("errorMessage", "An unknown error occurred. Please try again.");
+            request.getRequestDispatcher("/WEB-INF/newOrder.jsp").forward(request, response);
+            return;
+        }
+        
+        request.setAttribute("successMessage", "Your order has been submitted successfully. Please check your email for more information.");
+        request.getRequestDispatcher("/WEB-INF/newOrder.jsp").forward(request, response);
+        return;
 //        int maxFileSize = 100 * 1024;
 //        int maxMemSize = 4 * 1024;
 //        File file;
