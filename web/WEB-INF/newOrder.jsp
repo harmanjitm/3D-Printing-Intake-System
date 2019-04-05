@@ -205,7 +205,7 @@
                                             <v-toolbar dark flat class="headline blue-grey darken-4 white--text">
                                                 <v-toolbar-title>Material Options</v-toolbar-title>
                                             </v-toolbar>   
-                                            <v-data-table :headers="colourHeaders" :items="colours" item-key="colour" hide-actions class="elevation-2">
+                                            <v-data-table :headers="colourHeaders" :items="colours" item-key="colour" hide-actions hide-headers class="elevation-2">
                                                 <template slot="items" slot-scope="props">
                                                     <tr v-if="props.item.materialId === selectMaterialId" @click="selectColour(props.item)">
                                                         <td>{{ props.item.colour }}</td>
@@ -497,7 +497,7 @@ new Vue({
         selectMaterial(material) {
             this.selectMaterialId = material.materialId;
             this.selectedMaterial = Object.assign({}, material);
-            alert('you selected ' + this.selectMaterialId);   
+//            alert('you selected ' + this.selectMaterialId);   
         },
         loadMaterialColour(material) {
             this.selectMaterialId = material.materialId;
