@@ -85,8 +85,6 @@
                                                     <form id="create-order" method="post" action="order" enctype="multipart/form-data">  
                                                         <input type="hidden" id="action" name="action" value="submit">
                                                         <input type="file" name="file" onchange='stl_viewer.add_model({local_file:this.files[0]}); ' accept="*.*">
-                                                        <!--<input type="hidden" id="fileName" name="fileName">-->
-                                                        <!--<input type="hidden" id="stl_cont" name="file" value="">-->
                                                         <input type="hidden" id="selectedPrinter" name="printer" value="">
                                                         <input type="hidden" id="selectedMaterial" name="material" value="">
                                                         <input type="hidden" id="selectedMaterialColour" name="colour" value="">
@@ -126,7 +124,6 @@
                                                     </v-list-tile>
 
                                                 </v-list>
-                                                <!--                            <v-btn @click="viewInfo">Get File Info</v-btn>-->
                                             </v-card>
                                         </v-flex>
                                     </v-layout>
@@ -363,7 +360,7 @@ new Vue({
     el: '#app',
     data: {
         e1: 0, //Stepper element
-        maxWidth: 4000,
+//        maxWidth: 4000,
         image: '',
         fileInfo: '',
         comments: '',
@@ -371,7 +368,6 @@ new Vue({
         selectMaterialId: '',
         selectedColourID: 0,
         drawer: '',
-        orderComment: '',
         adminItems: 
         [ 
             {title: 'Home', icon: 'home', link: 'home'},
@@ -530,10 +526,6 @@ new Vue({
                 //alert(JSON.stringify(stl_viewer.get_model_info(2)));
             }
         },
-            
-    computed: {
-
-    }
 })
     var stl_viewer = new StlViewer
     (

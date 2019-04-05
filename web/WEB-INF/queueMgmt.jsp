@@ -17,7 +17,7 @@
     <body>
         <div id="app">
             <v-app>
-                <ARIS3D:Header mini="true" isAdmin="true" pageName="Order Queue"></ARIS3D:Header>
+                <ARIS3D:Header isAdmin="true" pageName="Order Queue"></ARIS3D:Header>
                 <v-content>
                     <v-container grid-list-lg>
                         <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
@@ -151,7 +151,7 @@
                 el: '#app',
                 data:
                 {
-                    drawer: true,
+                    drawer: false,
                     dialog: false,
                     bottomNav: '${printers[0].printerId}',
                     num: '#',
