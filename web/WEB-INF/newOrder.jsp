@@ -42,7 +42,7 @@
         <div id="app">
             <v-app>
                 <ARIS3D:Header isAdmin="false" pageName="Order Submission"></ARIS3D:Header>
-                <br><br>
+                <v-content>
                 <v-container>
                     <v-stepper v-model="e1">
                         <v-stepper-header>
@@ -75,16 +75,17 @@
                     <v-stepper-items>
                         <!-- File select -->
                         <v-stepper-content step="1">
-                            <v-card class="mb-5" height="400px" flat>
+                            <v-card class="mb-5" height="350px" flat>
                                 <v-container fluid grid-list-md>
                                     <v-layout row wrap>
                                         <v-flex xs6 sm6 md4 lg8>
-                                            <v-card flat>
+                                            <v-card class="elevation-4">
                                                 <div id="stl_cont" @change="showInfo">
-                                                    <h2>Select an STL file</h2>
+<!--                                                    <div >-->
+                                                    <h2 class="fileInput">Select an STL file</h2>
                                                     <form id="create-order" method="post" action="order" enctype="multipart/form-data">  
                                                         <input type="hidden" id="action" name="action" value="submit">
-                                                        <input type="file" name="file" onchange='stl_viewer.add_model({local_file:this.files[0]}); ' accept="*.*">
+                                                        <input type="file" class="fileInput" name="file" onchange='stl_viewer.add_model({local_file:this.files[0]}); ' accept="*.*">
                                                         <input type="hidden" id="selectedPrinter" name="printer" value="">
                                                         <input type="hidden" id="selectedMaterial" name="material" value="">
                                                         <input type="hidden" id="selectedMaterialColour" name="colour" value="">
@@ -93,12 +94,13 @@
                                                         <input type="hidden" id="volume" name="volume" value="">
                                                         <input type="hidden" id="area" name="area" value="">
                                                     </form>
+<!--                                                  </div>  -->
                                                 </div>
                                             </v-card>
                                         </v-flex>
                                         <v-spacer></v-spacer>
                                         <v-flex xs6 sm6 md6 lg4>
-                                            <v-card>
+                                            <v-card min-height="350px">
                                                 <v-card-title><h4>File Information</h4></v-card-title>
                                                 <v-divider></v-divider>
                                                 <v-list dense>
@@ -138,7 +140,7 @@
 
                         <!-- Select printer -->
                         <v-stepper-content step="2">
-                            <v-card class="mb-5" height="400px" flat>
+                            <v-card class="mb-5" height="350px" flat>
                                 <v-container>
                                     <v-layout row wrap fluid>                                              
                                         <v-flex v-for="printer in printers" v-bind:key="printer.printerId" xs8 sm4 md4 lg4>
@@ -157,9 +159,7 @@
                                                     </v-card-title>
                                                     <span><h4>Run Cost:</h4> $</span>{{ printer.runCost }}<span>/h</span>
                                                     <v-card-actions>
-                                                        <!--                                                 <input type="hidden" name="action" value="selectPrinter">-->
                                                         <input type="hidden" name="printerID" v-model="printerSelect.printerID">
-                                                        <!--                                                 <v-btn dark color="#8B2635" @click="selectPrinter(printer)">Select</v-btn>-->
                                                     </v-card-actions>
                                                 </v-card>
                                             </v-hover>        
@@ -176,7 +176,7 @@
 
                         <!-- Select material based on selected printer -->
                         <v-stepper-content step="3">
-                            <v-card class="mb-5" height="400px" flat>
+                            <v-card class="mb-5" height="350px" flat>
                                 <v-container>
                                     <v-layout>
                                         <v-flex xs8 sm4 md4 lg6>
@@ -226,7 +226,7 @@
 
                         <!-- Comments and payment opens -->
                         <v-stepper-content step="4">
-                            <v-card class="mb-5" height="400px" flat>
+                            <v-card class="mb-5" height="350px" flat>
                                 <v-container>
                                     <v-layout>
                                         <v-flex sm6 md4 lg6>
@@ -350,6 +350,7 @@
                         </v-stepper-items>
                     </v-stepper>
                 </v-container>
+                </v-content>
             </v-app>
         </div>
 
@@ -519,11 +520,13 @@ new Vue({
                 this.selectedFile.area = obj.area.toFixed(2);
                 this.selectedFile.volume = obj.volume.toFixed(2);
                 this.selectedFile.triangles = obj.triangles;
+                document.getElementsByClassName('fileInput')[0].style.display = 'none';
+                document.getElementsByClassName('fileInput')[1].style.display = 'none';
                 
             },
             showInfo() {
                 setTimeout(this.viewInfo, 3000)
-                //alert(JSON.stringify(stl_viewer.get_model_info(2)));
+                
             }
         },
 })
