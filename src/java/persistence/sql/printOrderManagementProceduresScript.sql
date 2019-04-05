@@ -15,7 +15,7 @@ delimiter #
 CREATE  PROCEDURE `createPrintOrder`($cost DECIMAL(13,4),$printer_id INTEGER, $material_id INTEGER, $account_id INTEGER, $order_file_id INTEGER, $colour VARCHAR(50))
 proc_main:BEGIN
 	INSERT INTO PRINT_ORDER(cost, order_date, order_status, printer_id, material_id, account_id, order_file_id, colour) 
-		VALUES($cost, CURDATE(), 'recieved', $printer_id, $material_id, $account_id, $order_file_id, $colour);
+		VALUES($cost, CURDATE(), 'received', $printer_id, $material_id, $account_id, $order_file_id, $colour);
 END proc_main #
 delimiter ;
 
