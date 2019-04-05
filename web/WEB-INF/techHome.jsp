@@ -20,7 +20,7 @@
                 <ARIS3D:Header isAdmin="true" pageName="Dashboard"></ARIS3D:Header>
                 <v-content>
                     <v-container>
-                        <h1 class="display-2 font-weight-thin text-xs-center">Welcome back ${sessionScope.account.firstname}!</h1>
+                        <h1 class="display-2 font-weight-thin text-xs-center">Welcome back, ${sessionScope.account.firstname}!</h1>
                         <v-divider></v-divider>
                         <br>
                         <v-layout fluid row wrap>

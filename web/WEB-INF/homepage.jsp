@@ -25,28 +25,30 @@
                         <v-spacer></v-spacer>
                         <c:if test="${account == null}">
                             <a href="register">
-                                <v-btn outline color="pink">Register</v-btn>
+                                <v-btn outline color="#8B2635">Register</v-btn>
                             </a>
                             <a href="login">
-                                <v-btn outline color="pink">Login</v-btn>
+                                <v-btn color="#8B2635">Login</v-btn>
                             </a>
                         </c:if>
                         <c:if test="${account.accountType == 'admin'}">
                             <a href="dashboard">
-                                <v-btn outline color="pink">Dashboard</v-btn>
+                                <v-btn color="#8B2635">Dashboard</v-btn>
                             </a>
                         </c:if>
                         <c:if test="${account.accountType == 'user'}">
                             <a href="userhome">
-                                <v-btn outline color="pink">Dashboard</v-btn>
+                                <v-btn color="#8B2635">Dashboard</v-btn>
                             </a>
                         </c:if>
                     </v-toolbar>
                     <div class="overlayContainer">
-                        <span class="carouselOverlay">
-                            <h1 class="display-2 font-weight-thin">ARIS 3D Printing Service</h1>
-                            <h1 class="body-1 font-weight-thin">Sign up now to get started!</h1>
-                            <a href="register"><v-btn color="#8B2635" dark round>Register</v-btn></a>
+                        <span class="carouselOverlay mt-5">
+                            <h1 class="display-2 font-weight-bold">ARIS 3D Printing Service</h1>
+                            <c:if test="${account == null}"><h1 class="subheading font-weight-regular">Sign up now to get started!</h1></c:if>
+                            <c:if test="${account != null}"><h1 class="subheading font-weight-regular">Submit your 3D project below!</h1></c:if>
+                            <c:if test="${account == null}"><a href="register"><v-btn large color="#8B2635" dark round>Get Started!</v-btn></a></c:if>
+                            <c:if test="${account != null}"><a href="order"><v-btn large color="#8B2635" dark round>Submit a Project</v-btn></a></c:if>
                         </span>
                         <v-card elevation="10">
                             <v-carousel height="400" hide-delimiters>
@@ -54,19 +56,49 @@
                             </v-carousel>
                         </v-card>
                     </div>
+                    <c:if test="${account == null}">
                     <v-container>
-                        <h1 class="text-outline display-1 text-xs-center font-weight-thin">Our Printing Service</h1>
+                        <h1 class="text-outline display-1 text-xs-center font-weight-regular">Our Printing Service</h1>
                         <br>
                         <v-divider></v-divider>
                         <p class="body-1 text-xs-center" text-center>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse bibendum, eros vel congue tincidunt, enim metus ultricies nibh, in cursus ligula est consequat erat. Curabitur facilisis lectus quis felis fringilla, porta vehicula dolor mattis. Mauris quis dolor quis risus pellentesque ultrices. Donec aliquet dolor et risus viverra rutrum. Vestibulum placerat accumsan mi, in lacinia ex ornare congue. Vivamus tincidunt fermentum ex et aliquam. Pellentesque sit amet rhoncus dui, sed finibus massa. Morbi vestibulum, tellus in gravida dictum, lorem arcu consectetur magna, id pellentesque urna sapien ut augue. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu mollis enim, id blandit nisi. Quisque efficitur hendrerit nisi ut maximus. Mauris a libero sapien.</p>
                         <p class="body-1 text-xs-center" text-center>Donec et lectus sit amet lacus malesuada vehicula nec suscipit diam. Nulla commodo lorem ipsum, blandit scelerisque eros dignissim et. Etiam in urna eu nisi venenatis tristique vitae at ante. In hac habitasse platea dictumst. Cras vel commodo erat. Donec eu tortor vitae diam rhoncus finibus. Aenean in dignissim leo. Vestibulum convallis viverra nunc et porttitor. Suspendisse sed tempus ligula, ut bibendum urna. Nulla venenatis lacus odio, rhoncus luctus lorem ultricies ac. Sed aliquet justo sed feugiat hendrerit. Donec id tempor mi. Vestibulum et imperdiet lacus. Sed turpis augue, imperdiet in malesuada ac, tincidunt at diam. Donec ut vulputate lorem. Sed varius ligula vel maximus viverra.</p>
                         <v-divider></v-divider>
                     </v-container>
+                    </c:if>
+                    <c:if test="${account != null}">
+                    <v-container>
+                        <h1 class="display-1 text-xs-center font-weight-thin">Notifications</h1>
+                        <v-divider></v-divider>
+                        <v-container grid-list-lg>
+                            <v-layout row wrap>
+                                <v-flex v-for="i in 3" xs12 sm12 md6 lg4 xl2 :key="i">
+                                    <v-card color="#8B2635" height="5px"></v-card>
+                                    <v-card elevation="5" min-height="200px">
+                                        <v-card-title>
+                                            <span primary class="headline text-xs-left">Notification {{i}}</span>
+                                            <v-spacer></v-spacer>
+                                            <v-btn color="#8B2635" dark>Remove</v-btn>
+                                        </v-card-title>
+                                        <v-divider></v-divider>
+                                        <br/>
+                                        <v-card-text class="pt-0 text-xs-center">
+                                            <span class="text-xs-center">Notification Text.</span>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-flex>
+                            </v-layout>
+                        </v-container>
+                    </v-container>
+                    
+                    </c:if>
                     <v-container grid-list-md text-xs-center>
+                        <h1 class="display-1 text-xs-center font-weight-thin">Our Printing Service</h1>
+                        <v-divider></v-divider>
                         <v-layout row wrap>
                             <v-flex xs12 sm12 md6 lg4 xl4>
                                 <v-card color="#8B2635" height="5px"></v-card>
-                                <v-card elevation="10" min-width="300px">
+                                <v-card elevation="10" min-height="325px" min-width="300px">
                                     <v-img aspect-ratio="2.75" src="res/img/carousel/carouselImage1.jpg">
                                         <v-container fill-height fluid></v-container>
                                     </v-img>
@@ -80,7 +112,7 @@
                             </v-flex>
                             <v-flex xs12 sm12 md6 lg4 xl4>
                                 <v-card color="#8B2635" height="5px"></v-card>
-                                <v-card elevation="10" min-width="300px">
+                                <v-card elevation="10" min-height="325px" min-width="300px">
                                     <v-img aspect-ratio="2.75" src="res/img/MaterialsLogo.jpg">
                                         <v-container fill-height fluid></v-container>
                                     </v-img>
@@ -94,7 +126,7 @@
                             </v-flex>
                             <v-flex xs12 sm12 md6 lg4 xl4>
                                 <v-card color="#8B2635" height="5px"></v-card>
-                                <v-card elevation="10" min-width="300px">
+                                <v-card elevation="10" min-height="325px" min-width="300px">
                                     <v-img aspect-ratio="2.75" src="res/img/ContactUsSait.jpg">
                                         <v-container fill-height fluid></v-container>
                                     </v-img>
