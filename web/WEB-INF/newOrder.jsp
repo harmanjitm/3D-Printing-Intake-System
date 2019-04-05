@@ -64,12 +64,12 @@
 
                             <v-stepper-step step="5">Review Order</v-stepper-step>
                         </v-stepper-header>
-                        <v-dialog <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
-                        ${successMessage}
-                    </v-dialog>
-                        <v-dialog <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
-                        ${errorMessage}
-                    </v-dialog>
+                        <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
+                            ${successMessage}
+                        </v-alert>
+                        <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
+                            ${errorMessage}
+                        </v-alert>
 
 
                     <v-stepper-items>
@@ -87,16 +87,15 @@
                                                         <input type="file" name="file" onchange='stl_viewer.add_model({local_file:this.files[0]}); ' accept="*.*">
                                                         <!--<input type="hidden" id="fileName" name="fileName">-->
                                                         <!--<input type="hidden" id="stl_cont" name="file" value="">-->
-                                                        <input type="hidden" id="selectedPrinterId" name="printer" value="">
-                                                        <input type="hidden" id="selectedMaterialId" name="material" value="">
-                                                        <input type="hidden" id="selectedColourName" name="colour" value="">
+                                                        <input type="hidden" id="selectedPrinter" name="printer" value="">
+                                                        <input type="hidden" id="selectedMaterial" name="material" value="">
+                                                        <input type="hidden" id="selectedMaterialColour" name="colour" value="">
                                                         <input type="hidden" id="comment" name="comments" value="">
                                                         <input type="hidden" id="dimensions" name="dimensions" value="">
                                                         <input type="hidden" id="volume" name="volume" value="">
                                                         <input type="hidden" id="area" name="area" value="">
                                                     </form>
                                                 </div>
-
                                             </v-card>
                                         </v-flex>
                                         <v-spacer></v-spacer>
@@ -488,7 +487,7 @@ new Vue({
             document.getElementById('volume').value = file["volume"];
             document.getElementById('selectedPrinter').value = this.selectedPrinter.printerId;
             document.getElementById('selectedMaterial').value = this.selectedMaterial.materialId;
-            document.getElementById('selectedMaterialColour').value = this.selectedColour.materialId.colour;
+            document.getElementById('selectedMaterialColour').value = this.selectedColour.colour;
             document.getElementById('comment').value = this.comments;
             document.getElementById('create-order').submit();
         },

@@ -42,6 +42,8 @@ public class File {
      * The file ID
      */
     private int fileID;
+    
+    private int accountId;
 
     /**
      * Default constructor for a File Object.
@@ -60,11 +62,12 @@ public class File {
      * @param dateSubmitted the date submitted
      * @param dateArchived the date archived
      */
-    public File(String name, int fileID, String path, double size, Date dateSubmitted, String dimensions) {
+    public File(String name, int fileID, String path, double size, Date dateSubmitted, String dimensions, int accountId) {
         this.name = name;
         this.fileID = fileID;
         this.path = path;
         this.dimensions = dimensions;
+        this.accountId = accountId;
         this.size = size;
         //this.fileType = fileType;
         this.dateSubmitted = dateSubmitted;
@@ -88,6 +91,14 @@ public class File {
         this.dimensions = dimensions;
     }
 
+    public int getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
+    
     /**
      * Sets the name of the file.
      *

@@ -34,11 +34,11 @@ public class FileBroker {
 
         CallableStatement cStmt = connection.prepareCall("{call createFile(?, ?, ?, ?, ?, ?)}");
 
-        cStmt.setInt(1, file.getFileID());
+        cStmt.setInt(1, file.getAccountId());
         cStmt.setString(2, file.getName());
         cStmt.setString(3, file.getPath());
         cStmt.setDouble(4, file.getSize());
-        cStmt.setString(5, file.getFileType());
+        cStmt.setString(5, "STL");
         cStmt.setString(6, file.getDimensions());
 
         boolean hadResults = cStmt.execute();
@@ -58,7 +58,7 @@ public class FileBroker {
         if (connection == null) {
             throw new SQLException("Error Getting Files: Connection error.");
         }
-        CallableStatement cStmt = connection.prepareCall("{call getFilesByAccountId()}");        
+        CallableStatement cStmt = connection.prepareCall("{call getFilesByAccountId(?)}");        
         cStmt.setInt(1, id);
         ResultSet rs = cStmt.executeQuery();
         if (rs == null) {
@@ -69,7 +69,7 @@ public class FileBroker {
             //Converting SQL timestamp to JAVA Date format. Java Date does not contain a timestamp, but SQL does!
             java.util.Date submitDate = rs.getTimestamp("date_submitted"); 
             File file = new File(rs.getString("filename"),Integer.parseInt(rs.getString("order_file_id")),
-                                 rs.getString("file_path"),Double.parseDouble(rs.getString("file_size")),submitDate, rs.getString("dimensions"));
+                                 rs.getString("file_path"),Double.parseDouble(rs.getString("file_size")),submitDate, rs.getString("dimensions"), id);
             files.add(file);
         }
         connection.close();
@@ -100,7 +100,7 @@ public class FileBroker {
         while (rs.next()) {
             java.util.Date submitDate = rs.getTimestamp("date_submitted"); 
             file = new File(rs.getString("filename"),id,
-                                 rs.getString("file_path"), 0, submitDate, rs.getString("dimensions"));
+                                 rs.getString("file_path"), 0, submitDate, rs.getString("dimensions"), 0);
         }
         connection.close();
         return file;

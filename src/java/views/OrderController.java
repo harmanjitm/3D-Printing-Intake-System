@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -35,6 +36,7 @@ import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.apache.tomcat.util.http.fileupload.FileItem;
 import org.apache.tomcat.util.http.fileupload.RequestContext;
+import persistence.FileBroker;
 import services.MaterialService;
 import services.OrderService;
 import services.PrinterService;
@@ -208,9 +210,9 @@ public class OrderController extends HttpServlet
         
         for(Printer p : printers)
         {
-            printerSelected = p;
             if(p.getPrinterId() == printer)
             {
+                printerSelected = p;
                 switch(printer)
                 {
                     case 1:
@@ -225,9 +227,45 @@ public class OrderController extends HttpServlet
                 }
             }
         }
-        domain.File file = new domain.File(user.getAccountID() + "-" + nextId, 0, path, 0, new Date(), dimensions);
+        
+        //Format the dimensions so its not too long which would break the DB constraint.
+        DecimalFormat df = new DecimalFormat("#.##");
+        String[] dims = dimensions.split("x");
+        dimensions = df.format(Double.parseDouble(dims[0])).toString() + "x" + df.format(Double.parseDouble(dims[1])).toString() + "x" + df.format(Double.parseDouble(dims[2])).toString();
+        
+        //Create the file and add it into the DB
+        domain.File file = new domain.File(user.getAccountID() + "-" + nextId, 0, path, 0, null, dimensions, user.getAccountID());
+        
+        FileBroker fb = new FileBroker();
         try {
-            os.createOrder(0, cost, null, null, path, file, printerSelected, materialSelected, user, comments, colour);
+            fb.createFile(file);
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("errorMessage", "An unknown error occurred. Please try again.");
+            request.getRequestDispatcher("/WEB-INF/newOrder.jsp").forward(request, response);
+            return;
+        }
+        
+        ArrayList<domain.File> files = null;
+        try {
+            files = fb.getFileByUserID(user.getAccountID());
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("errorMessage", "An unknown error occurred. Please try again.");
+            request.getRequestDispatcher("/WEB-INF/newOrder.jsp").forward(request, response);
+            return;
+        }
+        
+        for(domain.File f : files)
+        {
+            if(f.getName().equals(file.getName()))
+            {
+                file.setFileID(f.getFileID());
+            }
+        }
+        
+        try {
+            os.createOrder(0, cost, null, null, "received", file, printerSelected, materialSelected, user, comments, colour);
         } catch (SQLException ex) {
             Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMessage", "An unknown error occurred. Please try again.");
@@ -237,130 +275,5 @@ public class OrderController extends HttpServlet
         
         request.setAttribute("successMessage", "Your order has been submitted successfully. Please check your email for more information.");
         request.getRequestDispatcher("/WEB-INF/newOrder.jsp").forward(request, response);
-        return;
-//        int maxFileSize = 100 * 1024;
-//        int maxMemSize = 4 * 1024;
-//        File file;
-//        String filePath = "C\\STL";
-//        String action = request.getParameter("action");
-//        String orderIDs = request.getParameter("orderID");
-//        String costS = request.getParameter("cost");
-//        String printerIDs = request.getParameter("printerID");
-//        String materialIDs = request.getParameter("materialID");
-//        String status = request.getParameter("status"); //dont think you need
-//        String payment = request.getParameter("payment"); //dont think you need this        
-//        
-//        Printer printer = new Printer();
-//        Material material = new Material();
-//        Order order = new Order();
-//        
-//        
-//        OrderService os = new OrderService();
-//        PrinterService ps = new PrinterService();
-//        MaterialService ms = new MaterialService();
-//        
-//        //int orderID = Integer.parseInt(orderIDs);
-////        double cost = Double.parseDouble(costS);
-//        
-//        switch(action)
-//        {
-//            case "submit":
-//                int printerID = Integer.parseInt(printerIDs);
-//                int materialID = Integer.parseInt(materialIDs);
-//                try
-//                {
-//                    cost = printer.getRunCost();
-//                    status = printer.getStatus();
-//
-//                    Part filePart = request.getPart("file");
-//                    String name = filePart.getSubmittedFileName();
-//
-//                    DiskFileItemFactory factory = new DiskFileItemFactory();
-//                    factory.setSizeThreshold(maxMemSize);
-//                    factory.setRepository(new File("c:\\temp"));
-//                    ServletFileUpload upload = new ServletFileUpload(factory);
-//                    upload.setSizeMax(maxFileSize);
-//                    try
-//                    {
-//                        List fileItems = upload.parseRequest((RequestContext) request);
-//                        Iterator i = fileItems.iterator();
-//                        while ( i.hasNext () ) 
-//                        {
-//                            FileItem fi = (FileItem)i.next();
-//                            if ( !fi.isFormField () ) 
-//                            {
-//                                // Get the uploaded file parameters
-//                                String fieldName = fi.getFieldName();
-//                                String fileName = fi.getName();
-//                                
-//                                String contentType = fi.getContentType();
-//                                boolean isInMemory = fi.isInMemory();
-//                                long sizeInBytes = fi.getSize();
-//                                if( fileName.lastIndexOf("\\") >= 0 ) 
-//                                {
-//                                    file = new File( filePath + fileName.substring( fileName.lastIndexOf("\\"))) ;
-//                                } 
-//                                else 
-//                                {
-//                                    file = new File( filePath + fileName.substring(fileName.lastIndexOf("\\")+1)) ;
-//                                }
-//                                fi.write(file) ;
-//                            }
-//                        }
-//                    } 
-//                    catch(Exception ex) 
-//                    {
-//                        Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//                    
-//                    printer = ps.getPrinterById(printerID);
-//                    material = ms.getMaterial(materialID);
-////                    order = os.createOrder(orderID, cost, status, file, payment, printer, material);
-//                    
-//                    request.setAttribute("successMessage", "Order has been submitted");
-//                    request.getRequestDispatcher("/WEB-INF/newOrder.jsp").forward(request, response); 
-//                } 
-//                catch (SQLException ex)
-//                {
-//                    Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
-//                    request.setAttribute("errorMessage", "Order could not be submitted");
-//                    request.getRequestDispatcher("/WEB-INF/newOrder.jsp").forward(request, response);
-//                }
-//                request.setAttribute("errorMessage", "Please follow the steps to submit order");
-//                request.getRequestDispatcher("/WEB-INF/newOrder.jsp").forward(request, response);
-//                break;
-//            case "download":
-//                try {
-//                    String path = request.getParameter("file");
-//                    File downloadFile = new File(path);
-//                    FileInputStream inStream = new FileInputStream(downloadFile);
-//                    String mimeType = getServletContext().getMimeType(path);
-//
-//                    response.setContentType(mimeType);
-//                    response.setContentLength((int) downloadFile.length());
-//
-//                    String headerKey = "Content-Disposition";
-//                    String headerValue = String.format("attachment; filename=\"%s\"", downloadFile.getName());
-//                    response.setHeader(headerKey, headerValue);
-//
-//                    OutputStream outStream = response.getOutputStream();
-//
-//                    byte[] buffer = new byte[4096];
-//                    int bytesRead = -1;
-//
-//                    while ((bytesRead = inStream.read(buffer)) != -1) {
-//                        outStream.write(buffer, 0, bytesRead);
-//                    }
-//
-//                    inStream.close();
-//                    outStream.close();
-//                    return;
-//                } catch (Exception e) {
-//                    request.setAttribute("errorMessage", "Error Downloading Report: File might not exist or path is incorrect.");
-//                    request.getRequestDispatcher("/WEB-INF/reportMgmt.jsp").forward(request, response);
-//                    return;
-//                }
-//        }
-//      
     }
 }
