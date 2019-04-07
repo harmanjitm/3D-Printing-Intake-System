@@ -79,6 +79,10 @@ public class Printer {
 		this.name = name;
 	}
 
+    public Printer(String printerSize, String printerStatus, String printerName, String runCost, String description) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 	/**
 	 * Gets the printer id.
 	 *

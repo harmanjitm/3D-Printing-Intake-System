@@ -67,7 +67,7 @@
                         <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
                             ${successMessage}
                         </v-alert>
-                        <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
+                        <v-alert <c:if test='${errorMessage != null}'> id="error" value="true"</c:if> type="error">
                             ${errorMessage}
                         </v-alert>
 
@@ -85,7 +85,7 @@
                                                     <h2 class="fileInput">Select an STL file</h2>
                                                     <form id="create-order" method="post" action="order" enctype="multipart/form-data">  
                                                         <input type="hidden" id="action" name="action" value="submit">
-                                                        <input type="file" class="fileInput" name="file" onchange='stl_viewer.add_model({local_file:this.files[0]}); ' accept="*.*">
+                                                        <input type="file" class="fileInput" name="file" onchange='stl_viewer.add_model({local_file:this.files[0]}); ' accept="*.*" loading>
                                                         <input type="hidden" id="selectedPrinter" name="printer" value="">
                                                         <input type="hidden" id="selectedMaterial" name="material" value="">
                                                         <input type="hidden" id="selectedMaterialColour" name="colour" value="">
@@ -365,7 +365,7 @@ new Vue({
     el: '#app',
     data: {
         e1: 0, //Stepper element
-//        maxWidth: 4000,
+        fileUploaded: false,
         image: '',
         fileInfo: '',
         comments: '',
@@ -515,6 +515,7 @@ new Vue({
         // Display payment info
         },
         viewInfo() {
+                //var fileUploaded;
                 var info = JSON.stringify(stl_viewer.get_model_info(2));
                 var obj = JSON.parse(info);
                 this.fileInfo = obj;

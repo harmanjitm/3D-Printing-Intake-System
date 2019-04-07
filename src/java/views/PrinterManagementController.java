@@ -68,9 +68,12 @@ public class PrinterManagementController extends HttpServlet
     {
         String action = request.getParameter("action");
         int printerID;
-        String printerSize = request.getParameter("printerSize");
-        String printerStatus = request.getParameter("printerStatus");
-        String printerName  = request.getParameter("printerName");
+        String printerSize = request.getParameter("size");
+        String printerStatus = request.getParameter("status");
+        String printerName  = request.getParameter("name");
+        String description = request.getParameter("description");
+        String runCost = request.getParameter("runCost");
+        String PrinterImage = request.getParameter("image");
     
         if(action!=null)
         {
@@ -83,11 +86,12 @@ public class PrinterManagementController extends HttpServlet
                         if(!(printerSize == null || printerSize.equals("")) && !(printerStatus == null || printerStatus.equals("")) 
                             && !(printerName == null || printerName.equals("")))
                         {                   
-                            ps.createPrinter(printerSize, printerStatus, printerName);
+                            ps.createPrinter(printerSize, printerStatus, printerName, runCost, description);
                             ArrayList<Printer> printers =  (ArrayList<Printer>) request.getAttribute("printers");
                             request.setAttribute("printers", printers);
                             request.setAttribute("successMessage", "New Printer added.");
-                            request.getRequestDispatcher("/WEB-INF/printerMgmt.jsp").forward(request, response);  
+                            request.getRequestDispatcher("/WEB-INF/printerMgmt.jsp").forward(request, response); 
+                            System.out.println('printer added');
                         }
                         else
                         {
