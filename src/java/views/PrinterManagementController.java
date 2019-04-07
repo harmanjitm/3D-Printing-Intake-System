@@ -91,7 +91,7 @@ public class PrinterManagementController extends HttpServlet
                             request.setAttribute("printers", printers);
                             request.setAttribute("successMessage", "New Printer added.");
                             request.getRequestDispatcher("/WEB-INF/printerMgmt.jsp").forward(request, response); 
-                            System.out.println('printer added');
+                            
                         }
                         else
                         {
