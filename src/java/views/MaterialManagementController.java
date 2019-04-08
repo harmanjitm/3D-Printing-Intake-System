@@ -26,31 +26,42 @@ import services.MaterialService;
 public class MaterialManagementController extends HttpServlet {
 
     /**
+     * Handles the HTTP <code>GET</code> method.
      *
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     * @throws SQLException if SQL errors occurs 
      */
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         MaterialService ms = new MaterialService();
-        //ArrayList used to populate all the materials in the materials table
         ArrayList<Material> materials = new ArrayList<>();
-        try {
+        //Try-Catch that tries to populate ArrayList materials by getting all the materials information, and catches any SQL Exception errors
+        try 
+        {
             materials = ms.getAllMaterials();
-        } catch (SQLException ex) {
+        } 
+        catch (SQLException ex) 
+        {
             Logger.getLogger(MaterialManagementController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMessage", ex.getMessage());
             request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
             return;
         }
 
-        //Used to edit a material through GET
+       
         String action = request.getParameter("action");
-        if (action != null && action.equals("edit")) {
-            String matID = request.getParameter("materialSelected");
-            int materialID = Integer.parseInt(matID);
-            try {
+        //If statement used to check if action is not null and equals edit, 
+        if (action != null && action.equals("edit"))
+        {
+            String materialIDs = request.getParameter("materialSelected");
+            int materialID = Integer.parseInt(materialIDs);
+            //Try-Catch method that tries to populate material object by getting the material information by material ID selected to edit 
+            //And catches any SQL Exception errors
+            try
+            {
                 Material material = ms.getMaterial(materialID);
                 materials.add(material);
                 request.setAttribute("materials", materials);
@@ -67,18 +78,20 @@ public class MaterialManagementController extends HttpServlet {
     }
 
     /**
+     * Handles the HTTP <code>POST</code> method.
      *
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     * @throws SQLException if SQL errors occurs 
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //Request variables from the Front end to populate them
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+    {
         String action = request.getParameter("action");
         String materialName = request.getParameter("materialName");
-        String materialDesc = request.getParameter("materialDesc");
+        String materialDesc = request.getParameter("materialDescription");
         String printerName = request.getParameter("printerName");
         String status = request.getParameter("status");
         double materialCost = 0;
@@ -93,11 +106,11 @@ public class MaterialManagementController extends HttpServlet {
             //switch that is dependent on action
             switch (action) 
             {
-                //This case is used to add
+                //Case used to add a material
                 case "add":
-                    materialDesc = request.getParameter("materialDescription");
                     //if the variables are not empty, the material gets created and added to the system
                     materialCost = Double.parseDouble(request.getParameter("materialCost"));
+                    //If statement used to verify that fields are not empty
                     if (!(materialName == null || materialName.equals("")) && !(materialDesc == null || materialDesc.equals(""))
                             && !(printerName == null || printerName.equals("")) && (materialCost != 0)) {
                         ms.createMaterial(materialName, materialDesc, printerName, materialColour, materialCost, status);
@@ -107,20 +120,23 @@ public class MaterialManagementController extends HttpServlet {
                         request.setAttribute("successMessage", "New Material added.");
                         getServletContext().getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
                     } 
-                    //else the program errors out
+                    //Else display error message
                     else {
                         request.setAttribute("errorMessage", "Please enter the required fields.");
                         getServletContext().getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
                         return;
                     }
+                //Case used to change the status of a colour for a material
                 case "changeColourStatus":
+                    //If statement that checks if material ID is empty or null and displays error message
                     if(request.getParameter("materialId") == null || request.getParameter("materialId").equals(""))
                     {
                         request.setAttribute("errorMessage", "Error Editing Colour: Unable to get Material. Please try again.");
                         request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
                         return;
                     }
-                    Colour toChange = null;
+                    //toChange Colour object is populated by the material ID 
+                    Colour toEdit = null;
                     materialID = Integer.parseInt(request.getParameter("materialId"));
                     String colourStatusName = request.getParameter("colourName");
                     for(Material m : ms.getAllMaterials())
@@ -131,25 +147,25 @@ public class MaterialManagementController extends HttpServlet {
                             {
                                 if(c.getColor().equals(colourStatusName))
                                 {
-                                    toChange = c;
+                                    toEdit = c;
                                 }
                             }
                         }
                     }
                     
-                    if(toChange == null)
+                    if(toEdit == null)
                     {
                         request.setAttribute("errorMessage", "Error Editing Colour: Unable to change colour.");
                         request.getRequestDispatcher("/WEB-INF/materialMgmt.jsp").forward(request, response);
                         return;
                     }
                     
-                    if(toChange.getStatus().equals("in-stock"))
+                    if(toEdit.getStatus().equals("in-stock"))
                     {
                         ms.changeColourStatus(materialID, colourStatusName, "out-of-stock");
                         request.setAttribute("successMessage", "Successfully changed status of colour <b>" + colourStatusName + "</b> to <b>Out of Stock</b>.");
                     }
-                    if(toChange.getStatus().equals("out-of-stock"))
+                    if(toEdit.getStatus().equals("out-of-stock"))
                     {
                         ms.changeColourStatus(materialID, colourStatusName, "in-stock");
                         request.setAttribute("successMessage", "Successfully changed status of colour <b>" + colourStatusName + "</b> to <b>In Stock</b>.");

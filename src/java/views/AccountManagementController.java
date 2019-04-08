@@ -24,12 +24,14 @@ import services.AccountService;
  */
 public class AccountManagementController extends HttpServlet {
 
-    /**
+     /**
+     * Handles the HTTP <code>GET</code> method.
      *
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     * @throws Exception if a request Get Attribute fails  
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -66,16 +68,20 @@ public class AccountManagementController extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
     }
 
-    /**
+     /**
+     * Handles the HTTP <code>POST</code> method.
      *
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     * @throws SQLException if SQL errors occurs 
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException 
+    {
+        Account account = new Account();
         AccountService as = new AccountService();
         String action = request.getParameter("action");
 
@@ -99,7 +105,8 @@ public class AccountManagementController extends HttpServlet {
         String firstName = request.getParameter("firstname");
         String lastName = request.getParameter("lastname");
         String accountType = request.getParameter("accountType");
-
+        
+       
         //Switch dependent on action
         switch (action) 
         {
@@ -148,7 +155,7 @@ public class AccountManagementController extends HttpServlet {
                     return;
                 }
 
-                Account account = null;
+                account = null;
                 try {
                     //Account gets created
                     int created = as.createAccount(email, password, firstName, lastName, accountType);
@@ -180,21 +187,21 @@ public class AccountManagementController extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
-
+                //If account type is user and not admin, display error message
                 if (!(accountType.equals("admin") || accountType.equals("user")))
                 {
                     request.setAttribute("errorMessage", "Error Editing Account: Invalid account type.");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
-
+                //If accountID is null, display error message
                 if (request.getParameter("accountID") == null || request.getParameter("accountID").equals(""))
                 {
                     request.setAttribute("errorMessage", "Error Editing Account: An unexpected error occurred, please try again.");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
-
+                //If email, first name, last name and account type fields are more than the characters permitted, display error message
                 if(email.length() > 100 || firstName.length() > 50 
                         || lastName.length() > 50 || accountType.length() > 50)
                 {
@@ -206,39 +213,50 @@ public class AccountManagementController extends HttpServlet {
                 Account toEdit = null;
                 try 
                 {
+                    //Account object toEdit gets account information by ID
                     toEdit = as.getAccountByID(Integer.valueOf(request.getParameter("accountID")));
                 } 
                 catch (SQLException ex) {
                     Logger.getLogger(AccountManagementController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
+                //If toEdit is null, display error message
                 if (toEdit == null) 
                 {
                     request.setAttribute("errorMessage", "Error Editing Account: An unexpected error occurred, please try again.");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
-
-                if (accountType.equals("user") && toEdit.getAccountType().equals("admin")) {
+                //If method to prevent user from removing all admins
+                if (accountType.equals("user") && toEdit.getAccountType().equals("admin"))
+                {
                     int admins = 0;
-                    try {
+                    try 
+                    {
+                        //For loop to get the amount of admins from Get All Accounts method in Account Service
                         ArrayList<Account> accounts = as.getAllAccounts();
-                        for (Account acc : accounts) {
-                            if (acc.getAccountType().equals("admin")) {
+                        for (Account adminAccounts : accounts)
+                        {
+                            if (adminAccounts.getAccountType().equals("admin"))
+                            {
+                                //admin counter is increased with each loop where the account type is admin
                                 admins++;
                             }
                         }
-                    } catch (SQLException ex) {
+                    } 
+                    catch (SQLException ex) 
+                    {
                         Logger.getLogger(AccountManagementController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    if (admins - 1 == 0) {
+                    //If admins counter is subtracted by 1 and resulting in 0, display error message
+                    if (admins - 1 == 0) 
+                    {
                         request.setAttribute("errorMessage", "Error Editing Account: There must be at least one <b>Admin</b> active.");
                         request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                         return;
                     }
                 }
-
-                try {
+                //Try-Catch method that tries to update account and catches SQL Exception errors
+                try {                                   
                     as.updateAccount(email, toEdit.getPassword(), firstName, lastName, toEdit.getAccountID(), accountType);
                     request.setAttribute("accounts", as.getAllAccounts());
                 } catch (SQLException ex) {
@@ -252,41 +270,47 @@ public class AccountManagementController extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                 break;
             case "remove":
-                int accID = 0;
-                accID = Integer.parseInt(request.getParameter("removeAccountID"));
-                
-                if(accID == 0)
+                int accountID = 0;
+                accountID = Integer.parseInt(request.getParameter("removeAccountID"));
+                //If the accountID is null, display error message
+                if(accountID == 0)
                 {
                     request.setAttribute("errorMessage", "Error Deleting Account: An unexpected error occurred, please try again.");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
-                
-                Account acc = null;
-                
-                try {
-                    acc = as.getAccountByID(accID);
-                } catch (SQLException ex) {
+                //Creates acc Account object used to delete an account
+                account = null;   
+                //Try-Catch to try and populate acc or catch an SQL Exception error
+                try 
+                {
+                    //Populates acc object by getting account information by ID
+                    account = as.getAccountByID(accountID);
+                } 
+                catch (SQLException ex) 
+                {
                     Logger.getLogger(AccountManagementController.class.getName()).log(Level.SEVERE, null, ex);
                     request.setAttribute("errorMessage", ex.getMessage());
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
-                
-                if (!(acc.getAccountType().equals("user"))) {
+                //If account type in acc object is user, display error message
+                if (!(account.getAccountType().equals("user"))) 
+                {
                     request.setAttribute("errorMessage", "Error Deleting Account: You cannot delete an Admin.");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
-                
-                if (acc == null) {
+                //If acc object is null, display error message
+                if (account == null) {
                     request.setAttribute("errorMessage", "Error Deleting Account: An unexpected error occurred, please try again.");
                     request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                     return;
                 }
-                
-                try {
-                    as.deleteAccount(acc.getAccountID());
+                //Try-Catch method that tries to delete account by getting the account ID in the account object and catches SQL Exception errors
+                try
+                {
+                    as.deleteAccount(account.getAccountID());
                     request.setAttribute("successMessage", "Success Removing Account: Account has successfully been deleted.");
                     ArrayList<Account> accounts = accounts = as.getAllAccounts();
                     request.setAttribute("accounts", accounts);
@@ -302,15 +326,23 @@ public class AccountManagementController extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/accountMgmt.jsp").forward(request, response);
                 break;
         }
-
-        Account acc = (Account) request.getSession().getAttribute("account");
-        try {
-            if (as.getAccountByID(acc.getAccountID()) != null) {
-                request.getSession().setAttribute("account", acc);
-                if (!acc.getAccountType().equals("admin")) {
+        
+        //account object gets populated by account session attribute
+        account = (Account) request.getSession().getAttribute("account");
+        try 
+        {
+            //If account ID is not null then set the session attribute with account object, else invalidate session and redirect to login
+            if (as.getAccountByID(account.getAccountID()) != null) 
+            {
+                request.getSession().setAttribute("account", account);
+                //If account type is not admin, redirect to login
+                if (!account.getAccountType().equals("admin"))
+                {
                     response.sendRedirect("login");
                 }
-            } else {
+            } 
+            else 
+            {
                 request.getSession().invalidate();
                 response.sendRedirect("login");
             }

@@ -26,26 +26,32 @@ public class LoginController extends HttpServlet
 {
 
     /**
+     * Handles the HTTP <code>GET</code> method.
      *
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
      */
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
+        //Account object is populated by getting the session attribute
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("account");
+        //If statement to check if account object is not null
         if(account != null)
         {
+            //If statement that checks for a logout parameter
             if(request.getParameter("logout") != null)
             {
+                //Session is invalidated for security
                 session.invalidate();
                 request.setAttribute("successMessage", "You have successfully been logged out.");
                 request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
                 return;
             }
-            
+            //Switch using user and admin case for account type and redirects to each perspective page.
             switch(account.getAccountType())
             {
                 case "user":
@@ -60,11 +66,13 @@ public class LoginController extends HttpServlet
     }
 
     /**
+     * Handles the HTTP <code>POST</code> method.
      *
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     * @throws SQLException if SQL errors occurs 
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
@@ -74,14 +82,14 @@ public class LoginController extends HttpServlet
         
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        
+        //If email is null or empty, display error message
         if(email == null || email.equals(""))
         {
             request.setAttribute("errorMessage", "Please make sure <b>Email</b> is not empty.");
             request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
             return;
         }
-        
+        //If password is null or empty, display error message
         if(password == null || password.equals(""))
         {
             request.setAttribute("email", email);
@@ -90,7 +98,9 @@ public class LoginController extends HttpServlet
             return;
         }
         
+        //Creat accoount object
         Account account = null;
+        //Try-Catch method that tries to check the email and password credentials and catches any SQL Exception errors
         try {
             account = as.checkCredentials(email, password);
         } catch (SQLException ex) {
@@ -101,7 +111,7 @@ public class LoginController extends HttpServlet
             return;
             
         }
-        
+        //If account credentials are null, display error message
         if(account == null)
         {
             request.setAttribute("email", email);
@@ -109,9 +119,9 @@ public class LoginController extends HttpServlet
             request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
             return;
         }
-        
+        //Sets password as blank in account for security
         account.setPassword("");
-        
+        //Switch used to redirect to homepage based on account Type in account object
         switch(account.getAccountType())
         {
             case "user":
@@ -127,37 +137,5 @@ public class LoginController extends HttpServlet
                 request.getRequestDispatcher("/WEB-INF/verifyAccount.jsp").forward(request, response);
                 return;
         }
-//        if(!(email == null || email.equals("")) && !(password == null || password.equals("")))
-//        {
-//                
-//            if(account != null)
-//            {
-//                if((account.getAccountType().equals("admin")))
-//                {
-//                    session.setAttribute("email", email);
-//                    response.sendRedirect("techHome");
-//                }
-//                else if(account.getAccountType().equals("user"))
-//                {
-//                    session.setAttribute("email", email);
-//                    response.sendRedirect("userHome");
-//                }
-//                else
-//                {
-//                    request.setAttribute("errorMessage", "Your account is currently inactive. If you want to reactive click here.");
-//                    getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);       
-//                }   
-//            }
-//            else
-//            {
-//                request.setAttribute("errorMessage", "User does not exist.");
-//                getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
-//            }
-//        }
-//        else
-//        {
-//            request.setAttribute("errorMessage", "Please enter your username or password.");
-//            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
-//        }
     }
 }

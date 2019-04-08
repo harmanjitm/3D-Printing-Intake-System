@@ -19,18 +19,19 @@ import javax.servlet.http.HttpSession;
 import services.AccountService;
 
 /**
- *
- * @author 687159
+ * AccountController
+ * @author Haseeb Sheikh687159
  */
 public class AccountController extends HttpServlet 
 {
-
-    /**
+     /**
+     * Handles the HTTP <code>GET</code> method.
      *
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     * @throws Exception if a request Get Attribute fails  
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
@@ -56,12 +57,14 @@ public class AccountController extends HttpServlet
         getServletContext().getRequestDispatcher("/WEB-INF/accountInfo.jsp").forward(request, response);
     }
 
-    /**
+     /**
+     * Handles the HTTP <code>POST</code> method.
      *
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     * @throws Exception if a request Get Attribute fails  
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
