@@ -8,6 +8,7 @@ package views;
 
 import domain.Account;
 import domain.Material;
+import domain.Order;
 import domain.Printer;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import persistence.FileBroker;
+import services.EmailService;
 import services.MaterialService;
 import services.OrderService;
 import services.PrinterService;
@@ -64,7 +66,6 @@ public class OrderController extends HttpServlet
             ArrayList<Printer> printers = ps.getAllPrinters();
             request.setAttribute("materials", materials);
             request.setAttribute("printers", printers);
-            System.out.println("Got all orders");
         } 
         catch (SQLException ex)
         {
@@ -283,6 +284,7 @@ public class OrderController extends HttpServlet
             }
         }
         
+        
         try {
             os.createOrder(0, cost, null, null, "received", file, printerSelected, materialSelected, user, comments, colour);
         } catch (SQLException ex) {
@@ -291,7 +293,10 @@ public class OrderController extends HttpServlet
             request.getRequestDispatcher("/WEB-INF/newOrder.jsp").forward(request, response);
             return;
         }
-        
+        Order order = new Order();
+        order.setAccount(user);
+        order.setOrderId(nextId);
+        EmailService.sendOrderUpdate(user.getEmail(), order, "", "Your order has been submitted! You will be notified by email for future updates.", getServletContext().getRealPath("/WEB-INF"));
         request.setAttribute("successMessage", "Your order has been submitted successfully. Please check your email for more information.");
         request.getRequestDispatcher("/WEB-INF/homepage.jsp").forward(request, response);
     }

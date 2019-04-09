@@ -65,7 +65,6 @@ public class OrderManagementController extends HttpServlet
             request.setAttribute("materials", materials);
             request.setAttribute("printers", printers);
             request.setAttribute("orders", orders);
-            System.out.println("Got all orders");
         } 
         catch (SQLException ex)
         {

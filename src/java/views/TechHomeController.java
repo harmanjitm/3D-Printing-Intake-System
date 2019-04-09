@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import persistence.OrderQueueBroker;
+import services.EmailService;
 import services.OrderQueueService;
 import services.OrderService;
 
@@ -95,6 +96,7 @@ public class TechHomeController extends HttpServlet {
         
         String action = request.getParameter("action");
         String orderIDs = request.getParameter("orderId");
+        String comments = request.getParameter("comments");
 
         OrderService os = new OrderService();
 
@@ -116,6 +118,7 @@ public class TechHomeController extends HttpServlet {
                     if(order.getStatus() != "approved")
                     {
                         os.setOrderStatus(orderID, "approved");
+                        EmailService.sendOrderUpdate(order.getAccount().getEmail(), order, "", "Your order has been approved. Please login and comfirm your order for printing.", getServletContext().getRealPath("/WEB-INF"));
                         try {
                             ArrayList<Order> pending = os.getOrderByStatus("received");
                             ArrayList<OrderQueue> orders = new ArrayList<>();
@@ -149,6 +152,7 @@ public class TechHomeController extends HttpServlet {
                     if(order.getStatus() != "approved")
                     {
                         os.setOrderStatus(orderID, "cancelled");
+                        EmailService.sendOrderUpdate(order.getAccount().getEmail(), order, comments, "Your order has been cancelled. Please refer to the technician comment below. If you have any questions, please email us.", getServletContext().getRealPath("/WEB-INF"));
                         try {
                             ArrayList<Order> pending = os.getOrderByStatus("received");
                             ArrayList<OrderQueue> orders = new ArrayList<>();

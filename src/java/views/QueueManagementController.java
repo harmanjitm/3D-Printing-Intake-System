@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import services.AccountService;
+import services.EmailService;
 import services.MaterialService;
 import services.OrderQueueService;
 import services.OrderService;
@@ -60,7 +61,7 @@ public class QueueManagementController extends HttpServlet {
             ArrayList<OrderQueue> orders = new ArrayList<>();
 
             for (OrderQueue o : totalOrders) {
-                if (o.getStatus().equals("approved")) {
+                if (o.getStatus().equals("confirmed")) {
                     o.setFilePath(o.getFilePath() + "/" + o.getFileName() + ".stl");
                     orders.add(o);
                 }
@@ -96,14 +97,14 @@ public class QueueManagementController extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
             return;
         }
-        
+
         try {
             OrderQueueService oqs = new OrderQueueService();
             ArrayList<OrderQueue> totalOrders = oqs.getOrderQueue();
             ArrayList<OrderQueue> orders = new ArrayList<>();
 
             for (OrderQueue o : totalOrders) {
-                if (o.getStatus().equals("approved")) {
+                if (o.getStatus().equals("confirmed")) {
                     o.setFilePath(o.getFilePath() + "/" + o.getFileName() + ".stl");
                     orders.add(o);
                 }
@@ -119,7 +120,7 @@ public class QueueManagementController extends HttpServlet {
 
         String action = request.getParameter("action");
         String orderIDs = request.getParameter("orderId");
-
+        String comments = request.getParameter("comments");
         OrderService os = new OrderService();
 
         Order order = new Order();
@@ -136,6 +137,7 @@ public class QueueManagementController extends HttpServlet {
                     }
                     if (order.getStatus() != "complete") {
                         String orderStatus = "complete";
+                        EmailService.sendOrderUpdate(order.getAccount().getEmail(), order, comments, "Your order has been printed and is ready for pickup!", getServletContext().getRealPath("/WEB-INF"));
                         os.setOrderStatus(orderID, orderStatus);
                         try {
                             OrderQueueService oqs = new OrderQueueService();
@@ -143,7 +145,7 @@ public class QueueManagementController extends HttpServlet {
                             ArrayList<OrderQueue> orders = new ArrayList<>();
 
                             for (OrderQueue o : totalOrders) {
-                                if (o.getStatus().equals("approved")) {
+                                if (o.getStatus().equals("confirmed")) {
                                     o.setFilePath(o.getFilePath() + "/" + o.getFileName() + ".stl");
                                     orders.add(o);
                                 }
@@ -171,6 +173,7 @@ public class QueueManagementController extends HttpServlet {
                     }
                     if (order.getStatus() != "complete") {
                         String orderStatus = "cancelled";
+                        EmailService.sendOrderUpdate(order.getAccount().getEmail(), order, comments, "Your order has been cancelled. Please refer to the technician comment below. If you have any questions, please email us.", getServletContext().getRealPath("/WEB-INF"));
                         os.setOrderStatus(orderID, orderStatus);
                         try {
                             OrderQueueService oqs = new OrderQueueService();
@@ -178,7 +181,7 @@ public class QueueManagementController extends HttpServlet {
                             ArrayList<OrderQueue> orders = new ArrayList<>();
 
                             for (OrderQueue o : totalOrders) {
-                                if (o.getStatus().equals("approved")) {
+                                if (o.getStatus().equals("confirmed")) {
                                     o.setFilePath(o.getFilePath() + "/" + o.getFileName() + ".stl");
                                     orders.add(o);
                                 }
@@ -231,7 +234,7 @@ public class QueueManagementController extends HttpServlet {
             }
         } catch (SQLException ex) {
             Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);
-            request.setAttribute("errorMessage", "Error: An unexpected error occurrec. Please try again.");
+            request.setAttribute("errorMessage", "Error: An unexpected error occurred. Please try again.");
             request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
             return;
         }

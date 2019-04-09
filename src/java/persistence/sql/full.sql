@@ -1333,16 +1333,16 @@ call aris.createPrintOrder(123.00, 1, 51, 100000, 400008, 'gray', 'Test comment!
 call aris.createPrintOrder(123.00, 2, 55, 100000, 400009, 'gray', 'Test comment!');
 
 /*ORDER QUEUE*/
-call aris.createQueue(300000);
-call aris.createQueue(300001);
-call aris.createQueue(300002);
-call aris.createQueue(300003);
-call aris.createQueue(300004);
-call aris.createQueue(300005);
-call aris.createQueue(300006);
-call aris.createQueue(300007);
-call aris.createQueue(300008);
-call aris.createQueue(300009);
+-- call aris.createQueue(300000);
+-- call aris.createQueue(300001);
+-- call aris.createQueue(300002);
+-- call aris.createQueue(300003);
+-- call aris.createQueue(300004);
+-- call aris.createQueue(300005);
+-- call aris.createQueue(300006);
+-- call aris.createQueue(300007);
+-- call aris.createQueue(300008);
+-- call aris.createQueue(300009);
 
 /*NOTIFICATION*/
 call aris.createNotification(300006, 'printing');
