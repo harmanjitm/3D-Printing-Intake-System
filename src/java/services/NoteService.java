@@ -7,6 +7,8 @@ import persistence.NoteBroker;
 
 /**
  * The Class NoteService provides methods to access and modify archive objects.
+ * 
+ *  EXTRANEOUS CLASS. SHOULD PROBABLY DELETE
  */
 public class NoteService {
 
