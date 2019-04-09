@@ -24,8 +24,8 @@ import services.ReportService;
  *
  * @author 687159
  */
-public class ReportController extends HttpServlet {
-
+public class ReportController extends HttpServlet 
+{
     /**
      *
      * @param request
@@ -33,11 +33,15 @@ public class ReportController extends HttpServlet {
      * @throws ServletException
      * @throws IOException
      */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+    {
         ReportService rs = new ReportService();
-        try {
+        try 
+        {
             request.setAttribute("reports", rs.getAllReports());
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) 
+        {
             Logger.getLogger(ReportController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMessage", ex.getMessage());
             request.getRequestDispatcher("/WEB-INF/reportMgmt.jsp").forward(request, response);
@@ -55,27 +59,36 @@ public class ReportController extends HttpServlet {
      * @throws IOException
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+    {
         String action = request.getParameter("action");
-        if (request.getSession().getAttribute("account") == null) {
+        if (request.getSession().getAttribute("account") == null) 
+        {
             response.sendRedirect("login");
             return;
         }
         ReportService rs = new ReportService();
-        switch (action) {
+        switch (action) 
+        {
             case "add":
-                try {
+                try 
+                {
                     rs.createReport((Account) request.getSession().getAttribute("account"));
-                } catch (SQLException ex) {
+                } 
+                catch (SQLException ex) 
+                {
                     Logger.getLogger(ReportController.class.getName()).log(Level.SEVERE, null, ex);
                     request.setAttribute("errorMessage", ex.getMessage());
                     request.getRequestDispatcher("/WEB-INF/reportMgmt.jsp").forward(request, response);
                     return;
                 }
 
-                try {
+                try 
+                {
                     request.setAttribute("reports", rs.getAllReports());
-                } catch (SQLException ex) {
+                } 
+                catch (SQLException ex) 
+                {
                     Logger.getLogger(ReportController.class.getName()).log(Level.SEVERE, null, ex);
                     request.setAttribute("errorMessage", ex.getMessage());
                     request.getRequestDispatcher("/WEB-INF/reportMgmt.jsp").forward(request, response);
@@ -85,15 +98,19 @@ public class ReportController extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/reportMgmt.jsp").forward(request, response);
                 return;
             case "download":
-                try {
+                try 
+                {
                     request.setAttribute("reports", rs.getAllReports());
-                } catch (SQLException ex) {
+                } 
+                catch (SQLException ex) 
+                {
                     Logger.getLogger(ReportController.class.getName()).log(Level.SEVERE, null, ex);
                     request.setAttribute("errorMessage", ex.getMessage());
                     request.getRequestDispatcher("/WEB-INF/reportMgmt.jsp").forward(request, response);
                     return;
                 }
-                try {
+                try 
+                {
                     String path = request.getParameter("path");
                     File downloadFile = new File(path);
                     FileInputStream inStream = new FileInputStream(downloadFile);
@@ -118,7 +135,9 @@ public class ReportController extends HttpServlet {
                     inStream.close();
                     outStream.close();
                     return;
-                } catch (Exception e) {
+                } 
+                catch (Exception e) 
+                {
                     request.setAttribute("errorMessage", "Error Downloading Report: File might not exist or path is incorrect.");
                     request.getRequestDispatcher("/WEB-INF/reportMgmt.jsp").forward(request, response);
                     return;

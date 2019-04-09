@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -20,41 +19,50 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import persistence.OrderQueueBroker;
 import services.EmailService;
-import services.OrderQueueService;
 import services.OrderService;
 
 /**
- *
- * @author harma
+ * AccountController
+ * @author Haseeb Sheikh
+ * ID: 000687159
+ * 
+ * Tech Home Controller for 3D Printing Intake System
  */
 public class TechHomeController extends HttpServlet {
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    * Handles the HTTP <code>GET</code> method.
+    *
+    * @param request servlet request
+    * @param response servlet response
+    * @throws ServletException if a servlet-specific error occurs
+    * @throws IOException if an I/O error occurs
+    * @throws Exception if a request Get Attribute fails  
+    */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+    {
+        //Try-Catch method used to populate Array List objects
+        try 
+        {
             OrderService os = new OrderService();
+            //pending Array List object gets order by received status
             ArrayList<Order> pending = os.getOrderByStatus("received");
             ArrayList<OrderQueue> orders = new ArrayList<>();
+            //For loop populates p Order object with pending object
             for(Order p : pending)
             {
+                //toadd OrderQueue object sets a new order added to the queue
                 OrderQueue toadd = new OrderQueue(0, p, p.getAccount(), p.getFile());
                 toadd.setFilePath(toadd.getFilePath() + "/" + toadd.getFileName() + ".stl");
                 orders.add(toadd);
             }
             request.setAttribute("orders", orders);
-        } catch (SQLException ex) {
+        } 
+        //Catches any SQL Exception errors
+        catch (SQLException ex) 
+        {
             Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMessage", ex.getMessage());
             request.getRequestDispatcher("/WEB-INF/techHome.jsp").forward(request, response);
@@ -73,21 +81,28 @@ public class TechHomeController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
-        try {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+    {
+        //Try-Catch method used to populate Array List objects
+        try 
+        {
             OrderService os = new OrderService();
+            //pending Array List object gets order by received status
             ArrayList<Order> pending = os.getOrderByStatus("received");
             ArrayList<OrderQueue> orders = new ArrayList<>();
+            //For loop populates p Order object with pending object
             for(Order p : pending)
             {
+                //toadd OrderQueue object sets a new order added to the queue
                 OrderQueue toadd = new OrderQueue(0, p, p.getAccount(), p.getFile());
                 toadd.setFilePath(toadd.getFilePath() + "/" + toadd.getFileName() + ".stl");
                 orders.add(toadd);
             }
             request.setAttribute("orders", orders);
-        } catch (SQLException ex) {
+        } 
+        //Catches any SQL Exception errors
+        catch (SQLException ex) 
+        {
             Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMessage", ex.getMessage());
             request.getRequestDispatcher("/WEB-INF/techHome.jsp").forward(request, response);
@@ -101,35 +116,50 @@ public class TechHomeController extends HttpServlet {
         OrderService os = new OrderService();
 
         Order order = new Order();
-        
+        //Try-Catch method tries to run switch and catches any errors
         try
         {
+            //Switch method that works on action
             switch(action)
             {
+                //Case used for approving an order
                 case "approve":
                     int orderID = Integer.parseInt(orderIDs);
+                    //order object is populated by getting order details using orderID
                     order = os.getOrderDetails(orderID);
+                    //If statement that checks if order is null then displays error message
                     if(order == null)
                     {
                         request.setAttribute("errorMessage", "Error Approving Order: Order doesn't exist.");
                         request.getRequestDispatcher("/WEB-INF/techHome.jsp").forward(request, response);
                         return;
                     }
+                    //If statement that checks that the order status is not approved
                     if(order.getStatus() != "approved")
                     {
+                        //os OrderService object sets order status as approved using the orderID
                         os.setOrderStatus(orderID, "approved");
+                        //EmailService object sends update email to client
                         EmailService.sendOrderUpdate(order.getAccount().getEmail(), order, "", "Your order has been approved. Please login and comfirm your order for printing.", getServletContext().getRealPath("/WEB-INF"));
-                        try {
+                        //Try-Catch method used to populate Array List objects
+                        try 
+                        {
+                            //pending Array List object gets order by received status
                             ArrayList<Order> pending = os.getOrderByStatus("received");
                             ArrayList<OrderQueue> orders = new ArrayList<>();
+                            //For loop populates p Order object with pending object
                             for(Order p : pending)
                             {
+                                //toadd OrderQueue object sets a new order added to the queue
                                 OrderQueue toadd = new OrderQueue(0, p, p.getAccount(), p.getFile());
                                 toadd.setFilePath(toadd.getFilePath() + "/" + toadd.getFileName() + ".stl");
                                 orders.add(toadd);
                             }
                             request.setAttribute("orders", orders);
-                        } catch (SQLException ex) {
+                        } 
+                        //Catches any SQL Exception errors
+                        catch (SQLException ex) 
+                        {
                             Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);
                             request.setAttribute("errorMessage", ex.getMessage());
                             request.getRequestDispatcher("/WEB-INF/techHome.jsp").forward(request, response);
@@ -140,30 +170,44 @@ public class TechHomeController extends HttpServlet {
                         return;
                     }
                     break;
+                //Case used to cancel order
                 case "cancel":
                     orderID = Integer.parseInt(orderIDs);
+                    //order object is populated by getting order details using orderID
                     order = os.getOrderDetails(orderID);
+                    //If statement that checks if order is null then displays error message
                     if(order == null)
                     {
                         request.setAttribute("errorMessage", "Error Completing Order: Order doesn't exist.");
                         request.getRequestDispatcher("/WEB-INF/techHome.jsp").forward(request, response);
                         return;
                     }
+                    //If statement that checks that the order status is not approved
                     if(order.getStatus() != "approved")
                     {
+                        //os OrderService object sets order status as cancelled using the orderID
                         os.setOrderStatus(orderID, "cancelled");
-                        EmailService.sendOrderUpdate(order.getAccount().getEmail(), order, comments, "Your order has been cancelled. Please refer to the technician comment below. If you have any questions, please email us.", getServletContext().getRealPath("/WEB-INF"));
-                        try {
+                        //EmailService object sends update email to client
+                        EmailService.sendOrderUpdate(order.getAccount().getEmail(), order, "", "Your order has been approved. Please login and comfirm your order for printing.", getServletContext().getRealPath("/WEB-INF"));
+                        //Try-Catch method used to populate Array List objects
+                        try 
+                        {
+                            //pending Array List object gets order by received status
                             ArrayList<Order> pending = os.getOrderByStatus("received");
                             ArrayList<OrderQueue> orders = new ArrayList<>();
+                            //For loop populates p Order object with pending object
                             for(Order p : pending)
                             {
+                                //toadd OrderQueue object sets a new order added to the queue
                                 OrderQueue toadd = new OrderQueue(0, p, p.getAccount(), p.getFile());
                                 toadd.setFilePath(toadd.getFilePath() + "/" + toadd.getFileName() + ".stl");
                                 orders.add(toadd);
                             }
                             request.setAttribute("orders", orders);
-                        } catch (SQLException ex) {
+                        } 
+                        //Catches any SQL Exception errors
+                        catch (SQLException ex) 
+                        {
                             Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);
                             request.setAttribute("errorMessage", ex.getMessage());
                             request.getRequestDispatcher("/WEB-INF/techHome.jsp").forward(request, response);
@@ -195,7 +239,8 @@ public class TechHomeController extends HttpServlet {
                         byte[] buffer = new byte[4096];
                         int bytesRead = -1;
 
-                        while ((bytesRead = inStream.read(buffer)) != -1) {
+                        while ((bytesRead = inStream.read(buffer)) != -1) 
+                        {
                             outStream.write(buffer, 0, bytesRead);
                         }
 

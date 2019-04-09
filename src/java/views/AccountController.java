@@ -8,7 +8,6 @@ package views;
 
 import domain.Account;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -20,19 +19,23 @@ import services.AccountService;
 
 /**
  * AccountController
- * @author Haseeb Sheikh687159
+ * @author Haseeb Sheikh
+ * ID: 000687159
+ * 
+ * Account Controller for 3D Printing Intake System
  */
 public class AccountController extends HttpServlet 
 {
-     /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     * @throws Exception if a request Get Attribute fails  
-     */
+    /**
+    * Handles the HTTP <code>GET</code> method.
+    *
+    * @param request servlet request
+    * @param response servlet response
+    * @throws ServletException if a servlet-specific error occurs
+    * @throws IOException if an I/O error occurs
+    * @throws Exception if a request Get Attribute fails  
+    */
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
         HttpSession session = request.getSession();

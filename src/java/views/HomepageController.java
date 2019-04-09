@@ -12,8 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
- * @author Harmango
+ * AccountController
+ * @author Haseeb Sheikh
+ * ID: 000687159
+ * 
+ * Homepage Controller for 3D Printing Intake System
  */
 public class HomepageController extends HttpServlet
 {

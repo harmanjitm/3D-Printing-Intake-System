@@ -5,8 +5,6 @@
  */
 package views;
 
-import domain.Account;
-import domain.Material;
 import domain.Order;
 import domain.OrderQueue;
 import domain.Printer;
@@ -14,7 +12,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -23,52 +20,67 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import services.AccountService;
-import services.EmailService;
-import services.MaterialService;
 import services.OrderQueueService;
 import services.OrderService;
 import services.PrinterService;
 
 /**
- *
- * @author 687159
+ * @author Haseeb Sheikh
+ * ID: 000687159
+ * 
+ * Queue Management Controller for 3D Printing Intake System
  */
-public class QueueManagementController extends HttpServlet {
-
+public class QueueManagementController extends HttpServlet 
+{
     /**
+     * Handles the HTTP <code>GET</code> method.
      *
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     * @throws SQLException if SQL errors occurs 
      */
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
+        //Try-Catch method tries to populate printers Array List object by getting all printers
+        try 
+        {
             PrinterService ps = new PrinterService();
             ArrayList<Printer> printers = ps.getAllPrinters();
             request.setAttribute("printers", printers);
-        } catch (SQLException ex) {
+        } 
+        //Otherwise catches any SQL Exception errors
+        catch (SQLException ex) 
+        {
             Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMessage", ex.getMessage());
             request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
             return;
         }
 
-        try {
+        //Try-Catch method tries to populate totalOrders by getting order queue, catches any SQL Exception errors
+        try 
+        {
             OrderQueueService oqs = new OrderQueueService();
             ArrayList<OrderQueue> totalOrders = oqs.getOrderQueue();
             ArrayList<OrderQueue> orders = new ArrayList<>();
-
-            for (OrderQueue o : totalOrders) {
-                if (o.getStatus().equals("confirmed")) {
+            //For loop used to populate OrderQueue o object with totalOrders
+            for (OrderQueue o : totalOrders)
+            {
+                //If statement used to verify status equals approved
+                if (o.getStatus().equals("approved"))
+                {
+                    //o OrderQueue object sets file path
                     o.setFilePath(o.getFilePath() + "/" + o.getFileName() + ".stl");
+                    //orders object is populated by o OrderQueue object
                     orders.add(o);
                 }
             }
-
             request.setAttribute("orders", orders);
-        } catch (SQLException ex) {
+        } 
+        catch (SQLException ex) 
+        {
             Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMessage", ex.getMessage());
             request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
@@ -79,39 +91,54 @@ public class QueueManagementController extends HttpServlet {
     }
 
     /**
+     * Handles the HTTP <code>POST</code> method.
      *
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     * @throws SQLException if SQL errors occurs 
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+    {
+        //Try-Catch method tries to populate printers Array List object by getting all printers
+        try 
+        {
             PrinterService ps = new PrinterService();
             ArrayList<Printer> printers = ps.getAllPrinters();
             request.setAttribute("printers", printers);
-        } catch (SQLException ex) {
+        } 
+        //Otherwise catches any SQL Exception errors
+        catch (SQLException ex) 
+        {
             Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMessage", ex.getMessage());
             request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
             return;
         }
-
-        try {
+        //Try-Catch method tries to populate totalOrders by getting order queue, catches any SQL Exception errors
+        try 
+        {
             OrderQueueService oqs = new OrderQueueService();
             ArrayList<OrderQueue> totalOrders = oqs.getOrderQueue();
             ArrayList<OrderQueue> orders = new ArrayList<>();
-
-            for (OrderQueue o : totalOrders) {
-                if (o.getStatus().equals("confirmed")) {
+            //For loop used to populate OrderQueue o object with totalOrders
+            for (OrderQueue o : totalOrders) 
+            {
+                //If statement used to verify status equals approved
+                if (o.getStatus().equals("approved")) 
+                {
+                    //o OrderQueue object sets file path
                     o.setFilePath(o.getFilePath() + "/" + o.getFileName() + ".stl");
+                    //orders object is populated by o OrderQueue object
                     orders.add(o);
                 }
             }
-
             request.setAttribute("orders", orders);
-        } catch (SQLException ex) {
+        } 
+        catch (SQLException ex)
+        {
             Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMessage", ex.getMessage());
             request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
@@ -120,39 +147,57 @@ public class QueueManagementController extends HttpServlet {
 
         String action = request.getParameter("action");
         String orderIDs = request.getParameter("orderId");
-        String comments = request.getParameter("comments");
+
         OrderService os = new OrderService();
 
         Order order = new Order();
-
-        try {
-            switch (action) {
+        
+        //Try-Catch method that tries to run the switch or catch any exception errors
+        try 
+        {
+            //Switch method that works on action
+            switch (action) 
+            {
+                //Case used to complete order
                 case "complete":
                     int orderID = Integer.parseInt(orderIDs);
+                    //order Order object is populated by order details retrieved by orderID
                     order = os.getOrderDetails(orderID);
-                    if (order == null) {
+                    //If statement that checks to see if order is null and displays error message
+                    if (order == null) 
+                    {
                         request.setAttribute("errorMessage", "Error Completing Order: Order doesn't exist.");
                         request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
                         return;
                     }
-                    if (order.getStatus() != "complete") {
+                    //If statement checks that the order status is not complete
+                    if (order.getStatus() != "complete") 
+                    {
                         String orderStatus = "complete";
-                        EmailService.sendOrderUpdate(order.getAccount().getEmail(), order, comments, "Your order has been printed and is ready for pickup!", getServletContext().getRealPath("/WEB-INF"));
+                        //os OrderService object sets the new order status using the orderID and orderStatus variable
                         os.setOrderStatus(orderID, orderStatus);
-                        try {
+                        //Try-Catch method tries to populate totalOrders by getting order queue, catches any SQL Exception errors
+                        try 
+                        {
                             OrderQueueService oqs = new OrderQueueService();
                             ArrayList<OrderQueue> totalOrders = oqs.getOrderQueue();
                             ArrayList<OrderQueue> orders = new ArrayList<>();
-
-                            for (OrderQueue o : totalOrders) {
-                                if (o.getStatus().equals("confirmed")) {
+                            //For loop used to populate OrderQueue o object with totalOrders
+                            for (OrderQueue o : totalOrders) 
+                            {
+                                //If statement used to verify status equals approved
+                                if (o.getStatus().equals("approved")) 
+                                {
+                                    //o OrderQueue object sets file path
                                     o.setFilePath(o.getFilePath() + "/" + o.getFileName() + ".stl");
+                                    //orders object is populated by o OrderQueue object
                                     orders.add(o);
                                 }
                             }
-
                             request.setAttribute("orders", orders);
-                        } catch (SQLException ex) {
+                        } 
+                        catch (SQLException ex) 
+                        {
                             Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);
                             request.setAttribute("errorMessage", ex.getMessage());
                             request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
@@ -163,32 +208,47 @@ public class QueueManagementController extends HttpServlet {
                         return;
                     }
                     break;
+                //Case used to cancel
                 case "cancel":
                     orderID = Integer.parseInt(orderIDs);
+                    //order Order object is populated by order details retrieved by orderID
                     order = os.getOrderDetails(orderID);
-                    if (order == null) {
+                    //If statement that checks to see if order is null and displays error message
+                    if (order == null) 
+                    {
                         request.setAttribute("errorMessage", "Error Completing Order: Order doesn't exist.");
                         request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
                         return;
                     }
-                    if (order.getStatus() != "complete") {
+                    //If statement checks that the order status is not complete
+                    if (order.getStatus() != "complete") 
+                    {
                         String orderStatus = "cancelled";
-                        EmailService.sendOrderUpdate(order.getAccount().getEmail(), order, comments, "Your order has been cancelled. Please refer to the technician comment below. If you have any questions, please email us.", getServletContext().getRealPath("/WEB-INF"));
+                        //os OrderService object sets the new order status using the orderID and orderStatus variable
                         os.setOrderStatus(orderID, orderStatus);
-                        try {
+                        //Try-Catch method tries to populate totalOrders by getting order queue, catches any SQL Exception errors
+                        try 
+                        {
                             OrderQueueService oqs = new OrderQueueService();
                             ArrayList<OrderQueue> totalOrders = oqs.getOrderQueue();
                             ArrayList<OrderQueue> orders = new ArrayList<>();
-
-                            for (OrderQueue o : totalOrders) {
-                                if (o.getStatus().equals("confirmed")) {
+                            //For loop used to populate OrderQueue o object with totalOrders
+                            for (OrderQueue o : totalOrders) 
+                            {
+                                //If statement used to verify status equals approved
+                                if (o.getStatus().equals("approved")) 
+                                {
+                                    //o OrderQueue object sets file path
                                     o.setFilePath(o.getFilePath() + "/" + o.getFileName() + ".stl");
+                                    //orders object is populated by o OrderQueue object
                                     orders.add(o);
                                 }
                             }
 
                             request.setAttribute("orders", orders);
-                        } catch (SQLException ex) {
+                        }
+                        catch (SQLException ex)
+                        {
                             Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);
                             request.setAttribute("errorMessage", ex.getMessage());
                             request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
@@ -200,8 +260,8 @@ public class QueueManagementController extends HttpServlet {
                     }
                     break;
                 case "download":
-                    try {
-                        //
+                    try 
+                    {
                         String path = request.getParameter("path");
                         File downloadFile = new File(path);
                         FileInputStream inStream = new FileInputStream(downloadFile);
@@ -219,22 +279,27 @@ public class QueueManagementController extends HttpServlet {
                         byte[] buffer = new byte[4096];
                         int bytesRead = -1;
 
-                        while ((bytesRead = inStream.read(buffer)) != -1) {
+                        while ((bytesRead = inStream.read(buffer)) != -1) 
+                        {
                             outStream.write(buffer, 0, bytesRead);
                         }
 
                         inStream.close();
                         outStream.close();
                         return;
-                    } catch (Exception e) {
+                    } 
+                    catch (Exception e) 
+                    {
                         request.setAttribute("errorMessage", "Error Downloading File: File might not exist or path is incorrect.");
                         request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
                         return;
                     }
             }
-        } catch (SQLException ex) {
+        } 
+        catch (SQLException ex) 
+        {
             Logger.getLogger(QueueManagementController.class.getName()).log(Level.SEVERE, null, ex);
-            request.setAttribute("errorMessage", "Error: An unexpected error occurred. Please try again.");
+            request.setAttribute("errorMessage", "Error: An unexpected error occurrec. Please try again.");
             request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
             return;
         }

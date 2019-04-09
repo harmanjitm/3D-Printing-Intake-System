@@ -7,7 +7,6 @@ package views;
 
 import domain.Account;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -19,8 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 import services.AccountService;
 
 /**
- *
- * @author harma
+ * AccountController
+ * @author Haseeb Sheikh
+ * ID: 000687159
+ * 
+ * Account Management Controller for 3D Printing Intake System
  */
 public class AccountManagementController extends HttpServlet {
 

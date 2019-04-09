@@ -19,12 +19,14 @@ import javax.servlet.http.HttpSession;
 import services.AccountService;
 
 /**
- *
- * @author 687159
+ * AccountController
+ * @author Haseeb Sheikh
+ * ID: 000687159
+ * 
+ * Login Controller for 3D Printing Intake System
  */
 public class LoginController extends HttpServlet 
 {
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *

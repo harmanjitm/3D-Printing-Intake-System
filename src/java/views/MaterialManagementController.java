@@ -7,7 +7,6 @@ package views;
 
 import domain.Colour;
 import domain.Material;
-import domain.Printer;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,8 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import services.MaterialService;
 
 /**
+ * AccountController
  * @author Haseeb Sheikh
- * ID: 687159
+ * ID: 000687159
  * 
  * Material Management Controller for 3D Printing Intake System
  */

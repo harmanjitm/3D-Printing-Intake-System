@@ -11,7 +11,6 @@ import domain.Material;
 import domain.Order;
 import domain.Printer;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
