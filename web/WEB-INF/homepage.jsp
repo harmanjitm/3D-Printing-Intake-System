@@ -20,41 +20,32 @@
             <v-app>
                 <v-content>
                     <v-card color="#8B2635" height="5px"></v-card>
-                    <v-toolbar dark color="#1B222B">
+                        <c:if test="${account == null}">
+                            <v-toolbar dark color="#1B222B">
                         <v-toolbar-title>ARIS3D</v-toolbar-title>
                         <v-spacer></v-spacer>
-                        <c:if test="${account == null}">
                             <a href="register">
                                 <v-btn outline color="#8B2635">Register</v-btn>
                             </a>
                             <a href="login">
                                 <v-btn color="#8B2635">Login</v-btn>
                             </a>
+                        </v-toolbar>
                         </c:if>
                         <c:if test="${account.accountType == 'admin'}">
-                            <a href="dashboard">
+                         <ARIS3D:Header isAdmin="true" pageName=""></ARIS3D:Header>
+                            <!--<a href="dashboard">
                                 <v-btn color="#8B2635">Dashboard</v-btn>
-                            </a>
+                            </a>-->
                         </c:if>
                         <c:if test="${account.accountType == 'user'}">
-                            <a href="login?logout=true">
+                         <ARIS3D:Header isAdmin="false" pageName=""></ARIS3D:Header>
+                        <!--    <a href="login?logout=true">
                                 <v-btn color="#8B2635">Logout</v-btn>
-                            </a>
+                            </a>-->
                         </c:if>
-                    </v-toolbar>
-                    <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
-                            ${successMessage}
-                        </v-alert>
-                        <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
-                            ${errorMessage}
-                        </v-alert>
+                    
                     <div class="overlayContainer">
-                        <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
-                            ${successMessage}
-                        </v-alert>
-                        <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
-                            ${errorMessage}
-                        </v-alert>
                         <span class="carouselOverlay mt-5">
                             <c:if test="${account == null}"><h1 class="display-2 font-weight-bold">ARIS 3D Printing Service</h1></c:if>
                             <c:if test="${account != null}"><h1 class="display-2 font-weight-bold">Welcome Back, ${sessionScope.account.firstname}!</h1></c:if>
@@ -71,7 +62,7 @@
                     </div>
                     <c:if test="${account == null}">
                     <v-container>
-                        <h1 class="text-outline display-1 text-xs-center font-weight-regular">Our Printing Service</h1>
+                        <h1 class="text-xs-center font-weight-regular">About Us</h1>
                         <br>
                         <v-divider></v-divider>
                         <p class="body-1 text-xs-center" text-center>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse bibendum, eros vel congue tincidunt, enim metus ultricies nibh, in cursus ligula est consequat erat. Curabitur facilisis lectus quis felis fringilla, porta vehicula dolor mattis. Mauris quis dolor quis risus pellentesque ultrices. Donec aliquet dolor et risus viverra rutrum. Vestibulum placerat accumsan mi, in lacinia ex ornare congue. Vivamus tincidunt fermentum ex et aliquam. Pellentesque sit amet rhoncus dui, sed finibus massa. Morbi vestibulum, tellus in gravida dictum, lorem arcu consectetur magna, id pellentesque urna sapien ut augue. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu mollis enim, id blandit nisi. Quisque efficitur hendrerit nisi ut maximus. Mauris a libero sapien.</p>
@@ -106,7 +97,7 @@
                     
                     </c:if>
                     <v-container grid-list-md text-xs-center>
-                        <h1 class="display-1 text-xs-center font-weight-thin">Our Printing Service</h1>
+                        <h1 class="display-1 text-xs-center font-weight-thin">More Information</h1>
                         <v-divider></v-divider>
                         <br>
                         <v-layout row wrap>
