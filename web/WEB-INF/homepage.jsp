@@ -44,7 +44,12 @@
                                 <v-btn color="#8B2635">Logout</v-btn>
                             </a>-->
                         </c:if>
-                    
+                    <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
+                        ${successMessage}
+                    </v-alert>
+                    <v-alert <c:if test='${errorMessage != null}'> id="error" value="true"</c:if> type="error">
+                        ${errorMessage}
+                    </v-alert>
                     <div class="overlayContainer">
                         <span class="carouselOverlay mt-5">
                             <c:if test="${account == null}"><h1 class="display-2 font-weight-bold">ARIS 3D Printing Service</h1></c:if>
