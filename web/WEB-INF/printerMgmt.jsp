@@ -22,7 +22,7 @@
                 <ARIS3D:Header isAdmin="true" pageName="Printer Management"></ARIS3D:Header>
                 <v-content>
                     <v-container grid-list-md>
-                    <!-- Display error messages -->
+            <!-- Display error message -->
                         <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
                             ${successMessage}
                         </v-alert>
@@ -30,11 +30,12 @@
                             ${errorMessage}
                         </v-alert>
                         
+                        <!-- Dialog box for adding a new printer -->
                             <v-dialog v-model="dialog" max-width="750px">
                                 <v-btn slot="activator" color="#8B2635" dark class="mb-2"><v-icon>add</v-icon></v-btn>
                                 <v-card>
                                     <v-card-title>
-                                        <span class="headline">New Account</span>
+                                        <span class="headline">New Printer</span>
                                     </v-card-title>
                                     <form id="create-printer" method="post" action="printermanagement">
                                         <v-card-text>
@@ -148,7 +149,7 @@
                              img: 'res/img/printers/${printer.printerId}.jpg'},
                         </c:forEach>
                     ],
-                    selectedItem:
+                    selectedItem: //fill a selected printer object
                     {
                         printerId: '',
                         size: '',
@@ -157,7 +158,8 @@
                         materials: '',
                     },
                 },
-                methods: {
+                methods: 
+                {
                     selectItem(item) {
                         this.selectedItem = Object.assign({}, item);
                     },

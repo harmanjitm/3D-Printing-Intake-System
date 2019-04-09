@@ -48,22 +48,24 @@
                         <v-stepper-header>
                             <v-stepper-step :complete="e1 > 1" step="1">Submit a File</v-stepper-step>
 
-                            <v-divider></v-divider>
+                                <v-divider></v-divider>
 
                             <v-stepper-step :complete="e1 > 2" step="2">Choose a Printer</v-stepper-step>
 
-                            <v-divider></v-divider>
+                                <v-divider></v-divider>
 
                             <v-stepper-step :complete="e1 > 3" step="3">Choose a Material</v-stepper-step>
 
-                            <v-divider></v-divider>
+                                <v-divider></v-divider>
 
                             <v-stepper-step :complete="e1 > 4" step="4">Any Comments?</v-stepper-step>
 
-                            <v-divider></v-divider>
+                                <v-divider></v-divider>
 
                             <v-stepper-step step="5">Review Order</v-stepper-step>
                         </v-stepper-header>
+                        
+                    <!-- success/error handling -->    
                         <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
                             ${successMessage}
                         </v-alert>
@@ -81,7 +83,6 @@
                                         <v-flex xs6 sm6 md4 lg8>
                                             <v-card class="elevation-4">
                                                 <div id="stl_cont" @change="showInfo">
-<!--                                                    <div >-->
                                                     <h2 class="fileInput">Select an STL file</h2>
                                                     <form id="create-order" method="post" action="order" enctype="multipart/form-data">  
                                                         <input type="hidden" id="action" name="action" value="submit">
@@ -94,7 +95,6 @@
                                                         <input type="hidden" id="volume" name="volume" value="">
                                                         <input type="hidden" id="area" name="area" value="">
                                                     </form>
-<!--                                                  </div>  -->
                                                 </div>
                                             </v-card>
                                         </v-flex>
@@ -138,13 +138,13 @@
                         </v-stepper-content>
 
 
-                        <!-- Select printer -->
+                    <!-- Select a printer -->
                         <v-stepper-content step="2">
                             <v-card class="mb-5" height="350px" flat>
                                 <v-container>
-                                    <v-layout row wrap fluid>                                              
+                                    <v-layout row wrap fluid>    
                                         <v-flex v-for="printer in printers" v-bind:key="printer.printerId" xs8 sm4 md4 lg4>
-                                            <!-- Printer Cards -->
+                                    <!-- Printer Cards -->
                                             <v-hover>
                                                 <v-card id="printerCard" @click="selectPrinter(printer)" onmouseover="" 
                                                         style="cursor: pointer;" width="344"
@@ -174,7 +174,7 @@
                         </v-stepper-content>
 
 
-                        <!-- Select material based on selected printer -->
+                <!-- Select material based on selected printer -->
                         <v-stepper-content step="3">
                             <v-card class="mb-5" height="350px" flat>
                                 <v-container>

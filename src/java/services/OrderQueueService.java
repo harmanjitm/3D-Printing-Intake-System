@@ -63,6 +63,11 @@ public class OrderQueueService {
 
     }
     
+    /**
+     * Gets all orders in the queue.
+     * @return
+     * @throws SQLException 
+     */
     public ArrayList<OrderQueue> getOrderQueue() throws SQLException
     {
         OrderQueueBroker oqb = new OrderQueueBroker();

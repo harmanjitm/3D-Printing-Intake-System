@@ -136,6 +136,13 @@ public class OrderService {
 
     }
 
+    /**
+     * gets the stl file by its assigned id.
+     * 
+     * @param fileId
+     * @return
+     * @throws SQLException 
+     */
     public File getFileByFileId(int fileId) throws SQLException {
 
         return ob.getFileByFileId(fileId);
