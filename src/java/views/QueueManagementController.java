@@ -20,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import services.EmailService;
 import services.OrderQueueService;
 import services.OrderService;
 import services.PrinterService;
@@ -176,6 +177,7 @@ public class QueueManagementController extends HttpServlet
                         String orderStatus = "complete";
                         //os OrderService object sets the new order status using the orderID and orderStatus variable
                         os.setOrderStatus(orderID, orderStatus);
+                        EmailService.sendOrderUpdate(order.getAccount().getEmail(), order, "", "Your order has been <b>printed</b>! Please visit us in the ARIS 3D Printing Lab in the Aldred building to pickup your order! Thank you for placing your order with ARIS3D", getServletContext().getRealPath("/WEB-INF"));
                         //Try-Catch method tries to populate totalOrders by getting order queue, catches any SQL Exception errors
                         try 
                         {
@@ -203,7 +205,7 @@ public class QueueManagementController extends HttpServlet
                             request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
                             return;
                         }
-                        request.setAttribute("successMessage", "Order has been completed.");
+                        request.setAttribute("successMessage", "Order <b>#" + orderID + "</b> has been completed. <b>" + order.getAccount().getFirstname() + "</b> has been sent an email with pickup instructions.");
                         request.getRequestDispatcher("/WEB-INF/queueMgmt.jsp").forward(request, response);
                         return;
                     }
@@ -226,6 +228,7 @@ public class QueueManagementController extends HttpServlet
                         String orderStatus = "cancelled";
                         //os OrderService object sets the new order status using the orderID and orderStatus variable
                         os.setOrderStatus(orderID, orderStatus);
+                        EmailService.sendOrderUpdate(order.getAccount().getEmail(), order, "", "Your order has been <b>cancelled</b>! Please contact us for further information through the ARIS email.", getServletContext().getRealPath("/WEB-INF"));
                         //Try-Catch method tries to populate totalOrders by getting order queue, catches any SQL Exception errors
                         try 
                         {

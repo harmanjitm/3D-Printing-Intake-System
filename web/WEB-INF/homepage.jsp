@@ -71,13 +71,6 @@
                             </c:if>
                         </v-toolbar-items>
                     </v-toolbar>
-                    <!--Alert Messages-->
-                    <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
-                        ${successMessage}
-                    </v-alert>
-                    <v-alert <c:if test='${errorMessage != null}'> id="error" value="true"</c:if> type="error">
-                        ${errorMessage}
-                    </v-alert>
                     <!--Carousel Images-->
                     <div class="overlayContainer">
                         <span class="carouselOverlay mt-5">
@@ -94,6 +87,13 @@
                             </v-carousel>
                         </v-card>
                     </div>
+                    <!--Alert Messages-->
+                    <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
+                        ${successMessage}
+                    </v-alert>
+                    <v-alert <c:if test='${errorMessage != null}'> id="error" value="true"</c:if> type="error">
+                        ${errorMessage}
+                    </v-alert>
                     <!--**MAIN TEXT IN HERE**-->
                     <c:if test="${account == null}">
                     <v-container>
@@ -110,7 +110,7 @@
                     <!--Orders Pending User Approval-->
                     <c:if test="${approval[0] != null}">
                     <v-container>
-                        <h1 class="display-1 text-xs-center font-weight-thin">Orders Pending Approval</h1>
+                        <h1 class="display-1 text-xs-center font-weight-thin">Orders Pending Your Approval</h1>
                         <v-divider></v-divider>
                         <v-container grid-list-lg>
                             <v-layout row wrap>
@@ -125,97 +125,114 @@
                                         <v-card-text class="pt-0">
                                             <span class="text-xs-center subheading">Order Information</span>
                                             <v-divider></v-divider>
-                                            <span class="subheading font-weight-light"><v-icon>date_range</v-icon> {{order.date}}</span>
+                                            <span class="subheading font-weight-light"><v-icon>print</v-icon> {{order.printerName}}</span>
                                             <v-spacer></v-spacer>
-                                            <span class="subheading font-weight-light"><v-icon>announcement</v-icon> {{order.status}}</span>
+                                            <span class="subheading font-weight-light"><v-icon>confirmation_number</v-icon>{{num}}{{order.orderId}}</span>
                                             <v-spacer></v-spacer>
                                             <span class="subheading font-weight-light"><v-icon>attach_money</v-icon> {{order.cost}}</span>
+                                            <v-spacer></v-spacer>
+                                            <span class="subheading font-weight-light"><v-icon>file_copy</v-icon> {{order.fileName}}</span>
                                         </v-card-text>
                                         <v-card-actions>
-                                            <v-btn @click="cancel(order)" color="#8B2635" dark>Cancel</v-btn>
+                                            <v-btn @click="viewOrder(order)" color="#8B2635" dark>Cancel</v-btn>
                                             <v-spacer></v-spacer>
-                                            <v-dialog>
-                                                <v-btn v-model="orderDialog" @click="approve(order)" color="green" dark>Approve</v-btn>
-                                                <v-toolbar color="#1B222B" dark>
-                                                    <v-toolbar-title>Order Confirmation</v-toolbar-title>
+                                            <v-btn @click="viewOrder(order)" color="green darken-3" dark>Approve</v-btn>
+                                            <v-dialog max-width="50%" v-model="orderDialog" >
+                                                <v-card color="#8B2635" height="5px"></v-card>
+                                                <v-toolbar class="blue-grey darken-4 white--text">
+                                                    <v-toolbar-title>Confirm Order for Printing</v-toolbar-title>
                                                     <v-spacer></v-spacer>
                                                 </v-toolbar>
                                                 <v-card>
                                                     <v-container fluid grid-list-lg>
                                                         <v-layout row wrap>
-                                                            <v-flex xs8 sm4 md4 lg6>
-                                                                <v-card flat min-height="300px">
+                                                            <v-flex xs12 sm4 md4 lg4>
+                                                                <v-card flat max-height="200px">
                                                                     <v-card-title><h4>File Information</h4></v-card-title>
                                                                     <v-divider></v-divider>
                                                                     <v-list dense>
                                                                         <v-list-tile>
-                                                                            <v-list-tile-content>File name: </v-list-tile-content>
-                                                                            <v-list-tile-content class="align-end">{{ selectedFile.name }}</v-list-tile-content>
+                                                                            <v-list-tile-content>File Name: </v-list-tile-content>
+                                                                            <v-list-tile-content class="align-end">{{ selectedOrder.fileName }}</v-list-tile-content>
                                                                         </v-list-tile>
                                                                         <v-list-tile>
-                                                                            <v-list-tile-content>Volume: </v-list-tile-content>
-                                                                            <v-list-tile-content class="align-end">{{ selectedFile.volume }} mm&#179</v-list-tile-content>
-                                                                        </v-list-tile>
-                                                                        <v-list-tile>
-                                                                            <v-list-tile-content>Triangles: </v-list-tile-content>
-                                                                            <v-list-tile-content class="align-end">{{ selectedFile.triangles }}</v-list-tile-content>
-                                                                        </v-list-tile>
-                                                                    </v-list>
-                                                                    <v-divider light></v-divider>
-                                                                    <v-list dense two-line flat>
-                                                                        <v-list-tile>
-                                                                            <v-list-tile-content><h4>Cost: </h4>{{selectedOrder.cost}}</v-list-tile-content>
+                                                                            <v-list-tile-content>File Dimensions: </v-list-tile-content>
+                                                                            <v-list-tile-content class="align-end">{{ selectedOrder.dimensions }} mm&#179</v-list-tile-content>
                                                                         </v-list-tile>
                                                                     </v-list>
                                                                 </v-card>
                                                             </v-flex>
-
-                                                            <v-flex xs8 sm4 md4 lg6>
-                                                                <v-card v-if="selectedPrinter" flat>
+                                                            <v-flex xs12 sm8 md8 lg8>
+                                                                <v-card flat max-height="200px">
+                                                                    <v-card-title><h4>Printer Information</h4></v-card-title>
+                                                                    <v-divider></v-divider>
                                                                     <v-layout>
-                                                                        <v-flex xs5>
-                                                                            <v-img :src="selectedPrinter.img" height="174px" contain></v-img>
-                                                                        </v-flex>
                                                                         <v-flex xs7>
-                                                                            <v-card-title secondary-title>
-                                                                                <h3 class="headline mb-0">{{selectedPrinter.name}}</h3>
-                                                                            </v-card-title>
                                                                             <v-list dense>
                                                                                 <v-list-tile>
-                                                                                    <v-list-tile-content><h4>Run Cost:</h4> </v-list-tile-content>
-                                                                                    <v-list-tile-content class="align-end"> $ {{ selectedPrinter.runCost }} /h</v-list-tile-content>
+                                                                                    <v-list-tile-content>Printer Name: </v-list-tile-content>
+                                                                                    <v-list-tile-content class="align-end">{{selectedOrder.printerName}}</v-list-tile-content>
+                                                                                </v-list-tile>
+                                                                                <v-list-tile>
+                                                                                    <v-list-tile-content>Printer Dimensions: </v-list-tile-content>
+                                                                                    <v-list-tile-content class="align-end">{{selectedOrder.printerDimensions}}&#179</v-list-tile-content>
                                                                                 </v-list-tile>
                                                                             </v-list>
                                                                         </v-flex>
+                                                                        <v-flex xs5>
+                                                                            <v-img :src="selectedOrder.img" height="30%" contain></v-img>
+                                                                        </v-flex>
                                                                     </v-layout>
-                                                                    <v-divider light></v-divider>
-                                                                    <v-card-text>
-                                                                        <v-list dense flat>
-                                                                            <v-list-tile>
-                                                                                <v-list-tile-content>Material: </v-list-tile-content>
-                                                                                <v-list-tile-content class="align-end">{{ selectedMaterial.materialName }}</v-list-tile-content>
-                                                                            </v-list-tile>
-                                                                            <v-list-tile>
-                                                                                <v-list-tile-content>Type: </v-list-tile-content>
-                                                                                <v-list-tile-content class="align-end">{{ selectedColour.colour }}</v-list-tile-content>
-                                                                            </v-list-tile>
-                                                                            <v-list-tile>
-                                                                                <v-list-tile-content>Cost per mm&#179: </v-list-tile-content>
-                                                                                <v-list-tile-content class="align-end">$ {{ selectedMaterial.materialVal }}</v-list-tile-content>
-                                                                            </v-list-tile>
-                                                                    </v-card-text>
                                                                 </v-card>
+                                                            </v-flex>
+                                                            <v-flex xs12 sm4 md4 lg4>
+                                                                <v-card flat max-height="200px">
+                                                                    <v-card-title><h4>Material Information</h4></v-card-title>
+                                                                    <v-divider></v-divider>
+                                                                    <v-list dense>
+                                                                        <v-list-tile>
+                                                                            <v-list-tile-content>Material: </v-list-tile-content>
+                                                                            <v-list-tile-content class="align-end">{{ selectedOrder.material }}</v-list-tile-content>
+                                                                        </v-list-tile>
+                                                                        <v-list-tile>
+                                                                            <v-list-tile-content>Type: </v-list-tile-content>
+                                                                            <v-list-tile-content class="align-end">{{ selectedOrder.materialColour }}</v-list-tile-content>
+                                                                        </v-list-tile>
+                                                                    </v-list>
+                                                                </v-card>
+                                                            </v-flex>
+                                                            <v-flex xs12 sm8 md8 lg8>
+                                                                <v-card flat max-height="200px">
+                                                                    <v-card-title><h4>Cost Information</h4></v-card-title>
+                                                                    <v-divider></v-divider>
+                                                                    <v-list dense>
+                                                                        <v-list-tile>
+                                                                            <v-list-tile-content>Total Cost: </v-list-tile-content>
+                                                                            <v-list-tile-content class="align-end">$ {{selectedOrder.cost}}</v-list-tile-content>
+                                                                        </v-list-tile>
+                                                                        <v-list-tile>
+                                                                            <v-list-tile-content>Payment: </v-list-tile-content>
+                                                                            <v-list-tile-content class="align-end">You will be contacted regarding payment options.</v-list-tile-content>
+                                                                        </v-list-tile>
+                                                                    </v-list>
+                                                                </v-card>
+                                                            </v-flex>
                                                         </v-layout>
                                                         <v-flex>
                                                             <v-card flat>
                                                                 <v-list dense flat>
                                                                     <v-list-tile>
-                                                                        <v-list-tile-content><h4>Your Message: </h4> {{ comments }}</v-list-tile-content>
+                                                                        <v-list-tile-content><h4>Your Message:</h4> {{ selectedOrder.comments }}</v-list-tile-content>
                                                                     </v-list-tile>
                                                                 </v-list>
                                                             </v-card>
                                                         </v-flex>
                                                     </v-container>
+                                                    <v-card-actions>
+                                                        <v-btn @click="cancel()" color="#8B2635" dark>Cancel</v-btn>
+                                                        <v-spacer></v-spacer>
+                                                        <v-btn @click="approve()" color="green darken-3" dark>Approve</v-btn>
+                                                    </v-card-actions>
                                                 </v-card>
                                             </v-dialog>
                                         </v-card-actions>
@@ -324,6 +341,10 @@
             </v-app>
         </div>
         <link href="res/css/header.css" rel="stylesheet" type="text/css"/>
+        <form method="post" action="home" id="submitOrder">
+            <input id="action" type="hidden" name="action" value="">
+            <input id="submitOrderId" type="hidden" name="orderId">
+        </form>
     </body>
     <script>
         new Vue(
@@ -380,7 +401,7 @@
                 approval:
                 [
                 <c:forEach items="${approval}" var="order">
-                    {orderId: ${order.orderId}, cost: ${order.cost}, printerDimensions: '${order.printerDimensions}', dimensions: '${order.fileDimensions}', filePath: '${order.filePath}', fileName: '${order.fileName}', email: '${order.email}', firstname: '${order.firstname}', lastname: '${order.lastname}', printerId: '${order.printerId}', printerName: '${order.printerName}', material: '${order.materialName}', materialColour: '${order.materialColour}', comments: '${order.comments}'},
+                    {orderId: ${order.orderId}, cost: ${order.cost}, printerDimensions: '${order.printerDimensions}', img: 'res/img/printers/${order.printerId}.jpg', dimensions: '${order.fileDimensions}', fileName: '${order.fileName}', email: '${order.email}', firstname: '${order.firstname}', lastname: '${order.lastname}', printerId: '${order.printerId}', printerName: '${order.printerName}', material: '${order.materialName}', materialColour: '${order.materialColour}', comments: '${order.comments}'},
                 </c:forEach>
                 ],
                 previous:
@@ -390,7 +411,7 @@
                 </c:forEach>
                 ],
                 selectedOrder:
-                [
+                {
                     orderId: 0,
                     cost: 0,
                     email: '',
@@ -404,16 +425,28 @@
                     comments: '',
                     fileName: '',
                     dimensions: '',
-                    filePath: ''
-                ]
+                    img: ''
+                }
             },
             methods:
             {
                 viewOrder(order)
                 {
-                    
+                    this.selectedOrder = Object.assign({}, order);
+                    this.orderDialog = true;
                 },
-                
+                cancel()
+                {
+                    document.getElementById('submitOrderId').value = this.selectedOrder.orderId;
+                    document.getElementById('action').value = 'cancel';
+                    document.getElementById('submitOrder').submit();
+                },
+                approve()
+                {
+                    document.getElementById('submitOrderId').value = this.selectedOrder.orderId;
+                    document.getElementById('action').value = 'approve';
+                    document.getElementById('submitOrder').submit();
+                }
             }
         });
     </script>

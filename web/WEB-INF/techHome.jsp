@@ -27,7 +27,7 @@
                             <template width="100%">
                                 <v-card class="mt-3 mx-auto" width="32%">
                                     <v-sheet class="v-sheet--offset mx-auto" color="purple lighten-3" elevation="12" max-width="calc(100% - 32px)">
-                                        <v-sparkline :labels="labels" :value="value" color="white" line-width="2" padding="16" auto-draw smooth></v-sparkline>
+                                        <v-sparkline :labels="printerLabels" :value="value1" color="white" line-width="2" padding="16" auto-draw smooth></v-sparkline>
                                     </v-sheet>
                                     <v-card-text class="pt-0">
                                         <div class="title font-weight-light mb-2">Printer Queues</div>
@@ -41,7 +41,7 @@
                             <template width="100%">
                                 <v-card class="mt-3 mx-auto" width="32%">
                                     <v-sheet class="v-sheet--offset mx-auto" color="red lighten-3" elevation="12" max-width="calc(100% - 32px)">
-                                        <v-sparkline :labels="labels" :value="value" color="white" line-width="2" padding="16" auto-draw smooth></v-sparkline>
+                                        <v-sparkline :labels="labels" :value="value2" color="white" line-width="2" padding="16" auto-draw smooth></v-sparkline>
                                     </v-sheet>
                                     <v-card-text class="pt-0">
                                         <div class="title font-weight-light mb-2">Order Submissions</div>
@@ -55,7 +55,7 @@
                             <template width="100%">
                                 <v-card class="mt-3 mx-auto" width="32%">
                                     <v-sheet class="v-sheet--offset mx-auto" color="teal lighten-3" elevation="12" max-width="calc(100% - 32px)">
-                                        <v-sparkline :labels="labels" :value="value" color="white" line-width="2" padding="16" auto-draw smooth></v-sparkline>
+                                        <v-sparkline :labels="labels" :value="value3" color="white" line-width="2" padding="16" auto-draw smooth></v-sparkline>
                                     </v-sheet>
                                     <v-card-text class="pt-0">
                                         <div class="title font-weight-light mb-2">Sales</div>
@@ -103,14 +103,6 @@
                                         <v-divider></v-divider>
                                         <!--<v-spacer vertical></v-spacer>-->
                                         <v-card-actions>
-                                            <form action="dashboard" method="post">
-                                                <input type="hidden" name="action" value="cancel">
-                                                <input type="hidden" name="orderId" :value="order.orderId">
-                                                <v-btn type="submit" flat color="red accent-3">Cancel</v-btn>
-                                            </form>
-                                            <v-spacer></v-spacer>
-                                            <v-divider vertical></v-divider>
-                                            <v-spacer></v-spacer>
                                             <form method="post" action="dashboard">
                                                 <input type="hidden" name="path" :value="order.filePath">
                                                 <input type="hidden" name="action" value="download">
@@ -133,7 +125,7 @@
                                                                 <v-card-text><b>File Submitted:</b> {{viewOrder.fileName}}</v-card-text>
                                                                 <v-card-text><b>File Dimensions:</b> {{viewOrder.dimensions}}mm</v-card-text>
                                                                 <v-card-text><b>Clients Comment:</b> {{viewOrder.comments}}</v-card-text>
-                                                                <v-card-text><b>Estimated Cost:</b> $ {{viewOrder.cost}}.00</v-card-text>
+                                                                <v-card-text><b>Estimated Cost:</b> $ {{viewOrder.cost}}</v-card-text>
                                                                 <v-flex lg6>
                                                                     <v-text-field id="actualCost" type="number" v-model="viewOrder.cost" name="cost" label="Actual Cost" prepend-icon="$" append-icon=""></v-text-field>
                                                                 </v-flex>
@@ -267,8 +259,11 @@
                         </c:forEach>
                     ],
                     num: '#',
-                    labels: ['12am','3am','6am','9am','12pm','3pm','6pm','9pm'],
-                    value: [200,675,410,390,310,460,250,240]
+                    labels: ['1','3','6','9','12','15','18','21','24','27','30'],
+                    printerLabels: ['Fortus','Ultimaker 3 Extended','Form 2+'],
+                    value1: [6,12,9],
+                    value2: [0,2,0,1,0,4,0,1,0,2,4],
+                    value3: [0.25,0,0.5,12,0,4,6,1,0.5,0,5]
                 },
                 methods:
                 {

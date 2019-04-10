@@ -19,20 +19,20 @@
             <v-app>
                 <ARIS3D:Header isAdmin="true" pageName="Order Queue"></ARIS3D:Header>
                 <v-content>
-                <c:if test="${orders[0] == null}">
-                    <v-container>
-                        <h1 class="mt-5 headline text-xs-center">No orders to display</h1>
-                        <v-divider></v-divider>
-                        <h1 class="subheading text-xs-center">Approved orders will display here!</h1>
-                    </v-container>
-                </c:if>
+                    <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
+                        ${successMessage}
+                    </v-alert>
+                    <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
+                        ${errorMessage}
+                    </v-alert>
+                    <c:if test="${orders[0] == null}">
+                        <v-container>
+                            <h1 class="mt-5 headline text-xs-center">No orders to display</h1>
+                            <v-divider></v-divider>
+                            <h1 class="subheading text-xs-center">Approved orders will display here!</h1>
+                        </v-container>
+                    </c:if>
                     <v-container grid-list-lg>
-                        <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
-                            ${successMessage}
-                        </v-alert>
-                        <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
-                            ${errorMessage}
-                        </v-alert>
                         <v-layout row wrap>
                             <v-flex v-for="order in orders" xs12 sm12 md6 lg4 xl2 :key="order.orderId" v-if="order.printerId === bottomNav">
                                 <v-card color="#8B2635" height="5px"></v-card>

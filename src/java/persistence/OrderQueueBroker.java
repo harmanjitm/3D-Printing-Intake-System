@@ -148,4 +148,36 @@ public class OrderQueueBroker {
         connection.close();
         return queue;
     }
+
+    public ArrayList<OrderQueue> getOrderQueue(String status) throws SQLException {
+        ConnectionPool cp = ConnectionPool.getInstance();        
+        Connection connection = cp.getConnection();
+        AccountBroker ab = new AccountBroker();
+        OrderBroker ob = new OrderBroker();
+        FileBroker fb = new FileBroker();
+        ArrayList<OrderQueue> queue = new ArrayList<>();
+        
+        if (connection == null) {
+            throw new SQLException("Error Getting Printer Queue: Connection error.");
+        }
+
+        CallableStatement cStmt = connection.prepareCall("{call getOrdersByStatus(?)}");
+        cStmt.setString(1, status);
+        ResultSet rs = cStmt.executeQuery();
+
+        if (rs == null) {
+            throw new SQLException("Error Getting Queue: Queue not found");
+        }
+
+        OrderQueue orderQueue = new OrderQueue();
+        while (rs.next()) {
+            Order order = ob.getOrder(rs.getInt("order_id"));
+            Account account = ab.getAccountByID(rs.getInt("account_id"));
+            orderQueue = new OrderQueue(0,order,account, order.getFile());            
+            queue.add(orderQueue);
+        }
+
+        connection.close();
+        return queue;
+    }
 }

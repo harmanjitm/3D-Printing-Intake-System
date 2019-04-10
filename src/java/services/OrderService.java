@@ -6,6 +6,7 @@ import domain.Material;
 import java.util.ArrayList;
 
 import domain.Order;
+import domain.OrderQueue;
 import domain.Printer;
 import java.sql.SQLException;
 import java.util.Date;
@@ -86,14 +87,24 @@ public class OrderService {
         order.setStatus(newStatus);
         ob.updateOrder(order);
 
+        if(order.getStatus().equals("complete"))
+        {
+            oqb.deleteFromQueue(order);
+        }
+        
         if (order.getStatus().equals("approved")) {
             oqb.insertQueue(order);
         }
 
+        ArrayList<OrderQueue> orders = oqb.getOrderQueue();
+        
         if (order.getStatus().equals("cancelled")) {
-            try {
-                oqb.deleteFromQueue(order);
-            } catch (Exception e) {
+            for(OrderQueue o : orders)
+            {
+                if(o.getOrderId() == order.getOrderId())
+                {
+                    oqb.deleteFromQueue(order);
+                }
             }
         }
 

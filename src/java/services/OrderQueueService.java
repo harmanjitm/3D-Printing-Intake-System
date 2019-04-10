@@ -74,4 +74,9 @@ public class OrderQueueService {
         return oqb.getOrderQueue();
     }
 
+    public ArrayList<OrderQueue> getOrderQueueByStatus(String status) throws SQLException {
+        OrderQueueBroker oqb = new OrderQueueBroker();
+        return oqb.getOrderQueue(status);
+    }
+
 }

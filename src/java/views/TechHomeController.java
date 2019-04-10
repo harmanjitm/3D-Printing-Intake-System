@@ -178,7 +178,7 @@ public class TechHomeController extends HttpServlet {
                             request.getRequestDispatcher("/WEB-INF/techHome.jsp").forward(request, response);
                             return;
                         }
-                        request.setAttribute("successMessage", "Order <b>#" + orderIDs + "</b> has been approved.");
+                        request.setAttribute("successMessage", "Order <b>#" + orderIDs + "</b> has been approved. It will appear in the printer queue when " + order.getAccount().getFirstname() + " has confirmed the order details.");
                         request.getRequestDispatcher("/WEB-INF/techHome.jsp").forward(request, response);
                         return;
                     }
