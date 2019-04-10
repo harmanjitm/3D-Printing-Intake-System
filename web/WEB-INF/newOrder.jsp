@@ -141,15 +141,18 @@
                     <!-- Select a printer -->
                         <v-stepper-content step="2">
                             <v-card class="mb-5" height="350px" flat>
+                                <v-alert  :value='true' type="info">
+                                    <span id='showPrinter'></span>
+                                </v-alert>
                                 <v-container>
                                     <v-layout row wrap fluid>    
                                         <v-flex v-for="printer in printers" v-bind:key="printer.printerId" xs8 sm4 md4 lg4>
                                     <!-- Printer Cards -->
                                             <v-hover>
-                                                <v-card id="printerCard" @click="selectPrinter(printer)" onmouseover="" 
+                                                <v-card id="printerCard" @click="selectPrinter(printer)" 
                                                         style="cursor: pointer;" width="344"
-                                                        slot-scope="{ hover }"
-                                                        :class="`elevation-${hover ? 24 : 2}`"
+                                                        v-model="selected"
+                                                        v-bind:class="{ [`elevation-${selected}`]: true }"
                                                         class="mx-auto"
                                                         > 
                                                     <v-img :src="printer.img" aspect-ratio="2.5" contain></v-img>
@@ -176,7 +179,7 @@
 
                 <!-- Select material based on selected printer -->
                         <v-stepper-content step="3">
-                            <v-card class="mb-5" height="350px" flat>
+                            <v-card class="mb-5" height="500px" flat>
                                 <v-container>
                                     <v-layout>
                                         <v-flex xs8 sm4 md4 lg6>
@@ -366,6 +369,7 @@ new Vue({
     data: {
         e1: 0, //Stepper element
         fileUploaded: false,
+        show: false,
         image: '',
         fileInfo: '',
         comments: '',
@@ -495,9 +499,11 @@ new Vue({
         },
         selectPrinter(printer) {
             this.selectPrinterName = printer.name;
-            alert('you selected ' + this.selectPrinterName);
-            
+//            alert('you selected ' + this.selectPrinterName);
             this.selectedPrinter = Object.assign({}, printer);
+            document.getElementById('showPrinter').innerHTML = this.selectPrinterName + ' selected';
+            toggle();
+            
         },
         selectMaterial(material) {
             this.selectMaterialId = material.materialId;
