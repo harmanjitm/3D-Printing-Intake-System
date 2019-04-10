@@ -119,11 +119,59 @@
                                             <v-spacer></v-spacer>
                                             <v-divider vertical></v-divider>
                                             <v-spacer></v-spacer>
-                                            <form action="dashboard" method="post">
-                                                <input type="hidden" name="action" value="approve">
-                                                <input type="hidden" name="orderId" :value="order.orderId">
-                                                <v-btn type="submit" flat color="light-green darken-2">Approve</v-btn>
-                                            </form>
+                                            
+                                            <v-dialog v-model="dialog" max-width="750px" >
+                                                <v-btn slot="activator" flat color="light-green darken-2">Review</v-btn>
+                                                <v-card>
+                                                    <v-card-title>
+                                                        <span class="headline">Review Order: {{num}}{{order.orderId}}</span>
+                                                    </v-card-title>
+                                                    <form action="dashboard" method="post">
+                                                    <v-container>
+                                                            <v-layout>
+                                                                
+                                                        
+                                                                <v-flex>
+                                                                    <v-card-text><b>File Submitted:</b> {{order.fileName}}</v-card-text>
+                                                                    <v-card-text><b>File Dimensions:</b> {{order.fileDimensions}}</v-card-text>
+                                                                    <v-card-text><b>Clients Comment:</b> {{order.comments}}</v-card-text>
+                                                                    <v-card-text><b>Estimated Cost:</b> $ {{order.cost}}.00</v-card-text>
+                                                                    <v-flex lg6>
+                                                                        <v-text-field label="Actual Cost" prepend-icon="$" append-icon=""></v-text-field>
+                                                                    </v-flex>
+                                                                    <br><br><br><br>
+                                                                    <v-card-actions>
+                                                                    <form method="post" action="dashboard">
+                                                                        <input type="hidden" name="path" :value="order.filePath">
+                                                                        <input type="hidden" name="action" value="download">
+                                                                        <v-btn type="submit" flat color="orange darken-2">Download File</v-btn>
+                                                                    </form>
+                                                                    </v-card-actions>
+                                                                </v-flex>
+                                                                <v-flex>
+                                                                    <v-card-text><b>Selected Printer:</b> {{order.printerName}}</v-card-text>
+                                                                    <v-card-text><b>Printer Dimensions:</b> {{order.printerDimensions}}</v-card-text>
+                                                                    <v-card-text><b>Material Selected:</b> {{order.materialName}}</v-card-text>
+                                                                    <v-card-text><b>Material Type:</b> {{order.materialColour}}</v-card-text>
+                                                                    <v-textarea solo label="Message to Client"></v-textarea>
+                                                                    <input type="hidden" name="action" value="approve">
+                                                                    <input type="hidden" name="orderId" :value="order.orderId">
+                                                                    
+                                                                    <v-card-actions>
+                                                                        <v-spacer></v-spacer>
+                                                                        <v-btn type="submit" flat color="light-green darken-2">Approve</v-btn>
+                                                                        <v-btn flat color="red accent-3">Needs Revision</v-btn>
+                                                                    </v-card-actions>
+                                                                </v-flex>
+                                                            </v-layout>
+                                                        </v-container>
+                                                        </form>
+                                                        <v-spacer></v-spacer>
+                                                        
+                                                    
+                                            </v-dialog>    
+                                                
+                                            
                                         </v-card-actions>
                                     </v-card>
                                 </v-flex>
@@ -204,7 +252,21 @@
                     orders:
                     [
                         <c:forEach items="${orders}" var="order">
-                            {orderId: ${order.orderId}, position: ${order.position}, cost: ${order.cost}, printerDimensions: '${order.printerDimensions}', dimensions: '${order.fileDimensions}', filePath: '${order.filePath}', fileName: '${order.fileName}', email: '${order.email}', firstname: '${order.firstname}', lastname: '${order.lastname}', printerId: '${order.printerId}', printerName: '${order.printerName}', material: '${order.materialName}', materialColour: '${order.materialColour}', comments: '${order.comments}'},
+                            {orderId: ${order.orderId}, 
+                             position: ${order.position}, 
+                             cost: ${order.cost}, 
+                             printerDimensions: '${order.printerDimensions}', 
+                             dimensions: '${order.fileDimensions}', 
+                             filePath: '${order.filePath}', 
+                             fileName: '${order.fileName}', 
+                             email: '${order.email}', 
+                             firstname: '${order.firstname}', 
+                             lastname: '${order.lastname}', 
+                             printerId: '${order.printerId}', 
+                             printerName: '${order.printerName}', 
+                             material: '${order.materialName}', 
+                             materialColour: '${order.materialColour}', 
+                             comments: '${order.comments}'},
                         </c:forEach>
                     ],
                     num: '#',
