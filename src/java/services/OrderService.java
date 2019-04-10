@@ -10,6 +10,7 @@ import domain.Printer;
 import java.sql.SQLException;
 import java.util.Date;
 import persistence.OrderBroker;
+import persistence.OrderQueueBroker;
 
 /**
  * The Class OrderService provides methods to access and modify order objects.
@@ -62,15 +63,16 @@ public class OrderService {
     }
 
     /**
-     * 
-     * @param status
-     * @return
-     * @throws SQLException 
+     * Gets the orders matching the entered status or all orders if "all" is
+     * entered.
+     *
+     * @param status the status of the orders
+     * @return the orders with that status
      */
     public ArrayList<Order> getOrderByStatus(String status) throws SQLException {
         return ob.getOrderByStatus(status);
     }
-    
+
     /**
      * Takes in the order id and the new status. Sets the order status to one
      * of: "pending", "underReview", "printed", "cancelled" or "changesRequired"
@@ -79,9 +81,24 @@ public class OrderService {
      * @param newStatus the new status
      * @return the old status of the order
      */
-    public String setOrderStatus(int orderId, String newStatus) {
-        return null;
+    public String setOrderStatus(int orderId, String newStatus) throws SQLException {
+        OrderQueueBroker oqb = new OrderQueueBroker();
+        Order order = ob.getOrder(orderId);
+        order.setStatus(newStatus);
+        ob.updateOrder(order);
 
+        if (order.getStatus().equals("approved")) {
+            oqb.insertQueue(order);
+        }
+
+        if (order.getStatus().equals("cancelled")) {
+            try {
+                oqb.deleteFromQueue(order);
+            } catch (Exception e) {
+            }
+        }
+
+        return order.getStatus();
     }
 
     /**
@@ -119,11 +136,18 @@ public class OrderService {
 
     }
 
+    /**
+     * gets the stl file by its assigned id.
+     * 
+     * @param fileId
+     * @return
+     * @throws SQLException 
+     */
     public File getFileByFileId(int fileId) throws SQLException {
-        
+
         return ob.getFileByFileId(fileId);
     }
-    
+
     /**
      * Gets the next id.
      *

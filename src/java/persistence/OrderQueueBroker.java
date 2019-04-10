@@ -50,7 +50,6 @@ public class OrderQueueBroker {
 
         boolean hadResults = cStmt.execute();
         connection.close();
-        System.out.println("HAD RESULTS: " + hadResults);
         return hadResults ? 0 : 1;
     }
 
@@ -78,7 +77,6 @@ public class OrderQueueBroker {
 
         boolean hadResults = cStmt.execute();
         connection.close();
-        System.out.println("HAD RESULTS: " + hadResults);
         return hadResults ? 0 : 1;     
     }
     
@@ -104,7 +102,6 @@ public class OrderQueueBroker {
 
         boolean hadResults = cStmt.execute();
         connection.close();
-        System.out.println("HAD RESULTS: " + hadResults);
         return hadResults ? 0 : 1;   
     }
     

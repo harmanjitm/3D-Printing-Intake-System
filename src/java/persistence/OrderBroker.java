@@ -34,8 +34,8 @@ public class OrderBroker{
         CallableStatement cStmt = connection.prepareCall("{call createPrintOrder(?, ?, ?, ?, ?, ?, ?)}");
 
         cStmt.setDouble(1, order.getCost());
-        cStmt.setInt(3, order.getPrinter().getPrinterId());
-        cStmt.setInt(2, order.getMaterial().getMaterialId()); 
+        cStmt.setInt(2, order.getPrinter().getPrinterId());
+        cStmt.setInt(3, order.getMaterial().getMaterialId()); 
         cStmt.setInt(4, order.getAccount().getAccountID());
         cStmt.setInt(5, order.getFile().getFileID());
         cStmt.setString(6, order.getColour());
@@ -60,7 +60,7 @@ public class OrderBroker{
             throw new SQLException("Error Updating Order: NULL order");
         }
 
-        CallableStatement cStmt = connection.prepareCall("{call updateMaterial(?, ?, ?, ?, ?, ?, ?, ?)}");
+        CallableStatement cStmt = connection.prepareCall("{call updatePrintOrder(?, ?, ?, ?, ?, ?, ?, ?)}");
 
         cStmt.setInt(1, order.getOrderId());
         cStmt.setDouble(2, order.getCost());
@@ -144,7 +144,7 @@ public class OrderBroker{
         }
         
         //Creating prepared statement + getting result set
-        CallableStatement cStmt = connection.prepareCall("{call getOrderByStatus(?)}");
+        CallableStatement cStmt = connection.prepareCall("{call getOrdersByStatus(?)}");
         cStmt.setString(1, status);
         ResultSet rs = cStmt.executeQuery();
         
@@ -161,7 +161,8 @@ public class OrderBroker{
             java.util.Date orderDate = rs.getTimestamp("order_date");
             java.util.Date printDate = rs.getTimestamp("print_date"); 
             String orderStatus = rs.getString("order_status");
-            File file = fb.getFileByFileID(Integer.parseInt(rs.getString("account_id")));
+            File file = fb.getFileByFileID(Integer.parseInt(rs.getString("order_file_id")));
+            System.out.println(file.getName());
             Printer printer = pb.getPrinterByID(Integer.parseInt(rs.getString("printer_id")));
             Material material = mb.getMaterialByID(Integer.parseInt(rs.getString("material_id")));
             Account account = ab.getAccountByID(Integer.parseInt(rs.getString("account_id")));
@@ -290,22 +291,13 @@ public class OrderBroker{
         
         int nextOrderId = 0;
         
-        PreparedStatement ps = connection.prepareStatement("SELECT MAX(order_id) AS nextId FROM print_order");
+        PreparedStatement ps = connection.prepareStatement("SELECT AUTO_INCREMENT AS nextId FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'aris' AND TABLE_NAME = 'print_order'");
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             nextOrderId = rs.getInt("nextId");
             System.out.println("RS Value: " + rs.getInt("nextId") + "\nNext ID: " + nextOrderId);
         }
         connection.close();
-        
-        if(nextOrderId < 300000)
-        {
-            nextOrderId = 300000;
-        }
-        else
-        {
-            nextOrderId++;
-        }
         return nextOrderId;
     }
 }

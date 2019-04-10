@@ -23,13 +23,19 @@ public class PrinterService {
 	}
 
         /**
-	 * Creates a new printer object and calls the method to persist 
-         * it within the database..
-	 *
-	 * @return the printer
-	 */
-	public int createPrinter(String size, String name, String status) throws SQLException {
-            Printer printer = new Printer(size, name, status); 
+         * Creates a new printer object and calls the method to persist 
+         * it within the database.
+         * 
+         * @param printerSize
+         * @param printerStatus
+         * @param printerName
+         * @param runCost
+         * @param description
+         * @return
+         * @throws SQLException 
+         */
+	public int createPrinter(String printerSize, String printerStatus, String printerName, String runCost, String description) throws SQLException {
+            Printer printer = new Printer(printerSize, printerStatus, printerName, runCost, description); 
             return pb.insert(printer);
 	}
         
@@ -38,6 +44,7 @@ public class PrinterService {
 	 *
 	 * @param printerId the printer id of the printer to be retrieved
 	 * @return the printer object with that id or null if not found
+         * @throws java.sql.SQLException
 	 */
 	public Printer getPrinterById(int printerId) throws SQLException {
 		return pb.getPrinterByID(printerId);
@@ -49,6 +56,7 @@ public class PrinterService {
 	 *
 	 * @param toUpdate the printer to update
 	 * @return the printer that was replaced or null if there is no existing object to modify
+         * @throws java.sql.SQLException
 	 */
 	public int updatePrinter(Printer toUpdate) throws SQLException {
             Printer printer = new Printer();
@@ -59,8 +67,9 @@ public class PrinterService {
 	/**
 	 * Delete printer by printer id.
 	 *
-	 * @param printerId the printer id to be deleted
+         * @param printer
 	 * @return the printer object that was deleted or null if the object cannot be deleted
+         * @throws java.sql.SQLException
 	 */
 	public int deletePrinter(Printer printer) throws SQLException {
 		return pb.delete(printer);
@@ -84,6 +93,7 @@ public class PrinterService {
 	 *
 	 * @param printerId the printer id to get materials for
 	 * @return the printer materials as an arrayList
+         * @throws java.sql.SQLException
 	 */
 	public ArrayList<Material> getPrinterMaterials(int printerId) throws SQLException {
 		return pb.getPrinterMaterials(printerId);
@@ -94,6 +104,7 @@ public class PrinterService {
 	 * Gets all printers in an array list.
 	 *
 	 * @return all printers
+         * @throws java.sql.SQLException
 	 */
 	public ArrayList<Printer> getAllPrinters() throws SQLException {
             System.out.println("Getting all printers in service");
@@ -106,6 +117,7 @@ public class PrinterService {
 	 *
 	 * @param toUpdate the printer to be updated
 	 * @return the printer object that was replaced
+         * @throws java.sql.SQLException
 	 */
 	public int setPrinterStatus(Printer toUpdate) throws SQLException {
             return pb.update(toUpdate);

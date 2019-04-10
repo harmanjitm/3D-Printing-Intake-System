@@ -8,7 +8,6 @@ package views;
 
 import domain.Account;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -19,19 +18,24 @@ import javax.servlet.http.HttpSession;
 import services.AccountService;
 
 /**
- *
- * @author 687159
+ * AccountController
+ * @author Haseeb Sheikh
+ * ID: 000687159
+ * 
+ * Account Controller for 3D Printing Intake System
  */
 public class AccountController extends HttpServlet 
 {
-
     /**
-     *
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
-     */
+    * Handles the HTTP <code>GET</code> method.
+    *
+    * @param request servlet request
+    * @param response servlet response
+    * @throws ServletException if a servlet-specific error occurs
+    * @throws IOException if an I/O error occurs
+    * @throws Exception if a request Get Attribute fails  
+    */
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
         HttpSession session = request.getSession();
@@ -56,12 +60,14 @@ public class AccountController extends HttpServlet
         getServletContext().getRequestDispatcher("/WEB-INF/accountInfo.jsp").forward(request, response);
     }
 
-    /**
+     /**
+     * Handles the HTTP <code>POST</code> method.
      *
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     * @throws Exception if a request Get Attribute fails  
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 

@@ -47,9 +47,9 @@ public class OrderQueueService {
      * @throws SQLException 
      */
     public int updateQueuePosition(Order order, int position) throws SQLException {
-        OrderQueue orderQ = new OrderQueue();
+        OrderQueueBroker oqb = new OrderQueueBroker();
         
-        return obq.updateQueuePosition(orderQ);
+        return oqb.updateQueuePosition(order, position);
     }
     
     /**
@@ -63,6 +63,11 @@ public class OrderQueueService {
 
     }
     
+    /**
+     * Gets all orders in the queue.
+     * @return
+     * @throws SQLException 
+     */
     public ArrayList<OrderQueue> getOrderQueue() throws SQLException
     {
         OrderQueueBroker oqb = new OrderQueueBroker();

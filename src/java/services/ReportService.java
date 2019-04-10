@@ -31,14 +31,30 @@ public class ReportService {
 
     private ReportBroker rb;
 
+    /**
+     * Instantiates a new report service.
+     */
     public ReportService() {
         rb = new ReportBroker();
     }
 
+    /**
+     * Returns a list of reports
+     * 
+     * @return A list of reports
+     * @throws SQLException 
+     */
     public ArrayList<Report> getAllReports() throws SQLException {
         return rb.getAllReports();
     }
 
+    /**
+     * Creates a new report.
+     * 
+     * @param acc an account object
+     * @throws IOException
+     * @throws SQLException 
+     */
     public void createReport(Account acc) throws IOException, SQLException {
         ReportBroker rb = new ReportBroker();
 

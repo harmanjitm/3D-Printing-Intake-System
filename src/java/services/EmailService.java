@@ -1,5 +1,6 @@
 package services;
 
+import domain.Order;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -26,6 +27,17 @@ import javax.naming.NamingException;
  * @author Harmanjit Mohaar (000758243)
  */
 public class EmailService {
+    
+    public static void sendOrderUpdate(String email, Order order, String comments, String status, String template)
+    {
+        HashMap<String, String> tags = new HashMap<>();
+        tags.put("firstname", order.getAccount().getFirstname());
+        tags.put("orderId", "" + order.getOrderId());
+        tags.put("status", status);
+        tags.put("comments", comments);
+        sendMail(email, "Order Status Update: #" + order.getOrderId(), template + "/notificationtemplates/orderupdate.html", tags, "%%%", "%%%");
+    }
+    
     /**
      * Method used to create the email and setup tags and information specified in the email
      * 

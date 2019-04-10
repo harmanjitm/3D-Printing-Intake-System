@@ -48,13 +48,26 @@ public class MaterialService {
             return 1;
 	}
         
+        /**
+         * Changes the color status. Either In-Stock or Out-of-Stock.
+         * 
+         * @param materialId
+         * @param colour
+         * @param status
+         * @return
+         * @throws SQLException 
+         */
         public int changeColourStatus(int materialId, String colour, String status) throws SQLException
         {
             return mb.changeColourStatus(materialId, colour, status);
         }
         
         /**
-         * 
+         * Adds a color type to a material.
+         * @param materialId
+         * @param colour
+         * @return
+         * @throws SQLException 
          */
         public int addMaterialColour(int materialId, String colour) throws SQLException {
             return mb.insertMaterialColour(materialId, colour);
@@ -100,8 +113,7 @@ public class MaterialService {
 	 * @return the material or null if that id does not exist
 	 */
 	public Material getMaterial(int materialId) throws SQLException{
-		return mb.getMaterialByID(materialId);
-		
+		return mb.getMaterialByID(materialId);	
 	}
         
         /**

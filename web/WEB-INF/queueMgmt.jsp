@@ -17,8 +17,15 @@
     <body>
         <div id="app">
             <v-app>
-                <ARIS3D:Header mini="true" isAdmin="true" pageName="Order Queue"></ARIS3D:Header>
+                <ARIS3D:Header isAdmin="true" pageName="Order Queue"></ARIS3D:Header>
                 <v-content>
+                <c:if test="${orders[0] == null}">
+                    <v-container>
+                        <h1 class="mt-5 headline text-xs-center">No orders to display</h1>
+                        <v-divider></v-divider>
+                        <h1 class="subheading text-xs-center">Approved orders will display here!</h1>
+                    </v-container>
+                </c:if>
                     <v-container grid-list-lg>
                         <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
                             ${successMessage}
@@ -56,7 +63,7 @@
                                         <v-divider vertical></v-divider>
                                         <v-spacer></v-spacer>
                                         <form method="post" action="queue">
-                                            <input type="hidden" name="filePath" :value="order.filePath">
+                                            <input type="hidden" name="path" :value="order.filePath">
                                             <input type="hidden" name="action" value="download">
                                             <v-btn type="submit" flat color="orange darken-2">Download</v-btn>
                                         </form>
@@ -151,7 +158,7 @@
                 el: '#app',
                 data:
                 {
-                    drawer: true,
+                    drawer: false,
                     dialog: false,
                     bottomNav: '${printers[0].printerId}',
                     num: '#',

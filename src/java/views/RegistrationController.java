@@ -7,7 +7,6 @@
 package views;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,16 +17,37 @@ import javax.servlet.http.HttpServletResponse;
 import services.AccountService;
 
 /**
- *
- * @author 687159
+ * @author Haseeb Sheikh
+ * ID: 000687159
+ * 
+ * Registration Controller for 3D Printing Intake System
  */
 public class RegistrationController extends HttpServlet 
 {
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     * @throws Exception if a request Get Attribute fails  
+     */
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
         request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);        
     }
 
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     * @throws Exception if a request Get Attribute fails  
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
@@ -37,9 +57,10 @@ public class RegistrationController extends HttpServlet
         String lastName = request.getParameter("lastname");
 
         AccountService as = new AccountService();
-
+        //Try-Catch used to try and run the if statements and catch any Exception errors
         try 
         {
+            //If statement used to check if the variables or 
             if (email == null || email.equals("") || password == null || password.equals("") 
                         || firstName == null || firstName.equals("") || lastName == null || lastName.equals("")) 
             {

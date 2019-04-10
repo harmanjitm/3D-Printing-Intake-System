@@ -25,11 +25,8 @@ new Vue(
         userItems: 
         [ 
             {title: 'Home', icon: 'home', link: 'home'},
-            {title: 'Dashboard', icon: 'dashboard', link: 'userhome'},
-            {title: 'Notifications', icon: 'mail', link: ''},
             {title: 'Previous Orders', icon: 'replay', link: ''},
             {title: 'Submit Order', icon: 'add_box', link: 'order'},
-            {title: 'Orders', icon: '', link: ''}
         ],
         accountmanagementheaders:
         [
@@ -41,9 +38,9 @@ new Vue(
         ],
         carousel:
         [
-            {src: 'res/img/carousel/carouselImage1.jpg', filter: 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)'},
-            {src: 'res/img/carousel/carouselImage2.jpg', filter: 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)'},
-            {src: 'res/img/carousel/carouselImage3.jpg', filter: 'to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)'}
+            {src: 'res/img/carousel/carouselImage1.jpg', filter: 'to top right, rgba(0,0,0,.33), rgba(0,0,0,.33)'},
+            {src: 'res/img/carousel/carouselImage2.jpg', filter: 'to top right, rgba(0,0,0,.33), rgba(0,0,0,.33)'},
+            {src: 'res/img/carousel/carouselImage3.jpg', filter: 'to top right, rgba(0,0,0,.33), rgba(0,0,0,.33)'}
         ],
         emailRules: 
         [

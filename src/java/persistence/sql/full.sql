@@ -867,7 +867,7 @@ delimiter #
 CREATE  PROCEDURE `createPrintOrder`($cost DECIMAL(13,4),$printer_id INTEGER, $material_id INTEGER, $account_id INTEGER, $order_file_id INTEGER, $colour VARCHAR(50), $comments VARCHAR(500))
 proc_main:BEGIN
 	INSERT INTO PRINT_ORDER(cost, order_date, order_status, printer_id, material_id, account_id, order_file_id, colour, comments) 
-		VALUES($cost, CURDATE(), 'recieved', $printer_id, $material_id, $account_id, $order_file_id, $colour, $comments);
+		VALUES($cost, CURDATE(), 'received', $printer_id, $material_id, $account_id, $order_file_id, $colour, $comments);
 END proc_main #
 delimiter ;
 
@@ -1242,10 +1242,10 @@ delimiter ;
 ** Description: Creates test data for the ARIS 3D Printing DB   **
 ******************************************************************/
 /* ACCOUNTS */
-call aris.createAccount('emily.pegg@edu.sait.ca', 'password', 'Emily', 'Pegg', 'user');
+call aris.createAccount('harmanjit.mohaar@edu.sait.ca', 'password', 'Harmanjit', 'Mohaar', 'admin');
 call aris.createAccount('benjamin.wozak@edu.sait.ca', 'password', 'Benjamin', 'Wozak', 'admin');
 call aris.createAccount('gregory.turnbull@edu.sait.ca', 'password', 'Gregory', 'Turnbull', 'admin');
-call aris.createAccount('harmanjit.mohaar@edu.sait.ca', 'password', 'Hamanjit', 'Mohaar', 'admin');
+call aris.createAccount('emily.pegg@edu.sait.ca', 'password', 'Emily', 'Pegg', 'user');
 call aris.createAccount('haseeb.sheiktsuyi@edu.sait.ca', 'password', 'Haseeb', 'Sheikh', 'admin');
 call aris.createAccount('timothy.huynh@edu.sait.ca', 'password', 'Timothy', 'Huynh', 'admin');
 
@@ -1333,16 +1333,16 @@ call aris.createPrintOrder(123.00, 1, 51, 100000, 400008, 'gray', 'Test comment!
 call aris.createPrintOrder(123.00, 2, 55, 100000, 400009, 'gray', 'Test comment!');
 
 /*ORDER QUEUE*/
-call aris.createQueue(300000);
-call aris.createQueue(300001);
-call aris.createQueue(300002);
-call aris.createQueue(300003);
-call aris.createQueue(300004);
-call aris.createQueue(300005);
-call aris.createQueue(300006);
-call aris.createQueue(300007);
-call aris.createQueue(300008);
-call aris.createQueue(300009);
+-- call aris.createQueue(300000);
+-- call aris.createQueue(300001);
+-- call aris.createQueue(300002);
+-- call aris.createQueue(300003);
+-- call aris.createQueue(300004);
+-- call aris.createQueue(300005);
+-- call aris.createQueue(300006);
+-- call aris.createQueue(300007);
+-- call aris.createQueue(300008);
+-- call aris.createQueue(300009);
 
 /*NOTIFICATION*/
 call aris.createNotification(300006, 'printing');

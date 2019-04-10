@@ -69,6 +69,8 @@ public class OrderQueue {
     private String fileDimensions;
     
     private String fileName;
+    
+    private String status;
 
     public OrderQueue() 
     {
@@ -91,6 +93,7 @@ public class OrderQueue {
         this.filePath = file.getPath();
         this.printerDimensions = order.getPrinter().getSize();
         this.fileDimensions = file.getDimensions();
+        this.status = order.getStatus();
     }
 
     public String getPrinterDimensions() {
@@ -127,7 +130,13 @@ public class OrderQueue {
         this.fileName = fileName;
     }
 
-    
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
     
     public int getOrderId() {
         return orderId;
