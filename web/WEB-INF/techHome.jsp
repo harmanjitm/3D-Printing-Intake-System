@@ -98,7 +98,6 @@
                                             <span class="subheading font-weight-light"><v-icon>print</v-icon> {{order.printerName}}</span><br/>
                                             <span class="subheading font-weight-light"><v-icon>texture</v-icon>{{order.material}} - {{order.materialColour}}</span><br/>
                                             <span class="subheading font-weight-light"><v-icon>attach_money</v-icon>{{order.cost}}</span>
-
                                         </v-card-text>
                                         <v-divider></v-divider>
                                         <!--<v-spacer vertical></v-spacer>-->
@@ -119,59 +118,55 @@
                                             <v-spacer></v-spacer>
                                             <v-divider vertical></v-divider>
                                             <v-spacer></v-spacer>
-                                            
                                             <v-dialog v-model="dialog" max-width="750px" >
-                                                <v-btn slot="activator" flat color="light-green darken-2">Review</v-btn>
+                                                <v-btn @click="reviewOrder(order)" slot="activator" flat color="light-green darken-2">Review</v-btn>
+                                                <v-card color="#8B2635" height="5px"></v-card>
                                                 <v-card>
-                                                    <v-card-title>
-                                                        <span class="headline">Review Order: {{num}}{{order.orderId}}</span>
+                                                    <v-card-title class="blue-grey darken-4 white--text">
+                                                        <span class="headline">Review Order: {{num}}{{viewOrder.orderId}}</span>
                                                     </v-card-title>
-                                                    <form action="dashboard" method="post">
+                                                    <!--<form action="dashboard" method="post">-->
                                                     <v-container>
-                                                            <v-layout>
-                                                                
-                                                        
-                                                                <v-flex>
-                                                                    <v-card-text><b>File Submitted:</b> {{order.fileName}}</v-card-text>
-                                                                    <v-card-text><b>File Dimensions:</b> {{order.fileDimensions}}</v-card-text>
-                                                                    <v-card-text><b>Clients Comment:</b> {{order.comments}}</v-card-text>
-                                                                    <v-card-text><b>Estimated Cost:</b> $ {{order.cost}}.00</v-card-text>
-                                                                    <v-flex lg6>
-                                                                        <v-text-field label="Actual Cost" prepend-icon="$" append-icon=""></v-text-field>
-                                                                    </v-flex>
-                                                                    <br><br><br><br>
-                                                                    <v-card-actions>
+                                                        <v-layout>
+                                                            <v-flex>
+                                                                <v-card-text><b>File Submitted:</b> {{viewOrder.fileName}}</v-card-text>
+                                                                <v-card-text><b>File Dimensions:</b> {{viewOrder.dimensions}}mm</v-card-text>
+                                                                <v-card-text><b>Clients Comment:</b> {{viewOrder.comments}}</v-card-text>
+                                                                <v-card-text><b>Estimated Cost:</b> $ {{viewOrder.cost}}.00</v-card-text>
+                                                                <v-flex lg6>
+                                                                    <v-text-field id="actualCost" type="number" value="234" name="cost" label="Actual Cost" prepend-icon="$" append-icon=""></v-text-field>
+                                                                </v-flex>
+                                                                <br><br><br><br>
+                                                                <v-card-actions>
                                                                     <form method="post" action="dashboard">
-                                                                        <input type="hidden" name="path" :value="order.filePath">
+                                                                        <input type="hidden" name="path" :value="viewOrder.filePath">
                                                                         <input type="hidden" name="action" value="download">
                                                                         <v-btn type="submit" flat color="orange darken-2">Download File</v-btn>
                                                                     </form>
-                                                                    </v-card-actions>
-                                                                </v-flex>
-                                                                <v-flex>
-                                                                    <v-card-text><b>Selected Printer:</b> {{order.printerName}}</v-card-text>
-                                                                    <v-card-text><b>Printer Dimensions:</b> {{order.printerDimensions}}</v-card-text>
-                                                                    <v-card-text><b>Material Selected:</b> {{order.materialName}}</v-card-text>
-                                                                    <v-card-text><b>Material Type:</b> {{order.materialColour}}</v-card-text>
-                                                                    <v-textarea solo label="Message to Client"></v-textarea>
-                                                                    <input type="hidden" name="action" value="approve">
-                                                                    <input type="hidden" name="orderId" :value="order.orderId">
-                                                                    
+                                                                </v-card-actions>
+                                                            </v-flex>
+                                                            <v-flex>
+                                                                <form id="approveOrder" method="post" action="dashboard">
+                                                                    <v-card-text><b>Selected Printer:</b> {{viewOrder.printerName}}</v-card-text>
+                                                                    <v-card-text><b>Printer Dimensions:</b> {{viewOrder.printerDimensions}}</v-card-text>
+                                                                    <v-card-text><b>Material Selected:</b> {{viewOrder.material}}</v-card-text>
+                                                                    <v-card-text><b>Material Type:</b> {{viewOrder.materialColour}}</v-card-text>
+                                                                    <v-textarea id="comments" name="comments" solo label="Message to Client"></v-textarea>
+                                                                    <input id="actionRevision" type="hidden" name="action" value="approve">
+                                                                    <input type="hidden" name="orderId" :value="viewOrder.orderId">
+                                                                    <input id="approveOrderCost" type="hidden" name="cost" value="">
                                                                     <v-card-actions>
                                                                         <v-spacer></v-spacer>
-                                                                        <v-btn type="submit" flat color="light-green darken-2">Approve</v-btn>
-                                                                        <v-btn flat color="red accent-3">Needs Revision</v-btn>
+                                                                        <v-btn flat color="light-green darken-2" @click="approve">Approve</v-btn>
+                                                                        <v-btn flat color="red accent-3" @click="revision">Needs Revision</v-btn>
                                                                     </v-card-actions>
-                                                                </v-flex>
-                                                            </v-layout>
-                                                        </v-container>
-                                                        </form>
-                                                        <v-spacer></v-spacer>
-                                                        
-                                                    
-                                            </v-dialog>    
-                                                
-                                            
+                                                                </form>
+                                                            </v-flex>
+                                                        </v-layout>
+                                                    </v-container>
+                                                    <v-spacer></v-spacer>
+                                                </v-card>
+                                            </v-dialog>
                                         </v-card-actions>
                                     </v-card>
                                 </v-flex>
@@ -275,7 +270,21 @@
                 },
                 methods:
                 {
-                    
+                    approve()
+                    {
+                        document.getElementById('approveOrderCost').value = document.getElementById('actualCost').value;
+                        alert("Actual Cost: " + document.getElementById('actualCost').value + "\nApproved Cost: " + document.getElementById('comments').value);
+                        document.getElementById('approveOrder').submit();
+                    },
+                    revision()
+                    {
+                        document.getElementById('actionRevision').value = 'cancel';
+                        document.getElementById('approveOrder').submit();
+                    },
+                    reviewOrder(order)
+                    {
+                        this.viewOrder = Object.assign({}, order);
+                    }
                 }
             });
         </script>

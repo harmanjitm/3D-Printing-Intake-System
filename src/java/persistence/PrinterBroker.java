@@ -123,7 +123,7 @@ public class PrinterBroker  {
 
         ResultSet rs = cStmt.executeQuery();
         if (rs == null) {
-            throw new SQLException("Error getting printert: printer not found");
+            throw new SQLException("Error getting printer: Printer not found");
         }
         
         ArrayList<Note> notes = null;

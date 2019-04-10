@@ -236,6 +236,11 @@ public class Order {
     public void setComments(String comments) {
         this.comments = comments;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" + "orderId=" + orderId + ", cost=" + cost + ", orderDate=" + orderDate + ", printDate=" + printDate + ", status=" + status + ", file=" + file + ", printer=" + printer + ", material=" + material + ", account=" + account + ", colour=" + colour + ", comments=" + comments + '}';
+    }
     
     
 

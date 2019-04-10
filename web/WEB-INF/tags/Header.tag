@@ -46,7 +46,7 @@
                     </v-list>
                 </v-navigation-drawer>
             </c:if>
-                <v-toolbar app fixed clipped-left color="#1B222B">
+                <v-toolbar style="z-index: 100;" app fixed clipped-left color="#1B222B">
                     <c:if test="${account != null}">
                         <v-toolbar-side-icon @click.stop="drawer = !drawer" class="white--text"></v-toolbar-side-icon>
                     </c:if>
@@ -60,23 +60,6 @@
                             <v-btn href="login?logout=true" slot="activator" icon>
                                 <v-icon large color="white">logout</v-icon>
                             </v-btn>
-                            
-                            <!--<v-menu open-on-hover offset-y>-->
-                                
-                                
-<!--                                <v-list>
-                                    <a href="account">
-                                        <v-list-tile @click="">
-                                            <v-list-tile-title>Account</v-list-tile-title>
-                                        </v-list-tile>
-                                    </a>
-                                    <a href="login?logout=true">
-                                        <v-list-tile @click="">
-                                            <v-list-tile-title>Logout</v-list-tile-title>
-                                        </v-list-tile>
-                                    </a>
-                                </v-list>-->
-                            <!--</v-menu>-->
                         </c:if>
                         <c:if test="${account == null}">
                             <c:if test="${pageName != 'Register'}">

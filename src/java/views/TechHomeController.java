@@ -19,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import persistence.OrderBroker;
 import services.EmailService;
 import services.OrderService;
 
@@ -137,10 +138,22 @@ public class TechHomeController extends HttpServlet {
                     //If statement that checks that the order status is not approved
                     if(order.getStatus() != "approved")
                     {
+                        if(request.getParameter("cost") == null || request.getParameter("cost").equals(""))
+                        {
+                            request.setAttribute("errorMessage", "Error Approving Order: Please enter a cost.");
+                            request.getRequestDispatcher("/WEB-INF/techHome.jsp").forward(request, response);
+                            return;
+                        }
+                        double cost = Double.parseDouble(request.getParameter("cost"));
+//                        System.out.println(order.toString());
+                        OrderBroker ob = new OrderBroker();
                         //os OrderService object sets order status as approved using the orderID
                         os.setOrderStatus(orderID, "approved");
+                        order = ob.getOrder(orderID);
+                        order.setCost(cost);
+                        os.updateOrderDetails(order);
                         //EmailService object sends update email to client
-                        EmailService.sendOrderUpdate(order.getAccount().getEmail(), order, "", "Your order has been approved. Please login and comfirm your order for printing.", getServletContext().getRealPath("/WEB-INF"));
+                        EmailService.sendOrderUpdate(order.getAccount().getEmail(), order, comments, "Your order has been approved. Please login and comfirm your order for printing.", getServletContext().getRealPath("/WEB-INF"));
                         //Try-Catch method used to populate Array List objects
                         try 
                         {
@@ -188,7 +201,7 @@ public class TechHomeController extends HttpServlet {
                         //os OrderService object sets order status as cancelled using the orderID
                         os.setOrderStatus(orderID, "cancelled");
                         //EmailService object sends update email to client
-                        EmailService.sendOrderUpdate(order.getAccount().getEmail(), order, "", "Your order has been approved. Please login and comfirm your order for printing.", getServletContext().getRealPath("/WEB-INF"));
+                        EmailService.sendOrderUpdate(order.getAccount().getEmail(), order, comments, "Your order has been cancelled. Please refer to the technician comment below. If you have any questions, please contact us.", getServletContext().getRealPath("/WEB-INF"));
                         //Try-Catch method used to populate Array List objects
                         try 
                         {

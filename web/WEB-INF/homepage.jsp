@@ -20,36 +20,65 @@
             <v-app>
                 <v-content>
                     <v-card color="#8B2635" height="5px"></v-card>
-                        <c:if test="${account == null}">
-                            <v-toolbar dark color="#1B222B">
-                        <v-toolbar-title>ARIS3D</v-toolbar-title>
+                    <!--Navigation drawer-->
+                    <v-navigation-drawer <c:if test="${mini == true}">mini-variant</c:if> dark v-model="drawer" stateless clipped app fixed>
+                        <v-list dense>
+                            <c:if test="${account.accountType == 'admin'}">
+                                <v-list-tile :href="item.link" :key="item.title" v-for="item in adminItems">
+                                    <v-list-tile-action>
+                                        <v-icon>{{ item.icon }}</v-icon>
+                                    </v-list-tile-action>
+                                    <v-list-tile-content>
+                                        <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
+                            </c:if>
+                            <c:if test="${account.accountType == 'user'}">
+                                <v-list-tile :href="item.link" :key="item.title" v-for="item in userItems">
+                                    <v-list-tile-action>
+                                        <v-icon>{{ item.icon }}</v-icon>
+                                    </v-list-tile-action>
+                                    <v-list-tile-content>
+                                        <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
+                            </c:if>
+                        </v-list>
+                    </v-navigation-drawer>
+                    <!--Navigation Toolbar-->
+                    <v-toolbar app fixed clipped-left color="#1B222B">
+                        <c:if test="${account != null}">
+                            <v-toolbar-side-icon @click.stop="drawer = !drawer" class="white--text"></v-toolbar-side-icon>
+                        </c:if>
+                        <v-toolbar-title class="white--text">ARIS3D</v-toolbar-title>
                         <v-spacer></v-spacer>
-                            <a href="register">
-                                <v-btn outline color="#8B2635">Register</v-btn>
-                            </a>
-                            <a href="login">
-                                <v-btn color="#8B2635">Login</v-btn>
-                            </a>
-                        </v-toolbar>
-                        </c:if>
-                        <c:if test="${account.accountType == 'admin'}">
-                         <ARIS3D:Header isAdmin="true" pageName=""></ARIS3D:Header>
-                            <!--<a href="dashboard">
-                                <v-btn color="#8B2635">Dashboard</v-btn>
-                            </a>-->
-                        </c:if>
-                        <c:if test="${account.accountType == 'user'}">
-                         <ARIS3D:Header isAdmin="false" pageName=""></ARIS3D:Header>
-                        <!--    <a href="login?logout=true">
-                                <v-btn color="#8B2635">Logout</v-btn>
-                            </a>-->
-                        </c:if>
+                        <v-toolbar-items>
+                            <c:if test="${account != null}">
+                                <v-btn href="account" slot="activator" icon>
+                                    <v-icon large color="white">perm_identity</v-icon>
+                                </v-btn>
+                                <v-btn href="login?logout=true" slot="activator" icon>
+                                    <v-icon large color="white">logout</v-icon>
+                                </v-btn>
+                            </c:if>
+                            <c:if test="${account == null}">
+                                <v-btn href="register" flat small color="#ffffff">
+                                    Register
+                                </v-btn>
+                                <v-btn href="login" small flat color="#ffffff">
+                                    Login
+                                </v-btn>
+                            </c:if>
+                        </v-toolbar-items>
+                    </v-toolbar>
+                    <!--Alert Messages-->
                     <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
                         ${successMessage}
                     </v-alert>
                     <v-alert <c:if test='${errorMessage != null}'> id="error" value="true"</c:if> type="error">
                         ${errorMessage}
                     </v-alert>
+                    <!--Carousel Images-->
                     <div class="overlayContainer">
                         <span class="carouselOverlay mt-5">
                             <c:if test="${account == null}"><h1 class="display-2 font-weight-bold">ARIS 3D Printing Service</h1></c:if>
@@ -65,6 +94,7 @@
                             </v-carousel>
                         </v-card>
                     </div>
+                    <!--**MAIN TEXT IN HERE**-->
                     <c:if test="${account == null}">
                     <v-container>
                         <h1 class="text-xs-center font-weight-regular">About Us</h1>
@@ -75,37 +105,80 @@
                         <v-divider></v-divider>
                     </v-container>
                     </c:if>
-                    <c:if test="${account != null}">
+                    <!--Information for users that are logged in-->
+                    
+                    <!--Orders Pending User Approval-->
+                    <c:if test="${approval[0] != null}">
                     <v-container>
-                        <h1 class="display-1 text-xs-center font-weight-thin">Notifications</h1>
+                        <h1 class="display-1 text-xs-center font-weight-thin">Orders Pending Approval</h1>
                         <v-divider></v-divider>
                         <v-container grid-list-lg>
                             <v-layout row wrap>
-                                <v-flex v-for="i in 3" xs12 sm12 md6 lg4 xl2 :key="i">
+                                <v-flex v-for="order in approval" xs12 sm12 md6 lg4 xl2 :key="order.orderId">
                                     <v-card color="#8B2635" height="5px"></v-card>
                                     <v-card elevation="5" min-height="200px">
-                                        <v-card-title>
-                                            <span primary class="headline text-xs-left">Notification {{i}}</span>
+                                        <v-card-title class="blue-grey darken-4 white--text">
+                                            <span primary class="headline text-xs-left">Order {{num}}{{order.orderId}}</span>
                                             <v-spacer></v-spacer>
-                                            <v-btn color="#8B2635" dark>Remove</v-btn>
                                         </v-card-title>
-                                        <v-divider></v-divider>
-                                        <br/>
-                                        <v-card-text class="pt-0 text-xs-center">
-                                            <span class="text-xs-center">Notification Text.</span>
+                                        <br>
+                                        <v-card-text class="pt-0">
+                                            <span class="text-xs-center subheading">Order Information</span>
+                                            <v-divider></v-divider>
+                                            <span class="subheading font-weight-light"><v-icon>date_range</v-icon> {{order.date}}</span>
+                                            <v-spacer></v-spacer>
+                                            <span class="subheading font-weight-light"><v-icon>announcement</v-icon> {{order.status}}</span>
+                                            <v-spacer></v-spacer>
+                                            <span class="subheading font-weight-light"><v-icon>attach_money</v-icon> {{order.cost}}</span>
+                                        </v-card-text>
+                                        <v-card-actions>
+                                            <v-btn @click="cancel(order)" color="#8B2635" dark>Cancel</v-btn>
+                                            <v-spacer></v-spacer>
+                                            <v-btn @click="approve(order)" color="green" dark>Approve</v-btn>
+                                        </v-card-actions>
+                                    </v-card>
+                                </v-flex>
+                            </v-layout>
+                        </v-container>
+                    </v-container>
+                    </c:if>
+                    <!--Previous Orders-->
+                    <c:if test="${previous[0] != null}">
+                    <v-container>
+                        <h1 class="display-1 text-xs-center font-weight-thin">Previous Orders</h1>
+                        <v-divider></v-divider>
+                        <v-container grid-list-lg>
+                            <v-layout row wrap>
+                                <v-flex v-for="order in previous" xs12 sm12 md6 lg4 xl2 :key="order.orderId">
+                                    <v-card color="#8B2635" height="5px"></v-card>
+                                    <v-card elevation="5" min-height="200px">
+                                        <v-card-title class="blue-grey darken-4 white--text">
+                                            <span primary class="headline text-xs-left">Order {{num}}{{order.orderId}}</span>
+                                            <v-spacer></v-spacer>
+                                        </v-card-title>
+                                        <br>
+                                        <v-card-text class="pt-0">
+                                            <span class="text-xs-center subheading">Order Information</span>
+                                            <v-divider></v-divider>
+                                            <span class="subheading font-weight-light"><v-icon>date_range</v-icon> {{order.date}}</span>
+                                            <v-spacer></v-spacer>
+                                            <span class="subheading font-weight-light"><v-icon>announcement</v-icon> {{order.status}}</span>
+                                            <v-spacer></v-spacer>
+                                            <span class="subheading font-weight-light"><v-icon>attach_money</v-icon> {{order.cost}}</span>
                                         </v-card-text>
                                     </v-card>
                                 </v-flex>
                             </v-layout>
                         </v-container>
                     </v-container>
-                    
                     </c:if>
+                    <!--Default Materials, Printers, and Contact cards-->
                     <v-container grid-list-md text-xs-center>
-                        <h1 class="display-1 text-xs-center font-weight-thin">More Information</h1>
+                        <h1 class="display-1 text-xs-center font-weight-thin">ARIS Printing Service Information</h1>
                         <v-divider></v-divider>
                         <br>
                         <v-layout row wrap>
+                            <!--Printers-->
                             <v-flex xs12 sm12 md6 lg4 xl4>
                                 <v-card color="#8B2635" height="5px"></v-card>
                                 <v-card elevation="10" min-height="325px" min-width="300px">
@@ -120,6 +193,7 @@
                                     <v-card-text>Our printing service offers a variety of printers. Browse through our selection to find the one best for you!</v-card-text>
                                 </v-card>
                             </v-flex>
+                            <!--Materials-->
                             <v-flex xs12 sm12 md6 lg4 xl4>
                                 <v-card color="#8B2635" height="5px"></v-card>
                                 <v-card elevation="10" min-height="325px" min-width="300px">
@@ -134,6 +208,7 @@
                                     <v-card-text>We offer many different materials to use for your prints. Browse through our selection of different materials to get the best suitable one for you.</v-card-text>
                                 </v-card>
                             </v-flex>
+                            <!--Contact Us-->
                             <v-flex xs12 sm12 md6 lg4 xl4>
                                 <v-card color="#8B2635" height="5px"></v-card>
                                 <v-card elevation="10" min-height="325px" min-width="300px">
@@ -151,6 +226,7 @@
                         </v-layout>
                     </v-container>
                 </v-content>
+                <!--Footer-->
                 <v-footer dark height="auto">
                     <v-layout color="#1B222B" justify-center row wrap>
                         <a href="home"><v-btn color="white" flat round>Home</v-btn></a>
@@ -164,7 +240,83 @@
                 </v-footer>
             </v-app>
         </div>
-        <script src="res/js/vue.js" type="text/javascript"></script>
         <link href="res/css/header.css" rel="stylesheet" type="text/css"/>
     </body>
+    <script>
+        new Vue(
+        { 
+            el: '#app', 
+            data: 
+            {
+                dialog: false,
+                num: '#',
+                account: '',
+                logout: '',
+                password: '',
+                email: '',
+                verifyEmail: '',
+                drawer: false,
+                valid: false,
+                carouselDelimiter: true,
+                adminItems: 
+                [ 
+                    {title: 'Homepage', icon: 'home', link: 'home'},
+                    {title: 'Dashboard', icon: 'dashboard', link: 'dashboard'},
+                    {title: 'Order Queue', icon: 'queue', link: 'queue'},
+                    {title: 'Account Management', icon: 'people', link: 'accountmanagement'},
+                    {title: 'Material Management', icon: 'texture', link: 'materialmanagement'},
+                    {title: 'Printer Management', icon: 'print', link: 'printermanagement'},
+                    {title: 'Reports', icon: 'poll', link: 'reportmanagement'}
+                ],
+                userItems: 
+                [ 
+                    {title: 'Home', icon: 'home', link: 'home'},
+                    {title: 'Previous Orders', icon: 'replay', link: ''},
+                    {title: 'Submit Order', icon: 'add_box', link: 'order'},
+                ],
+                accountmanagementheaders:
+                [
+                    {text: 'Email Address', value: 'email'},
+                    {text: 'First Name', value: 'firstname'},
+                    {text: 'Last Name', value: 'lastname'},
+                    {text: 'Status', value: 'status'},
+                    {text: 'Actions', value: 'actions'}
+                ],
+                carousel:
+                [
+                    {src: 'res/img/carousel/carouselImage1.jpg', filter: 'to top right, rgba(0,0,0,.33), rgba(0,0,0,.33)'},
+                    {src: 'res/img/carousel/carouselImage2.jpg', filter: 'to top right, rgba(0,0,0,.33), rgba(0,0,0,.33)'},
+                    {src: 'res/img/carousel/carouselImage3.jpg', filter: 'to top right, rgba(0,0,0,.33), rgba(0,0,0,.33)'}
+                ],
+                emailRules: 
+                [
+                    v => !!v || 'E-mail is required',
+                    v => /.+@.+/.test(v) || 'E-mail must be valid'
+                ],
+                approval:
+                [
+                <c:forEach items="${approval}" var="order">
+                    {orderId: '${order.orderId}', date: '${order.orderDate}', cost: '${order.cost}', status: '${order.status}'},
+                </c:forEach>
+                ],
+                previous:
+                [
+                <c:forEach items="${previous}" end="2" var="order">
+                    {orderId: '${order.orderId}', date: '${order.orderDate}', cost: '${order.cost}', status: '${order.status}'},
+                </c:forEach>
+                ]
+            },
+            methods:
+            {
+                login()
+                {
+                    document.getElementById('login').submit();
+                },
+                resend()
+                {
+                    document.getElementById('resend').submit();
+                }
+            }
+        });
+    </script>
 </html>

@@ -19,6 +19,13 @@
             <v-app>
                 <ARIS3D:Header isAdmin="true" pageName="Order Queue"></ARIS3D:Header>
                 <v-content>
+                <c:if test="${orders[0] == null}">
+                    <v-container>
+                        <h1 class="mt-5 headline text-xs-center">No orders to display</h1>
+                        <v-divider></v-divider>
+                        <h1 class="subheading text-xs-center">Approved orders will display here!</h1>
+                    </v-container>
+                </c:if>
                     <v-container grid-list-lg>
                         <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
                             ${successMessage}

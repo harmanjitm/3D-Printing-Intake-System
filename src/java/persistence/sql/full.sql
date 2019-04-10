@@ -1242,10 +1242,10 @@ delimiter ;
 ** Description: Creates test data for the ARIS 3D Printing DB   **
 ******************************************************************/
 /* ACCOUNTS */
-call aris.createAccount('emily.pegg@edu.sait.ca', 'password', 'Emily', 'Pegg', 'user');
+call aris.createAccount('harmanjit.mohaar@edu.sait.ca', 'password', 'Harmanjit', 'Mohaar', 'admin');
 call aris.createAccount('benjamin.wozak@edu.sait.ca', 'password', 'Benjamin', 'Wozak', 'admin');
 call aris.createAccount('gregory.turnbull@edu.sait.ca', 'password', 'Gregory', 'Turnbull', 'admin');
-call aris.createAccount('harmanjit.mohaar@edu.sait.ca', 'password', 'Hamanjit', 'Mohaar', 'admin');
+call aris.createAccount('emily.pegg@edu.sait.ca', 'password', 'Emily', 'Pegg', 'user');
 call aris.createAccount('haseeb.sheiktsuyi@edu.sait.ca', 'password', 'Haseeb', 'Sheikh', 'admin');
 call aris.createAccount('timothy.huynh@edu.sait.ca', 'password', 'Timothy', 'Huynh', 'admin');
 
