@@ -140,9 +140,8 @@
 
                     <!-- Select a printer -->
                         <v-stepper-content step="2">
-                            <v-card class="mb-5" height="350px" flat>
-                                <v-alert  :value='true' type="info">
-                                    <span id='showPrinter'></span>
+                            <v-card class="mb-5" height="380px" flat>
+                                <v-alert id='showPrinter' style='display: none' v-if='infoMessage != null' value="true" type="info">
                                 </v-alert>
                                 <v-container>
                                     <v-layout row wrap fluid>    
@@ -369,7 +368,7 @@ new Vue({
     data: {
         e1: 0, //Stepper element
         fileUploaded: false,
-        show: false,
+        infoMessage: '',
         image: '',
         fileInfo: '',
         comments: '',
@@ -502,7 +501,7 @@ new Vue({
 //            alert('you selected ' + this.selectPrinterName);
             this.selectedPrinter = Object.assign({}, printer);
             document.getElementById('showPrinter').innerHTML = this.selectPrinterName + ' selected';
-            toggle();
+            document.getElementById("showPrinter").style.display = "block";
             
         },
         selectMaterial(material) {
@@ -538,7 +537,6 @@ new Vue({
             },
             showInfo() {
                 setTimeout(this.viewInfo, 3000)
-                
             }
         },
 })

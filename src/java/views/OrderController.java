@@ -94,6 +94,14 @@ public class OrderController extends HttpServlet
         request.getRequestDispatcher("/WEB-INF/newOrder.jsp").forward(request, response);
     }
     
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
