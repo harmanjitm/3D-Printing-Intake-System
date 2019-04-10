@@ -24,6 +24,30 @@
         <filter-name>AdminFilter</filter-name>
         <servlet-name>AccountManagementController</servlet-name>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <servlet-name>AccountController</servlet-name>
+        <servlet-name>MaterialManagementController</servlet-name>
+        <servlet-name>NotificationController</servlet-name>
+        <servlet-name>OrderController</servlet-name>
+        <servlet-name>OrderManagementController</servlet-name>
+        <servlet-name>QueueManagementController</servlet-name>
+        <servlet-name>ReportController</servlet-name>
+        <servlet-name>AccountManagementController</servlet-name>
+        <servlet-name>PrinterManagementController</servlet-name>
+        <servlet-name>TechHomeController</servlet-name>
+        <servlet-name>UserHomeController</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilter</filter-name>
+        <servlet-name>MaterialManagementController</servlet-name>
+        <servlet-name>OrderManagementController</servlet-name>
+        <servlet-name>QueueManagementController</servlet-name>
+        <servlet-name>ReportController</servlet-name>
+        <servlet-name>AccountManagementController</servlet-name>
+        <servlet-name>PrinterManagementController</servlet-name>
+        <servlet-name>TechHomeController</servlet-name>
+    </filter-mapping>
     <servlet>
         <servlet-name>LoginController</servlet-name>
         <servlet-class>views.LoginController</servlet-class>

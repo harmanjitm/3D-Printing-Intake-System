@@ -136,7 +136,7 @@ public class TechHomeController extends HttpServlet {
                         return;
                     }
                     //If statement that checks that the order status is not approved
-                    if(order.getStatus() != "approved")
+                    if(order.getStatus() != "approval")
                     {
                         if(request.getParameter("cost") == null || request.getParameter("cost").equals(""))
                         {
@@ -144,16 +144,16 @@ public class TechHomeController extends HttpServlet {
                             request.getRequestDispatcher("/WEB-INF/techHome.jsp").forward(request, response);
                             return;
                         }
+                        //Set the actual cost entered by the tech
                         double cost = Double.parseDouble(request.getParameter("cost"));
-//                        System.out.println(order.toString());
-                        OrderBroker ob = new OrderBroker();
-                        //os OrderService object sets order status as approved using the orderID
-                        os.setOrderStatus(orderID, "approved");
-                        order = ob.getOrder(orderID);
+                        
+//                        OrderBroker ob = new OrderBroker();
+                        os.setOrderStatus(orderID, "approval");
+                        order = os.getOrderDetails(orderID);
                         order.setCost(cost);
                         os.updateOrderDetails(order);
                         //EmailService object sends update email to client
-                        EmailService.sendOrderUpdate(order.getAccount().getEmail(), order, comments, "Your order has been approved. Please login and comfirm your order for printing.", getServletContext().getRealPath("/WEB-INF"));
+                        EmailService.sendOrderUpdate(order.getAccount().getEmail(), order, comments, "Your order has been <b>approved</b>! Please login and confirm your order for printing from the homepage.", getServletContext().getRealPath("/WEB-INF"));
                         //Try-Catch method used to populate Array List objects
                         try 
                         {

@@ -57,8 +57,7 @@ public class OrderService {
      * @param toUpdate the updated order
      * @return the order that is being replaced
      */
-    public int updateOrderDetails(Order toUpdate) throws SQLException {
-        Order order = new Order();
+    public int updateOrderDetails(Order order) throws SQLException {
         return ob.updateOrder(order);
     }
 
@@ -131,8 +130,8 @@ public class OrderService {
      * @param status the status of the orders
      * @return the orders with that status
      */
-    public ArrayList<Order> getOrdersByStatus(String status) {
-        return null;
+    public ArrayList<Order> getOrdersByStatus(String status) throws SQLException {
+        return ob.getOrderByStatus(status);
 
     }
 

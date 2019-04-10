@@ -9,7 +9,11 @@ import domain.Account;
 import domain.Order;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -40,6 +44,7 @@ public class HomepageController extends HttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
+        //Get previous orders and pending approval orders
         Account acc = (Account) request.getSession().getAttribute("account");
         if(acc != null)
         {
@@ -48,7 +53,14 @@ public class HomepageController extends HttpServlet
             ArrayList<Order> approval = new ArrayList<>();
             ArrayList<Order> previous = new ArrayList<>();
 
-            tempapproval = os.getOrdersByStatus("approved");
+            try {
+                tempapproval = os.getOrdersByStatus("approval");
+            } catch (SQLException ex) {
+                Logger.getLogger(HomepageController.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("errorMessage", ex.getMessage());
+                request.getRequestDispatcher("/WEB-INF/homepage.jsp").forward(request, response);
+                return;
+            }
             if(tempapproval != null)
             {
                 for(Order o : tempapproval)

@@ -68,18 +68,19 @@
                             </template>
                         </v-layout>
                         <v-container grid-list-lg>
-                            
-                            <h1 class="headline font-weight-light text-xs-center">Orders Pending Approval</h1>
-                            <v-divider></v-divider>
-                            <c:if test="${orders[0] == null}">
-                                <h1 class="subheading font-weight-light text-xs-center">No orders are pending approval.</h1>
-                            </c:if>
+                            <!--Alert Messages-->
                             <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
                                 ${successMessage}
                             </v-alert>
                             <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
                                 ${errorMessage}
                             </v-alert>
+                            <!--Show message if there are no orders in any queue-->
+                            <h1 class="headline font-weight-light text-xs-center">Orders Pending Approval</h1>
+                            <v-divider></v-divider>
+                            <c:if test="${orders[0] == null}">
+                                <h1 class="subheading font-weight-light text-xs-center">No orders are pending approval.</h1>
+                            </c:if>
                             <v-layout row wrap>
                                 <v-flex v-for="order in orders" xs12 sm12 md6 lg4 xl2 :key="order.orderId">
                                     <v-card color="#8B2635" height="5px"></v-card>
@@ -134,7 +135,7 @@
                                                                 <v-card-text><b>Clients Comment:</b> {{viewOrder.comments}}</v-card-text>
                                                                 <v-card-text><b>Estimated Cost:</b> $ {{viewOrder.cost}}.00</v-card-text>
                                                                 <v-flex lg6>
-                                                                    <v-text-field id="actualCost" type="number" value="234" name="cost" label="Actual Cost" prepend-icon="$" append-icon=""></v-text-field>
+                                                                    <v-text-field id="actualCost" type="number" v-model="viewOrder.cost" name="cost" label="Actual Cost" prepend-icon="$" append-icon=""></v-text-field>
                                                                 </v-flex>
                                                                 <br><br><br><br>
                                                                 <v-card-actions>
@@ -151,7 +152,7 @@
                                                                     <v-card-text><b>Printer Dimensions:</b> {{viewOrder.printerDimensions}}</v-card-text>
                                                                     <v-card-text><b>Material Selected:</b> {{viewOrder.material}}</v-card-text>
                                                                     <v-card-text><b>Material Type:</b> {{viewOrder.materialColour}}</v-card-text>
-                                                                    <v-textarea id="comments" name="comments" solo label="Message to Client"></v-textarea>
+                                                                    <v-textarea id="comments" name="comments" v-model="viewOrder.techComments" solo label="Message to Client"></v-textarea>
                                                                     <input id="actionRevision" type="hidden" name="action" value="approve">
                                                                     <input type="hidden" name="orderId" :value="viewOrder.orderId">
                                                                     <input id="approveOrderCost" type="hidden" name="cost" value="">
@@ -240,6 +241,7 @@
                         material: '',
                         materialColour: '',
                         comments: '',
+                        techComments: '',
                         fileName: '',
                         dimensions: '',
                         filePath: ''
@@ -273,7 +275,6 @@
                     approve()
                     {
                         document.getElementById('approveOrderCost').value = document.getElementById('actualCost').value;
-                        alert("Actual Cost: " + document.getElementById('actualCost').value + "\nApproved Cost: " + document.getElementById('comments').value);
                         document.getElementById('approveOrder').submit();
                     },
                     revision()
