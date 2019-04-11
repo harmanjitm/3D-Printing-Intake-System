@@ -10,6 +10,9 @@ public class ConnectionPool
     private static ConnectionPool pool = null;
     private static DataSource dataSource = null;
 
+    /**
+     * Initializes a new connection pool
+     */
     private ConnectionPool()
     {
         try
@@ -22,6 +25,10 @@ public class ConnectionPool
         }
     }
     
+    /**
+     * Creates a new connection pool
+     * @return Returns the connection pool
+     */
     public static synchronized ConnectionPool getInstance()
     {
         if(pool == null)
@@ -31,6 +38,10 @@ public class ConnectionPool
         return pool;
     }
     
+    /**
+     * Creates a new connection
+     * @return Returns a new connection
+     */
     public Connection getConnection()
     {
         try 
@@ -43,6 +54,10 @@ public class ConnectionPool
         }
     }
     
+    /**
+     * Releases a connection, making it available to the pool again
+     * @param conn The connection being released
+     */
     public void releaseConnection(Connection conn)
     {
         try

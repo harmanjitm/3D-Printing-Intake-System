@@ -61,6 +61,11 @@ public class ReportBroker {
         return result;
     }
     
+    /**
+     * Gets the next report ID
+     * @return Returns the next report ID
+     * @throws SQLException 
+     */
     public int getNextID() throws SQLException
     {
         int num;

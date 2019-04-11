@@ -44,8 +44,7 @@ public class BackupBroker {
     /**
      * Restores database from an old backup
      *
-     * @param filename Name of the backup file to be restored, without the .sql
-     * extension
+     * @param filename Name of the backup file to be restored, without the .sql extension
      * @return Returns 1 if successful, 0 if unsuccessful
      * @throws IOException
      */

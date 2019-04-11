@@ -14,8 +14,6 @@ import java.util.List;
 
 public class MaterialBroker {
 
-//    private Connection connection = null;
-//    private final ConnectionPool cp = ConnectionPool.getInstance();
     /**
      * Adds a new material to the database
      *
@@ -46,6 +44,14 @@ public class MaterialBroker {
         return hadResults ? 0 : 1;
     }
 
+    /**
+     * Changes the status of a material colour in the database
+     * @param materialId The id for the material
+     * @param colour The colour of the material
+     * @param status The status you wish to change to
+     * @return Returns a 1 if successful, 0 otherwise
+     * @throws SQLException 
+     */
     public int changeColourStatus(int materialId, String colour, String status) throws SQLException {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection connection = cp.getConnection();

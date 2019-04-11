@@ -149,6 +149,12 @@ public class OrderQueueBroker {
         return queue;
     }
 
+    /**
+     * Gets all orders with the specified status
+     * @param status The status of the orders you wish to see the queue for
+     * @return Returns an ArrayList of all the orders with the specified status
+     * @throws SQLException 
+     */
     public ArrayList<OrderQueue> getOrderQueue(String status) throws SQLException {
         ConnectionPool cp = ConnectionPool.getInstance();        
         Connection connection = cp.getConnection();

@@ -18,8 +18,8 @@ public class FileBroker {
     
     /**
      * Creates a new File in the database
-     * @param file
-     * @return
+     * @param file File object used to populate the database
+     * @return Returns a 1 if successful, 0 if unsuccessful
      * @throws SQLException 
      */
     public int createFile(File file) throws SQLException{
@@ -49,7 +49,7 @@ public class FileBroker {
     /**
      * Returns all files associated with a user
      * @param id The ID of the user you wish to find files for
-     * @return
+     * @return  Returns an ArrayList of all the files that 
      * @throws SQLException 
      */
     public ArrayList<File> getFileByUserID(int id) throws SQLException{
@@ -78,8 +78,8 @@ public class FileBroker {
     
     /**
      * Returns a file based on the supplied file ID
-     * @param id
-     * @return 
+     * @param id The ID for the file you want to retrieve
+     * @return Returns the desired file
      */
     public File getFileByFileID(int id) throws SQLException{
         ConnectionPool cp = ConnectionPool.getInstance();

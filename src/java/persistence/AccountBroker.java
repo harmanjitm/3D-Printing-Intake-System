@@ -12,9 +12,6 @@ import services.AccountService;
 
 public class AccountBroker {
 
-//    private Connection connection = null;
-//    private final ConnectionPool cp = ConnectionPool.getInstance();
-
     /**
      * Adds a new account to the database
      *
@@ -47,7 +44,8 @@ public class AccountBroker {
     }
 
     /**
-     *
+     * Updates an accounts properites in the database
+     * 
      * @param account object passed in from the AccountService class
      * @return 0 if the statement failed, 1 if statement was successful
      * @throws SQLException if an error occurs while executing the statement
@@ -76,7 +74,8 @@ public class AccountBroker {
     }
 
     /**
-     *
+     * Deletes an account from the database
+     * 
      * @param account object passed in from the AccountService class
      * @return 0 if the statement failed, 1 if statement was successful
      * @throws SQLException if an error occurs while executing the statement
@@ -101,7 +100,9 @@ public class AccountBroker {
     }
 
     /**
-     *
+     * Returns an account from the database when given the accounts ID
+     * 
+     * Returns an account from the database when given the account ID
      * @param id the id of the user to get
      * @return 0 if the statement failed, 1 if statement was successful
      * @throws SQLException if an error occurs while executing the statement
@@ -135,7 +136,8 @@ public class AccountBroker {
     }
 
     /**
-     *
+     * Gets all accounts from the database and returns them in an ArrayList
+     * 
      * @return 0 if the statement failed, 1 if statement was successful
      * @throws SQLException if an error occurs while executing the statement
      */
@@ -162,6 +164,13 @@ public class AccountBroker {
         return accounts;
     }
     
+    /**
+     * Returns an account from the database when given the accounts email
+     * 
+     * @param email The email address of the account you wish to have returned
+     * @return Returns the desired Account from the database
+     * @throws SQLException 
+     */
     public Account getAccountByEmail(String email) throws SQLException
     {
         ConnectionPool cp = ConnectionPool.getInstance();
@@ -196,6 +205,14 @@ public class AccountBroker {
         return account;
     }
     
+    /**
+     * Checks the database to verify the supplied credentials
+     * 
+     * @param email The user's supplied email
+     * @param password The user's supplied password
+     * @return Returns true if the username/password combination is found in the database, false if not
+     * @throws SQLException 
+     */
     public boolean validateAccount(String email, String password) throws SQLException
     {
         ConnectionPool cp = ConnectionPool.getInstance();
@@ -236,6 +253,14 @@ public class AccountBroker {
         }
     }
     
+    /**
+     * Updates the account's type in the database (ie. admin, user, etc...)
+     * 
+     * @param accountId The id of the account you wish to change the status for
+     * @param accountType The type you wish to change the account to
+     * @return Returns a 1 if successful, 0 is unsuccessful
+     * @throws SQLException 
+     */
     public int updateAccountType(int accountId, String accountType) throws SQLException
     {
         ConnectionPool cp = ConnectionPool.getInstance();

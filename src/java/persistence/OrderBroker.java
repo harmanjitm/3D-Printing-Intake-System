@@ -285,6 +285,11 @@ public class OrderBroker{
         return file;
     }
 
+    /**
+     * Gets the next order ID
+     * @return Returns the next order ID
+     * @throws SQLException 
+     */
     public int getNextOrderID() throws SQLException {
         ConnectionPool cp = ConnectionPool.getInstance();    
         Connection connection = cp.getConnection();

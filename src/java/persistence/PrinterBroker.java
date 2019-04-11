@@ -12,10 +12,7 @@ import java.util.List;
 
 
 
-public class PrinterBroker  {    
-	
-//    private Connection connection = null;
-//    private final ConnectionPool cp = ConnectionPool.getInstance();
+public class PrinterBroker  {    	
 
     /**
      * Adds a new printer to the database
