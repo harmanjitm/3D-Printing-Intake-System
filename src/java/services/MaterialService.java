@@ -32,7 +32,7 @@ public class MaterialService {
      *
      * @return the new material
      */
-    public int createMaterial(String name, String description, String printerName, Colour color, double cost, String status) throws SQLException {
+    public int createMaterial(String name, String description, String printerName, Colour colour, double cost, String status) throws SQLException {
         Material material = new Material(name, description);
         material.setCost(cost);
         PrinterService ps = new PrinterService();
