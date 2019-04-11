@@ -26,18 +26,20 @@
                         <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
                             ${errorMessage}
                         </v-alert>
+                        
                         <v-card color="#8B2635" height="5px"></v-card>
                         <v-toolbar class="elevation-1" dark>
                             <v-toolbar-title>Manage Materials</v-toolbar-title>
                             <v-spacer></v-spacer>
                             <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
-                            <!-- dialog window for adding a new material -->
+                    <!-- dialog window for adding a new material -->
                             <v-dialog persistent v-model="dialog" max-width="750px" >
                                 <v-btn slot="activator" color="#8B2635" dark class="mb-2">New Material</v-btn>
                                 <v-card>
                                     <v-card-title>
                                         <span class="headline">New Material</span>
                                     </v-card-title>
+                                    
                                     <form id="create-material" method="post" action="materialmanagement">
                                         <v-card-text>
                                             <v-container grid-list-md>
@@ -69,6 +71,8 @@
                                 </v-card>
                             </v-dialog>
                         </v-toolbar>
+                        
+                        
                         <v-data-table expand item-key="materialName" :expand="expand" class="elevation-3" :headers="materialheaders" :items="materials" :search="search">
                             <template slot="items" slot-scope="props">
                                 <tr @click="loadMaterialColour(props.item); props.expanded = !props.expanded">
@@ -77,7 +81,8 @@
                                     <td>{{ props.item.materialDesc }}</td>
                                     <td>{{ props.item.materialVal }}</td>
                                     <td class="justify-center">
-                                    <!-- dialog window for editing an existing material -->
+                                    
+                                <!-- dialog window for editing an existing material -->
                                     <v-dialog v-model="addColourDialog" max-width="600px">
                                         <v-icon small slot="activator" @click="editMaterial(props.item)">invert_colors</v-icon>
                                         <v-card color="#8B2635" height="5px"></v-card>
@@ -261,7 +266,8 @@
                         {title: 'Account Management', icon: 'people', link: 'accountmanagement'},
                         {title: 'Material Management', icon: 'texture', link: 'materialmanagement'},
                         {title: 'Printer Management', icon: 'print', link: 'printermanagement'},
-                        {title: 'Reports', icon: 'poll', link: 'reportmanagement'}
+                        {title: 'Reports', icon: 'poll', link: 'reportmanagement'},
+                        {title: 'Submit Order', icon: 'folder_open', link: 'order'}
                     ],
                     materialheaders:
                     [
@@ -282,7 +288,6 @@
                     },
                     addMaterialColour()
                     {
-//                        document.getElementById('colourName').value = this.newColourName;
                         document.getElementById('newColourMaterialId').value = this.editItem.materialId;
                         document.getElementById('addMaterialColour').submit();
                     },
@@ -329,7 +334,6 @@
                     {
                         this.editIndex = this.materials.indexOf(item);
                         this.editItem = Object.assign({}, item);
-//                        this.editDialog = false;
                     }
                 }
             });

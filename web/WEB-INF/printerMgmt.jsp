@@ -133,7 +133,8 @@
                         {title: 'Account Management', icon: 'people', link: 'accountmanagement'},
                         {title: 'Material Management', icon: 'texture', link: 'materialmanagement'},
                         {title: 'Printer Management', icon: 'print', link: 'printermanagement'},
-                        {title: 'Reports', icon: 'poll', link: 'reportmanagement'}
+                        {title: 'Reports', icon: 'poll', link: 'reportmanagement'},
+                        {title: 'Submit Order', icon: 'folder_open', link: 'order'}
                     ],
                     items: 
                     ['Online', 'Offline', 'Under Maintainance'],

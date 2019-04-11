@@ -25,6 +25,7 @@
                             </v-layout>
                             <br>
                             <v-layout align-center justify-center>
+                                
                                 <v-flex xs12 sm10 md6 lg4 xl3>
                                     <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
                                     ${successMessage}
@@ -32,6 +33,7 @@
                                 <v-alert <c:if test='${errorMessage != null}'>value="true"</c:if> type="error">
                                     ${errorMessage}
                                 </v-alert>
+                                
                                 <v-card color="#8B2635" height="5px"></v-card>
                                 <v-card xs12 class="elevation-12">
                                     <v-toolbar dark color="#1B222B">

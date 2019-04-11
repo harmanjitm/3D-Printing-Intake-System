@@ -19,8 +19,8 @@
         <div id="app">
             <v-app>
                 <v-content>
-                    <v-card color="#8B2635" height="5px"></v-card>
-                    <!--Navigation drawer-->
+                  <v-card color="#8B2635" height="5px"></v-card>
+                <!--Navigation drawer-->
                     <v-navigation-drawer <c:if test="${mini == true}">mini-variant</c:if> dark v-model="drawer" stateless clipped app fixed>
                         <v-list dense>
                             <c:if test="${account.accountType == 'admin'}">
@@ -45,7 +45,8 @@
                             </c:if>
                         </v-list>
                     </v-navigation-drawer>
-                    <!--Navigation Toolbar-->
+                
+                <!--Navigation Toolbar-->
                     <v-toolbar app fixed clipped-left color="#1B222B">
                         <c:if test="${account != null}">
                             <v-toolbar-side-icon @click.stop="drawer = !drawer" class="white--text"></v-toolbar-side-icon>
@@ -70,8 +71,9 @@
                                 </v-btn>
                             </c:if>
                         </v-toolbar-items>
-                    </v-toolbar>
-                    <!--Carousel Images-->
+                    </v-toolbar>  
+                    
+                <!--Carousel Images-->
                     <div class="overlayContainer">
                         <span class="carouselOverlay mt-5">
                             <c:if test="${account == null}"><h1 class="display-2 font-weight-bold">ARIS 3D Printing Service</h1></c:if>
@@ -87,14 +89,16 @@
                             </v-carousel>
                         </v-card>
                     </div>
-                    <!--Alert Messages-->
+                    
+                <!--Alert Messages-->
                     <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
                         ${successMessage}
                     </v-alert>
                     <v-alert <c:if test='${errorMessage != null}'> id="error" value="true"</c:if> type="error">
                         ${errorMessage}
                     </v-alert>
-                    <!--**MAIN TEXT IN HERE**-->
+                    
+            <!--**MAIN TEXT IN HERE**-->
                     <c:if test="${account == null}">
                     <v-container>
                         <h1 class="text-xs-center font-weight-regular">About Us</h1>
@@ -105,9 +109,11 @@
                         <v-divider></v-divider>
                     </v-container>
                     </c:if>
-                    <!--Information for users that are logged in-->
+            
+            
+            <!--Information for users that are logged in-->
                     
-                    <!--Orders Pending User Approval-->
+                <!--Orders Pending User Approval-->
                     <c:if test="${approval[0] != null}">
                     <v-container>
                         <h1 class="display-1 text-xs-center font-weight-thin">Orders Pending Your Approval</h1>
@@ -242,7 +248,8 @@
                         </v-container>
                     </v-container>
                     </c:if>
-                    <!--Previous Orders-->
+                
+                <!--Previous Orders-->
                     <c:if test="${previous[0] != null}">
                     <v-container>
                         <h1 class="display-1 text-xs-center font-weight-thin">Previous Orders</h1>
@@ -272,13 +279,15 @@
                         </v-container>
                     </v-container>
                     </c:if>
-                    <!--Default Materials, Printers, and Contact cards-->
+                    
+                <!--Default Materials, Printers, and Contact cards-->
                     <v-container grid-list-md text-xs-center>
                         <h1 class="display-1 text-xs-center font-weight-thin">ARIS Printing Service Information</h1>
                         <v-divider></v-divider>
                         <br>
                         <v-layout row wrap>
-                            <!--Printers-->
+                    
+                    <!--Printers-->
                             <v-flex xs12 sm12 md6 lg4 xl4>
                                 <v-card color="#8B2635" height="5px"></v-card>
                                 <v-card elevation="10" min-height="325px" min-width="300px">
@@ -293,7 +302,8 @@
                                     <v-card-text>Our printing service offers a variety of printers. Browse through our selection to find the one best for you!</v-card-text>
                                 </v-card>
                             </v-flex>
-                            <!--Materials-->
+                       
+                        <!--Materials-->
                             <v-flex xs12 sm12 md6 lg4 xl4>
                                 <v-card color="#8B2635" height="5px"></v-card>
                                 <v-card elevation="10" min-height="325px" min-width="300px">
@@ -308,7 +318,8 @@
                                     <v-card-text>We offer many different materials to use for your prints. Browse through our selection of different materials to get the best suitable one for you.</v-card-text>
                                 </v-card>
                             </v-flex>
-                            <!--Contact Us-->
+                        
+                        <!--Contact Us-->
                             <v-flex xs12 sm12 md6 lg4 xl4>
                                 <v-card color="#8B2635" height="5px"></v-card>
                                 <v-card elevation="10" min-height="325px" min-width="300px">
@@ -326,7 +337,8 @@
                         </v-layout>
                     </v-container>
                 </v-content>
-                <!--Footer-->
+                    
+            <!--Footer-->
                 <v-footer dark height="auto">
                     <v-layout color="#1B222B" justify-center row wrap>
                         <a href="home"><v-btn color="white" flat round>Home</v-btn></a>
@@ -371,13 +383,14 @@
                     {title: 'Account Management', icon: 'people', link: 'accountmanagement'},
                     {title: 'Material Management', icon: 'texture', link: 'materialmanagement'},
                     {title: 'Printer Management', icon: 'print', link: 'printermanagement'},
-                    {title: 'Reports', icon: 'poll', link: 'reportmanagement'}
+                    {title: 'Reports', icon: 'poll', link: 'reportmanagement'},
+                    {title: 'Submit Order', icon: 'folder_open', link: 'order'}
                 ],
                 userItems: 
                 [ 
                     {title: 'Home', icon: 'home', link: 'home'},
                     {title: 'Previous Orders', icon: 'replay', link: ''},
-                    {title: 'Submit Order', icon: 'add_box', link: 'order'},
+                    {title: 'Submit Order', icon: 'folder_open', link: 'order'}
                 ],
                 accountmanagementheaders:
                 [

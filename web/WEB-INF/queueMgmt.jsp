@@ -52,7 +52,7 @@
 
                                     </v-card-text>
                                     <v-divider></v-divider>
-                                    <!--<v-spacer vertical></v-spacer>-->
+
                                     <v-card-actions>
                                         <form action="queue" method="post">
                                             <input type="hidden" name="action" value="cancel">
@@ -91,7 +91,7 @@
                                                 <v-text-field readonly prepend-icon="texture" v-model="viewOrder.material" label="Selected Material"></v-text-field>
                                                 <v-text-field readonly prepend-icon="invert_colors" v-model="viewOrder.materialColour" label="Material Colour"></v-text-field>
                                             </v-flex>
-                                            <!--<v-divider vertical></v-divider>-->
+
                                             <v-flex xs6>
                                                 <v-text-field readonly prepend-icon="insert_drive_file" v-model="viewOrder.fileName" label="File Name"></v-text-field>
                                                 <v-text-field readonly prepend-icon="format_shapes" v-model="viewOrder.dimensions" label="Dimensions LxWxH"></v-text-field>
@@ -114,7 +114,7 @@
                         <form action="queue" method="post" id="download">
                             <input type="hidden" name="action" value="download">
                             <input type="hidden" name="filePath" value="" id="filePath">
-                            <!--<input type="hidden" name="orderId" value="" id="downloadOrderId">-->
+
                         </form>
                     </v-container>
                 </v-content>
@@ -124,32 +124,6 @@
                         <v-icon>filter_{{printer.printerId}}</v-icon>
                     </v-btn>
                 </v-bottom-nav>
-                
-<!--                    <v-navigation-drawer width="250" permanent>
-                        <v-toolbar flat>
-                            <v-list>
-                                <v-list-tile>
-                                    <v-list-tile-action>
-                                        <v-icon>printer</v-icon>
-                                    </v-list-tile-action>
-                                    <v-list-tile-title class="title">
-                                        Printers
-                                    </v-list-tile-title>
-                                </v-list-tile>
-                            </v-list>
-                        </v-toolbar>
-                        <v-divider></v-divider>
-                        <v-list dense class="pt-0">
-                            <v-list-tile v-for="printer in miniNavPrinters" :key="printer.printerId" @click="">
-                                <v-list-tile-action>
-                                    <v-icon>filter_{{printer.printerId}}</v-icon>
-                                </v-list-tile-action>
-                                <v-list-tile-content>
-                                    <v-list-tile-title>{{printer.name}}</v-list-tile-title>
-                                </v-list-tile-content>
-                            </v-list-tile>
-                        </v-list>
-                    </v-navigation-drawer>-->
             </v-app>
         </div>
         
@@ -187,7 +161,8 @@
                         {title: 'Account Management', icon: 'people', link: 'accountmanagement'},
                         {title: 'Material Management', icon: 'texture', link: 'materialmanagement'},
                         {title: 'Printer Management', icon: 'print', link: 'printermanagement'},
-                        {title: 'Reports', icon: 'poll', link: 'reportmanagement'}
+                        {title: 'Reports', icon: 'poll', link: 'reportmanagement'},
+                        {title: 'Submit Order', icon: 'folder_open', link: 'order'}
                     ],
                     miniNavPrinters:
                     [
