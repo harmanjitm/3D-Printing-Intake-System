@@ -1,6 +1,7 @@
 package persistence;
 
 import domain.Backup;
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,6 +21,9 @@ public class BackupBroker {
      * @throws IOException, InterruptedException
      */
     public int createBackup() throws IOException, InterruptedException, SQLException {
+        File folder = new File("C:/Backups");
+        folder.mkdirs();
+        
         String mysqlDumpLocation = "C:/Program Files/MySQL/MySQL Server 5.7/bin/mysqldump.exe";
         String outputDir = "C:/Backups/";
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
@@ -27,7 +31,7 @@ public class BackupBroker {
         String finalOutput = outputDir + date + ".sql";
 
         Runtime rt = Runtime.getRuntime();
-        Process p = rt.exec(mysqlDumpLocation + " -uroot -ppassword --add-drop-database -B aris -r" + finalOutput);
+        Process p = rt.exec(mysqlDumpLocation + " -uroot -ppassword --add-drop-database -B aris --routines -r" + finalOutput);
 
         int processComplete = p.waitFor();
 

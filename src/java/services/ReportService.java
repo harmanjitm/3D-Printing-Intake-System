@@ -70,7 +70,6 @@ public class ReportService {
         String path = "C:/Reports/" + acc.getAccountID() + date + ".pdf";
         File folder = new File("C:/Reports");
         folder.mkdirs();
-        System.out.println(path);
 
         //System.getProperty("user.dir");
         

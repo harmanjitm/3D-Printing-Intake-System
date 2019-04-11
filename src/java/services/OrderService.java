@@ -87,22 +87,19 @@ public class OrderService {
         order.setStatus(newStatus);
         ob.updateOrder(order);
 
-        if(order.getStatus().equals("complete"))
-        {
+        if (order.getStatus().equals("complete")) {
             oqb.deleteFromQueue(order);
         }
-        
+
         if (order.getStatus().equals("approved")) {
             oqb.insertQueue(order);
         }
 
         ArrayList<OrderQueue> orders = oqb.getOrderQueue();
-        
+
         if (order.getStatus().equals("cancelled")) {
-            for(OrderQueue o : orders)
-            {
-                if(o.getOrderId() == order.getOrderId())
-                {
+            for (OrderQueue o : orders) {
+                if (o.getOrderId() == order.getOrderId()) {
                     oqb.deleteFromQueue(order);
                 }
             }
@@ -130,8 +127,16 @@ public class OrderService {
      * @return all orders for that account
      */
     public ArrayList<Order> getAllOrders(int accountId) throws SQLException {
-        return ob.getAllOrders();
+        ArrayList<Order> allOrders = ob.getAllOrders();
+        ArrayList<Order> orders = new ArrayList<>();
 
+        for (Order o : allOrders) {
+            if (o.getAccount().getAccountID() == accountId) {
+                orders.add(o);
+            }
+        }
+
+        return orders;
     }
 
     /**
@@ -148,10 +153,10 @@ public class OrderService {
 
     /**
      * gets the stl file by its assigned id.
-     * 
+     *
      * @param fileId
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     public File getFileByFileId(int fileId) throws SQLException {
 

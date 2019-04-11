@@ -355,7 +355,7 @@ new Vue({
         selectPrinterName: '',
         selectMaterialId: '',
         selectedColourID: 0,
-        drawer: '',
+        drawer: false,
         adminItems: 
         [ 
             {title: 'Home', icon: 'home', link: 'home'},
@@ -365,12 +365,12 @@ new Vue({
             {title: 'Material Management', icon: 'texture', link: 'materialmanagement'},
             {title: 'Printer Management', icon: 'print', link: 'printermanagement'},
             {title: 'Reports', icon: 'poll', link: 'reportmanagement'},
+            {title: 'Backups', icon: 'restore', link: 'backup'},
             {title: 'New Order', icon: 'folder_open', link: 'order'}
         ],
         userItems:
         [
             {title: 'Home', icon: 'home', link: 'home'},
-            {title: 'Dashboard', icon: 'dashboard', link: 'userhome'},
             {title: 'New Order', icon: 'folder_open', link: 'order'}
         ],
         selectedFile: {
