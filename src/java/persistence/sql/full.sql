@@ -75,7 +75,7 @@ DROP TABLE IF EXISTS `aris`.`BACKUP` ;
 
 CREATE TABLE IF NOT EXISTS `aris`.`BACKUP` (
   `backup_id` INT NOT NULL AUTO_INCREMENT,
-  `backup_title` VARCHAR(30) NOT NULL,
+  `backup_title` VARCHAR(100) NOT NULL,
   `backup_date` DATE NOT NULL,
   `backup_status` VARCHAR(30) NOT NULL,
   `backup_path` VARCHAR(500) NOT NULL,

@@ -12,12 +12,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <ARIS3D:Imports></ARIS3D:Imports>
-        <title>ARIS3D - Report Management</title>
+        <title>ARIS3D - Backup Management</title>
     </head>
     <body>
         <div id="app">
             <v-app>
-                <ARIS3D:Header isAdmin="true" pageName="Report Management"></ARIS3D:Header>
+                <ARIS3D:Header isAdmin="true" pageName="Backup Management"></ARIS3D:Header>
                 <v-content>
                     <v-container>
                         <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
@@ -28,23 +28,20 @@
                         </v-alert>
                         <v-card color="#8B2635" height="5px"></v-card>
                         <v-toolbar class="elevation-1" dark>
-                            <v-toolbar-title>Manage Reports</v-toolbar-title>
+                            <v-toolbar-title>Manage Backups</v-toolbar-title>
                             <v-spacer></v-spacer>
-                            <v-btn color="#8B2635" @click="add" dark class="mb-2">Generate Report</v-btn>
+                            <v-btn color="#8B2635" @click="create" dark class="mb-2">Create Backup</v-btn>
                         </v-toolbar>
-                        <v-data-table class="elevation-3" :headers="reportHeaders" :items="reports">
+                        <v-data-table class="elevation-3" :headers="backupHeaders" :items="backups">
                             <template slot="items" v-bind:id="props.item.id" slot-scope="props">
-                                <td>{{ props.item.name }}</td>
-                                <td>{{ props.item.creator }}</td>
-                                <td>{{ props.item.created }}</td>
-                                <td>{{ props.item.completed }}</td>
-                                <td>{{ props.item.content }}</td>
+                                <td>{{ props.item.filename }}</td>
                                 <td>{{ props.item.status }}</td>
-                                <td><v-icon @click="download(props.item)">cloud_download</v-icon></td>
+                                <td>{{ props.item.date }}</td>
+                                <td><v-icon @click="restore(props.item)">restore</v-icon></td>
                             </template>
                         </v-data-table>
-                        <form action="reportmanagement" method="post" id="download"><input type="hidden" name="action" value="download"><input id="path" type="hidden" name="path" value=""></form>
-                        <form action="reportmanagement" method="post" id="add"><input type="hidden" name="action" value="add"></form>
+                        <form action="backup" method="post" id="restore"><input type="hidden" name="action" value="restore"><input id="filename" type="hidden" name="filename" value=""></form>
+                        <form action="backup" method="post" id="create"><input type="hidden" name="action" value="create"></form>
                     </v-container>
                 </v-content>
             </v-app>
@@ -57,21 +54,18 @@
                     account: '',
                     logout: '',
                     drawer: false,
-                    downloadReport:
+                    restoreBackup:
                     {
                         id: '',
-                        name: '',
-                        creator: '',
-                        created: '',
-                        content: '',
-                        completed: '',
+                        filename: '',
                         status: '',
-                        path: ''
+                        date: '',
+                        path: '',
                     },
-                    reports:
+                    backups:
                     [
-                        <c:forEach items="${reports}" var="report">
-                            {id: '${report.reportId}', name: '${report.title}', creator: '${report.owner}', created: '${report.dateCreated}',content: '${report.content}', completed: '${report.dateCompleted}', status: '${report.status}',path: '${report.path}',},
+                        <c:forEach items="${backups}" var="backup">
+                            {id: '${backup.backupId}', filename: '${backup.title}', status: '${backup.status}', date: '${backup.date}', path: '${backup.path}'},
                         </c:forEach>
                     ],
                     adminItems: 
@@ -84,28 +78,25 @@
                         {title: 'Printer Management', icon: 'print', link: 'printermanagement'},
                         {title: 'Reports', icon: 'poll', link: 'reportmanagement'}
                     ],
-                    reportHeaders:
+                    backupHeaders:
                     [
-                        {text: 'Report Name', value: 'name'},
-                        {text: 'Owner', value: 'creator'},
-                        {text: 'Date Created', value: 'created'},
-                        {text: 'Date Completed', value: 'completed'},
-                        {text: 'Content', value: 'content'},
-                        {text: 'Status', value: 'status'},
+                        {text: 'File Name', value: 'filename'},
+                        {text: 'Backup Status', value: 'status'},
+                        {text: 'Backup Date', value: 'date'},
                         {text: 'Actions', value: '', sortable:false}
                     ]
                 },
                 methods:
                 {
-                    download(item)
+                    restore(item)
                     {
-                        this.downloadReport = Object.assign({}, item);
-                        document.getElementById('path').value=this.downloadReport.path;
-                        document.getElementById('download').submit();
+                        this.restoreBackup = Object.assign({}, item);
+                        document.getElementById('filename').value=this.restoreBackup.filename;
+                        document.getElementById('restore').submit();
                     },
-                    add()
+                    create()
                     {
-                        document.getElementById('add').submit();
+                        document.getElementById('create').submit();
                     }
                 }
             });

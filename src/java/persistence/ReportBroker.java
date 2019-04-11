@@ -103,6 +103,11 @@ public class ReportBroker {
         return reports;
     }
 
+    /**
+     * Method to pull specific information from the DB
+     * 
+     * @return If the method was successful return 1 else 0
+     */
     public int getTotalAccounts() {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection conn = cp.getConnection();
@@ -122,6 +127,11 @@ public class ReportBroker {
         return num;
     }
 
+    /**
+     * Method to pull specific information from the DB
+     * 
+     * @return If the method was successful return 1 else 0
+     */
     public int getTotalMaterials() {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection conn = cp.getConnection();
@@ -141,6 +151,11 @@ public class ReportBroker {
         return num;
     }
 
+    /**
+     * Method to pull specific information from the DB
+     * 
+     * @return If the method was successful return 1 else 0
+     */
     public int getTotalMaterialColours() {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection conn = cp.getConnection();
@@ -160,6 +175,11 @@ public class ReportBroker {
         return num;
     }
 
+    /**
+     * Method to pull specific information from the DB
+     * 
+     * @return If the method was successful return 1 else 0
+     */
     public int getTotalPrinters() {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection conn = cp.getConnection();
@@ -179,6 +199,11 @@ public class ReportBroker {
         return num;
     }
 
+    /**
+     * Method to pull specific information from the DB
+     * 
+     * @return If the method was successful return 1 else 0
+     */
     public int getOutOfStockMaterials() {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection conn = cp.getConnection();
@@ -198,6 +223,11 @@ public class ReportBroker {
         return num;
     }
 
+    /**
+     * Method to pull specific information from the DB
+     * 
+     * @return If the method was successful return 1 else 0
+     */
     public int getInStockMaterials() {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection conn = cp.getConnection();
@@ -217,6 +247,11 @@ public class ReportBroker {
         return num;
     }
 
+    /**
+     * Method to pull specific information from the DB
+     * 
+     * @return If the method was successful return 1 else 0
+     */
     public int getTotalPendingOrders() {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection conn = cp.getConnection();
@@ -236,6 +271,11 @@ public class ReportBroker {
         return num;
     }
 
+    /**
+     * Method to pull specific information from the DB
+     * 
+     * @return If the method was successful return 1 else 0
+     */
     public int getTotalCompleteOrders() {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection conn = cp.getConnection();
@@ -255,6 +295,11 @@ public class ReportBroker {
         return num;
     }
 
+    /**
+     * Method to pull specific information from the DB
+     * 
+     * @return If the method was successful return 1 else 0
+     */
     public int getTotalApprovedOrders() {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection conn = cp.getConnection();
@@ -274,6 +319,11 @@ public class ReportBroker {
         return num;
     }
 
+    /**
+     * Method to pull specific information from the DB
+     * 
+     * @return If the method was successful return 1 else 0
+     */
     public int getTotalCancelledOrders() {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection conn = cp.getConnection();
@@ -293,6 +343,11 @@ public class ReportBroker {
         return num;
     }
 
+    /**
+     * Method to pull specific information from the DB
+     * 
+     * @return If the method was successful return 1 else 0
+     */
     public int getTotalAdmins() {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection conn = cp.getConnection();
@@ -312,6 +367,11 @@ public class ReportBroker {
         return num;
     }
 
+    /**
+     * Method to pull specific information from the DB
+     * 
+     * @return If the method was successful return 1 else 0
+     */
     public int getTotalUsers() {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection conn = cp.getConnection();
@@ -331,6 +391,11 @@ public class ReportBroker {
         return num;
     }
     
+    /**
+     * Method to pull specific information from the DB
+     * 
+     * @return If the method was successful return 1 else 0
+     */
     public int getTotalOrders()
     {
         ConnectionPool cp = ConnectionPool.getInstance();
@@ -351,6 +416,12 @@ public class ReportBroker {
         return num;
     }
     
+    /**
+     * Method to get the next ID of the backup
+     * 
+     * @return The next ID of the backup
+     * @throws SQLException Error to be thrown if there is an error
+     */
     private static java.sql.Date convertUtilToSql(java.util.Date uDate) {
         java.sql.Date sDate = new java.sql.Date(uDate.getTime());
         return sDate;

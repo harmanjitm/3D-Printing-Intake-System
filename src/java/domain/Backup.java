@@ -8,204 +8,142 @@ import java.util.Date;
  */
 public class Backup {
 
-	/** The backup id. */
-	private int backupId;
-	
-	/** The date created. */
-	private Date dateCreated;
-	
-	/** The name of the backup. */
-	private String name;
-	
-	/** The status of the backup. */
-	private String status;
-	
-	/** The date completed. */
-	private Date dateCompleted;
-	
-	/** The path to backup file. */
-	private String path;
-	
-	/** The size of the backup file. */
-	private String size;
-	
-	/** The content to be printed to the backup file. */
-	private ArrayList<String> content;
-	
-	/**
-	 * Instantiates a new backup.
-	 */
-	public Backup() {
-	}
+    /**
+     * The backup id.
+     */
+    private int backupId;
 
-	/**
-	 * Instantiates a new backup.
-	 *
-	 * @param backupId the backup id
-	 * @param dateCreated the date created
-	 * @param name the name
-	 * @param status the status
-	 * @param dateCompleted the date completed
-	 * @param path the path
-	 * @param size the size
-	 * @param content the content
-	 */
-	public Backup(int backupId, Date dateCreated, String name, String status, Date dateCompleted, String path,
-			String size, ArrayList<String> content) {
-		super();
-		this.backupId = backupId;
-		this.dateCreated = dateCreated;
-		this.name = name;
-		this.status = status;
-		this.dateCompleted = dateCompleted;
-		this.path = path;
-		this.size = size;
-		this.content = content;
-	}
+    /**
+     * The name of the backup.
+     */
+    private String title;
 
-	/**
-	 * Gets the backup id.
-	 *
-	 * @return the backup id
-	 */
-	public int getBackupId() {
-		return backupId;
-	}
+    /**
+     * The status of the backup.
+     */
+    private String status;
 
-	/**
-	 * Sets the backup id.
-	 *
-	 * @param backupId the new backup id
-	 */
-	public void setBackupId(int backupId) {
-		this.backupId = backupId;
-	}
+    /**
+     * The date completed.
+     */
+    private Date date;
 
-	/**
-	 * Gets the date created.
-	 *
-	 * @return the date created
-	 */
-	public Date getDateCreated() {
-		return dateCreated;
-	}
+    /**
+     * The path to backup file.
+     */
+    private String path;
 
-	/**
-	 * Sets the date created.
-	 *
-	 * @param dateCreated the new date created
-	 */
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
+    /**
+     * Instantiates a new backup.
+     */
+    public Backup() {
+    }
 
-	/**
-	 * Gets the name.
-	 *
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
+    /**
+     * Instantiates a new backup.
+     *
+     * @param backupId the backup id
+     * @param date the date the backup was created
+     * @param title the title
+     * @param path the path
+     * @param status the status
+     */
+    public Backup(int backupId, Date date, String title, String path, String status) {
+        super();
+        this.backupId = backupId;
+        this.title = title;
+        this.date = date;
+        this.path = path;
+        this.status = status;
+    }
 
-	/**
-	 * Sets the name.
-	 *
-	 * @param name the new name
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
+    /**
+     * Gets the backup id.
+     *
+     * @return the backup id
+     */
+    public int getBackupId() {
+        return backupId;
+    }
 
-	/**
-	 * Gets the status.
-	 *
-	 * @return the status
-	 */
-	public String getStatus() {
-		return status;
-	}
+    /**
+     * Sets the backup id.
+     *
+     * @param backupId the new backup id
+     */
+    public void setBackupId(int backupId) {
+        this.backupId = backupId;
+    }
 
-	/**
-	 * Sets the status.
-	 *
-	 * @param status the new status
-	 */
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    /**
+     * Gets the date created.
+     *
+     * @return the date created
+     */
+    public Date getDate() {
+        return date;
+    }
 
-	/**
-	 * Gets the date completed.
-	 *
-	 * @return the date completed
-	 */
-	public Date getDateCompleted() {
-		return dateCompleted;
-	}
+    /**
+     * Sets the date created.
+     *
+     * @param dateCreated the new date created
+     */
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-	/**
-	 * Sets the date completed.
-	 *
-	 * @param dateCompleted the new date completed
-	 */
-	public void setDateCompleted(Date dateCompleted) {
-		this.dateCompleted = dateCompleted;
-	}
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
+    public String getTitle() {
+        return title;
+    }
 
-	/**
-	 * Gets the path.
-	 *
-	 * @return the path
-	 */
-	public String getPath() {
-		return path;
-	}
+    /**
+     * Sets the name.
+     *
+     * @param name the new name
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	/**
-	 * Sets the path.
-	 *
-	 * @param path the new path
-	 */
-	public void setPath(String path) {
-		this.path = path;
-	}
+    /**
+     * Gets the status.
+     *
+     * @return the status
+     */
+    public String getStatus() {
+        return status;
+    }
 
-	/**
-	 * Gets the size.
-	 *
-	 * @return the size
-	 */
-	public String getSize() {
-		return size;
-	}
+    /**
+     * Sets the status.
+     *
+     * @param status the new status
+     */
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
+    /**
+     * Gets the path.
+     *
+     * @return the path
+     */
+    public String getPath() {
+        return path;
+    }
 
-	/**
-	 * Sets the size.
-	 *
-	 * @param size the new size
-	 */
-	public void setSize(String size) {
-		this.size = size;
-	}
-
-	/**
-	 * Gets the content.
-	 *
-	 * @return the content
-	 */
-	public ArrayList<String> getContent() {
-		return content;
-	}
-
-	/**
-	 * Sets the content.
-	 *
-	 * @param content the new content
-	 */
-	public void setContent(ArrayList<String> content) {
-		this.content = content;
-	}
-
-	
+    /**
+     * Sets the path.
+     *
+     * @param path the new path
+     */
+    public void setPath(String path) {
+        this.path = path;
+    }
 }

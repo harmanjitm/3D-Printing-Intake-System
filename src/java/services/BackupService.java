@@ -4,6 +4,7 @@ import java.util.*;
 
 import domain.Backup;
 import java.io.IOException;
+import java.sql.SQLException;
 import persistence.BackupBroker;
 
 /**
@@ -30,7 +31,7 @@ public class BackupService {
      * @return the backup object once it is created or null if creation is
      * failed
      */
-    public int createBackup() throws IOException, InterruptedException {
+    public int createBackup() throws IOException, InterruptedException, SQLException {
         return bb.createBackup();
     }
 
@@ -40,7 +41,7 @@ public class BackupService {
      *
      * @return all backups in an arrayList
      */
-    public ArrayList<Backup> getAllBackups() {
+    public ArrayList<Backup> getAllBackups() throws SQLException {
         return bb.getAllBackups();
     }
 
@@ -52,5 +53,18 @@ public class BackupService {
      */
     public Backup getBackup(int backupId) {
         return bb.getBackup(backupId);
+    }
+    
+    /**
+     * Method to restore the backup
+     * 
+     * @param filename The name of the file to restore
+     * @return If the restore was successful return 1 else 0
+     * @throws IOException If there is an error this error it thrown
+     * @throws InterruptedException If there is an error this error it thrown
+     */
+    public int restoreBackup(String filename) throws IOException, InterruptedException
+    {
+        return bb.restoreBackup(filename);
     }
 }
