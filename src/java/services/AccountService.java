@@ -135,6 +135,14 @@ public class AccountService {
         return account.getAccountType();
     }
     
+    /**
+     * Updates the account Type from User to Technician or vice versa.
+     * 
+     * @param accountId of the updated account
+     * @param accountType the type of account
+     * @return
+     * @throws SQLException 
+     */
     public int updateAccountType(int accountId, String accountType) throws SQLException
     {
         AccountBroker ab = new AccountBroker();

@@ -74,6 +74,13 @@ public class OrderQueueService {
         return oqb.getOrderQueue();
     }
 
+    /**
+     * Fetches a list of orders based on the status of that order.
+     * 
+     * @param status
+     * @return
+     * @throws SQLException 
+     */
     public ArrayList<OrderQueue> getOrderQueueByStatus(String status) throws SQLException {
         OrderQueueBroker oqb = new OrderQueueBroker();
         return oqb.getOrderQueue(status);

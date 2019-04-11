@@ -15,29 +15,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>ARIS3D - Submit New Order</title>
         <script type="text/javascript" src="node_modules/vuejs/dist/vue.min.js"></script>
-        <style>
-            body {
-                text-align: center;
-            }
-            #stl_cont {
-                height: 350px;
-                margin: 0 auto;
-            }
-            .justify-center {
-                margin: 0 auto;
-            }
-            #app {
-                text-align: center;
-            }
-            img {
-                width: 30%;
-                margin: auto;
-                display: block;
-                margin-bottom: 10px;
-            }
-        </style>
-
+        
+        <link href="res/css/newOrder.css" rel="stylesheet" type="text/css"/>    
     </head>
+    
     <body>
         <div id="app">
             <v-app>
@@ -84,6 +65,7 @@
                                             <v-card class="elevation-4">
                                                 <div id="stl_cont" @change="showInfo">
                                                     <h2 class="fileInput">Select an STL file</h2>
+                                                    <!-- form submission is placed here because this is where the file is being taken in -->
                                                     <form id="create-order" method="post" action="order" enctype="multipart/form-data">  
                                                         <input type="hidden" id="action" name="action" value="submit">
                                                         <input type="file" class="fileInput" name="file" onchange='stl_viewer.add_model({local_file:this.files[0]}); ' accept="*.*" loading>
@@ -124,7 +106,6 @@
                                                         <v-list-tile-content>Triangles: </v-list-tile-content>
                                                         <v-list-tile-content class="align-end">{{ selectedFile.triangles }}</v-list-tile-content>
                                                     </v-list-tile>
-
                                                 </v-list>
                                             </v-card>
                                         </v-flex>
@@ -230,7 +211,7 @@
                             <v-btn color="secondary" href="home">cancel</v-btn>
                         </v-stepper-content>
 
-                        <!-- Comments and payment opens -->
+                    <!-- Comments and payment opens -->
                         <v-stepper-content step="4">
                             <v-card class="mb-5" height="350px" flat>
                                 <v-container>
@@ -260,7 +241,7 @@
                         </v-stepper-content>
 
 
-                        <!-- confirm choices -->
+                    <!-- confirm selections and submit order -->
                         <v-stepper-content step="5">
                             <v-card class="mb-5" height="500px" flat>
                                 <div style="max-width: 800px; margin: auto;" class="grey lighten-3">
@@ -367,7 +348,6 @@ new Vue({
     el: '#app',
     data: {
         e1: 0, //Stepper element
-        fileUploaded: false,
         infoMessage: '',
         image: '',
         fileInfo: '',
@@ -384,13 +364,14 @@ new Vue({
             {title: 'Account Management', icon: 'people', link: 'accountmanagement'},
             {title: 'Material Management', icon: 'texture', link: 'materialmanagement'},
             {title: 'Printer Management', icon: 'print', link: 'printermanagement'},
-            {title: 'Reports', icon: 'poll', link: 'reportmanagement'}
+            {title: 'Reports', icon: 'poll', link: 'reportmanagement'},
+            {title: 'New Order', icon: 'folder_open', link: 'order'}
         ],
         userItems:
         [
             {title: 'Home', icon: 'home', link: 'home'},
             {title: 'Dashboard', icon: 'dashboard', link: 'userhome'},
-            {title: 'New Order', icon: 'queue', link: 'order'}
+            {title: 'New Order', icon: 'folder_open', link: 'order'}
         ],
         selectedFile: {
             name: '',
@@ -401,7 +382,7 @@ new Vue({
             area: '',
             triangles: ''  
         },
-        printerSelect:
+        printerSelect: // unused?
         [
             {text: 'Technicians Preference', value: '-1'},
             <c:forEach items="${printers}" var="printer">
@@ -422,7 +403,7 @@ new Vue({
             img: 'res/img/printers/${printer.printerId}.jpg'},
             </c:forEach>
         ],
-        selectedPrinter:
+        selectedPrinter: //holds a selected printer from the list of printers
         {
             printerId: '',
             size: '',
@@ -434,7 +415,7 @@ new Vue({
             img: ''
             
         },
-        materials:
+        materials: //Material info from the database
         [
             <c:forEach items="${materials}" var="material">
                 {materialId: '${material.materialId}',
@@ -446,7 +427,7 @@ new Vue({
                  materialStat: '${material.status}'},
             </c:forEach>
         ],
-        selectedMaterial:
+        selectedMaterial: //holds selected material info
         {
             materialId: '',
             materialName: '',
@@ -456,7 +437,7 @@ new Vue({
             materialVal: '', 
             materialStat: ''
         },
-        colours:
+        colours: // colours from the database
         [
             <c:forEach items="${materials}" var="material">
                 <c:forEach items="${material.colours}" var="colour">
@@ -466,7 +447,7 @@ new Vue({
                 </c:forEach>
             </c:forEach>
         ],
-        selectedColour:
+        selectedColour: // holds selected colour
         {
             materialId: '',
             colour: '',
@@ -477,12 +458,13 @@ new Vue({
             {text: 'Colour', value: 'colour'},
             {text: 'Status', value: 'status'},
         ],
-        payments:
+        payments: //placeholder for if/when the system is set up to take in payment
         [
             {text: 'Payments are currently unavailable', value: 'noPayment'}
         ],
     },
-    methods: {
+    methods: 
+    {
         submit() {  
             var file = JSON.parse(JSON.stringify(stl_viewer.get_model_info(2)));
             var dims = JSON.parse(JSON.stringify(file["dims"]));
@@ -497,7 +479,6 @@ new Vue({
         },
         selectPrinter(printer) {
             this.selectPrinterName = printer.name;
-//            alert('you selected ' + this.selectPrinterName);
             this.selectedPrinter = Object.assign({}, printer);
             document.getElementById('showPrinter').innerHTML = this.selectPrinterName + ' selected';
             document.getElementById("showPrinter").style.display = "block";
@@ -505,21 +486,18 @@ new Vue({
         },
         selectMaterial(material) {
             this.selectMaterialId = material.materialId;
-            this.selectedMaterial = Object.assign({}, material);
-//            alert('you selected ' + this.selectMaterialId);   
+            this.selectedMaterial = Object.assign({}, material);   
         },
         loadMaterialColour(material) {
             this.selectMaterialId = material.materialId;
         },
         selectColour(colour) {
             this.selectedColour = Object.assign({}, colour);
-//            alert('you selected ' + this.selectedColour.materialId);
         },
         selectPayment() {
-        // Display payment info
+        // PLACEHOLDER: Display payment info
         },
         viewInfo() {
-                //var fileUploaded;
                 var info = JSON.stringify(stl_viewer.get_model_info(2));
                 var obj = JSON.parse(info);
                 this.fileInfo = obj;
@@ -539,6 +517,7 @@ new Vue({
             }
         },
 })
+    // method to call stl viewer API
     var stl_viewer = new StlViewer
     (
         document.getElementById("stl_cont"),

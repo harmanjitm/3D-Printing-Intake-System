@@ -102,13 +102,14 @@
                 {title: 'Account Management', icon: 'people', link: 'accountmanagement'},
                 {title: 'Material Management', icon: 'texture', link: 'materialmanagement'},
                 {title: 'Printer Management', icon: 'print', link: 'printermanagement'},
-                {title: 'Reports', icon: 'poll', link: 'reportmanagement'}
+                {title: 'Reports', icon: 'poll', link: 'reportmanagement'},
+                {title: 'New Order', icon: 'folder_open', link: 'order'}
             ],
             userItems:
             [
                 {title: 'Home', icon: 'home', link: 'home'},
                 {title: 'Dashboard', icon: 'dashboard', link: 'userhome'},
-                {title: 'New Order', icon: 'queue', link: 'order'}
+                {title: 'New Order', icon: 'folder_open', link: 'order'}
             ],
         },
         methods:

@@ -101,7 +101,7 @@
                                             <span class="subheading font-weight-light"><v-icon>attach_money</v-icon>{{order.cost}}</span>
                                         </v-card-text>
                                         <v-divider></v-divider>
-                                        <!--<v-spacer vertical></v-spacer>-->
+
                                         <v-card-actions>
                                             <form method="post" action="dashboard">
                                                 <input type="hidden" name="path" :value="order.filePath">
@@ -163,45 +163,12 @@
                                         </v-card-actions>
                                     </v-card>
                                 </v-flex>
-    <!--                            <v-dialog v-model="dialog" max-width="1000px" persistent>
-                                    <v-card color="#8B2635" height="5px"></v-card>
-                                    <v-card min-height="500px">
-                                        <v-card-title class="headline blue-grey darken-4 white--text" primary-title>{{viewOrder.printerName}}<v-spacer></v-spacer>Order {{num}}{{viewOrder.orderId}}<v-spacer></v-spacer>Position {{num}}{{viewOrder.position}}</v-card-title>
-                                        <v-card-text>
-                                            <v-layout row wrap>
-                                                <v-flex xs6>
-                                                    <v-text-field readonly prepend-icon="account_box" v-model="viewOrder.firstname+' '+viewOrder.lastname" label="Name"></v-text-field>
-                                                    <v-text-field readonly prepend-icon="email" v-model="viewOrder.email" label="Email"></v-text-field>
-                                                    <v-text-field readonly prepend-icon="print" v-model="viewOrder.printerName" label="Selected Printer"></v-text-field>
-                                                    <v-text-field readonly prepend-icon="texture" v-model="viewOrder.material" label="Selected Material"></v-text-field>
-                                                    <v-text-field readonly prepend-icon="invert_colors" v-model="viewOrder.materialColour" label="Material Colour"></v-text-field>
-                                                </v-flex>
-                                                <v-divider vertical></v-divider>
-                                                <v-flex xs6>
-                                                    <v-text-field readonly prepend-icon="insert_drive_file" v-model="viewOrder.fileName" label="File Name"></v-text-field>
-                                                    <v-text-field readonly prepend-icon="format_shapes" v-model="viewOrder.dimensions" label="Dimensions LxWxH"></v-text-field>
-                                                    <v-textarea readonly rows="4" prepend-icon="message" name="input-7-1" label="Comments" v-model="viewOrder.comments"></v-textarea>
-                                                    <v-alert type="warning" <c:if test="${warning!=null}">value="true"</c:if>>
-                                                        ${warning}
-                                                    </v-alert>
-                                                </v-flex>
-                                            </v-layout>
-                                        </v-card-text>
-                                        <v-card-actions>
-                                            <v-btn flat @click="dialog = false" color="primary">Close</v-btn>
-                                            <v-spacer></v-spacer>
-                                            <v-btn flat outline color="red accent-3">Cancel Order</v-btn>
-                                            <v-btn flat outline color="light-green darken-2">Complete Order</v-btn>
-                                        </v-card-actions>
-                                    </v-card>
-                                </v-dialog>-->
                             </v-layout>
                         </v-container>
                     </v-container>
                 </v-content>
             </v-app>
         </div>
-        <!--<script src="res/js/vue.js" type="text/javascript"></script>-->
         <link href="res/css/header.css" rel="stylesheet" type="text/css"/>
         <script>
             new Vue ({
@@ -218,7 +185,8 @@
                         {title: 'Account Management', icon: 'people', link: 'accountmanagement'},
                         {title: 'Material Management', icon: 'texture', link: 'materialmanagement'},
                         {title: 'Printer Management', icon: 'print', link: 'printermanagement'},
-                        {title: 'Reports', icon: 'poll', link: 'reportmanagement'}
+                        {title: 'Reports', icon: 'poll', link: 'reportmanagement'},
+                        {title: 'Submit Order', icon: 'folder_open', link: 'order'}
                     ],
                     viewOrder:
                     {

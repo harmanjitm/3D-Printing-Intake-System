@@ -8,7 +8,7 @@ import persistence.NotificationBroker;
 /**
  * The Class NotificationService provides methods to access and modify archive objects.
  * 
- * EXTRANEOUS CLASS. SHOULD PROBABLY DELETE
+ * EXTRANEOUS CLASS. NOTHING HAPPENS HERE.
  */
 public class NotificationService {
 
