@@ -112,6 +112,7 @@ public class MaterialManagementController extends HttpServlet {
                 //Case used to add a material
                 case "add":
                     //if the variables are not empty, the material gets created and added to the system
+                    System.out.println(materialName + materialCost + printerName + materialDesc);
                     materialCost = Double.parseDouble(request.getParameter("materialCost"));
                     //If statement used to verify that fields are not empty
                     if (!(materialName == null || materialName.equals("")) && !(materialDesc == null || materialDesc.equals(""))

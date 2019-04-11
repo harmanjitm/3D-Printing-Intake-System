@@ -45,19 +45,15 @@
                                                         <v-flex xs12 sm6 md6>
                                                             <v-text-field name="materialName" label="Material"></v-text-field>
                                                         </v-flex>
-    <!--                                                    <v-flex xs12 sm6 md6>
-                                                            <v-text-field name="materialColor" label="Colors"></v-text-field>
-                                                        </v-flex>-->
                                                         <v-flex xs12 sm6 md6>
                                                             <v-text-field type="number" name="materialCost" prefix="$" label="Price/mm&#179"></v-text-field>
                                                         </v-flex>
                                                         <v-flex xs12 sm6 md6>
-                                                            <v-text-field name="printerName" label="Printer"></v-text-field>
+                                                            <v-select v-model="selectPrinterName" :items="printers" label="Printer" item-text="type" item-value="value"> 
+                                                            </v-select>
                                                         </v-flex>
-    <!--                                                    <v-flex xs12 sm6 md6>
-                                                            <v-text-field name="materialStat" label="Status"></v-text-field>
-                                                        </v-flex>-->
                                                         <input type="hidden" name="action" value="add">
+                                                        <input type="hidden" name="printerName" value="{{selectedPrinterName}}">
                                                         <v-flex xs12 sm6 md6>
                                                             <v-text-field name="materialDescription" label="Description"></v-text-field>
                                                         </v-flex>
@@ -99,9 +95,6 @@
                                                             </v-flex>
                                                             <v-flex xs4>
                                                                 <input id="newColourMaterialId" type="hidden" name="materialId" value="editItem.materialId" v-model="editItem.materialId">
-                                                                <!--<input id="newColourStatus" type="hidden" name="colourStatus" value="">-->
-                                                                <!--<v-switch v-if="newColourStatus === true" label="In Stock" v-model="newColourStatus"></v-switch>-->
-                                                                <!--<v-switch v-if="newColourStatus === false" label="Out of Stock" v-model="newColourStatus"></v-switch>-->
                                                             </v-flex>
                                                         </v-layout>
                                                     </v-container>
@@ -206,7 +199,7 @@
                     colourData: [],
                     search: '',
                     editIndex: -1,
-//                    newColourStatus: true,
+                    selectPrinterName: '',
                     newColourName: '',
                     dialog: false,
                     expand: false,
@@ -227,6 +220,12 @@
                              materialVal: '${material.cost}', 
                              materialStat: '${material.status}'},
                         </c:forEach>
+                    ],
+                    printers: //Available printers
+                    [
+                        {type: 'Fortus 400mc', value: 'Fortus 400mc', name: 'printer'},
+                        {type: 'Form 2+', value: 'Form 2+', name: 'printer'},
+                        {type: 'Ultimaker 3 Extended', value: 'Ultimaker 3 Extended', name: 'printer'}
                     ],
                     colourHeaders:
                     [
@@ -278,7 +277,7 @@
                         {text: 'Material', value: 'materialName'},
                         {text: 'Printer', value: 'printerName'},
                         {text: 'Description', value: 'materialDesc'},
-                        {text: 'Value', value: 'materialVal'},
+                        {text: 'Value($/mm3)', value: 'materialVal'},
                         {text: 'Actions', value: 'actions', sortable: false}
                     ]
                 },
@@ -306,21 +305,7 @@
                         <%--<c:set var="selectedMaterial" value="this.selectedColourID"></c:set>--%>
                         
                         
-//                        
-//                        this.colourData = [
-//                            <c:forEach items="${materials}" var="material">
-//                                <c:set var="materialIDToCompare" value="material.materialId"></c:set>
-//                                <c:if test="${materialIDToCompare == selectedMaterial}">
-//                                    <c:forEach items="${material.colours}" var="colour">
-//                                        {materialId: '${material.materialId}',
-//                                         colour: '${colour.color}',
-//                                         status: '${colour.status}'},
-//                                    </c:forEach>
-//                                    {materialId: '20', colour: 'red', status: 'in-stock'},
-//                                </c:if>
-//                            </c:forEach>
-//                        ]
-                        //alert(${materialIDToCompare} + ${selectedMaterial});
+
                     },
                     close()
                     {
