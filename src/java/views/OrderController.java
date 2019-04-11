@@ -216,7 +216,8 @@ public class OrderController extends HttpServlet
         //Try-Catch used to populate costMM3 and materialSelected variables, and catches any SQL Exception errors
         try 
         {
-            costMM3 = ms.getMaterial(material).getCost();
+            Material temp = ms.getMaterial(material);
+            costMM3 = temp.getCost();
             materialSelected = ms.getMaterial(material);
         } 
         catch (SQLException ex) 
@@ -228,7 +229,6 @@ public class OrderController extends HttpServlet
         }
         
         Printer printerSelected = null;
-        
         //For loop that uses p printer object to be populated by printers
         for(Printer p : printers)
         {

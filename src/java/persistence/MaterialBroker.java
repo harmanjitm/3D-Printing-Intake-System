@@ -269,6 +269,14 @@ public class MaterialBroker {
             material = new Material(materialId, rs.getString("material_name"), rs.getString("material_description"));
         }
 
+        PreparedStatement cost = connection.prepareStatement("SELECT material_cost FROM material WHERE material_id=?");
+        cost.setInt(1, materialId);
+        ResultSet costrs = cost.executeQuery();
+        
+        while(costrs.next())
+        {
+            material.setCost(costrs.getDouble("material_cost"));
+        }
         connection.close();
         return material;
     }

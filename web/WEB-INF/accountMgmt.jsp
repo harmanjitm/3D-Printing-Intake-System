@@ -155,7 +155,8 @@
                         {title: 'Material Management', icon: 'texture', link: 'materialmanagement'},
                         {title: 'Printer Management', icon: 'print', link: 'printermanagement'},
                         {title: 'Reports', icon: 'poll', link: 'reportmanagement'},
-                        {title: 'Submit Order', icon: 'folder_open', link: 'order'}
+                        {title: 'Backups', icon: 'restore', link: 'backup'},
+                        {title: 'New Order', icon: 'folder_open', link: 'order'}
                     ],
                     accountmanagementheaders:
                     [

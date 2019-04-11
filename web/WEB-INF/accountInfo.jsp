@@ -18,67 +18,61 @@
         <div id="app">
             <v-app>
                 <v-content>
-                    <c:if test="${account.accountType == 'admin'}">
-                        <ARIS3D:Header isAdmin="true" pageName="Account Information"></ARIS3D:Header>
-                    </c:if>
-                    <c:if test="${account.accountType == 'user'}">
-                        <ARIS3D:Header isAdmin="false" pageName="Account Information"></ARIS3D:Header>
-                    </c:if>
+                    <ARIS3D:Header isAdmin="" pageName="Account Information"></ARIS3D:Header>
                     <v-container>
                         <v-layout>
-                            <v-flex xl8 sm8 md8 lg8>
+                            <v-flex xs6 sm6 md6 lg6>
                                 <v-card>
                                     <v-toolbar color="#1B222B" dark>
                                         <v-toolbar-title>Account Information: # ${sessionScope.account.accountID}</v-toolbar-title>
                                     </v-toolbar>           
-                                        <v-list dense>
-                                            <v-list-tile>
-                                                <v-list-tile-content>First Name: </v-list-tile-content>
-                                                <v-list-tile-content class="align-end">${sessionScope.account.firstname}</v-list-tile-content>
-                                            </v-list-tile>
-                                            <v-list-tile>
-                                                <v-list-tile-content>Last Name: </v-list-tile-content>
-                                                <v-list-tile-content class="align-end">${sessionScope.account.lastname}</v-list-tile-content>
-                                            </v-list-tile>
-                                            <v-list-tile>
-                                                <v-list-tile-content>Email: </v-list-tile-content>
-                                                <v-list-tile-content class="align-end">${sessionScope.account.email}</v-list-tile-content>
-                                            </v-list-tile>
-                                            <v-list-tile>
-                                                <v-list-tile-content>Password: </v-list-tile-content>
-                                                <v-list-tile-content class="align-end">${sessionScope.account.password}</v-list-tile-content>
-                                                <v-list-tile-content class="align-end">
-                                                    <v-dialog v-model="dialog" max-width="450px">
-                                                        <v-btn slot="activator" dark color="#8B2635">Change Password</v-btn>
-                                                        <v-card>
-                                                            <v-card-title>
-                                                                <span class="headline">Change Password</span>
-                                                            </v-card-title>
-                                                            <v-container grid-list-md>
-                                                                <v-layout wrap>
-                                                                    <v-card-text>
+                                    <v-list dense>
+                                        <v-list-tile>
+                                            <v-list-tile-content>First Name: </v-list-tile-content>
+                                            <v-list-tile-content class="align-end">${sessionScope.account.firstname}</v-list-tile-content>
+                                        </v-list-tile>
+                                        <v-list-tile>
+                                            <v-list-tile-content>Last Name: </v-list-tile-content>
+                                            <v-list-tile-content class="align-end">${sessionScope.account.lastname}</v-list-tile-content>
+                                        </v-list-tile>
+                                        <v-list-tile>
+                                            <v-list-tile-content>Email: </v-list-tile-content>
+                                            <v-list-tile-content class="align-end">${sessionScope.account.email}</v-list-tile-content>
+                                        </v-list-tile>
+                                        <v-list-tile>
+                                            <v-list-tile-content>Password: </v-list-tile-content>
+                                            <v-list-tile-content class="align-end">${sessionScope.account.password}</v-list-tile-content>
+                                            <v-list-tile-content class="align-end"></v-list-tile-content>
+                                                <v-dialog v-model="dialog" max-width="450px">
+                                                    <v-btn slot="activator" dark color="#8B2635">Change Password</v-btn>
+                                                    <v-card>
+                                                        <v-card-title>
+                                                            <span class="headline">Change Password</span>
+                                                        </v-card-title>
+                                                        <v-container grid-list-md>
+                                                            <v-layout wrap>
+                                                                <v-card-text>
                                                                     <v-flex>
                                                                         <v-text-field label="Current Password"></v-text-field>
                                                                     </v-flex>
                                                                     <v-flex>
                                                                         <v-text-field label="New Password"></v-text-field>
-                                                                    
                                                                         <v-text-field label="Confirm New Password"></v-text-field>
-
-                                                                        </v-card-text>
-                                                                    <v-card-actions>
-                                                                        <v-spacer></v-spacer>
-                                                                        <v-btn flat color="primary" @click="close">Cancel</v-btn>
-                                                                        <v-btn flat color="primary" @click="submit">Save</v-btn>
-                                                                    </v-card-actions>
                                                                     </v-flex>
-                                                                </v-layout>
-                                                            </v-container>
-                                                        </v-card>
-                                                    </v-dialog>
-                                                </v-list-tile-content>
-                                            </v-list-tile>
-                                        </v-list>
+                                                                </v-card-text>
+                                                                <v-card-actions>
+                                                                    <v-spacer></v-spacer>
+                                                                    <v-btn flat color="primary" @click="close">Cancel</v-btn>
+                                                                    <v-btn flat color="primary" @click="submit">Save</v-btn>
+                                                                </v-card-actions>
+                                                                </v-flex>
+                                                            </v-layout>
+                                                        </v-container>
+                                                    </v-card>
+                                                </v-dialog>
+                                            </v-list-tile-content>
+                                        </v-list-tile>
+                                    </v-list>     
                                 </v-card>
                             </v-flex>
                         </v-layout>
@@ -86,41 +80,41 @@
                 </v-content>
             </v-app>
         </div>
-       
-<script>
-    new Vue({
-        el: '#app',
-        drawer: '',
-        dialog: '',
-        data: 
-        {
-            adminItems: 
-            [ 
-                {title: 'Home', icon: 'home', link: 'home'},
-                {title: 'Dashboard', icon: 'dashboard', link: 'dashboard'},
-                {title: 'Order Queue', icon: 'queue', link: 'queue'},
-                {title: 'Account Management', icon: 'people', link: 'accountmanagement'},
-                {title: 'Material Management', icon: 'texture', link: 'materialmanagement'},
-                {title: 'Printer Management', icon: 'print', link: 'printermanagement'},
-                {title: 'Reports', icon: 'poll', link: 'reportmanagement'},
-                {title: 'New Order', icon: 'folder_open', link: 'order'}
-            ],
-            userItems:
-            [
-                {title: 'Home', icon: 'home', link: 'home'},
-                {title: 'Dashboard', icon: 'dashboard', link: 'userhome'},
-                {title: 'New Order', icon: 'folder_open', link: 'order'}
-            ],
-        },
-        methods:
-        {
-            close()
+    <script>
+        new Vue({
+            el: '#app',
+            data: 
             {
-                this.dialog = false;
-                
+                drawer: false,
+                dialog: '',
+                adminItems: 
+                [ 
+                    {title: 'Home', icon: 'home', link: 'home'},
+                    {title: 'Dashboard', icon: 'dashboard', link: 'dashboard'},
+                    {title: 'Order Queue', icon: 'queue', link: 'queue'},
+                    {title: 'Account Management', icon: 'people', link: 'accountmanagement'},
+                    {title: 'Material Management', icon: 'texture', link: 'materialmanagement'},
+                    {title: 'Printer Management', icon: 'print', link: 'printermanagement'},
+                    {title: 'Reports', icon: 'poll', link: 'reportmanagement'},
+                    {title: 'Backups', icon: 'restore', link: 'backup'},
+                    {title: 'New Order', icon: 'folder_open', link: 'order'}
+                ],
+                userItems:
+                [
+                    {title: 'Home', icon: 'home', link: 'home'},
+                    {title: 'Dashboard', icon: 'dashboard', link: 'userhome'},
+                    {title: 'New Order', icon: 'folder_open', link: 'order'}
+                ],
             },
-        }
-    });
-</script>
+            methods:
+            {
+                close()
+                {
+                    this.dialog = false;
+
+                },
+            }
+        });
+    </script>
     </body>
 </html>
