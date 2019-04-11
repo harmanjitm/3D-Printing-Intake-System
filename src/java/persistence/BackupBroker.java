@@ -1,7 +1,13 @@
 package persistence;
 
+import domain.Backup;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class BackupBroker{
@@ -45,4 +51,33 @@ public class BackupBroker{
         }
         else return 0;
     }
+
+    public ArrayList<Backup> getAllBackups() throws SQLException {
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection conn = cp.getConnection();
+        ArrayList<Backup> reports = new ArrayList<>();
+        AccountBroker ab = new AccountBroker();
+
+        if (conn == null) {
+            throw new SQLException("Error Getting Reports: Connection error.");
+        }
+
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM backup");
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Backup backup = new Backup(rs.getInt("report_id"), rs.getString("report_title"), ab.getAccountByID(rs.getInt("account_id")), rs.getDate("date_created"), rs.getString("report_content"), rs.getDate("date_completed"), rs.getString("report_status"), rs.getString("report_path"));
+            backups.add(backup);
+        }
+        rs.close();
+        conn.close();
+        return reports;
+    }
+
+    public Backup getBackup(int backupId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public 
 }

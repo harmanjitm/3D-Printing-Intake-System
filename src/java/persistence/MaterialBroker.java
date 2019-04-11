@@ -16,7 +16,6 @@ public class MaterialBroker {
 
 //    private Connection connection = null;
 //    private final ConnectionPool cp = ConnectionPool.getInstance();
-
     /**
      * Adds a new material to the database
      *
@@ -46,9 +45,8 @@ public class MaterialBroker {
         connection.close();
         return hadResults ? 0 : 1;
     }
-    
-    public int changeColourStatus(int materialId, String colour, String status) throws SQLException
-    {
+
+    public int changeColourStatus(int materialId, String colour, String status) throws SQLException {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection connection = cp.getConnection();
         if (connection == null) {

@@ -53,7 +53,7 @@
                                                             </v-select>
                                                         </v-flex>
                                                         <input type="hidden" name="action" value="add">
-                                                        <input type="hidden" name="printerName" value="{{selectedPrinterName}}">
+                                                        <input type="hidden" name="printerName" :value="selectPrinterName">
                                                         <v-flex xs12 sm6 md6>
                                                             <v-text-field name="materialDescription" label="Description"></v-text-field>
                                                         </v-flex>
@@ -118,25 +118,12 @@
                                                     <v-container grid-list-md>
                                                         <v-layout wrap>
                                                             <input type="hidden" name="action" value="edit">
-                                                            <input type="hidden" name="materialID" v-model="editItem.materialId">
-                                                            <v-flex xs12 sm6 md6>
+                                                            <input type="hidden" name="materialId" v-model="editItem.materialId">
+                                                            <v-flex xs12 sm4 md4>
                                                                 <v-text-field name="materialName" v-model="editItem.materialName" label="Material"></v-text-field>
                                                             </v-flex>
-                                                            <v-flex xs12 sm6 md6>
-                                                                <v-text-field name="printerName" v-model="editItem.printerName" label="Printer"></v-text-field>
-                                                            </v-flex>
-                                                            <v-flex xs12 sm6 md6>
-                                                                <v-text-field name="materialDesc" v-model="editItem.materialDesc" label="Description"></v-text-field>
-                                                            </v-flex>
-                                                            <v-spacer></v-spacer>
-                                                            <v-flex xs12 sm6 md6>
-                                                            <v-text-field name="materialColor" v-model="editItem.materialColor" :items="materialColorDropdown" label="Colors"></v-text-field>
-                                                            </v-flex>
-                                                            <v-flex xs12 sm6 md6>
-                                                                <v-text-field name="materialVal" v-model="editItem.materialVal" label="Value"></v-text-field>
-                                                            </v-flex>
-                                                            <v-flex xs12 sm6 md6>
-                                                                <v-select v-model="editItem.materialStat" :items="materialStatusDropdown" item-text="type" item-value="value" label="Material Status" id="materialStat" name="materialStat"></v-select>
+                                                            <v-flex xs12 sm8 md8>
+                                                                <v-text-field name="materialDescription" v-model="editItem.materialDesc" label="Description"></v-text-field>
                                                             </v-flex>
                                                         </v-layout>
                                                     </v-container>
@@ -182,6 +169,10 @@
                             <input type="hidden" id="colourStatusName" name="colourName">
                             <input type="hidden" id="colourStatusMaterialId" name="materialId">
                             <input type="hidden" name="action" value="changeColourStatus">
+                        </form>
+                        <form method="post" action="materialmanagement" id="deleteMaterial">
+                            <input type="hidden" id="materialIdToDelete" name="materialId">
+                            <input type="hidden" name="action" value="delete">
                         </form>
                     </v-container>
                 </v-content>
@@ -315,7 +306,6 @@
                     },
                     submitMaterial()
                     {
-                        
                         document.getElementById('create-material').submit();
                     },
                     editMaterial() 
@@ -329,12 +319,11 @@
                     },
                     edit()
                     {
-                        document.getElementById('materialStat').value=this.editItem.status;
                         document.getElementById('edit-material').submit();
                     },
                     remove()
                     {
-                        alert('eyyy')
+                        alert('Please try again later!');
                     },
                     editMaterial(item)
                     {

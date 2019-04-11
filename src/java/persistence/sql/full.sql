@@ -69,6 +69,20 @@ CREATE TABLE IF NOT EXISTS `aris`.`REPORT` (
 ALTER TABLE REPORT AUTO_INCREMENT=100;
 
 -- -----------------------------------------------------
+-- Table `aris`.`BACKUP`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `aris`.`BACKUP` ;
+
+CREATE TABLE IF NOT EXISTS `aris`.`BACKUP` (
+  `backup_id` INT NOT NULL AUTO_INCREMENT,
+  `backup_title` VARCHAR(30) NOT NULL,
+  `backup_date` DATE NOT NULL,
+  `backup_status` VARCHAR(30) NOT NULL,
+  `backup_path` VARCHAR(500) NOT NULL,
+  PRIMARY KEY (`backup_id`));
+ALTER TABLE BACKUP AUTO_INCREMENT=200;
+
+-- -----------------------------------------------------
 -- Table `aris`.`NOTIFICATION`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `aris`.`NOTIFICATION` ;
