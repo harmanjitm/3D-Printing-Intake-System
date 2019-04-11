@@ -372,7 +372,6 @@ new Vue({
         image: '',
         fileInfo: '',
         comments: '',
-        selected: [],
         selectPrinterName: '',
         selectMaterialId: '',
         selectedColourID: 0,

@@ -19,7 +19,7 @@
         <div id="app">
             <v-app>
                 <v-content>
-                    <v-card color="#8B2635" height="5px"></v-card>
+                  <v-card color="#8B2635" height="5px"></v-card>
                     <!--Navigation drawer-->
                     <v-navigation-drawer <c:if test="${mini == true}">mini-variant</c:if> dark v-model="drawer" stateless clipped app fixed>
                         <v-list dense>
@@ -70,7 +70,7 @@
                                 </v-btn>
                             </c:if>
                         </v-toolbar-items>
-                    </v-toolbar>
+                    </v-toolbar>  
                     <!--Carousel Images-->
                     <div class="overlayContainer">
                         <span class="carouselOverlay mt-5">
