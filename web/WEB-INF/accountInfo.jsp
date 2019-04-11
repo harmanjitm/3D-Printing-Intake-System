@@ -18,15 +18,10 @@
         <div id="app">
             <v-app>
                 <v-content>
-                    <c:if test="${account.accountType == 'admin'}">
-                        <ARIS3D:Header isAdmin="true" pageName="Account Information"></ARIS3D:Header>
-                    </c:if>
-                    <c:if test="${account.accountType == 'user'}">
-                        <ARIS3D:Header isAdmin="false" pageName="Account Information"></ARIS3D:Header>
-                    </c:if>
+                    <ARIS3D:Header isAdmin="" pageName="Account Information"></ARIS3D:Header>
                     <v-container>
                         <v-layout>
-                            <v-flex xl8 sm8 md8 lg8>
+                            <v-flex xs6 sm6 md6 lg6>
                                 <v-card>
                                     <v-toolbar color="#1B222B" dark>
                                         <v-toolbar-title>Account Information: # ${sessionScope.account.accountID}</v-toolbar-title>

@@ -23,6 +23,7 @@
                         <h1 class="display-2 font-weight-thin text-xs-center">Welcome back, ${sessionScope.account.firstname}!</h1>
                         <v-divider></v-divider>
                         <br>
+                    <!-- Graph cards -->
                         <v-layout fluid row wrap>
                             <template width="100%">
                                 <v-card class="mt-3 mx-auto" width="32%">
@@ -67,6 +68,8 @@
                                 </v-card>
                             </template>
                         </v-layout>
+                    
+                    <!-- Pending order queue starts here -->
                         <v-container grid-list-lg>
                             <!--Alert Messages-->
                             <v-alert <c:if test='${successMessage != null}'>value="true"</c:if> type="success">
@@ -87,9 +90,10 @@
                                     <v-card elevation="5" min-height="150">
                                         <v-card-title class="blue-grey darken-4 white--text">
                                             <span primary class="headline text-xs-left">Order {{num}}{{order.orderId}}</span>
-                                            
                                         </v-card-title>
                                         <br/>
+                                        
+                                    <!-- Order Queue cards -->    
                                         <v-card-text class="pt-0">
                                             <v-alert <c:if test='${warningMessage != null}'>value="true"</c:if> type="warning">
                                                 ${warningMessage}
@@ -111,6 +115,8 @@
                                             <v-spacer></v-spacer>
                                             <v-divider vertical></v-divider>
                                             <v-spacer></v-spacer>
+                                            
+                                        <!-- Review order pop up -->    
                                             <v-dialog v-model="dialog" max-width="750px" >
                                                 <v-btn @click="reviewOrder(order)" slot="activator" flat color="light-green darken-2">Review</v-btn>
                                                 <v-card color="#8B2635" height="5px"></v-card>
@@ -118,7 +124,6 @@
                                                     <v-card-title class="blue-grey darken-4 white--text">
                                                         <span class="headline">Review Order: {{num}}{{viewOrder.orderId}}</span>
                                                     </v-card-title>
-                                                    <!--<form action="dashboard" method="post">-->
                                                     <v-container>
                                                         <v-layout>
                                                             <v-flex>
@@ -138,6 +143,8 @@
                                                                     </form>
                                                                 </v-card-actions>
                                                             </v-flex>
+                                                        
+                                                        <!-- approve an order and submit to printer Queue -->
                                                             <v-flex>
                                                                 <form id="approveOrder" method="post" action="dashboard">
                                                                     <v-card-text><b>Selected Printer:</b> {{viewOrder.printerName}}</v-card-text>
