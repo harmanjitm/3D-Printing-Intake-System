@@ -1318,15 +1318,3 @@ call aris.createNotificationDefaultMessage('issue','There was an issue when proc
 call aris.createNotificationDefaultMessage('ready','Your print has been printed sucessfully! Please pick it up from the lab!');
 call aris.createNotificationDefaultMessage('printing','Your print is currently being printed.');
 call aris.createNotificationDefaultMessage('queued','Your print has been approved and added to the queue of prints.');
-
-/*ORDERS*/
-call aris.createPrintOrder(123.00, 1, 50, 100000, 400000, 'gray', 'Test comment!');
-call aris.createPrintOrder(123.00, 2, 57, 100000, 400001, 'gray', 'Test comment!');
-call aris.createPrintOrder(123.00, 3, 58, 100000, 400002, 'gray', 'Test comment!');
-call aris.createPrintOrder(123.00, 1, 51, 100000, 400003, 'gray', 'Test comment!');
-call aris.createPrintOrder(123.00, 2, 55, 100000, 400004, 'gray', 'Test comment!');
-call aris.createPrintOrder(123.00, 1, 50, 100000, 400005, 'gray', 'Test comment!');
-call aris.createPrintOrder(123.00, 2, 57, 100000, 400006, 'gray', 'Test comment!');
-call aris.createPrintOrder(123.00, 3, 58, 100000, 400007, 'gray', 'Test comment!');
-call aris.createPrintOrder(123.00, 1, 51, 100000, 400008, 'gray', 'Test comment!');
-call aris.createPrintOrder(123.00, 2, 55, 100000, 400009, 'gray', 'Test comment!');
