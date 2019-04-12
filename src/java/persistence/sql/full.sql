@@ -1252,21 +1252,18 @@ delimiter ;
 /* ***************************************************************
 ** Author:  Emily Pegg	                                       	**
 ** Creation Date:  February, 2019                               **
-** Script Name: Test Data Creation				**
+** Script Name: Test Data Creation								**
 ** Description: Creates test data for the ARIS 3D Printing DB   **
 ******************************************************************/
 /* ACCOUNTS */
-call aris.createAccount('harmanjit.mohaar@edu.sait.ca', 'password', 'Harmanjit', 'Mohaar', 'admin');
-call aris.createAccount('benjamin.wozak@edu.sait.ca', 'password', 'Benjamin', 'Wozak', 'user');
-call aris.createAccount('gregory.turnbull@edu.sait.ca', 'password', 'Gregory', 'Turnbull', 'admin');
-call aris.createAccount('emily.pegg@edu.sait.ca', 'password', 'Emily', 'Pegg', 'user');
-call aris.createAccount('haseeb.sheiktsuyi@edu.sait.ca', 'password', 'Haseeb', 'Sheikh', 'user');
+call aris.createAccount('admin@aris3d.ca', 'password', 'Admin', 'Admin', 'admin');
 call aris.createAccount('timothy.huynh@edu.sait.ca', 'password', 'Timothy', 'Huynh', 'admin');
 
 /* PRINTERS */
 call aris.createPrinter('406x355x406mm', 'active', 'Fortus 400mc', 'This is an FDM type printer. It is the fastest printer with the largest build volume. It is the best printer for ABS plastic because it has a heated chamber that prevents layers from splitting as they cool.', 2.5);
 call aris.createPrinter('215x215x300mm', 'active', 'Ultimaker 3 Extended', 'This is an FDM type printer. It is smaller and slower than the Fortus but is also less expensive. It is still great for ABS plastic, and more materials are available.', 1);
 call aris.createPrinter('215x215x300mm', 'active', 'Form 2+', 'This is an SLA type printer. It is best used for parts that have small features that need high precision. it will be expensive to produce a large part on this printer, so it is best saved for smaller parts.', 1);
+
 /* MATERIALS */
 call aris.createMaterial('ABS-M30', 'This is a basic ABS Plastic', 0.00036,1);
 call aris.createMaterial('SR30', 'This is support material. It is water soluble for removal.', 0.00051,1);
@@ -1322,18 +1319,6 @@ call aris.createNotificationDefaultMessage('ready','Your print has been printed 
 call aris.createNotificationDefaultMessage('printing','Your print is currently being printed.');
 call aris.createNotificationDefaultMessage('queued','Your print has been approved and added to the queue of prints.');
 
-/*FILES*/
-call aris.createFile(100000, 'EmilyPegg.stl', 'test/', 90, 'STL', '1x1x1');
-call aris.createFile(100001, 'BenWozak.stl', 'test/', 100, 'STL', '1x1x1');
-call aris.createFile(100002, 'GregTurnbull.stl', 'test/', 80, 'STL', '1x1x1');
-call aris.createFile(100003, 'HarmanMohaar.stl', 'test/', 60, 'STL', '1x1x1');
-call aris.createFile(100004, 'HaseebSheikTsuyi.stl', 'test/', 70, 'STL', '1x1x1');
-call aris.createFile(100000, 'EmilyPegg.stl', 'test/', 90, 'STL', '1x1x1');
-call aris.createFile(100001, 'BenWozak.stl', 'test/', 100, 'STL', '1x1x1');
-call aris.createFile(100002, 'GregTurnbull.stl', 'test/', 80, 'STL', '1x1x1');
-call aris.createFile(100003, 'HarmanMohaar.stl', 'test/', 60, 'STL', '1x1x1');
-call aris.createFile(100004, 'HaseebSheikTsuyi.stl', 'test/', 70, 'STL', '1x1x1');
-
 /*ORDERS*/
 call aris.createPrintOrder(123.00, 1, 50, 100000, 400000, 'gray', 'Test comment!');
 call aris.createPrintOrder(123.00, 2, 57, 100000, 400001, 'gray', 'Test comment!');
@@ -1345,21 +1330,3 @@ call aris.createPrintOrder(123.00, 2, 57, 100000, 400006, 'gray', 'Test comment!
 call aris.createPrintOrder(123.00, 3, 58, 100000, 400007, 'gray', 'Test comment!');
 call aris.createPrintOrder(123.00, 1, 51, 100000, 400008, 'gray', 'Test comment!');
 call aris.createPrintOrder(123.00, 2, 55, 100000, 400009, 'gray', 'Test comment!');
-
-/*ORDER QUEUE*/
--- call aris.createQueue(300000);
--- call aris.createQueue(300001);
--- call aris.createQueue(300002);
--- call aris.createQueue(300003);
--- call aris.createQueue(300004);
--- call aris.createQueue(300005);
--- call aris.createQueue(300006);
--- call aris.createQueue(300007);
--- call aris.createQueue(300008);
--- call aris.createQueue(300009);
-
-/*NOTIFICATION*/
-call aris.createNotification(300006, 'printing');
-call aris.createNotification(300006, 'queued');
-call aris.createNotification(300006, 'ready');
-call aris.createNotification(300004, 'issue');
