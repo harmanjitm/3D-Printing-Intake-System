@@ -1256,7 +1256,10 @@ delimiter ;
 ** Description: Creates test data for the ARIS 3D Printing DB   **
 ******************************************************************/
 /* ACCOUNTS */
+call aris.createAccount('karen.smith@edu.sait.ca', 'password', 'Karen', 'Smith', 'user');
 call aris.createAccount('admin@aris3d.ca', 'password', 'Admin', 'Admin', 'admin');
+call aris.createAccount('harmanjit.mohaar@edu.sait.ca', 'password', 'Harmanjit', 'Mohaar', 'admin');
+call aris.createAccount('benjamin.wozak@edu.sait.ca', 'password', 'Benjamin', 'Wozak', 'user');
 call aris.createAccount('timothy.huynh@edu.sait.ca', 'password', 'Timothy', 'Huynh', 'admin');
 
 /* PRINTERS */
@@ -1318,3 +1321,36 @@ call aris.createNotificationDefaultMessage('issue','There was an issue when proc
 call aris.createNotificationDefaultMessage('ready','Your print has been printed sucessfully! Please pick it up from the lab!');
 call aris.createNotificationDefaultMessage('printing','Your print is currently being printed.');
 call aris.createNotificationDefaultMessage('queued','Your print has been approved and added to the queue of prints.');
+
+/*Test Data*/
+call aris.createFile(100000, 'Part1.stl', 'test/', 90, 'STL', '75.68x45.6x68.1');
+call aris.createFile(100000, 'Part2.stl', 'test/', 100, 'STL', '11.2x19.54x16.2');
+call aris.createFile(100000, 'Yoda.stl', 'test/', 65, 'STL', '90.5x56.76x98.6');
+
+call aris.createPrintOrder(32.25, 1, 58, 100000, 400000, 'gray', 'Test comment!');
+call aris.createPrintOrder(16.58, 1, 51, 100000, 400000, 'white', 'Test comment!');
+call aris.createPrintOrder(19.65, 1, 55, 100000, 400000, 'brown', 'Test comment!');
+call aris.createPrintOrder(32.25, 1, 58, 100000, 400001, 'yellow', 'Test comment!');
+call aris.createPrintOrder(16.58, 1, 51, 100000, 400001, 'pink', 'Test comment!');
+call aris.createPrintOrder(2.95, 3, 50, 100000, 400002, 'clear', 'Test comment!');
+call aris.createPrintOrder(6.75, 3, 52, 100000, 400002, 'gray', 'Test comment!');
+call aris.createPrintOrder(9.66, 3, 53, 100000, 400002, 'white', 'Test comment!');
+
+/*OrderID, Cost, Print Date, Status, Printer ID, Material ID, File ID, Colour*/
+call aris.updatePrintOrder(300000, 32.25, NULL, 'approved', 1, 58, 400000, 'gray');
+call aris.updatePrintOrder(300001, 16.58, NULL, 'approved', 1, 51, 400000, 'white');
+call aris.updatePrintOrder(300002, 19.65, NULL, 'approved', 1, 55, 400000, 'brown');
+call aris.updatePrintOrder(300003, 32.25, NULL, 'approved', 1, 58, 400001, 'yellow');
+call aris.updatePrintOrder(300004, 16.58, NULL, 'approved', 1, 51, 400001, 'pink');
+call aris.updatePrintOrder(300005, 2.95, NULL, 'approved', 3, 50, 400002, 'clear');
+call aris.updatePrintOrder(300006, 6.75, NULL, 'approved', 3, 52, 400002, 'gray');
+call aris.updatePrintOrder(300007, 9.66, NULL, 'approved', 3, 53, 400002, 'white');
+
+call aris.createQueue(300000);
+call aris.createQueue(300001);
+call aris.createQueue(300002);
+call aris.createQueue(300003);
+call aris.createQueue(300004);
+call aris.createQueue(300005);
+call aris.createQueue(300006);
+call aris.createQueue(300007);
